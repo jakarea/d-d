@@ -900,6 +900,7 @@
                 margin-right: 2rem;
             }
 
+
             .d-flex {
                 justify-content: space-between;
                 align-items: center;
@@ -1138,6 +1139,12 @@
         width: 100%;
         object-fit: cover;
         height: 12.75rem;
+    }
+
+    img.main-avatar {
+        width: 6.25rem;
+        height: 6.25rem;
+        object-fit: cover; 
     }
 
     h1 {
@@ -1453,11 +1460,11 @@
     margin-top: 1.5rem;
 
     h3 {
-        color: var(--greyscale-900, #0F172A); 
+        color: var(--greyscale-900, #0F172A);
         font-size: 1.25rem;
         font-style: normal;
         font-weight: 700;
-        line-height: 165%; 
+        line-height: 165%;
         letter-spacing: 0.025rem;
     }
 }

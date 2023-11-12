@@ -1113,6 +1113,12 @@ body {
      object-fit: cover;
   height: 12.75rem;
 }
+.company-about-box img.main-avatar {
+  width: 6.25rem;
+  height: 6.25rem;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
 .company-about-box h1 {
   color: var(--greyscale-900, #111827);
   font-size: 1.25rem;
