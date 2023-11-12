@@ -1091,3 +1091,140 @@ body {
 .advertismewnt-deal-box .product-item-box {
   border: 1px solid var(--light-grey-01, #F3F3F3);
 }
+
+.company-about-box {
+  border-radius: 1rem;
+  background: var(--others-white, #FFF);
+  padding: 1.5rem;
+  text-align: center;
+  height: 100%;
+}
+.company-about-box img.main-thumb {
+  width: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  height: 12.75rem;
+}
+.company-about-box h1 {
+  color: var(--greyscale-900, #111827);
+  font-size: 1.25rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 140%;
+  margin-top: 1.5rem;
+  margin-top: 1.5rem;
+}
+.company-about-box p {
+  color: var(--greyscale-600, #687588);
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 160%;
+  margin-top: 0.6rem;
+}
+.company-about-box hr {
+  bottom: 0;
+  height: 1px;
+  width: 100%;
+  background: var(--greyscale-200, #F1F2F4);
+  margin: 1.5rem;
+}
+.company-about-box ul {
+  text-align: left;
+}
+.company-about-box ul li p {
+  color: var(--greyscale-900, #111827);
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 160%;
+  display: flex;
+  align-items: center;
+}
+.company-about-box ul li p img {
+  margin-right: 0.7rem;
+  filter: invert(75%) sepia(12%) saturate(430%) hue-rotate(174deg) brightness(92%) contrast(86%);
+  width: 1.25rem;
+}
+
+.company-edit-from-wrapper {
+  border-radius: 1rem;
+  background: var(--others-white, #FFF);
+  padding: 1.5rem;
+}
+.company-edit-from-wrapper .title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #F1F2F4;
+}
+.company-edit-from-wrapper .title h3 {
+  color: var(--greyscale-900, #111827);
+  font-size: 1.125rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 150%;
+}
+.company-edit-from-wrapper .form-box {
+  border-radius: 1rem;
+  border: 1px solid var(--greyscale-200, #F1F2F4);
+  background: var(--others-white, #FFF);
+  padding: 1.5rem;
+}
+.company-edit-from-wrapper .form-box .form-group {
+  margin-top: 1rem;
+  position: relative;
+}
+.company-edit-from-wrapper .form-box .form-group label {
+  color: var(--greyscale-900, #111827);
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 160%;
+  margin-bottom: 0.5rem;
+}
+.company-edit-from-wrapper .form-box .form-group label span {
+  color: #E03137;
+}
+.company-edit-from-wrapper .form-box .form-group .form-control {
+  border-radius: 0.625rem;
+  border: 1px solid var(--greyscale-300, #E9EAEC);
+  padding: 1rem 1.25rem;
+  color: var(--greyscale-500, #111827);
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 160%;
+}
+.company-edit-from-wrapper .form-box .form-group textarea {
+  resize: none;
+}
+.company-edit-from-wrapper .form-box .form-submit {
+  margin-top: 2rem;
+}
+.company-edit-from-wrapper .form-box .form-submit .btn-submit {
+  border-radius: 0.625rem;
+  border: 1px solid var(--black-01, #0F172A);
+  background: #FFF;
+  display: block;
+  text-align: center;
+  width: 100%;
+  height: 3.5rem;
+  padding: 1.3125rem 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #0F172A;
+  text-align: center;
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 120%;
+  letter-spacing: 0.01875rem;
+  transition: ease-in-out 0.3s;
+}
+.company-edit-from-wrapper .form-box .form-submit .btn-submit:hover {
+  background-color: #111827;
+  color: #fff;
+}
