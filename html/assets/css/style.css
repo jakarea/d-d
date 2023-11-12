@@ -270,6 +270,9 @@ body {
   font-weight: 400;
   line-height: 160%;
 }
+.auth-txt-box .auth-form-wrap .form-group .form-control:focus-within {
+  border-color: #0F172A;
+}
 .auth-txt-box .auth-form-wrap .form-group .fields-icons {
   position: absolute;
   right: 17px;
@@ -510,6 +513,7 @@ body {
   position: fixed;
   left: 0;
   top: 0;
+  z-index: 999;
   width: 100%;
   background-color: #fff;
   padding: 1.5rem 2rem;
@@ -534,6 +538,9 @@ body {
   padding-left: 2.5rem;
   padding-right: 2rem;
   height: 2.75rem;
+}
+.header-area .header-search-box .form-control:focus-within {
+  border-color: #0F172A;
 }
 .header-area .header-search-box img.search {
   position: absolute;
@@ -843,6 +850,7 @@ body {
   font-style: normal;
   font-weight: 700;
   line-height: 140%;
+  margin-top: 0.8rem;
 }
 .company-profile-box .txt h6 {
   color: var(--greyscale-600, #687588);
@@ -1105,6 +1113,12 @@ body {
      object-fit: cover;
   height: 12.75rem;
 }
+.company-about-box img.main-avatar {
+  width: 6.25rem;
+  height: 6.25rem;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
 .company-about-box h1 {
   color: var(--greyscale-900, #111827);
   font-size: 1.25rem;
@@ -1126,7 +1140,7 @@ body {
   bottom: 0;
   height: 1px;
   width: 100%;
-  background: var(--greyscale-200, #F1F2F4);
+  background: var(--greyscale-200, #dddee1);
   margin: 1.5rem;
 }
 .company-about-box ul {
@@ -1197,8 +1211,24 @@ body {
   font-weight: 400;
   line-height: 160%;
 }
+.company-edit-from-wrapper .form-box .form-group .form-control:focus-within {
+  border-color: #0F172A;
+}
 .company-edit-from-wrapper .form-box .form-group textarea {
   resize: none;
+}
+.company-edit-from-wrapper .form-box .form-group .fields-icons {
+  position: absolute;
+  right: 17px;
+  top: 49px;
+  z-index: 99;
+}
+.company-edit-from-wrapper .form-box .form-group .fields-icons a {
+  display: inline-block;
+}
+.company-edit-from-wrapper .form-box .form-group .fields-icons a i {
+  color: #111827;
+  font-size: 1.25rem;
 }
 .company-edit-from-wrapper .form-box .form-submit {
   margin-top: 2rem;
@@ -1227,4 +1257,138 @@ body {
 .company-edit-from-wrapper .form-box .form-submit .btn-submit:hover {
   background-color: #111827;
   color: #fff;
+}
+
+.personal-info-table-wrap table {
+  width: 100%;
+}
+.personal-info-table-wrap table tr td {
+  padding-top: 1rem;
+}
+.personal-info-table-wrap table tr td p {
+  color: var(--greyscale-600, #687588);
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 160%;
+}
+.personal-info-table-wrap table tr td h6 {
+  color: var(--greyscale-900, #111827);
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 160%;
+}
+
+.add-company-modal-from .offcanvas-body {
+  padding: 2.25rem !important;
+}
+
+.add-new-company-from-wrap .bttn-close {
+  background: var(--others-white, #FFF);
+}
+.add-new-company-from-wrap h3 {
+  color: var(--greyscale-900, #111827);
+  font-size: 1.5rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 130%;
+}
+.add-new-company-from-wrap form .form-group {
+  margin-top: 1rem;
+  position: relative;
+}
+.add-new-company-from-wrap form .form-group label {
+  color: var(--greyscale-900, #111827);
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 160%;
+  margin-bottom: 0.5rem;
+}
+.add-new-company-from-wrap form .form-group label span {
+  color: #E03137;
+}
+.add-new-company-from-wrap form .form-group .form-control {
+  border-radius: 0.625rem;
+  border: 1px solid var(--greyscale-300, #E9EAEC);
+  padding: 1rem 1.25rem;
+  color: var(--greyscale-500, #111827);
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 160%;
+}
+.add-new-company-from-wrap form .form-group .form-control:focus-within {
+  border-color: #0F172A;
+}
+.add-new-company-from-wrap form .form-submit {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  position: absolute;
+  left: 5%;
+  bottom: 0;
+  width: 90%;
+  height: 9%;
+}
+.add-new-company-from-wrap form .form-submit .btn-cancel {
+  border-radius: 0.625rem;
+  border: 1px solid var(--greyscale-900, #111827);
+  color: var(--greyscale-900, #111827);
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 150%;
+  letter-spacing: 0.01875rem;
+  text-align: center;
+  margin-right: 0.5rem;
+  display: flex;
+  height: 3.5rem;
+  padding: 1.3125rem 1.5rem;
+  justify-content: center;
+  align-items: center;
+  transition: ease-in-out 0.3s;
+}
+.add-new-company-from-wrap form .form-submit .btn-cancel:hover {
+  background-color: #0F172A;
+  color: #fff;
+}
+.add-new-company-from-wrap form .form-submit .btn-submit {
+  border-radius: 0.625rem;
+  background: var(--greyscale-900, #111827);
+  color: var(--others-white, #FFF);
+  text-align: center;
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 150%;
+  letter-spacing: 0.01875rem;
+  margin-left: 0.5rem;
+  display: flex;
+  height: 3.5rem;
+  padding: 1.3125rem 1.5rem;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid transparent;
+  transition: ease-in-out 0.3s;
+}
+.add-new-company-from-wrap form .form-submit .btn-submit:hover {
+  background-color: #fff;
+  color: #111827;
+  border-color: #111827;
+}
+
+.customer-reviews-box {
+  border-radius: 1rem;
+  background: #FFF;
+  padding: 1.5rem;
+  margin-top: 1.5rem;
+}
+.customer-reviews-box h3 {
+  color: var(--greyscale-900, #0F172A);
+  font-size: 1.25rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 165%;
+  letter-spacing: 0.025rem;
 }
