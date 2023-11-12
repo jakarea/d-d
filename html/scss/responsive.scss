@@ -1,0 +1,51 @@
+@use './util/variabls' as v;
+@use './util/media-query' as q;
+
+// small phone device
+@include q.responsive(phone){
+    .auth-txt-box{
+        align-items: flex-start;
+        margin-top: 2rem;
+    }
+    .auth-txt-box .title h1{
+        font-size: 1.25rem;
+        margin-bottom: 1rem;
+        margin-top: 1rem;
+    }
+    .auth-txt-box .auth-form-wrap .login-with-social .bttn{
+        font-size: 0.875rem;
+        padding: 1rem 0.5rem!important;
+        width: 90%;
+    }
+}
+
+// landscape phone device 
+@include q.responsive(landphone){
+     
+}
+
+// tablet device 
+@include q.responsive(tablet){
+     
+}
+
+// landtablet device 
+@include q.responsive(landtablet){
+    .auth-txt-box{
+        align-items: flex-start;
+        margin-top: 2rem;
+    }
+    .auth-txt-box .auth-form-wrap .login-with-social .bttn{ 
+        width: 95%;
+    }
+}
+
+// regular device 
+@include q.responsive(regular){
+     
+}
+
+// large device 
+@include q.responsive(large){
+     
+}
