@@ -1,0 +1,25 @@
+@media (min-width: 320px) and (max-width: 575px) {
+  .auth-txt-box {
+    align-items: flex-start;
+    margin-top: 2rem;
+  }
+  .auth-txt-box .title h1 {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+  }
+  .auth-txt-box .auth-form-wrap .login-with-social .bttn {
+    font-size: 0.875rem;
+    padding: 1rem 0.5rem !important;
+    width: 90%;
+  }
+}
+@media (min-width: 991px) and (max-width: 1199px) {
+  .auth-txt-box {
+    align-items: flex-start;
+    margin-top: 2rem;
+  }
+  .auth-txt-box .auth-form-wrap .login-with-social .bttn {
+    width: 95%;
+  }
+}
