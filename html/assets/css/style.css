@@ -1112,6 +1112,7 @@ body {
   -o-object-fit: cover;
      object-fit: cover;
   height: 12.75rem;
+  border-radius: 1rem;
 }
 .company-about-box img.main-avatar {
   width: 6.25rem;
