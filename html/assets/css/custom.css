@@ -1,0 +1,83 @@
+.product-txt h5 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.product-txt p {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.company-about-box img.main-thumb {
+  border-radius: 16px;
+}
+
+.top-active-company-user h4 {
+  padding-bottom: 20px;
+}
+
+.top-active-company-user .user-list .media {
+  padding-bottom: 20px;
+}
+
+.product-thumbnail {
+  position: relative;
+}
+
+.product-thumbnail a  {
+  position: absolute;
+  right: 10px;
+  top: 5px;
+}
+
+.product-thumbnail a i {
+  color: #94A3BB;
+  font-size: 25px;
+}
+
+.avatar-wrap {
+  position: relative;
+  width: 100px;
+  height: 100px; 
+  border-radius: 50%;
+  margin: 0 auto;
+}
+ 
+.avatar-wrap .ol {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  border-radius: 50%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.avatar-wrap .ol .logo-photo {
+  width: 25px;
+  margin: 0 auto;
+}
+
+.avatar-wrap .ol span {
+  color:  #FFF;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 20px;
+  margin-top: 5px;
+}
+.form-submit .btn-download {
+  background-color: #FF9F29 !important;
+  border-radius: 8px !important;
+  padding: 10px 24px !important;
+  font-size: 14px !important;
+  color: #fff;
+  display: flex !important;
+  justify-content: space-between;
+  gap: 8px;
+}
