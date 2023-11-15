@@ -7,8 +7,13 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\Exceptions\MissingAbilityException;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\VerificationMail;
+use Illuminate\Support\Facades\Crypt;
 
-class UserController extends Controller {
+class UserController extends API\ApiController {
     /**
      * Display a listing of the resource.
      *
@@ -24,28 +29,53 @@ class UserController extends Controller {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) {
-        $creds = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-            'name' => 'nullable|string',
-        ]);
-
-        $user = User::where('email', $creds['email'])->first();
-        if ($user) {
-            return response(['error' => 1, 'message' => 'user already exists'], 409);
+    public function store(Request $request)
+    {
+        try {
+            $creds = $request->validate([
+                'email' => 'required|email|unique:users,email',
+                'password' => 'required|min:6',
+                'confirm_password' => 'required_with:password|same:password|min:6',
+                'kvk_number' => 'required',
+                'name' => 'required|string',
+                'role' => 'required|exists:roles,slug',
+            ]);
+        } catch (ValidationException $e) {
+            return $this->validationErrorResponse($e, 422, 'Validation error', 1001);
         }
-
+        
+        $verificationCode = str_pad(mt_rand(0, 99999), 5, '0', STR_PAD_LEFT);
         $user = User::create([
+            'name' => $creds['name'],
             'email' => $creds['email'],
             'password' => Hash::make($creds['password']),
-            'name' => $creds['name'],
+            'kvk_number' => $creds['kvk_number'],
+            'verification_code' => $verificationCode,
+            'email_verified_at' => null,
         ]);
 
-        $defaultRoleSlug = config('hydra.default_user_role_slug', 'user');
-        $user->roles()->attach(Role::where('slug', $defaultRoleSlug)->first());
+        $role = Role::where('slug', $creds['role'])->first();
+        $user->roles()->attach($role);
+
+         // Send verification email
+        $this->sendVerificationEmail($user, $verificationCode);
 
         return $user;
+    }
+
+    protected function validationErrorResponse(ValidationException $e, $status, $message, $errorCode): JsonResponse
+    {
+        return response()->json([
+            'error' => $errorCode,
+            'message' => $message,
+            'errors' => $e->validator->errors(),
+        ], $status);
+    }
+
+    protected function sendVerificationEmail(User $user, $verificationCode)
+    {
+        // Use your email template and customize as needed
+        Mail::to($user->email)->send(new VerificationMail($user,$verificationCode));
     }
 
     /**
@@ -115,6 +145,25 @@ class UserController extends Controller {
         return $user;
     }
 
+    public function updatePassword(Request $request, User $user)
+    {
+        try {
+            $request->validate([
+                'new_password' => 'required|min:6',
+                'confirm_password' => 'required|same:new_password',
+            ]);
+
+            // Update the user's password
+            $user->update([
+                'password' => Hash::make($request->input('new_password')),
+            ]);
+
+            return $this->jsonResponse(0, 'Password updated successfully.');
+        } catch (ValidationException $e) {
+            return $this->validationErrorResponse($e, 422, 'Validation error', 1001);
+        }
+    }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -137,6 +186,7 @@ class UserController extends Controller {
 
         return response(['error' => 0, 'message' => 'user deleted']);
     }
+
 
     /**
      * Return Auth user
