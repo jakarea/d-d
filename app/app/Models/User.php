@@ -19,6 +19,9 @@ class User extends Authenticatable {
         'name',
         'email',
         'password',
+        'kvk_number',
+        'verification_code',
+        'email_verified_at'
     ];
 
     /**
