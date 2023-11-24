@@ -10,7 +10,11 @@ class PackageController extends Controller
         return view('package/plans');
     }
 
-    public function edit(){
+    public function editPackage(){
+        return view('package/editPlans');
+    }
+
+    public function updatePackage(){
         return view('package/editPlans');
     }
 }

@@ -7,11 +7,12 @@ use Illuminate\Http\Request;
 
 class ApiController extends Controller
 {
-    protected function jsonResponse($errorCode, $message, $errors = [], $status = 200)
+    protected function jsonResponse($errorCode, $message, $data, $errors = [], $status = 200)
     {
         return response()->json([
             'error' => $errorCode,
             'message' => $message,
+            'data' => $data,
             'errors' => $errors,
         ], $status);
     }
