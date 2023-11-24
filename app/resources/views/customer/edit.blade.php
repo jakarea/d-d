@@ -9,7 +9,7 @@
 
       <!-- customer details start -->
       <div class="row">
-         <div class="col-12 col-md-4 col-xl-3">
+          <div class="col-12 col-md-4 col-xl-3">
           <!-- customer about start -->
           <div class="company-about-box">
 

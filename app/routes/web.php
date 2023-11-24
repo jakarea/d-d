@@ -7,6 +7,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\EarningController;
 use App\Http\Controllers\PackageController;
+use App\Http\Controllers\CategoryController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -44,10 +45,15 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/customer/{id}/edit/address', [CustomerController::class, 'editAddress'])->name('customer.editAddress');
     Route::post('/customer/{id}/edit/address', [CustomerController::class, 'updateAddress'])->name('customer.updateAddress');
 
-    Route::get('/analytics', [AnalyticsController::class, 'index']);
+    Route::get('/dashboard', [AnalyticsController::class, 'index']);
+    Route::get('/analytics', [AnalyticsController::class, 'analytics']);
     Route::get('/earning', [EarningController::class, 'index']);
-    
+
     Route::get('/package', [PackageController::class, 'index']);
+    Route::get('/package-update', [PackageController::class, 'editPackage']);
+    Route::post('/package-update', [PackageController::class, 'updatePackage']);
+
+    Route::resource('/category', CategoryController::class);
 
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
