@@ -50,7 +50,31 @@ class ProductVarientController extends ApiController
      */
     public function show($id)
     {
-        //
+        $productVarient = ProductVarient::find($id);
+
+        if (!empty($productVarient)) {
+            return $this->jsonResponse(false, $this->success, $productVarient, $this->emptyArray, JsonResponse::HTTP_OK);
+        } else {
+            return $this->jsonResponse(true, $this->failed, $this->emptyArray, ['Product-varient not found'], JsonResponse::HTTP_NOT_FOUND);
+        }
+    }
+
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function getProductVarientofProduct($productId)
+    {
+        $productVarientofProduct = ProductVarient::where('product_id',$productId)->get();
+
+        if (!empty($productVarientofProduct)) {
+            return $this->jsonResponse(false, $this->success, $productVarientofProduct, $this->emptyArray, JsonResponse::HTTP_OK);
+        } else {
+            return $this->jsonResponse(true, $this->failed, $this->emptyArray, ['Product-varient not found'], JsonResponse::HTTP_NOT_FOUND);
+        }
     }
 
     /**
