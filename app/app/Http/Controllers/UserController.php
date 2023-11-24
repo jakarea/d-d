@@ -43,7 +43,7 @@ class UserController extends API\ApiController {
         } catch (ValidationException $e) {
             return $this->validationErrorResponse($e, 422, 'Validation error', 1001);
         }
-        
+
         $verificationCode = str_pad(mt_rand(0, 99999), 5, '0', STR_PAD_LEFT);
         $user = User::create([
             'name' => $creds['name'],

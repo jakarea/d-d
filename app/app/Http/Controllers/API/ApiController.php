@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class ApiController extends Controller
 {
+
+    protected $success = "Success";
+    protected $failed  = "Failed";
+    protected $emptyArray = [];
+
     protected function jsonResponse($errorCode, $message, $data, $errors = [], $status = 200)
     {
         return response()->json([
