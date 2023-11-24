@@ -25,11 +25,6 @@ class UpdateRequest extends BaseFormRequest
     {
         return [
 
-            'user_id'=>[
-                'required',
-                'integer',
-                'exists:users,id',
-            ],
             'company_id'=>[
                 'required',
                 'integer',

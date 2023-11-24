@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ProductAddRequest;
+use App\Models\ProductVarient;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class ProductVarientController extends Controller
+class ProductVarientController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -23,9 +26,20 @@ class ProductVarientController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ProductAddRequest $request)
     {
-        //
+        try {
+            $validatedData = $request->validated();
+            $validatedData['user_id'] = auth()->user()->id;
+
+            $productVarient = ProductVarient::create($validatedData);
+
+            return $this->jsonResponse(false, 'Product-varient created successfully', $productVarient, [], JsonResponse::HTTP_CREATED);
+
+        }catch (\Exception $e){
+
+            return $this->jsonResponse(true, 'Failed to create product-varient', $request->all(), [$e->getMessage()], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
