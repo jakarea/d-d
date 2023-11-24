@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\CategoryController;
+use App\Http\Controllers\API\ProductVarientController;
 use App\Http\Controllers\HydraController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
@@ -42,6 +43,7 @@ Route::apiResource('users.roles', UserRoleController::class)->except(['create', 
 
 Route::apiResource('category', CategoryController::class)->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
 Route::apiResource('product', ProductController::class)->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
+Route::apiResource('product-varient', ProductVarientController::class)->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
 
 Route::get('/verify-email/{user}/{code}', [VerificationController::class, 'verify'])->name('verify.email');
 Route::get('/resend-verification/{user}', [VerificationController::class, 'resend'])->name('verify.resend');
