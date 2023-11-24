@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Requests\Product\UpdateRequest;
 use App\Models\Product;
+use App\Process\ProductProcess;
 use Illuminate\Http\Request;
 use App\Http\Requests\ProductAddRequest;
 use Illuminate\Http\RedirectResponse;
@@ -10,6 +12,7 @@ use Illuminate\Http\JsonResponse;
 
 class ProductController extends ApiController
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -17,24 +20,17 @@ class ProductController extends ApiController
      */
     public function index()
     {
-        return $products = Product::all();
-        return $this->jsonResponse(0, 'Product success', $products, [], 200);
-    }
+        $products = Product::all();
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        //return var_dump(!empty($products));
+
+        return $this->jsonResponse(0, 'Product success', $products, [], 200);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
 
@@ -60,20 +56,36 @@ class ProductController extends ApiController
     }
 
     /**
-     * Display the specified resource.
+     * Show the form for creating a new resource.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function create()
     {
         //
     }
 
     /**
+     * Display the specified resource.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $product = Product::find($id);
+
+        if (!empty($product)) {
+            return $this->jsonResponse(false, $this->success, $product, $this->emptyArray, JsonResponse::HTTP_OK);
+        } else {
+            return $this->jsonResponse(true, $this->failed, $this->emptyArray, ['Product not found'], JsonResponse::HTTP_NOT_FOUND);
+        }
+    }
+
+    /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -84,19 +96,28 @@ class ProductController extends ApiController
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateRequest $request, $id)
     {
-        //
+
+        try {
+
+            $product = ProductProcess::update($request, $id);
+
+            return $this->jsonResponse(false, 'Product updated successfully', $product, $this->emptyArray, JsonResponse::HTTP_OK);
+
+        } catch (\Exception $e) {
+            return $this->jsonResponse(true, 'Failed to update product', $request->all(), [$e->getMessage()], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
