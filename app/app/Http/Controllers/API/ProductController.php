@@ -122,6 +122,15 @@ class ProductController extends ApiController
      */
     public function destroy($id)
     {
-        //
+        $product = Product::find($id);
+
+        if (!empty($product)) {
+
+            $product->delete();
+
+            return $this->jsonResponse(false, 'Product deleted successfully', $product, $this->emptyArray, JsonResponse::HTTP_OK);
+        } else {
+            return $this->jsonResponse(true, $this->failed, $this->emptyArray, ['Product not found'], JsonResponse::HTTP_NOT_FOUND);
+        }
     }
 }
