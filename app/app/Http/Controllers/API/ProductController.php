@@ -21,11 +21,9 @@ class ProductController extends ApiController
      */
     public function index()
     {
-        $products = Product::all();
+        $products = Product::with(['productVarients'])->get();
 
-        //return var_dump(!empty($products));
-
-        return $this->jsonResponse(0, 'Product success', $products, [], 200);
+        return $this->jsonResponse(false, $this->success, $products, $this->emptyArray, JsonResponse::HTTP_OK);
     }
 
     /**
@@ -43,7 +41,7 @@ class ProductController extends ApiController
             $product = ProductProcess::create($request);
 
             if(isset($request->product_varients) && count($request->product_varients) > 0){
-                
+
                 foreach ($request->product_varients as $productVarient) {
                     $productVarient['user_id'] = auth()->user()->id;
                     $productVarient['company_id'] = $product->company_id;
