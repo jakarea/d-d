@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Requests\Product\UpdateRequest;
+use App\Models\Company;
 use App\Models\Product;
 use App\Models\ProductVarient;
 use App\Process\ProductProcess;
@@ -40,7 +41,7 @@ class ProductController extends ApiController
 
             $product = ProductProcess::create($request);
 
-            if(isset($request->product_varients) && count($request->product_varients) > 0){
+            if (isset($request->product_varients) && count($request->product_varients) > 0) {
 
                 foreach ($request->product_varients as $productVarient) {
                     $productVarient['user_id'] = auth()->user()->id;
@@ -61,14 +62,16 @@ class ProductController extends ApiController
         }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function getProductsofCompany($companyId):JsonResponse
     {
-        //
+
+        $products =  Company::with(['products'])->where('id', $companyId)->first();
+
+        if (!empty($products)) {
+            return $this->jsonResponse(false, $this->success, $products, $this->emptyArray, JsonResponse::HTTP_OK);
+        } else {
+            return $this->jsonResponse(true, $this->failed, $this->emptyArray, ['Products not found'], JsonResponse::HTTP_NOT_FOUND);
+        }
     }
 
     /**
