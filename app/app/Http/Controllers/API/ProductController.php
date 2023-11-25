@@ -21,11 +21,9 @@ class ProductController extends ApiController
      */
     public function index()
     {
-        $products = Product::all();
+        $products = Product::with(['productVarients'])->get();
 
-        //return var_dump(!empty($products));
-
-        return $this->jsonResponse(0, 'Product success', $products, [], 200);
+        return $this->jsonResponse(false, $this->success, $products, $this->emptyArray, JsonResponse::HTTP_OK);
     }
 
     /**
