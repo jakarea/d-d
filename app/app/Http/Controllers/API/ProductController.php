@@ -74,6 +74,23 @@ class ProductController extends ApiController
         }
     }
 
+    public function companyProductDetails($companyId, $productId)
+    {
+       $product = Product::with(['productVarients'])
+            ->where('company_id', $companyId)
+            ->where('id', $productId)
+            ->first();
+
+
+        if (!empty($product)) {
+            return $this->jsonResponse(false, $this->success, $product, $this->emptyArray, JsonResponse::HTTP_OK);
+        } else {
+            return $this->jsonResponse(true, $this->failed, $this->emptyArray, ['Product not found'], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+
+    }
+
     /**
      * Display the specified resource.
      *

@@ -44,6 +44,7 @@ Route::apiResource('users.roles', UserRoleController::class)->except(['create', 
 Route::apiResource('category', CategoryController::class)->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
 Route::apiResource('product', ProductController::class)->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
 Route::get('company/{company}/products', [ProductController::class, 'getProductsofCompany'])->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
+Route::get('company/{company}/product/{product}', [ProductController::class, 'companyProductDetails'])->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
 
 
 Route::apiResource('product-varient', ProductVarientController::class)->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
