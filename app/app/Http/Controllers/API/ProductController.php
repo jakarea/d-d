@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Requests\Product\UpdateRequest;
 use App\Models\Product;
+use App\Models\ProductVarient;
 use App\Process\ProductProcess;
 use Illuminate\Http\Request;
 use App\Http\Requests\ProductAddRequest;
@@ -36,22 +37,29 @@ class ProductController extends ApiController
 
     public function store(ProductAddRequest $request)
     {
-        try {
-            // Retrieve validated data
-            $validatedData = $request->validated();
-            // auth()->user()->id;
-            // Additional business logic or data manipulation before storing in the database
-            $validatedData['user_id'] = auth()->user()->id;
-            $validatedData['company_id'] = auth()->user()->id;
-            // Store the product in the database
 
-            $product = Product::create($validatedData);
+        try {
+
+            $product = ProductProcess::create($request);
+
+            if(isset($request->product_varients) && count($request->product_varients) > 0){
+                
+                foreach ($request->product_varients as $productVarient) {
+                    $productVarient['user_id'] = auth()->user()->id;
+                    $productVarient['company_id'] = $product->company_id;
+                    $productVarient['product_id'] = $product->id;
+
+                    ProductVarient::create($productVarient);
+                }
+            }
+
+            $product = Product::with(['productVarients'])->where('id', $product->id)->first();
 
             // Return a JSON response indicating success
-            return $this->jsonResponse('success', 'Product created successfully', $product, [], JsonResponse::HTTP_CREATED);
+            return $this->jsonResponse(false, 'Product created successfully', $product, [], JsonResponse::HTTP_CREATED);
         } catch (\Exception $e) {
             // Handle any exceptions or errors
-            return $this->jsonResponse('error', 'Failed to create product', $request->all(), [$e->getMessage()], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->jsonResponse(true, 'Failed to create product', $request->all(), [$e->getMessage()], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -122,6 +130,15 @@ class ProductController extends ApiController
      */
     public function destroy($id)
     {
-        //
+        $product = Product::find($id);
+
+        if (!empty($product)) {
+
+            $product->delete();
+
+            return $this->jsonResponse(false, 'Product deleted successfully', $product, $this->emptyArray, JsonResponse::HTTP_OK);
+        } else {
+            return $this->jsonResponse(true, $this->failed, $this->emptyArray, ['Product not found'], JsonResponse::HTTP_NOT_FOUND);
+        }
     }
 }

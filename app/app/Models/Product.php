@@ -11,4 +11,9 @@ class Product extends Model
     protected $fillable = [
         'user_id','company_id','title', 'cats', 'product_url', 'price', 'sell_price', 'cupon', 'description', 'images',
     ];
+
+    public function productVarients()
+    {
+        return $this->hasMany(ProductVarient::class);
+    }
 }

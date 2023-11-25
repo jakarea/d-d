@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\API\CategoryController;
+use App\Http\Controllers\API\ProductVarientController;
 use App\Http\Controllers\HydraController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
@@ -39,7 +41,10 @@ Route::post('login', [UserController::class, 'login']);
 Route::apiResource('roles', RoleController::class)->except(['create', 'edit'])->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
 Route::apiResource('users.roles', UserRoleController::class)->except(['create', 'edit', 'show', 'update'])->middleware(['auth:sanctum', 'ability:admin,super-admin']);
 
+Route::apiResource('category', CategoryController::class)->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
 Route::apiResource('product', ProductController::class)->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
+Route::apiResource('product-varient', ProductVarientController::class)->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
+Route::get('product/{product}/product-varients',[ProductVarientController::class,'getProductVarientofProduct'])->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
 
 Route::get('/verify-email/{user}/{code}', [VerificationController::class, 'verify'])->name('verify.email');
 Route::get('/resend-verification/{user}', [VerificationController::class, 'resend'])->name('verify.resend');

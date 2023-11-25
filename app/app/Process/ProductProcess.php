@@ -8,11 +8,26 @@ use App\Models\Product;
 class ProductProcess{
 
 
+      public static function create($request)
+      {
+          $product = new Product();
+          $product = (new self())->saveProduct($request, $product);
+
+          return $product;
+      }
+
       public static function update(UpdateRequest $request, $productId)
       {
           $product = Product::find($productId);
+          $product = (new self())->saveProduct($request, $product);
 
-          $product->user_id = $request->user_id;
+          return $product;
+      }
+
+      public function saveProduct($request, $product)
+      {
+
+          $product->user_id = auth()->user()->id;
           $product->company_id = $request->company_id;
           $product->title = $request->title;
           $product->cats = $request->cats;
