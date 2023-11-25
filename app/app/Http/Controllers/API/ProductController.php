@@ -43,7 +43,7 @@ class ProductController extends ApiController
             $product = ProductProcess::create($request);
 
             if(isset($request->product_varients) && count($request->product_varients) > 0){
-                
+
                 foreach ($request->product_varients as $productVarient) {
                     $productVarient['user_id'] = auth()->user()->id;
                     $productVarient['company_id'] = $product->company_id;
