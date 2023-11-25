@@ -27,14 +27,54 @@ class ProductAddRequest extends BaseFormRequest
         if (\Request::route()->getName() == "product.store")
 
             return [
-//                'title' => 'required|string|max:250',
-//                'cats' => 'required|string',
-//                'product_url' => 'nullable|url',
-//                'price' => 'required|numeric|between:0,9999999.99',
-//                'sell_price' => 'nullable|numeric|between:0,9999999.99|lt:price',
-//                'cupon' => 'nullable|string|max:20',
-//                'description' => 'nullable|string',
-//                'images' => 'nullable|string',
+
+                'company_id' => [
+                    'required',
+                    'integer',
+                    'exists:companies,id',
+                ],
+                'title' => [
+                    'required',
+                    'string',
+                    'min:2',
+                    'max:255'
+                ],
+                'cats' => [
+                    'required',
+                    'string'
+                ],
+                'product_url' => [
+                    'nullable',
+                    'url'
+                ],
+                'price' => [
+                    'required',
+                    'numeric',
+                    'between:0,9999999.99',
+                ],
+                'sell_price' => [
+                    'nullable',
+                    'numeric',
+                    'between:0,9999999.99',
+                    'lt:price'
+                ],
+                'cupon' => [
+                    'nullable',
+                    'string',
+                    'min:2',
+                    'max:20'
+                ],
+                'description' => [
+                    'nullable',
+                    'string',
+                ],
+                'images' => [
+                    'nullable',
+                    'string',
+                ],
+//                'product_varients'=>[
+//                    'required'
+//                ]
             ];
 
         if (\Request::route()->getName() == "product-varient.store")

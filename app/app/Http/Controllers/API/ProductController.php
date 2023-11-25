@@ -37,16 +37,20 @@ class ProductController extends ApiController
 
     public function store(ProductAddRequest $request)
     {
+
         try {
 
             $product = ProductProcess::create($request);
 
-            foreach ($request->product_varients as $productVarient) {
-                $productVarient['user_id'] = auth()->user()->id;
-                $productVarient['company_id'] = $product->company_id;
-                $productVarient['product_id'] = $product->id;
+            if(isset($request->product_varients) && count($request->product_varients) > 0){
+                
+                foreach ($request->product_varients as $productVarient) {
+                    $productVarient['user_id'] = auth()->user()->id;
+                    $productVarient['company_id'] = $product->company_id;
+                    $productVarient['product_id'] = $product->id;
 
-                ProductVarient::create($productVarient);
+                    ProductVarient::create($productVarient);
+                }
             }
 
             $product = Product::with(['productVarients'])->where('id', $product->id)->first();
