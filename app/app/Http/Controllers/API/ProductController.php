@@ -46,7 +46,7 @@ class ProductController extends ApiController
                 $productVarient['company_id'] = $product->company_id;
                 $productVarient['product_id'] = $product->id;
 
-                ProductVarient::create($productVarient, $product);
+                ProductVarient::create($productVarient);
             }
 
             $product = Product::with(['productVarients'])->where('id', $product->id)->first();
