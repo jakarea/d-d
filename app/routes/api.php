@@ -56,6 +56,7 @@ Route::middleware(['auth:sanctum', 'ability:admin,super-admin,user'])->group(fun
         Route::post('review',[ReviewController::class, 'reviewOfProduct']);
         Route::post('review/like',[ReviewController::class, 'likeOfReview']);
         Route::post('review/dislike',[ReviewController::class, 'dislikeOfReview']);
+        Route::post('review/reply',[ReviewController::class, 'replyOfReview']);
 
     });
 });

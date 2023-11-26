@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\AddReviewRequest;
 use App\Models\Dislike;
 use App\Models\Like;
+use App\Models\Reply;
 use App\Models\Review;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -26,7 +27,7 @@ class ReviewController extends ApiController
         }
     }
 
-    public function likeOfReview(Request $request)
+    public function likeOfReview(Request $request):JsonResponse
     {
 
         try {
@@ -52,7 +53,7 @@ class ReviewController extends ApiController
     }
 
 
-    public function dislikeOfReview(Request $request)
+    public function dislikeOfReview(Request $request):JsonResponse
     {
 
         $dislike = Like::where('user_id', auth()->user()->id)->where('review_id', $request->review_id)->first();
@@ -78,5 +79,22 @@ class ReviewController extends ApiController
             return $this->jsonResponse(true, $this->failed, $request->all(), [$e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR]);
         }
     }
+
+    public function replyOfReview(Request $request):JsonResponse
+    {
+        try {
+
+            $request['user_id'] = auth()->user()->id;
+            $review = Reply::create($request->except('_method', '_token'));
+
+            return $this->jsonResponse(false, $this->success, $review, $this->emptyArray, JsonResponse::HTTP_CREATED);
+
+        }catch (\Exception $e){
+            return $this->jsonResponse(true, $this->failed, $request->all(), [$e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR]);
+        }
+    }
+
+
+
 
 }
