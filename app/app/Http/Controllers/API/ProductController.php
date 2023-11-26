@@ -93,7 +93,7 @@ class ProductController extends ApiController
     public function getProductsofCompany($companyId): JsonResponse
     {
 
-        $products = Company::with(['products'])->where('id', $companyId)->first();
+        $products = Company::with(['products','reviews'])->where('id', $companyId)->first();
 
         if (!empty($products)) {
             return $this->jsonResponse(false, $this->success, $products, $this->emptyArray, JsonResponse::HTTP_OK);
@@ -203,5 +203,5 @@ class ProductController extends ApiController
         return $this->jsonResponse(false, $this->success, $products, $this->emptyArray, JsonResponse::HTTP_OK);
 
     }
-    
+
 }
