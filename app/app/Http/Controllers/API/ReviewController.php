@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AddReviewRequest;
+use App\Models\Dislike;
 use App\Models\Like;
 use App\Models\Review;
 use Illuminate\Http\JsonResponse;
@@ -32,8 +33,11 @@ class ReviewController extends ApiController
 
             $like = Like::where('user_id', auth()->user()->id)->where('review_id', $request->review_id)->first();
 
-            if(!empty($like)){
+            if(!empty($like) && $like->like == true){
                 $like->delete();
+            }elseif(!empty($like) && $like->like == false){
+                $like->like = true;
+                $like->save();
             }else{
                 $request['user_id'] = auth()->user()->id;
                 $like = Like::create($request->except('_method', '_token'));
@@ -47,5 +51,32 @@ class ReviewController extends ApiController
         }
     }
 
+
+    public function dislikeOfReview(Request $request)
+    {
+
+        $dislike = Like::where('user_id', auth()->user()->id)->where('review_id', $request->review_id)->first();
+
+        try {
+
+            $dislike = Like::where('user_id', auth()->user()->id)->where('review_id', $request->review_id)->first();
+
+            if(!empty($dislike) && $dislike->like == false){
+                $dislike->delete();
+            }elseif(!empty($dislike) && $dislike->like == true){
+                $dislike->like = false;
+                $dislike->save();
+            }else{
+                $request['user_id'] = auth()->user()->id;
+                $dislike = Like::create($request->except('_method', '_token'));
+            }
+
+            return $this->jsonResponse(false, $this->success, $dislike, $this->emptyArray, JsonResponse::HTTP_OK);
+
+        } catch (\Exception $e) {
+
+            return $this->jsonResponse(true, $this->failed, $request->all(), [$e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR]);
+        }
+    }
 
 }
