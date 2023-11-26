@@ -20,19 +20,39 @@ class ProductController extends ApiController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        
+        $searchTerm     = $request->keyword;
+        $searchLocation = $request->location;
+        $sortBy         = $request->sortby;
+        $sortOrder      = $request->sortorder;
 
-        $products = Product::with(['company'])->orderByDesc('id')->get();
+        $query = Product::with(['company']);
+
+        if (!is_null($searchTerm)) {
+            $searchTerm = strip_tags(trim($searchTerm));
+            $query->where('title', 'LIKE', "%{$searchTerm}%");
+        }
+
+
+        if (!is_null($searchLocation)) {
+            $searchLocation = strip_tags(trim($searchLocation));
+            $query->whereHas('company', function ($q) use ($searchLocation) {
+                $q->where('location', 'LIKE', "%{$searchLocation}%");
+            });
+        }
+
+        if (!is_null($sortBy) && !is_null($sortOrder)) {
+            $sortBy = strip_tags(trim($sortBy));
+            $query->orderBy($sortBy, $sortOrder);
+        }
+
+
+        $products = $query->get();
 
         return $this->jsonResponse(false, $this->success, $products, $this->emptyArray, JsonResponse::HTTP_OK);
 
-
-        /*
-        $products = Product::with(['productVarients'])->get();
-
-        return $this->jsonResponse(false, $this->success, $products, $this->emptyArray, JsonResponse::HTTP_OK);
-        */
     }
 
     /**
