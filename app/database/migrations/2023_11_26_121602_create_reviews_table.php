@@ -18,8 +18,8 @@ return new class extends Migration
             $table->foreignId('company_id')->constrained()->cascadeOnDelete();
             $table->foreignId('product_id')->constrained()->cascadeOnDelete();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->text('comment');
-            $table->unsignedTinyInteger('point');
+            $table->string('review');
+            $table->unsignedTinyInteger('rating');
             $table->unsignedTinyInteger('like')->default(0)->nullable();
             $table->unsignedTinyInteger('dislike')->default(0)->nullable();
             $table->boolean('status')->default(true);
