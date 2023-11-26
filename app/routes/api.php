@@ -53,7 +53,8 @@ Route::middleware(['auth:sanctum', 'ability:admin,super-admin,user'])->group(fun
         Route::get('profile',[ClientController::class,'profile']);
         Route::post('profile',[ClientController::class,'profileUpdate']);
 
-        Route::post('review',[ReviewController::class, 'placeReview']);
+        Route::post('review',[ReviewController::class, 'reviewOfProduct']);
+        Route::post('review/like',[ReviewController::class, 'likeOfReview']);
 
     });
 });
