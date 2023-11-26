@@ -19,6 +19,11 @@ class Product extends Model
         return $this->belongsTo(Company::class);
     }
 
+    public function reviews():HasMany
+    {
+        return $this->hasMany(Review::class);
+    }
+
     public function productVarients():HasMany
     {
         return $this->hasMany(ProductVarient::class);

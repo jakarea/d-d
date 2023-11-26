@@ -127,24 +127,13 @@ class ProductController extends ApiController
      */
     public function show($id)
     {
-        $product = Product::with(['company'])->find($id);
+        $product = Product::with(['company','reviews'])->find($id);
 
         if (!empty($product)) {
             return $this->jsonResponse(false, $this->success, $product, $this->emptyArray, JsonResponse::HTTP_OK);
         } else {
             return $this->jsonResponse(true, $this->failed, $this->emptyArray, ['Product not found'], JsonResponse::HTTP_NOT_FOUND);
         }
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**
@@ -214,4 +203,5 @@ class ProductController extends ApiController
         return $this->jsonResponse(false, $this->success, $products, $this->emptyArray, JsonResponse::HTTP_OK);
 
     }
+    
 }
