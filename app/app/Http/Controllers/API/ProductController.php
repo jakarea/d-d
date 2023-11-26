@@ -167,4 +167,31 @@ class ProductController extends ApiController
             return $this->jsonResponse(true, $this->failed, $this->emptyArray, ['Product not found'], JsonResponse::HTTP_NOT_FOUND);
         }
     }
+
+    public function searchProduct(Request $request)
+    {
+
+        $searchTerm     = $request->keyword;
+        $searchLocation = $request->location;
+
+        $query = Product::with(['company']);
+
+        if (!is_null($searchTerm)) {
+            $searchTerm = strip_tags(trim($searchTerm));
+            $query->where('title', 'LIKE', "%{$searchTerm}%");
+        }
+
+
+        if (!is_null($searchLocation)) {
+            $searchLocation = strip_tags(trim($searchLocation));
+            $query->whereHas('company', function ($q) use ($searchLocation) {
+                $q->where('location', 'LIKE', "%{$searchLocation}%");
+            });
+        }
+
+        $products = $query->orderByDesc('id')->get();
+
+        return $this->jsonResponse(false, $this->success, $products, $this->emptyArray, JsonResponse::HTTP_OK);
+
+    }
 }

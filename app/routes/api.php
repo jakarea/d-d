@@ -41,8 +41,15 @@ Route::post('login', [UserController::class, 'login']);
 Route::apiResource('roles', RoleController::class)->except(['create', 'edit'])->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
 Route::apiResource('users.roles', UserRoleController::class)->except(['create', 'edit', 'show', 'update'])->middleware(['auth:sanctum', 'ability:admin,super-admin']);
 
-Route::apiResource('category', CategoryController::class)->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
-Route::apiResource('product', ProductController::class)->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
+Route::middleware(['auth:sanctum', 'ability:admin,super-admin,user'])->group(function () {
+
+    Route::prefix('client')->name('api.client.')->group(function () {
+        Route::apiResource('category', CategoryController::class);
+        Route::apiResource('product', ProductController::class);
+        Route::get('search/product',[ProductController::class,'searchProduct']);
+    });
+});
+
 Route::get('company/{company}/products', [ProductController::class, 'getProductsofCompany'])->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
 Route::get('company/{company}/product/{product}', [ProductController::class, 'companyProductDetails'])->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
 
