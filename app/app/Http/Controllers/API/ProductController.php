@@ -22,7 +22,7 @@ class ProductController extends ApiController
      */
     public function index(Request $request)
     {
-        
+
         $searchTerm     = $request->keyword;
         $searchLocation = $request->location;
         $sortBy         = $request->sortby;
@@ -127,7 +127,7 @@ class ProductController extends ApiController
      */
     public function show($id)
     {
-        $product = Product::find($id);
+        $product = Product::with(['company'])->find($id);
 
         if (!empty($product)) {
             return $this->jsonResponse(false, $this->success, $product, $this->emptyArray, JsonResponse::HTTP_OK);

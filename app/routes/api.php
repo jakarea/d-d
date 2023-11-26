@@ -8,6 +8,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserRoleController;
 use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\VerificationController;
+use App\Http\Controllers\API\ClientController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -47,6 +48,8 @@ Route::middleware(['auth:sanctum', 'ability:admin,super-admin,user'])->group(fun
         Route::apiResource('category', CategoryController::class);
         Route::apiResource('product', ProductController::class);
         Route::get('search/product',[ProductController::class,'searchProduct']);
+        Route::get('/{company}/products', [ProductController::class, 'getProductsofCompany']);
+        Route::get('profile',[ClientController::class,'profile']);
     });
 });
 
