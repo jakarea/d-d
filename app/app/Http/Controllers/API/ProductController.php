@@ -22,9 +22,17 @@ class ProductController extends ApiController
      */
     public function index()
     {
+
+        $products = Product::with(['company'])->orderByDesc('id')->get();
+
+        return $this->jsonResponse(false, $this->success, $products, $this->emptyArray, JsonResponse::HTTP_OK);
+
+
+        /*
         $products = Product::with(['productVarients'])->get();
 
         return $this->jsonResponse(false, $this->success, $products, $this->emptyArray, JsonResponse::HTTP_OK);
+        */
     }
 
     /**
@@ -62,10 +70,10 @@ class ProductController extends ApiController
         }
     }
 
-    public function getProductsofCompany($companyId):JsonResponse
+    public function getProductsofCompany($companyId): JsonResponse
     {
 
-        $products =  Company::with(['products'])->where('id', $companyId)->first();
+        $products = Company::with(['products'])->where('id', $companyId)->first();
 
         if (!empty($products)) {
             return $this->jsonResponse(false, $this->success, $products, $this->emptyArray, JsonResponse::HTTP_OK);
@@ -76,7 +84,7 @@ class ProductController extends ApiController
 
     public function companyProductDetails($companyId, $productId)
     {
-       $product = Product::with(['productVarients'])
+        $product = Product::with(['productVarients'])
             ->where('company_id', $companyId)
             ->where('id', $productId)
             ->first();
