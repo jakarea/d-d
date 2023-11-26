@@ -50,6 +50,7 @@ Route::middleware(['auth:sanctum', 'ability:admin,super-admin,user'])->group(fun
         Route::get('search/product',[ProductController::class,'searchProduct']);
         Route::get('/{company}/products', [ProductController::class, 'getProductsofCompany']);
         Route::get('profile',[ClientController::class,'profile']);
+        Route::post('profile',[ClientController::class,'profileUpdate']);
     });
 });
 
