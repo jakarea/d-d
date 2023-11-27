@@ -27,75 +27,91 @@
     <link rel="stylesheet" href="{{ url('assets/css/responsive.css') }}">
     <!-- custom CSS end -->
     @yield('style')
-    <title>@yield('title')</title>
-    </head>
+    <title>DnD || Dashboard @yield('title')</title>
+</head>
 
-    <body>
+<body>
 
     <!-- dashboard page wrapper start -->
     <main class="root-main-wrapper">
         <!-- sidebar wrapper start -->
         <aside class="sidebar-wrap">
-        <!-- logo -->
-        <div class="logo-box">
-            <a href="#">
-            <img src="{{ asset('assets/images/logo.svg') }}" alt="Logo" class="img-fluid">
-            </a>
-        </div>
-        <!-- logo -->
+            <!-- logo -->
+            <div class="logo-box">
+                <a href="{{url('/')}}">
+                    <img src="{{ asset('assets/images/logo.svg') }}" alt="Logo" class="img-fluid">
+                </a>
+            </div>
+            <!-- logo -->
 
-        <!-- navbar -->
-        <div class="side-navbar-wrap">
-            <ul>
-            <li><a href="#"><img src="{{ asset('assets/images/icons/dashboard.svg') }}" alt="I" class="img-fluid">
-                Dashboard</a></li>
-            <li><a href="#"><img src="{{ asset('assets/images/icons/marketplace.svg') }}" alt="I" class="img-fluid"> Marketplace</a>
-            </li>
-            <li><a href="#" class="active"><img src="{{ asset('assets/images/icons/company.svg') }}" alt="I" class="img-fluid">
-                Company</a></li>
-            <li><a href="#"><img src="{{ asset('assets/images/icons/customer.svg') }}" alt="I" class="img-fluid"> Customer</a></li>
-            <li><a href="#"><img src="{{ asset('assets/images/icons/analytics.svg') }}" alt="I" class="img-fluid"> Analytics</a></li>
-            <li><a href="#"><img src="{{ asset('assets/images/icons/earnings.svg') }}" alt="I" class="img-fluid"> Earning</a></li>
-            <li><a href="#"><img src="{{ asset('assets/images/icons/fee.svg') }}" alt="I" class="img-fluid"> Monthly &amp; Yearly
-                Fee</a></li>
-            <li><a href="#"><img src="{{ asset('assets/images/icons/advertisment.svg') }}" alt="I" class="img-fluid"> Advertisement</a>
-            </li>
-            </ul>
-        </div>
-        <!-- navbar -->
+            <!-- navbar -->
+            <div class="side-navbar-wrap">
+                <ul>
+                    <li><a href="{{url('/dashboard')}}" class="{{ Request::is('dashboard') ? 'active' : ''}}"><img src="{{ asset('assets/images/icons/dashboard.svg') }}"
+                                alt="I" class="img-fluid">
+                            Dashboard</a></li>
+                    <li><a href="{{url('/')}}"><img src="{{ asset('assets/images/icons/marketplace.svg') }}"
+                                alt="I" class="img-fluid"> Marketplace</a>
+                    </li>
+                    <li><a href="{{url('/company')}}" class="{{ Request::is('company') ? 'active' : ''}}"><img src="{{ asset('assets/images/icons/company.svg') }}" alt="I"
+                                class="img-fluid">
+                            Company</a></li>
+                    <li><a href="{{url('/customer')}}" class="{{ Request::is('customer') ? 'active' : ''}}"><img src="{{ asset('assets/images/icons/customer.svg') }}"
+                                alt="I" class="img-fluid"> Customer</a></li>
+                    <li><a href="{{url('/analytics')}}" class="{{ Request::is('analytics') ? 'active' : ''}}"><img src="{{ asset('assets/images/icons/analytics.svg') }}"
+                                alt="I" class="img-fluid"> Analytics</a></li>
+                    <li><a href="{{url('/earning')}}" class="{{ Request::is('earning') ? 'active' : ''}}"><img src="{{ asset('assets/images/icons/earnings.svg') }}" alt="I"
+                                class="img-fluid"> Earning</a></li>
+                    <li><a href="{{url('/package')}}" class="{{ Request::is('package') ? 'active' : ''}}"><img src="{{ asset('assets/images/icons/fee.svg') }}" alt="I"
+                                class="img-fluid"> Monthly &amp; Yearly
+                            Fee</a></li>
+                    <li><a href="{{url('/')}}"><img src="{{ asset('assets/images/icons/advertisment.svg') }}" alt="I"
+                                class="img-fluid"> Advertisement</a>
+                    </li>
+                    <li>
+                        <form action="{{ url('/logout') }}" method="post">
+                            @csrf
+                            <button type="submit" class="btn" style="font-weight: 700;">
+                                Logout
+                            </button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+            <!-- navbar -->
         </aside>
         <!-- sidebar wrapper end -->
 
         <!-- header part start -->
         <header class="header-area">
-        <!-- search box start -->
-        <div class="header-search-box">
-            <img src="{{ asset('assets/images/icons/search.svg') }}" alt="S" class="img-fluid search">
-            <input type="text" class="form-control" placeholder="Search">
-            <a href="#" class="filter">
-            <img src="{{ asset('assets/images/icons/filter.svg') }}" alt="F" class="img-fluid">
-            </a>
-        </div>
-        <!-- search box end -->
+            <!-- search box start -->
+            <div class="header-search-box">
+                <img src="{{ asset('assets/images/icons/search.svg') }}" alt="S" class="img-fluid search">
+                <input type="text" class="form-control" placeholder="Search">
+                <a href="#" class="filter">
+                    <img src="{{ asset('assets/images/icons/filter.svg') }}" alt="F" class="img-fluid">
+                </a>
+            </div>
+            <!-- search box end -->
 
-        <!-- header icons start -->
-        <div class="header-icons-box">
-            <ul>
-            <li>
-                <a href="#">
-                <span></span>
-                <img src="{{ asset('assets/images/icons/bell.svg') }}" alt="B" class="img-fluid">
-                </a>
-            </li>
-            <li>
-                <a href="#" class="user">
-                <img src="{{ asset('assets/images/user.png') }}" alt="U" class="img-fluid">
-                <i class="fas fa-angle-down"></i>
-                </a>
-            </li>
-            </ul>
-        </div>
-        <!-- header icons end -->
+            <!-- header icons start -->
+            <div class="header-icons-box">
+                <ul>
+                    <li>
+                        <a href="#">
+                            <span></span>
+                            <img src="{{ asset('assets/images/icons/bell.svg') }}" alt="B" class="img-fluid">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="user">
+                            <img src="{{ asset('assets/images/user.png') }}" alt="U" class="img-fluid">
+                            <i class="fas fa-angle-down"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <!-- header icons end -->
         </header>
         <!-- header part end -->
         @yield('content')
