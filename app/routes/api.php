@@ -68,27 +68,19 @@ Route::middleware(['auth:sanctum', 'ability:admin,super-admin,user'])->group(fun
 Route::middleware(['auth:sanctum', 'ability:admin,super-admin,user'])->group(function () {
 
     Route::prefix('company')->name('api.company.')->group(function () {
-        Route::apiResource('category', CategoryController::class);
-        Route::apiResource('product', ProductController::class);
-//        Route::get('search/product',[ProductController::class,'searchProduct']);
-//        Route::get('/{company}/products', [ProductController::class, 'getProductsofCompany']);
-//        Route::get('profile',[ClientController::class,'profile']);
-//        Route::post('profile',[ClientController::class,'profileUpdate']);
-//
-//        Route::post('review',[ReviewController::class, 'reviewOfProduct']);
-//        Route::post('review/like',[ReviewController::class, 'likeOfReview']);
-//        Route::post('review/dislike',[ReviewController::class, 'dislikeOfReview']);
-//        Route::post('review/reply',[ReviewController::class, 'replyOfReview']);
+
+        Route::get('category', [CategoryController::class,'index']);
+        Route::post('product', [ProductController::class,'store']);
+        Route::get('product', [ProductController::class,'index']);
+        Route::get('product/{product}', [ProductController::class,'productDetails']);
+        Route::get('/{company}/products', [ProductController::class, 'getProductsOfCompany']);
 
     });
 });
 
-Route::get('company/{company}/products', [ProductController::class, 'getProductsofCompany'])->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
-Route::get('company/{company}/product/{product}', [ProductController::class, 'companyProductDetails'])->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
 
-
-Route::apiResource('product-varient', ProductVarientController::class)->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
-Route::get('product/{product}/product-varients',[ProductVarientController::class,'getProductVarientofProduct'])->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
+//Route::apiResource('product-varient', ProductVarientController::class)->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
+//Route::get('product/{product}/product-varients',[ProductVarientController::class,'getProductVarientofProduct'])->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
 
 Route::get('/verify-email/{user}/{code}', [VerificationController::class, 'verify'])->name('verify.email');
 Route::get('/resend-verification/{user}', [VerificationController::class, 'resend'])->name('verify.resend');
