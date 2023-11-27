@@ -27,7 +27,7 @@
     <link rel="stylesheet" href="{{ url('assets/css/responsive.css') }}">
     <!-- custom CSS end -->
 
-    <title>@yield('title')</title>
+    <title>DnD || Authintication Pages @yield('title')</title>
     </head>
 
     <body>
