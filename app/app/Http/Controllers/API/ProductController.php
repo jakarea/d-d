@@ -46,6 +46,8 @@ class ProductController extends ApiController
         if (!is_null($sortBy) && !is_null($sortOrder)) {
             $sortBy = strip_tags(trim($sortBy));
             $query->orderBy($sortBy, $sortOrder);
+        }else{
+            $query->orderByDesc('id');
         }
 
 
@@ -62,7 +64,7 @@ class ProductController extends ApiController
      * @return \Illuminate\Http\Response
      */
 
-    public function store(ProductAddRequest $request)
+    public function store(Request $request)
     {
 
         try {
