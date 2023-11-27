@@ -69,6 +69,7 @@ class ReviewController extends ApiController
                 $dislike->save();
             }else{
                 $request['user_id'] = auth()->user()->id;
+                $request['like'] = false;
                 $dislike = Like::create($request->except('_method', '_token'));
             }
 

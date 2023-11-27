@@ -92,7 +92,28 @@ class ProductController extends ApiController
         }
     }
 
-    public function getProductsofCompany($companyId): JsonResponse
+    /**
+     * Display the specified resource.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function productDetails($id)
+    {
+
+        $product = Product::with(['company','reviews'=>function($query){
+              $query->with(['likes','dislikes', 'replies']);
+
+        }])->find($id);
+
+        if (!empty($product)) {
+            return $this->jsonResponse(false, $this->success, $product, $this->emptyArray, JsonResponse::HTTP_OK);
+        } else {
+            return $this->jsonResponse(true, $this->failed, $this->emptyArray, ['Product not found'], JsonResponse::HTTP_NOT_FOUND);
+        }
+    }
+
+    public function getProductsOfCompany($companyId): JsonResponse
     {
 
         $products = Company::with(['products','reviews'])->where('id', $companyId)->first();
@@ -119,23 +140,6 @@ class ProductController extends ApiController
         }
 
 
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $product = Product::with(['company','reviews'])->find($id);
-
-        if (!empty($product)) {
-            return $this->jsonResponse(false, $this->success, $product, $this->emptyArray, JsonResponse::HTTP_OK);
-        } else {
-            return $this->jsonResponse(true, $this->failed, $this->emptyArray, ['Product not found'], JsonResponse::HTTP_NOT_FOUND);
-        }
     }
 
     /**
@@ -179,31 +183,5 @@ class ProductController extends ApiController
         }
     }
 
-    public function searchProduct(Request $request)
-    {
-
-        $searchTerm     = $request->keyword;
-        $searchLocation = $request->location;
-
-        $query = Product::with(['company']);
-
-        if (!is_null($searchTerm)) {
-            $searchTerm = strip_tags(trim($searchTerm));
-            $query->where('title', 'LIKE', "%{$searchTerm}%");
-        }
-
-
-        if (!is_null($searchLocation)) {
-            $searchLocation = strip_tags(trim($searchLocation));
-            $query->whereHas('company', function ($q) use ($searchLocation) {
-                $q->where('location', 'LIKE', "%{$searchLocation}%");
-            });
-        }
-
-        $products = $query->orderByDesc('id')->get();
-
-        return $this->jsonResponse(false, $this->success, $products, $this->emptyArray, JsonResponse::HTTP_OK);
-
-    }
 
 }

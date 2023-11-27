@@ -46,10 +46,13 @@ Route::apiResource('users.roles', UserRoleController::class)->except(['create', 
 Route::middleware(['auth:sanctum', 'ability:admin,super-admin,user'])->group(function () {
 
     Route::prefix('client')->name('api.client.')->group(function () {
-        Route::apiResource('category', CategoryController::class);
-        Route::apiResource('product', ProductController::class);
-        Route::get('search/product',[ProductController::class,'searchProduct']);
-        Route::get('/{company}/products', [ProductController::class, 'getProductsofCompany']);
+
+        Route::get('category', [CategoryController::class,'index']);
+
+        Route::get('product', [ProductController::class,'index']);
+        Route::get('product/{product}', [ProductController::class,'productDetails']);
+        Route::get('/{company}/products', [ProductController::class, 'getProductsOfCompany']);
+
         Route::get('profile',[ClientController::class,'profile']);
         Route::post('profile',[ClientController::class,'profileUpdate']);
 

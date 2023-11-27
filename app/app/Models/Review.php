@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Review extends Model
 {
@@ -16,4 +17,20 @@ class Review extends Model
         'review',
         'rating'
     ];
+
+
+    public function likes():HasMany
+    {
+        return $this->hasMany(Like::class)->where('like', true);
+    }
+
+    public function dislikes():HasMany
+    {
+        return $this->hasMany(Like::class)->where('like', false);
+    }
+
+    public function replies():HasMany
+    {
+        return $this->hasMany(Reply::class);
+    }
 }
