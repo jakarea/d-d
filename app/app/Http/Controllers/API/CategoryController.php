@@ -24,7 +24,7 @@ class CategoryController extends ApiController
     {
         $categories = Category::orderByDesc('id')->get();
 
-        return $this->jsonResponse(false,$this->success,$categories,[], JsonResponse::HTTP_OK);
+        return $this->jsonResponse(false,$this->success,$categories,$this->emptyArray, JsonResponse::HTTP_OK);
     }
 
     /**

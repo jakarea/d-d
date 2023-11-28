@@ -8,6 +8,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserRoleController;
 use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\VerificationController;
+use App\Http\Controllers\API\ClientController;
+use App\Http\Controllers\API\ReviewController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -41,10 +43,44 @@ Route::post('login', [UserController::class, 'login']);
 Route::apiResource('roles', RoleController::class)->except(['create', 'edit'])->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
 Route::apiResource('users.roles', UserRoleController::class)->except(['create', 'edit', 'show', 'update'])->middleware(['auth:sanctum', 'ability:admin,super-admin']);
 
-Route::apiResource('category', CategoryController::class)->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
-Route::apiResource('product', ProductController::class)->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
-Route::apiResource('product-varient', ProductVarientController::class)->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
-Route::get('product/{product}/product-varients',[ProductVarientController::class,'getProductVarientofProduct'])->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
+Route::middleware(['auth:sanctum', 'ability:admin,super-admin,user'])->group(function () {
+
+    Route::prefix('client')->name('api.client.')->group(function () {
+
+        Route::get('category', [CategoryController::class,'index']);
+
+        Route::get('product', [ProductController::class,'index']);
+        Route::get('product/{product}', [ProductController::class,'productDetails']);
+        Route::get('/{company}/products', [ProductController::class, 'getProductsOfCompany']);
+
+        Route::get('profile',[ClientController::class,'profile']);
+        Route::post('profile',[ClientController::class,'profileUpdate']);
+
+        Route::post('review',[ReviewController::class, 'reviewOfProduct']);
+        Route::post('review/like',[ReviewController::class, 'likeOfReview']);
+        Route::post('review/dislike',[ReviewController::class, 'dislikeOfReview']);
+        Route::post('review/reply',[ReviewController::class, 'replyOfReview']);
+
+    });
+});
+
+
+Route::middleware(['auth:sanctum', 'ability:admin,super-admin,user'])->group(function () {
+
+    Route::prefix('company')->name('api.company.')->group(function () {
+
+        Route::get('category', [CategoryController::class,'index']);
+        Route::post('product', [ProductController::class,'store']);
+        Route::get('product', [ProductController::class,'index']);
+        Route::get('product/{product}', [ProductController::class,'productDetails']);
+        Route::get('/{company}/products', [ProductController::class, 'getProductsOfCompany']);
+
+    });
+});
+
+
+//Route::apiResource('product-varient', ProductVarientController::class)->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
+//Route::get('product/{product}/product-varients',[ProductVarientController::class,'getProductVarientofProduct'])->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
 
 Route::get('/verify-email/{user}/{code}', [VerificationController::class, 'verify'])->name('verify.email');
 Route::get('/resend-verification/{user}', [VerificationController::class, 'resend'])->name('verify.resend');

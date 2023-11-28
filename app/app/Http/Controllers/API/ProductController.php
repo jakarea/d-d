@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Requests\Product\UpdateRequest;
+use App\Models\Company;
 use App\Models\Product;
 use App\Models\ProductVarient;
 use App\Process\ProductProcess;
@@ -19,11 +20,41 @@ class ProductController extends ApiController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::with(['productVarients'])->get();
+
+        $searchTerm     = $request->keyword;
+        $searchLocation = $request->location;
+        $sortBy         = $request->sortby;
+        $sortOrder      = $request->sortorder;
+
+        $query = Product::with(['company']);
+
+        if (!is_null($searchTerm)) {
+            $searchTerm = strip_tags(trim($searchTerm));
+            $query->where('title', 'LIKE', "%{$searchTerm}%");
+        }
+
+
+        if (!is_null($searchLocation)) {
+            $searchLocation = strip_tags(trim($searchLocation));
+            $query->whereHas('company', function ($q) use ($searchLocation) {
+                $q->where('location', 'LIKE', "%{$searchLocation}%");
+            });
+        }
+
+        if (!is_null($sortBy) && !is_null($sortOrder)) {
+            $sortBy = strip_tags(trim($sortBy));
+            $query->orderBy($sortBy, $sortOrder);
+        }else{
+            $query->orderByDesc('id');
+        }
+
+
+        $products = $query->get();
 
         return $this->jsonResponse(false, $this->success, $products, $this->emptyArray, JsonResponse::HTTP_OK);
+
     }
 
     /**
@@ -33,14 +64,14 @@ class ProductController extends ApiController
      * @return \Illuminate\Http\Response
      */
 
-    public function store(ProductAddRequest $request)
+    public function store(Request $request)
     {
 
         try {
 
             $product = ProductProcess::create($request);
 
-            if(isset($request->product_varients) && count($request->product_varients) > 0){
+            if (isset($request->product_varients) && count($request->product_varients) > 0) {
 
                 foreach ($request->product_varients as $productVarient) {
                     $productVarient['user_id'] = auth()->user()->id;
@@ -62,24 +93,18 @@ class ProductController extends ApiController
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Display the specified resource.
      *
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function productDetails($id)
     {
-        $product = Product::find($id);
+
+        $product = Product::with(['company','reviews'=>function($query){
+              $query->with(['likes','dislikes', 'replies']);
+
+        }])->find($id);
 
         if (!empty($product)) {
             return $this->jsonResponse(false, $this->success, $product, $this->emptyArray, JsonResponse::HTTP_OK);
@@ -88,15 +113,33 @@ class ProductController extends ApiController
         }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function getProductsOfCompany($companyId): JsonResponse
     {
-        //
+
+        $products = Company::with(['products','reviews'])->where('id', $companyId)->first();
+
+        if (!empty($products)) {
+            return $this->jsonResponse(false, $this->success, $products, $this->emptyArray, JsonResponse::HTTP_OK);
+        } else {
+            return $this->jsonResponse(true, $this->failed, $this->emptyArray, ['Products not found'], JsonResponse::HTTP_NOT_FOUND);
+        }
+    }
+
+    public function companyProductDetails($companyId, $productId)
+    {
+        $product = Product::with(['productVarients'])
+            ->where('company_id', $companyId)
+            ->where('id', $productId)
+            ->first();
+
+
+        if (!empty($product)) {
+            return $this->jsonResponse(false, $this->success, $product, $this->emptyArray, JsonResponse::HTTP_OK);
+        } else {
+            return $this->jsonResponse(true, $this->failed, $this->emptyArray, ['Product not found'], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+
     }
 
     /**
@@ -139,4 +182,6 @@ class ProductController extends ApiController
             return $this->jsonResponse(true, $this->failed, $this->emptyArray, ['Product not found'], JsonResponse::HTTP_NOT_FOUND);
         }
     }
+
+
 }
