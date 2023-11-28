@@ -7,14 +7,10 @@ use Illuminate\Http\Request;
 class PackageController extends Controller
 {
     public function index(){
-        return view('package/plans');
+        return view('packages/index');
     }
 
     public function editPackage(){
-        return view('package/editPlans');
-    }
-
-    public function updatePackage(){
-        return view('package/editPlans');
+        return view('packages/edit');
     }
 }
