@@ -1,4 +1,7 @@
 @extends('layouts.auth')
+
+@section('title','Pricing plans')
+
 @section('style')
 <link rel="stylesheet" href="{{ url('assets/css/pricing.css') }}">
 @endsection

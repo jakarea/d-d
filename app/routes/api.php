@@ -12,6 +12,7 @@ use App\Http\Controllers\API\ClientController;
 use App\Http\Controllers\API\ReviewController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,13 +38,13 @@ Route::post('users/{user}', [UserController::class, 'update'])->middleware(['aut
 Route::patch('users/{user}', [UserController::class, 'update'])->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
 Route::put('users/update-password/{user}', [UserController::class, 'updatePassword'])->middleware(['auth:sanctum']);
 
-Route::get('me', [UserController::class, 'me'])->middleware('auth:sanctum');
+Route::get('me', [UserController::class, 'me'])->middleware(['auth:sanctum']);
 Route::post('login', [UserController::class, 'login']);
 
 Route::apiResource('roles', RoleController::class)->except(['create', 'edit'])->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
 Route::apiResource('users.roles', UserRoleController::class)->except(['create', 'edit', 'show', 'update'])->middleware(['auth:sanctum', 'ability:admin,super-admin']);
 
-Route::middleware(['auth:sanctum', 'ability:admin,super-admin,user'])->group(function () {
+Route::middleware(['auth:sanctum', 'ability:admin,super-admin,user,company'])->group(function () {
 
     Route::prefix('client')->name('api.client.')->group(function () {
 
@@ -65,7 +66,7 @@ Route::middleware(['auth:sanctum', 'ability:admin,super-admin,user'])->group(fun
 });
 
 
-Route::middleware(['auth:sanctum', 'ability:admin,super-admin,user'])->group(function () {
+Route::middleware(['auth:sanctum', 'ability:admin,super-admin,user,company'])->group(function () {
 
     Route::prefix('company')->name('api.company.')->group(function () {
 
