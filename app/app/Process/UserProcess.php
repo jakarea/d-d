@@ -16,7 +16,6 @@ class UserProcess
         $personalInfo = (new self())->savePersonalInfo($request);
         $address = (new self())->saveAddress($request);
 
-
         $userInfo = array_merge($user->toArray(), $personalInfo->toArray(), $address->toArray());
 
         return $userInfo;
@@ -27,7 +26,6 @@ class UserProcess
         $user->name = $request->first_name . ' ' . $request->last_name;
         $user->email = $request->email;
         $user->save();
-
 
         return $user;
     }
