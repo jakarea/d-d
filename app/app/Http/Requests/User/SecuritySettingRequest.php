@@ -2,10 +2,9 @@
 
 namespace App\Http\Requests\User;
 
-use App\Http\Requests\BaseFormRequest;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateRequest extends BaseFormRequest
+class SecuritySettingRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,20 +24,6 @@ class UpdateRequest extends BaseFormRequest
     public function rules()
     {
         return [
-            'first_name'=>[
-                'required',
-                'min:2',
-                'max:100'
-            ],
-            'last_name'=>[
-                'required',
-                'min:2',
-                'max:155'
-            ],
-            'date_of_birth'=>[
-                'required',
-                'date_format:Y-m-d',
-            ],
             'email'=>[
                 'required',
                 'email',
@@ -50,17 +35,9 @@ class UpdateRequest extends BaseFormRequest
                 'required',
                 'numeric',
             ],
-            'address'=>[
+            'password'=>[
                 'required',
-                'min:5',
-            ],
-            'postcode'=>[
-                'required',
-                'numeric',
-//                'digits:3'
-            ],
-            'country'=>[
-                'required',
+                'min:6',
             ],
         ];
     }
