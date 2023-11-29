@@ -90,6 +90,11 @@
                   <i class="fas fa-angle-down"></i>
                 </a>
               </li>
+              <li>
+                <a href="#" class="d-lg-none" id="menuToggle"> 
+                  <i class="fas fa-bars"></i>
+                </a>
+              </li>
             </ul>
           </div>
           <!-- header icons end -->
@@ -266,6 +271,14 @@
 <script src="assets/js/bootstrap.bundle.min.js"></script>
 <script src="assets/js/custom.js"></script>
 <!-- Bootstrap Bundle with Popper JS end -->
+
+<script>
+  document.getElementById('menuToggle').addEventListener('click',function (e) {
+    e.preventDefault(); 
+    document.querySelector('.sidebar-wrap').classList.toggle('show');
+  });
+
+</script>
 
 </body>
 

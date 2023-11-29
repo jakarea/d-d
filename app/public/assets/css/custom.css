@@ -34,7 +34,7 @@
 
 .product-thumbnail a i {
   color: #94A3BB;
-  font-size: 25px;
+  font-size: 20px;
 }
 
 .avatar-wrap {
@@ -142,7 +142,7 @@
   padding-top: 2px;
 }
 .plan-single-edit-box .header .icon {
-    padding-left: 5rem;
+    padding-left: 1rem;
 }
 
 .plan-single-edit-box .header .icon p {
