@@ -13,6 +13,219 @@
     padding: 1rem 0.5rem !important;
     width: 90%;
   }
+  .root-main-wrapper .sidebar-wrap {
+    transition: ease-out 0.2s;
+    transform: translateX(-100%);
+  }
+  .root-main-wrapper .sidebar-wrap.show {
+    transform: translateX(0%);
+  }
+  .root-main-wrapper .main-page-wrapper {
+    margin-left: 0;
+  }
+  .root-main-wrapper .header-area {
+    padding-left: 0;
+    padding: 1rem;
+    grid-template-columns: 65% 35%;
+  }
+  .root-main-wrapper .header-area .header-icons-box ul li a.user img {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+  }
+  .root-main-wrapper .header-area .header-icons-box ul li a.user i {
+    font-size: 0.675rem;
+  }
+  .root-main-wrapper .header-area .header-icons-box ul li a {
+    margin-left: 0.75rem;
+  }
+  .main-page-wrapper {
+    margin-top: 76px !important;
+    padding: 1.25rem;
+  }
+  .company-edit-from-wrapper {
+    margin-top: 1rem;
+    padding: 1rem;
+  }
+  .company-edit-from-wrapper .form-box {
+    padding: 1.25rem;
+  }
+  .personal-info-table-wrap table {
+    display: block;
+    overflow-x: scroll;
+  }
+  .personal-info-table-wrap table tr th,
+  .personal-info-table-wrap table tr td {
+    padding-right: 0.5rem;
+  }
+  .personal-info-table-wrap table tr td p,
+  .personal-info-table-wrap table tr td h6 {
+    white-space: nowrap;
+  }
+  .page-title {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .page-title .page-filter .dropdown .btn {
+    padding: 1rem;
+  }
+  .page-title h1 {
+    margin-bottom: 1rem;
+  }
+  .company-information .media {
+    flex-direction: column;
+    align-items: center;
+  }
+  .company-details-box .company-information .media h5 {
+    font-size: 1.5rem;
+    margin-top: 1rem;
+  }
+  .company-details-box .company-information .media h6 {
+    font-size: 0.875rem;
+  }
+  .company-details-box .company-information .media ul {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .company-reviews .review-statics-box {
+    grid-template-columns: 100%;
+    align-items: flex-start;
+    padding: 1rem;
+  }
+  .company-reviews .review-statics-box .rev-item-list {
+    width: 100%;
+    margin-top: 1rem;
+  }
+  .payment-from-copany-user .user-payment-table table {
+    display: block;
+    width: 100%;
+    overflow-x: scroll;
+  }
+  .payment-from-copany-user .user-payment-table table tr th {
+    white-space: nowrap;
+  }
+  .payment-from-copany-user .user-payment-table table tr td {
+    padding-right: 1rem;
+  }
+  .payment-from-copany-user .header h3 {
+    font-size: 1.25rem;
+  }
+  .form-switch {
+    padding-left: 1.5rem;
+  }
+  .plan-single-edit-box {
+    margin-bottom: 1rem;
+  }
+  .pricing-plan-sec .pricing-heading {
+    margin-top: 0;
+  }
+}
+@media (min-width: 575px) and (max-width: 767px) {
+  .root-main-wrapper .sidebar-wrap {
+    transition: ease-out 0.2s;
+    transform: translateX(-100%);
+  }
+  .root-main-wrapper .sidebar-wrap.show {
+    transform: translateX(0%);
+  }
+  .root-main-wrapper .main-page-wrapper {
+    margin-left: 0;
+  }
+  .root-main-wrapper .header-area {
+    padding-left: 0;
+    padding: 1rem;
+    grid-template-columns: 70% 30%;
+  }
+  .root-main-wrapper .header-area .header-icons-box ul li a.user img {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+  }
+  .root-main-wrapper .header-area .header-icons-box ul li a.user i {
+    font-size: 0.675rem;
+  }
+  .company-edit-from-wrapper {
+    margin-top: 1rem;
+  }
+  .personal-info-table-wrap table {
+    display: block;
+    overflow-x: scroll;
+  }
+  .personal-info-table-wrap table tr th,
+  .personal-info-table-wrap table tr td {
+    padding-right: 0.5rem;
+  }
+  .personal-info-table-wrap table tr td p,
+  .personal-info-table-wrap table tr td h6 {
+    white-space: nowrap;
+  }
+  .page-title .page-filter .dropdown .btn {
+    padding: 1rem;
+  }
+  .page-title h1 {
+    margin-bottom: 1rem;
+  }
+  .company-information .media {
+    flex-direction: column;
+    align-items: center;
+  }
+  .company-details-box .company-information .media h5 {
+    font-size: 1.5rem;
+    margin-top: 1rem;
+  }
+  .company-details-box .company-information .media h6 {
+    font-size: 0.875rem;
+  }
+  .company-details-box .company-information .media ul {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .company-reviews .review-statics-box {
+    grid-template-columns: 100%;
+    align-items: flex-start;
+    padding: 1rem;
+  }
+  .company-reviews .review-statics-box .rev-item-list {
+    width: 100%;
+    margin-top: 1rem;
+  }
+}
+@media (min-width: 767px) and (max-width: 991px) {
+  .root-main-wrapper .sidebar-wrap {
+    transition: ease-out 0.2s;
+    transform: translateX(-100%);
+  }
+  .root-main-wrapper .sidebar-wrap.show {
+    transform: translateX(0%);
+  }
+  .root-main-wrapper .main-page-wrapper {
+    margin-left: 0;
+  }
+  .root-main-wrapper .header-area {
+    padding-left: 0;
+    padding: 1rem;
+    grid-template-columns: 70% 30%;
+  }
+  .root-main-wrapper .header-area .header-icons-box ul li a.user img {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+  }
+  .root-main-wrapper .header-area .header-icons-box ul li a.user i {
+    font-size: 0.675rem;
+  }
+  .personal-info-table-wrap table {
+    display: block;
+    overflow-x: scroll;
+  }
+  .personal-info-table-wrap table tr th,
+  .personal-info-table-wrap table tr td {
+    padding-right: 1rem;
+  }
+  .personal-info-table-wrap table tr td p,
+  .personal-info-table-wrap table tr td h6 {
+    white-space: nowrap;
+  }
 }
 @media (min-width: 991px) and (max-width: 1199px) {
   .auth-txt-box {
@@ -21,5 +234,27 @@
   }
   .auth-txt-box .auth-form-wrap .login-with-social .bttn {
     width: 95%;
+  }
+  .root-main-wrapper .sidebar-wrap {
+    width: 16.5rem;
+  }
+  .header-area {
+    padding-left: 17.5rem;
+    grid-template-columns: 85% 15%;
+  }
+  .main-page-wrapper {
+    margin-left: 264px;
+  }
+  .personal-info-table-wrap table {
+    display: block;
+    overflow-x: scroll;
+  }
+  .personal-info-table-wrap table tr th,
+  .personal-info-table-wrap table tr td {
+    padding-right: 1rem;
+  }
+  .personal-info-table-wrap table tr td p,
+  .personal-info-table-wrap table tr td h6 {
+    white-space: nowrap;
   }
 }

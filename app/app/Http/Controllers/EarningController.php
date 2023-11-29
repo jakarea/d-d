@@ -7,6 +7,6 @@ use Illuminate\Http\Request;
 class EarningController extends Controller
 {
     public function index(){
-        return view('dashboard/earning');
+        return view('earnings/index');
     }
 }
