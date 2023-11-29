@@ -16,8 +16,10 @@ class CompanyController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    { 
-        return view('company/index');
+    {  
+        $companies = Company::with('user')->paginate(16); 
+ 
+        return view('company/index',compact('companies'));
     }
 
     /**
@@ -72,8 +74,8 @@ class CompanyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Company $company){
-        // return 1234;
+    public function show(Company $company){ 
+        // $company = $company->where('id',$company->id)->with('products.reviews.user')->first();
         return view('company/show',compact('company'));
     }
 

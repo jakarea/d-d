@@ -24,6 +24,10 @@ class Review extends Model
         return $this->hasMany(Like::class)->where('like', true);
     }
 
+    public function user() {
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
+
     public function dislikes():HasMany
     {
         return $this->hasMany(Like::class)->where('like', false);

@@ -20,8 +20,8 @@ class Company extends Model
         'updated_at',
     ];
 
-    public function users() {
-        return $this->belongsToMany(User::class, 'user_roles');
+    public function user() {
+        return $this->hasOne(User::class, 'id', 'user_id');
     }
 
     public function products(): HasMany

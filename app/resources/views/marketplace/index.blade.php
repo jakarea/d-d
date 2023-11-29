@@ -34,7 +34,6 @@
             </div>
             <input type="hidden" name="category" id="inputField">
         </form>
-        
         <!-- filter -->
     </div>
     <!-- page title --> 
@@ -47,12 +46,12 @@
             <div class="product-item-box">
                 <!-- thumbnail start -->
                 <div class="product-thumbnail">
- 
                     @php
                         $price = $product->price; 
                         $sellPrice = $product->sell_price;
                         $percentageDiscount = $price != 0 ? ((($price - $sellPrice) / $price) * 100) : 0;
-                    @endphp  
+                    @endphp
+                    
                     <span>{{ number_format($percentageDiscount, 0) }}%</span>
 
                     @if ($product->images)
