@@ -25,10 +25,19 @@ class UpdateRequest extends BaseFormRequest
     public function rules()
     {
         return [
-            'name'=>[
+            'first_name'=>[
                 'required',
                 'min:2',
-                'max:255'
+                'max:100'
+            ],
+            'last_name'=>[
+                'required',
+                'min:2',
+                'max:155'
+            ],
+            'date_of_birth'=>[
+                'required',
+                'date_format:Y-m-d',
             ],
             'email'=>[
                 'required',
@@ -36,6 +45,22 @@ class UpdateRequest extends BaseFormRequest
                 'regex:/(.+)@(.+)\.(.+)/i',
                 'unique:users,email, '.auth()->user()->id,
                 'max:255'
+            ],
+            'phone'=>[
+                'required',
+                'numeric',
+            ],
+            'address'=>[
+                'required',
+                'min:5',
+            ],
+            'postcode'=>[
+                'required',
+                'numeric',
+//                'digits:3'
+            ],
+            'country'=>[
+                'required',
             ],
         ];
     }

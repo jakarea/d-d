@@ -19,6 +19,7 @@ class ClientController extends ApiController
 
     public function profileUpdate(UpdateRequest $request)
     {
+
         try {
             $user = User::where('id', auth()->user()->id)->first();
             $user = UserProcess::update($request, $user);
