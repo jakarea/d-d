@@ -8,6 +8,7 @@ use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\EarningController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\MarketPlaceController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -46,9 +47,13 @@ Route::group(['middleware' => ['auth']], function () {
     });
 
     // marketplace route
-    Route::get('/marketplace', function () {
-        return view('marketplace/index');
+    Route::prefix('marketplace')->controller(MarketPlaceController::class)->group(function () {
+        Route::get('/', 'index')->name('product.list'); 
+        Route::get('/{slug}', 'show')->name('product.show'); 
     });
+
+    
+
 
     // company route
     Route::resource('/company', CompanyController::class); 

@@ -16,7 +16,7 @@ class CompanyController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
+    { 
         return view('company/index');
     }
 
@@ -73,6 +73,7 @@ class CompanyController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(Company $company){
+        // return 1234;
         return view('company/show',compact('company'));
     }
 

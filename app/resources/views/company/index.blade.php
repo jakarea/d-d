@@ -21,7 +21,7 @@
     <!-- company list start -->
     <div class="row">
         <!-- company single box start -->
-        <div class="col-12 col-sm-6 col-lg-4 col-xl-3 mb-15">
+        <div class="col-12 col-sm-6 col-lg-6 col-xl-4 col-xxl-3 mb-15">
             <div class="company-profile-box">
                 <!-- avatar -->
                 <div class="avatar">
@@ -46,7 +46,7 @@
         </div>
         <!-- company single box end -->
         <!-- company single box start -->
-        <div class="col-12 col-sm-6 col-lg-4 col-xl-3 mb-15">
+        <div class="col-12 col-sm-6 col-lg-6 col-xl-4 col-xxl-3 mb-15">
             <div class="company-profile-box">
                 <!-- avatar -->
                 <div class="avatar">
@@ -71,7 +71,7 @@
         </div>
         <!-- company single box end -->
         <!-- company single box start -->
-        <div class="col-12 col-sm-6 col-lg-4 col-xl-3 mb-15">
+        <div class="col-12 col-sm-6 col-lg-6 col-xl-4 col-xxl-3 mb-15">
             <div class="company-profile-box">
                 <!-- avatar -->
                 <div class="avatar">
@@ -96,7 +96,7 @@
         </div>
         <!-- company single box end -->
         <!-- company single box start -->
-        <div class="col-12 col-sm-6 col-lg-4 col-xl-3 mb-15">
+        <div class="col-12 col-sm-6 col-lg-6 col-xl-4 col-xxl-3 mb-15">
             <div class="company-profile-box">
                 <!-- avatar -->
                 <div class="avatar">
@@ -121,7 +121,7 @@
         </div>
         <!-- company single box end -->
         <!-- company single box start -->
-        <div class="col-12 col-sm-6 col-lg-4 col-xl-3 mb-15">
+        <div class="col-12 col-sm-6 col-lg-6 col-xl-4 col-xxl-3 mb-15">
             <div class="company-profile-box">
                 <!-- avatar -->
                 <div class="avatar">
@@ -146,7 +146,7 @@
         </div>
         <!-- company single box end -->
         <!-- company single box start -->
-        <div class="col-12 col-sm-6 col-lg-4 col-xl-3 mb-15">
+        <div class="col-12 col-sm-6 col-lg-6 col-xl-4 col-xxl-3 mb-15">
             <div class="company-profile-box">
                 <!-- avatar -->
                 <div class="avatar">
@@ -171,7 +171,7 @@
         </div>
         <!-- company single box end -->
         <!-- company single box start -->
-        <div class="col-12 col-sm-6 col-lg-4 col-xl-3 mb-15">
+        <div class="col-12 col-sm-6 col-lg-6 col-xl-4 col-xxl-3 mb-15">
             <div class="company-profile-box">
                 <!-- avatar -->
                 <div class="avatar">
@@ -196,7 +196,7 @@
         </div>
         <!-- company single box end -->
         <!-- company single box start -->
-        <div class="col-12 col-sm-6 col-lg-4 col-xl-3 mb-15">
+        <div class="col-12 col-sm-6 col-lg-6 col-xl-4 col-xxl-3 mb-15">
             <div class="company-profile-box">
                 <!-- avatar -->
                 <div class="avatar">
@@ -221,7 +221,7 @@
         </div>
         <!-- company single box end -->
         <!-- company single box start -->
-        <div class="col-12 col-sm-6 col-lg-4 col-xl-3 mb-15">
+        <div class="col-12 col-sm-6 col-lg-6 col-xl-4 col-xxl-3 mb-15">
             <div class="company-profile-box">
                 <!-- avatar -->
                 <div class="avatar">
@@ -246,7 +246,7 @@
         </div>
         <!-- company single box end -->
         <!-- company single box start -->
-        <div class="col-12 col-sm-6 col-lg-4 col-xl-3 mb-15">
+        <div class="col-12 col-sm-6 col-lg-6 col-xl-4 col-xxl-3 mb-15">
             <div class="company-profile-box">
                 <!-- avatar -->
                 <div class="avatar">
@@ -271,7 +271,7 @@
         </div>
         <!-- company single box end -->
         <!-- company single box start -->
-        <div class="col-12 col-sm-6 col-lg-4 col-xl-3 mb-15">
+        <div class="col-12 col-sm-6 col-lg-6 col-xl-4 col-xxl-3 mb-15">
             <div class="company-profile-box">
                 <!-- avatar -->
                 <div class="avatar">
@@ -296,7 +296,7 @@
         </div>
         <!-- company single box end -->
         <!-- company single box start -->
-        <div class="col-12 col-sm-6 col-lg-4 col-xl-3 mb-15">
+        <div class="col-12 col-sm-6 col-lg-6 col-xl-4 col-xxl-3 mb-15">
             <div class="company-profile-box">
                 <!-- avatar -->
                 <div class="avatar">

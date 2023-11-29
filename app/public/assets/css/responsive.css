@@ -124,12 +124,8 @@
     margin-left: 0;
   }
 
-  #menuToggle{
-    padding: 3px 8px;
-    background: #0F172A;
-    border-radius: 4px;
-    color: #fff;
-    margin-left: 15px; 
+  .header-area .dropdown-menu .dropdown-item{
+    font-size: 0.875rem;
   }
 }
 @media (min-width: 575px) and (max-width: 767px) {
