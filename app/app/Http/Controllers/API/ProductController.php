@@ -23,12 +23,17 @@ class ProductController extends ApiController
     public function index(Request $request)
     {
 
+        $company = $request->company;
         $searchTerm     = $request->keyword;
         $searchLocation = $request->location;
         $sortBy         = $request->sortby;
         $sortOrder      = $request->sortorder;
 
-        $query = Product::with(['company']);
+        $query = Product::with(['productVarients','company','reviews']);
+
+        if(isset($company)){
+            $query->where('company_id', $company);
+        }
 
         if (!is_null($searchTerm)) {
             $searchTerm = strip_tags(trim($searchTerm));
@@ -101,7 +106,7 @@ class ProductController extends ApiController
     public function productDetails($id)
     {
 
-        $product = Product::with(['company','reviews'=>function($query){
+        $product = Product::with(['productVarients','company','reviews'=>function($query){
               $query->with(['likes','dislikes', 'replies']);
 
         }])->find($id);
@@ -116,7 +121,10 @@ class ProductController extends ApiController
     public function getProductsOfCompany($companyId): JsonResponse
     {
 
-        $products = Company::with(['products','reviews'])->where('id', $companyId)->first();
+        $products = Company::with(['products'=>function($query){
+            $query->with(['reviews']);
+
+        },'reviews'])->where('id', $companyId)->first();
 
         if (!empty($products)) {
             return $this->jsonResponse(false, $this->success, $products, $this->emptyArray, JsonResponse::HTTP_OK);

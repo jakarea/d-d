@@ -5,7 +5,7 @@ namespace App\Http\Requests\User;
 use App\Http\Requests\BaseFormRequest;
 use Illuminate\Foundation\Http\FormRequest;
 
-class SecuritySettingRequest extends BaseFormRequest
+class LikeRequest extends BaseFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,21 +25,10 @@ class SecuritySettingRequest extends BaseFormRequest
     public function rules()
     {
         return [
-            'email'=>[
+            'review_id'=>[
                 'required',
-                'email',
-                'regex:/(.+)@(.+)\.(.+)/i',
-                'unique:users,email, '.auth()->user()->id,
-                'max:255'
-            ],
-            'phone'=>[
-                'required',
-                'numeric',
-            ],
-            'password'=>[
-                'required',
-                'min:6',
-                'max:255'
+                'integer',
+                'exists:reviews,id',
             ],
         ];
     }

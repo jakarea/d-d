@@ -4,6 +4,8 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AddReviewRequest;
+use App\Http\Requests\User\LikeRequest;
+use App\Http\Requests\User\ReplyRequest;
 use App\Models\Dislike;
 use App\Models\Like;
 use App\Models\Reply;
@@ -27,7 +29,7 @@ class ReviewController extends ApiController
         }
     }
 
-    public function likeOfReview(Request $request):JsonResponse
+    public function likeOfReview(LikeRequest $request):JsonResponse
     {
 
         try {
@@ -53,7 +55,7 @@ class ReviewController extends ApiController
     }
 
 
-    public function dislikeOfReview(Request $request):JsonResponse
+    public function dislikeOfReview(LikeRequest $request):JsonResponse
     {
 
         $dislike = Like::where('user_id', auth()->user()->id)->where('review_id', $request->review_id)->first();
@@ -81,7 +83,7 @@ class ReviewController extends ApiController
         }
     }
 
-    public function replyOfReview(Request $request):JsonResponse
+    public function replyOfReview(ReplyRequest $request):JsonResponse
     {
         try {
 

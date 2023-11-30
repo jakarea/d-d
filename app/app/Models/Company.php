@@ -26,7 +26,7 @@ class Company extends Model
 
     public function products(): HasMany
     {
-        return $this->hasMany(Product::class);
+        return $this->hasMany(Product::class)->orderByDesc('id');
     }
 
     public function reviews():HasMany
