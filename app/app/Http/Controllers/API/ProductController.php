@@ -23,12 +23,17 @@ class ProductController extends ApiController
     public function index(Request $request)
     {
 
+        $company = $request->company;
         $searchTerm     = $request->keyword;
         $searchLocation = $request->location;
         $sortBy         = $request->sortby;
         $sortOrder      = $request->sortorder;
 
         $query = Product::with(['productVarients','company','reviews']);
+
+        if(isset($company)){
+            $query->where('company_id', $company);
+        }
 
         if (!is_null($searchTerm)) {
             $searchTerm = strip_tags(trim($searchTerm));

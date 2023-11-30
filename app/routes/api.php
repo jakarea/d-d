@@ -67,7 +67,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 });
 
 
-Route::middleware(['auth:sanctum', 'ability:admin,super-admin,user,company'])->group(function () {
+Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::prefix('company')->name('api.company.')->group(function () {
 
