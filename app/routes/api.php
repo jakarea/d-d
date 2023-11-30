@@ -44,7 +44,7 @@ Route::post('login', [UserController::class, 'login']);
 Route::apiResource('roles', RoleController::class)->except(['create', 'edit'])->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
 Route::apiResource('users.roles', UserRoleController::class)->except(['create', 'edit', 'show', 'update'])->middleware(['auth:sanctum', 'ability:admin,super-admin']);
 
-Route::middleware(['auth:sanctum', 'ability:admin,super-admin,user,company'])->group(function () {
+Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::prefix('client')->name('api.client.')->group(function () {
 
