@@ -13,14 +13,14 @@ use Illuminate\Support\Facades\Hash;
 
 class ClientController extends ApiController
 {
-    public function profile()
+    public function profile():JsonResponse
     {
-        $user = User::where('id', auth()->user()->id)->first();
+        $user = User::with(['personalInfo','address'])->where('id', auth()->user()->id)->first();
 
         return $this->jsonResponse(false, $this->success, $user, $this->emptyArray, JsonResponse::HTTP_OK);
     }
 
-    public function profileUpdate(UpdateRequest $request)
+    public function profileUpdate(UpdateRequest $request):JsonResponse
     {
 
         try {
@@ -33,7 +33,7 @@ class ClientController extends ApiController
         }
     }
 
-    public function securitySettings(Request $request)
+    public function securitySettings(SecuritySettingRequest $request):JsonResponse
     {
 
         try {
