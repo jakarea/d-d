@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Traits\SlugTrait;
-
 use Illuminate\Http\Request;
 use App\Http\Requests\CategoryAddRequest;
 use Illuminate\Support\Str;

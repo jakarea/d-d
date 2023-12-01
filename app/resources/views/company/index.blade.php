@@ -20,306 +20,37 @@
 
     <!-- company list start -->
     <div class="row">
+        @foreach ($companies as $company) 
         <!-- company single box start -->
-        <div class="col-12 col-sm-6 col-lg-4 col-xl-3 mb-15">
+        <div class="col-12 col-sm-6 col-lg-6 col-xl-4 col-xxl-3 mb-15">
             <div class="company-profile-box">
                 <!-- avatar -->
-                <div class="avatar">
-                    <img src="{{asset('/uploads/users/avatar-01.png') }}" alt="A" class="img-fluid">
+                <div class="avatar">  
+                    {{-- @if ($company->user)
+                        <img src="{{ $company->user->avatar }}" alt="A" class="img-fluid">
+                    @else  --}}
+                        <img src="{{asset('/uploads/users/avatar-01.png') }}" alt="A" class="img-fluid">
+                    {{-- @endif --}}
                 </div>
                 <!-- avatar -->
 
                 <div class="txt">
-                    <h4>Claude Mitchell</h4>
-                    <h6>Finance Manager</h6>
+                    <h4>{{ $company->name }}</h4>
+                    <h6>{{ $company->tagline }}</h6>
 
                     <hr>
 
-                    <a href="#" class="mail"><i class="fa-regular fa-envelope me-2"></i> Dannie.King57@yahoo.com</a>
+                    <a href="mailto:{{ $company->email }}" class="mail"><i class="fa-regular fa-envelope me-2"></i> {{ $company->email }}</a>
 
                     <div class="details-bttn">
-                        <a href="{{ route('company.show', ['company' => 1]) }}" class="bttn">View Details</a>
+                        <a href="{{ route('company.show', $company) }}" class="bttn">View Details {{ $company->id }}</a>
                     </div>
 
                 </div>
             </div>
         </div>
         <!-- company single box end -->
-        <!-- company single box start -->
-        <div class="col-12 col-sm-6 col-lg-4 col-xl-3 mb-15">
-            <div class="company-profile-box">
-                <!-- avatar -->
-                <div class="avatar">
-                    <img src="{{ asset('uploads/users/avatar-02.png') }}" alt="A" class="img-fluid">
-                </div>
-                <!-- avatar -->
-
-                <div class="txt">
-                    <h4>Mrs. Ronald Nolan</h4>
-                    <h6>Administrator</h6>
-
-                    <hr>
-
-                    <a href="#" class="mail"><i class="fa-regular fa-envelope me-2"></i> Dianna74@yahoo.com</a>
-
-                    <div class="details-bttn">
-                        <a href="#" class="bttn">View Details</a>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-        <!-- company single box end -->
-        <!-- company single box start -->
-        <div class="col-12 col-sm-6 col-lg-4 col-xl-3 mb-15">
-            <div class="company-profile-box">
-                <!-- avatar -->
-                <div class="avatar">
-                    <img src="{{ asset('uploads/users/avatar-03.png') }}" alt="A" class="img-fluid">
-                </div>
-                <!-- avatar -->
-
-                <div class="txt">
-                    <h4>Celia Walter</h4>
-                    <h6>Representative</h6>
-
-                    <hr>
-
-                    <a href="#" class="mail"><i class="fa-regular fa-envelope me-2"></i> Twila_Hansen@yahoo.com</a>
-
-                    <div class="details-bttn">
-                        <a href="#" class="bttn">View Details</a>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-        <!-- company single box end -->
-        <!-- company single box start -->
-        <div class="col-12 col-sm-6 col-lg-4 col-xl-3 mb-15">
-            <div class="company-profile-box">
-                <!-- avatar -->
-                <div class="avatar">
-                    <img src="{{ asset('uploads/users/avatar-04.png') }}" alt="A" class="img-fluid">
-                </div>
-                <!-- avatar -->
-
-                <div class="txt">
-                    <h4>Tami Upton</h4>
-                    <h6>Associate</h6>
-
-                    <hr>
-
-                    <a href="#" class="mail"><i class="fa-regular fa-envelope me-2"></i> Guiseppe_Borer@gmail.com</a>
-
-                    <div class="details-bttn">
-                        <a href="#" class="bttn">View Details</a>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-        <!-- company single box end -->
-        <!-- company single box start -->
-        <div class="col-12 col-sm-6 col-lg-4 col-xl-3 mb-15">
-            <div class="company-profile-box">
-                <!-- avatar -->
-                <div class="avatar">
-                    <img src="{{ asset('uploads/users/avatar-05.png') }}" alt="A" class="img-fluid">
-                </div>
-                <!-- avatar -->
-
-                <div class="txt">
-                    <h4>Ruben Senger</h4>
-                    <h6>Officer</h6>
-
-                    <hr>
-
-                    <a href="#" class="mail"><i class="fa-regular fa-envelope me-2"></i> Christiana98@gmail.com</a>
-
-                    <div class="details-bttn">
-                        <a href="#" class="bttn">View Details</a>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-        <!-- company single box end -->
-        <!-- company single box start -->
-        <div class="col-12 col-sm-6 col-lg-4 col-xl-3 mb-15">
-            <div class="company-profile-box">
-                <!-- avatar -->
-                <div class="avatar">
-                    <img src="{{ asset('uploads/users/avatar-06.png') }}" alt="A" class="img-fluid">
-                </div>
-                <!-- avatar -->
-
-                <div class="txt">
-                    <h4>Ralph Hayes</h4>
-                    <h6>Producer</h6>
-
-                    <hr>
-
-                    <a href="#" class="mail"><i class="fa-regular fa-envelope me-2"></i> Brody.Hartmann@hotmail.com</a>
-
-                    <div class="details-bttn">
-                        <a href="#" class="bttn">View Details</a>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-        <!-- company single box end -->
-        <!-- company single box start -->
-        <div class="col-12 col-sm-6 col-lg-4 col-xl-3 mb-15">
-            <div class="company-profile-box">
-                <!-- avatar -->
-                <div class="avatar">
-                    <img src="{{ asset('uploads/users/avatar-07.png') }}" alt="A" class="img-fluid">
-                </div>
-                <!-- avatar -->
-
-                <div class="txt">
-                    <h4>Rosa Ullrich</h4>
-                    <h6>Supervisor</h6>
-
-                    <hr>
-
-                    <a href="#" class="mail"><i class="fa-regular fa-envelope me-2"></i> Desiree_Kirlin@yahoo.com</a>
-
-                    <div class="details-bttn">
-                        <a href="#" class="bttn">View Details</a>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-        <!-- company single box end -->
-        <!-- company single box start -->
-        <div class="col-12 col-sm-6 col-lg-4 col-xl-3 mb-15">
-            <div class="company-profile-box">
-                <!-- avatar -->
-                <div class="avatar">
-                    <img src="{{ asset('uploads/users/avatar-08.png') }}" alt="A" class="img-fluid">
-                </div>
-                <!-- avatar -->
-
-                <div class="txt">
-                    <h4>Kristopher Mills</h4>
-                    <h6>Strategist</h6>
-
-                    <hr>
-
-                    <a href="#" class="mail"><i class="fa-regular fa-envelope me-2"></i> Tracy.Kutch@yahoo.com</a>
-
-                    <div class="details-bttn">
-                        <a href="#" class="bttn">View Details</a>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-        <!-- company single box end -->
-        <!-- company single box start -->
-        <div class="col-12 col-sm-6 col-lg-4 col-xl-3 mb-15">
-            <div class="company-profile-box">
-                <!-- avatar -->
-                <div class="avatar">
-                    <img src="{{ asset('uploads/users/avatar-09.png') }}" alt="A" class="img-fluid">
-                </div>
-                <!-- avatar -->
-
-                <div class="txt">
-                    <h4>Brendan Hoppe</h4>
-                    <h6>Designer</h6>
-
-                    <hr>
-
-                    <a href="#" class="mail"><i class="fa-regular fa-envelope me-2"></i> Shemar58@gmail.com</a>
-
-                    <div class="details-bttn">
-                        <a href="#" class="bttn">View Details</a>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-        <!-- company single box end -->
-        <!-- company single box start -->
-        <div class="col-12 col-sm-6 col-lg-4 col-xl-3 mb-15">
-            <div class="company-profile-box">
-                <!-- avatar -->
-                <div class="avatar">
-                    <img src="{{ asset('uploads/users/avatar-10.png') }}" alt="A" class="img-fluid">
-                </div>
-                <!-- avatar -->
-
-                <div class="txt">
-                    <h4>Lee Greenfelder III</h4>
-                    <h6>Executive</h6>
-
-                    <hr>
-
-                    <a href="#" class="mail"><i class="fa-regular fa-envelope me-2"></i> Garland67@yahoo.com</a>
-
-                    <div class="details-bttn">
-                        <a href="#" class="bttn">View Details</a>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-        <!-- company single box end -->
-        <!-- company single box start -->
-        <div class="col-12 col-sm-6 col-lg-4 col-xl-3 mb-15">
-            <div class="company-profile-box">
-                <!-- avatar -->
-                <div class="avatar">
-                    <img src="{{ asset('uploads/users/avatar-05.png') }}" alt="A" class="img-fluid">
-                </div>
-                <!-- avatar -->
-
-                <div class="txt">
-                    <h4>Christopher Upton</h4>
-                    <h6>Executive</h6>
-
-                    <hr>
-
-                    <a href="#" class="mail"><i class="fa-regular fa-envelope me-2"></i> Lennie21@gmail.com</a>
-
-                    <div class="details-bttn">
-                        <a href="#" class="bttn">View Details</a>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-        <!-- company single box end -->
-        <!-- company single box start -->
-        <div class="col-12 col-sm-6 col-lg-4 col-xl-3 mb-15">
-            <div class="company-profile-box">
-                <!-- avatar -->
-                <div class="avatar">
-                    <img src="{{ asset('uploads/users/avatar-07.png') }}" alt="A" class="img-fluid">
-                </div>
-                <!-- avatar -->
-
-                <div class="txt">
-                    <h4>Hope Kemmer</h4>
-                    <h6>Strategist</h6>
-
-                    <hr>
-
-                    <a href="#" class="mail"><i class="fa-regular fa-envelope me-2"></i> Sim_Maggio@yahoo.com</a>
-
-                    <div class="details-bttn">
-                        <a href="#" class="bttn">View Details</a>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-        <!-- company single box end -->
+        @endforeach
     </div>
     <!-- company list end -->
 </section>

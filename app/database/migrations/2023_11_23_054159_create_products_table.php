@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('company_id')->constrained()->cascadeOnDelete();
             $table->string('title', 250);
+            $table->string('slug');
             $table->string('cats');
             $table->string('product_url')->nullable();
             $table->decimal('price', 10, 2); // Assuming maximum 10 digits with 2 decimal places

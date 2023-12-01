@@ -4,9 +4,10 @@ namespace App\Process;
 
 use App\Http\Requests\Product\UpdateRequest;
 use App\Models\Product;
+use App\Traits\SlugTrait;
 
 class ProductProcess{
-
+    use SlugTrait;
 
       public static function create($request)
       {
@@ -30,6 +31,7 @@ class ProductProcess{
           $product->user_id = auth()->user()->id;
           $product->company_id = $request->company_id;
           $product->title = $request->title;
+          $product->slug = $this->makeUniqueSlug($request->title);
           $product->cats = $request->cats;
           $product->product_url = $request->product_url;
           $product->price = $request->price;
