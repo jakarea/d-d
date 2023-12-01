@@ -32,7 +32,7 @@ class ProductProcess{
           $product->company_id = $request->company_id;
           $product->title = $request->title;
           $product->slug = $this->makeUniqueSlug($request->title);
-          $product->cats = $request->cats;
+          $product->cats = json_encode($request->cats);
           $product->product_url = $request->product_url;
           $product->price = $request->price;
           $product->sell_price = $request->sell_price;
