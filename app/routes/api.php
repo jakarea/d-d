@@ -77,12 +77,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('product/{product}', [ProductController::class,'productDetails']);
         Route::get('/{company}/products', [ProductController::class, 'getProductsOfCompany']);
 
+        Route::get('reviews/{company}',[ReviewController::class,'reviewsOfCompany']);
+        Route::get('review/accept',[ReviewController::class,'reviewAcceptReject']);
+
     });
 });
-
-
-//Route::apiResource('product-varient', ProductVarientController::class)->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
-//Route::get('product/{product}/product-varients',[ProductVarientController::class,'getProductVarientofProduct'])->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
 
 Route::get('/verify-email/{user}/{code}', [VerificationController::class, 'verify'])->name('verify.email');
 Route::get('/resend-verification/{user}', [VerificationController::class, 'resend'])->name('verify.resend');

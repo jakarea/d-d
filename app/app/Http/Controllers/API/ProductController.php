@@ -29,7 +29,10 @@ class ProductController extends ApiController
         $sortBy         = $request->sortby;
         $sortOrder      = $request->sortorder;
 
-        $query = Product::with(['productVarients','company','reviews']);
+        $query = Product::with(['productVarients','company','reviews'=>function($query){
+            $query->with(['likes','dislikes', 'replies']);
+
+        }]);
 
         if(isset($company)){
             $query->where('company_id', $company);
@@ -122,7 +125,9 @@ class ProductController extends ApiController
     {
 
         $products = Company::with(['products'=>function($query){
-            $query->with(['reviews']);
+            $query->with(['reviews'=>function($q){
+                $q->with(['likes','dislikes', 'replies']);
+            }]);
 
         },'reviews'])->where('id', $companyId)->first();
 
