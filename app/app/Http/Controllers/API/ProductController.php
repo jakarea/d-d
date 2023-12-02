@@ -115,13 +115,19 @@ class ProductController extends ApiController
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function productDetails($id)
+    public function productDetails(Request $request, $id)
     {
 
-        $product = Product::with(['productVarients','company','reviews'=>function($query){
-              $query->with(['likes','dislikes', 'replies']);
+         $query =  Product::with(['productVarients','company','reviews'=>function($query){
+             $query->with(['likes','dislikes', 'replies']);
 
-        }])->find($id);
+         }]);
+
+         if(!is_null($request->company)){
+             $query->where('company_id', $request->company);
+         }
+
+        $product = $query->find($id);
 
         if (!empty($product)) {
             return $this->jsonResponse(false, $this->success, $product, $this->emptyArray, JsonResponse::HTTP_OK);
