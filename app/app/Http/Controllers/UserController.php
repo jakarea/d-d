@@ -58,7 +58,19 @@ class UserController extends API\ApiController {
         $user->roles()->attach($role);
 
          // Send verification email
-        $this->sendVerificationEmail($user, $verificationCode);
+         try {
+            $this->sendVerificationEmail($user, $verificationCode);
+        } catch (\Exception  $e) {
+            $user->roles()->detach();
+            $user->delete();
+            return response()->json([
+                'error' => 500,
+                'message' => 'Error sending verification email ',
+                'errors' => $e->getMessage(),
+            ], 200);
+        }
+
+
 
         return $user;
     }
