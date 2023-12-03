@@ -3,13 +3,14 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AddToWishlistRequest;
 use App\Models\WishList;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class WishlistController extends ApiController
 {
-    public function addtoWishList(Request $request)
+    public function addtoWishList(AddToWishlistRequest $request)
     {
 
         try {
