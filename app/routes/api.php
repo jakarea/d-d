@@ -83,5 +83,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 });
 
-Route::get('/verify-email/{user}/{code}', [VerificationController::class, 'verify'])->name('verify.email');
-Route::get('/resend-verification/{user}', [VerificationController::class, 'resend'])->name('verify.resend');
+Route::post('/verify-email/{user}/{code}', [VerificationController::class, 'verify'])->name('verify.email');
+Route::post('/resend-verification/{user}', [VerificationController::class, 'resend'])->name('verify.resend');

@@ -36,9 +36,9 @@ class UserController extends API\ApiController {
                 'email' => 'required|email|unique:users,email',
                 'password' => 'required|min:6',
                 'confirm_password' => 'required_with:password|same:password|min:6',
-                'kvk_number' => 'required',
                 'name' => 'required|string',
                 'role' => 'required|exists:roles,slug',
+                "kvk_number" => 'nullable'
             ]);
         } catch (ValidationException $e) {
             return $this->validationErrorResponse($e, 422, 'Validation error', 1001);
@@ -49,7 +49,7 @@ class UserController extends API\ApiController {
             'name' => $creds['name'],
             'email' => $creds['email'],
             'password' => Hash::make($creds['password']),
-            'kvk_number' => $creds['kvk_number'],
+            'kvk_number' => $creds['kvk_number'] ?? null,
             'verification_code' => $verificationCode,
             'email_verified_at' => null,
         ]);
@@ -69,9 +69,6 @@ class UserController extends API\ApiController {
                 'errors' => $e->getMessage(),
             ], 200);
         }
-
-
-
         return $user;
     }
 
@@ -97,11 +94,16 @@ class UserController extends API\ApiController {
      * @return \Illuminate\Http\Response
      */
     public function login(Request $request) {
-        $creds = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
 
+        try {
+            $creds = $request->validate([
+                'email' => 'required|email',
+                'password' => 'required|min:6',
+                'role' => 'required|exists:roles,slug',
+            ]);
+        } catch (ValidationException $e) {
+            return $this->validationErrorResponse($e, 422, 'Validation error', 1001);
+        }
         $user = User::where('email', $creds['email'])->first();
         if (! $user || ! Hash::check($request->password, $user->password)) {
             return response(['error' => 1, 'message' => 'invalid credentials'], 401);
@@ -153,7 +155,6 @@ class UserController extends API\ApiController {
         } else {
             throw new MissingAbilityException('Not Authorized');
         }
-
         return $user;
     }
 
