@@ -23,19 +23,27 @@ class ProductController extends ApiController
     public function index(Request $request)
     {
 
-        $company = $request->company;
+        $company        = $request->company;
         $searchTerm     = $request->keyword;
         $searchLocation = $request->location;
         $sortBy         = $request->sortby;
         $sortOrder      = $request->sortorder;
+        $category       = $request->category;
 
         $query = Product::with(['productVarients','company','reviews'=>function($query){
             $query->with(['likes','dislikes', 'replies']);
 
         }]);
 
-        if(isset($company)){
+        if(!is_null($company)){
             $query->where('company_id', $company);
+        }
+
+        if(!is_null($category)){
+
+            $query->where(function ($search) use ($category) {
+                $search->where('cats', 'LIKE', '%' . $category . '%');
+            });
         }
 
         if (!is_null($searchTerm)) {
@@ -85,6 +93,7 @@ class ProductController extends ApiController
                     $productVarient['user_id'] = auth()->user()->id;
                     $productVarient['company_id'] = $product->company_id;
                     $productVarient['product_id'] = $product->id;
+                    $productVarient['cats'] = json_encode($productVarient['cats']);
 
                     ProductVarient::create($productVarient);
                 }
@@ -106,13 +115,19 @@ class ProductController extends ApiController
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function productDetails($id)
+    public function productDetails(Request $request, $id)
     {
 
-        $product = Product::with(['productVarients','company','reviews'=>function($query){
-              $query->with(['likes','dislikes', 'replies']);
+         $query =  Product::with(['productVarients','company','reviews'=>function($query){
+             $query->with(['likes','dislikes', 'replies']);
 
-        }])->find($id);
+         }]);
+
+         if(!is_null($request->company)){
+             $query->where('company_id', $request->company);
+         }
+
+        $product = $query->find($id);
 
         if (!empty($product)) {
             return $this->jsonResponse(false, $this->success, $product, $this->emptyArray, JsonResponse::HTTP_OK);
