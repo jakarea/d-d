@@ -20,16 +20,16 @@
 
     <!-- company list start -->
     <div class="row">
-        @foreach ($companies as $company) 
+        @foreach ($companies as $company)
         <!-- company single box start -->
         <div class="col-12 col-sm-6 col-lg-6 col-xl-4 col-xxl-3 mb-15">
             <div class="company-profile-box">
                 <!-- avatar -->
-                <div class="avatar">  
+                <div class="avatar">
                     {{-- @if ($company->user)
-                        <img src="{{ $company->user->avatar }}" alt="A" class="img-fluid">
-                    @else  --}}
-                        <img src="{{asset('/uploads/users/avatar-01.png') }}" alt="A" class="img-fluid">
+                    <img src="{{ $company->user->avatar }}" alt="A" class="img-fluid">
+                    @else --}}
+                    <img src="{{asset('/uploads/users/avatar-01.png') }}" alt="A" class="img-fluid">
                     {{-- @endif --}}
                 </div>
                 <!-- avatar -->
@@ -40,7 +40,8 @@
 
                     <hr>
 
-                    <a href="mailto:{{ $company->email }}" class="mail"><i class="fa-regular fa-envelope me-2"></i> {{ $company->email }}</a>
+                    <a href="mailto:{{ $company->email }}" class="mail"><i class="fa-regular fa-envelope me-2"></i> {{
+                        $company->email }}</a>
 
                     <div class="details-bttn">
                         <a href="{{ route('company.show', $company) }}" class="bttn">View Details {{ $company->id }}</a>
@@ -120,4 +121,15 @@
     </div>
 </div>
 {{-- add company modal end --}}
+@endsection
+
+@section('script')
+<script>
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            // Handle the Enter key press
+            console.log('Enter key pressed!');
+        }
+    }); 
+</script>
 @endsection
