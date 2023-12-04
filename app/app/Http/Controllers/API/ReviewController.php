@@ -128,6 +128,15 @@ class ReviewController extends ApiController
             $request['user_id'] = auth()->user()->id;
             $review = Reply::create($request->except('_method', '_token'));
 
+            // $request['user_id'] = auth()->user()->id;
+
+            // $mainReview = Review::find($yourReviewId); // Replace $yourReviewId with the actual ID of the main review
+
+            // $replies = $mainReview->replies_to ?? []; // Retrieve existing replies or initialize as an empty array
+            // $replies[] = $request->except('_method', '_token');
+
+            // $mainReview->update(['replies_to' => $replies]); 
+
             return $this->jsonResponse(false, $this->success, $review, $this->emptyArray, JsonResponse::HTTP_CREATED);
 
         }catch (\Exception $e){

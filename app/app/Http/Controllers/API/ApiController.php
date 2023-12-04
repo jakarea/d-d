@@ -12,7 +12,7 @@ class ApiController extends Controller
     protected $failed  = "Failed";
     protected $emptyArray = [];
 
-    protected function jsonResponse($errorCode, $message, $data, $errors = [], $status = 200)
+    protected function jsonResponse($errorCode, $message, $data=[], $errors = [], $status = 200)
     {
         return response()->json([
             'error' => $errorCode,

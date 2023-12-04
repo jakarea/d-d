@@ -55,4 +55,18 @@ class WishlistController extends ApiController
         }
 
     }
+
+    public function removeFromWishlist($id)
+    {
+        $wishList = WishList::find($id);
+
+        if (!empty($wishList)) {
+
+            $wishList->delete();
+
+            return $this->jsonResponse(false, 'WishList deleted successfully', $wishList, $this->emptyArray, JsonResponse::HTTP_OK);
+        } else {
+            return $this->jsonResponse(true, $this->failed, $this->emptyArray, ['WishList not found'], JsonResponse::HTTP_NOT_FOUND);
+        }
+    }
 }

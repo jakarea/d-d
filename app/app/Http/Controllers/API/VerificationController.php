@@ -39,7 +39,7 @@ class VerificationController extends ApiController
 
         // Check if the account is already verified
         if ($user->email_verified_at) {
-            return $this->jsonResponse(1, 'Account is already verified.', [], 422);
+            return $this->jsonResponse(1, 'Account is already verified.', [],[], 422);
         }
 
         try {
@@ -54,7 +54,7 @@ class VerificationController extends ApiController
 
             return $this->jsonResponse(0, 'Verification code resent successfully.');
         } catch (\Exception $e) {
-            return $this->jsonResponse(2, 'Error resending verification code.', [], 500);
+            return $this->jsonResponse(2, 'Error resending verification code.', [],[], 500);
         }
     }
 

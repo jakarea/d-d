@@ -66,6 +66,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
         Route::get('wishlist',[WishlistController::class,'wishList']);
         Route::post('wishlist',[WishlistController::class,'addtoWishList']);
+        Route::get('wishlist/remove/{id}',[WishlistController::class,'removeFromWishlist']);
 
     });
 });
@@ -88,4 +89,4 @@ Route::middleware(['auth:sanctum'])->group(function () {
 });
 
 Route::post('/verify-email/{user}/{code}', [VerificationController::class, 'verify'])->name('verify.email');
-Route::get('/resend-verification/{user}', [VerificationController::class, 'resend'])->name('verify.resend');
+Route::post('/resend-verification/{user}', [VerificationController::class, 'resend'])->name('verify.resend');

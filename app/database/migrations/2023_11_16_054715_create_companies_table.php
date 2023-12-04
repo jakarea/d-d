@@ -18,12 +18,12 @@ return new class extends Migration
         Schema::create('companies', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('tagline');
+            $table->string('tagline')->nullable();
             $table->string('about')->nullable();
             $table->string('email');
-            $table->string('phone');
+            $table->string('phone')->nullable();
             $table->string('country')->nullable();
-            $table->string('location');
+            $table->string('location')->nullable();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });

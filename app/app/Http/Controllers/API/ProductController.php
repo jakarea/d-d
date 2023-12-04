@@ -26,9 +26,12 @@ class ProductController extends ApiController
         $company        = $request->company;
         $searchTerm     = $request->keyword;
         $searchLocation = $request->location;
+
         $sortBy         = $request->sortby;
         $sortOrder      = $request->sortorder;
         $category       = $request->category;
+        $priceOrder     = $request->price_order; 
+        $discountParam  = $request->offer_product;
 
         $query = Product::with(['productVarients','company','reviews'=>function($query){
             $query->with(['likes','dislikes', 'replies']);
@@ -64,8 +67,20 @@ class ProductController extends ApiController
             $query->orderBy($sortBy, $sortOrder);
         }else{
             $query->orderByDesc('id');
+        } 
+
+        if (!is_null($priceOrder)) {
+            if ($priceOrder == 'high_to_low') {
+                $query->orderByDesc('price');
+            } elseif ($priceOrder == 'low_to_high') {
+                $query->orderBy('price');
+            }
         }
 
+        if (!is_null($discountParam)) {
+            $query->where('sales_price', '<', DB::raw('price'));
+            $query->orderByDesc(DB::raw('price - sales_price'));
+        }
 
         $products = $query->get();
 
