@@ -25,7 +25,7 @@
       <div class="company-profile-box">
         <!-- avatar -->
         <div class="avatar">
-          <img src="./uploads/users/avatar-01.png" alt="A" class="img-fluid">
+          <img src="./public/uploads/users/avatar-01.png" alt="A" class="img-fluid">
         </div>
         <!-- avatar -->
 
@@ -50,7 +50,7 @@
       <div class="company-profile-box">
         <!-- avatar -->
         <div class="avatar">
-          <img src="./uploads/users/avatar-02.png" alt="A" class="img-fluid">
+          <img src="./public/uploads/users/avatar-02.png" alt="A" class="img-fluid">
         </div>
         <!-- avatar -->
 
@@ -75,7 +75,7 @@
       <div class="company-profile-box">
         <!-- avatar -->
         <div class="avatar">
-          <img src="./uploads/users/avatar-03.png" alt="A" class="img-fluid">
+          <img src="./public/uploads/users/avatar-03.png" alt="A" class="img-fluid">
         </div>
         <!-- avatar -->
 
@@ -100,7 +100,7 @@
       <div class="company-profile-box">
         <!-- avatar -->
         <div class="avatar">
-          <img src="./uploads/users/avatar-04.png" alt="A" class="img-fluid">
+          <img src="./public/uploads/users/avatar-04.png" alt="A" class="img-fluid">
         </div>
         <!-- avatar -->
 
@@ -125,7 +125,7 @@
       <div class="company-profile-box">
         <!-- avatar -->
         <div class="avatar">
-          <img src="./uploads/users/avatar-05.png" alt="A" class="img-fluid">
+          <img src="./public/uploads/users/avatar-05.png" alt="A" class="img-fluid">
         </div>
         <!-- avatar -->
 
@@ -150,7 +150,7 @@
       <div class="company-profile-box">
         <!-- avatar -->
         <div class="avatar">
-          <img src="./uploads/users/avatar-06.png" alt="A" class="img-fluid">
+          <img src="./public/uploads/users/avatar-06.png" alt="A" class="img-fluid">
         </div>
         <!-- avatar -->
 
@@ -175,7 +175,7 @@
       <div class="company-profile-box">
         <!-- avatar -->
         <div class="avatar">
-          <img src="./uploads/users/avatar-07.png" alt="A" class="img-fluid">
+          <img src="./public/uploads/users/avatar-07.png" alt="A" class="img-fluid">
         </div>
         <!-- avatar -->
 
@@ -200,7 +200,7 @@
       <div class="company-profile-box">
         <!-- avatar -->
         <div class="avatar">
-          <img src="./uploads/users/avatar-08.png" alt="A" class="img-fluid">
+          <img src="./public/uploads/users/avatar-08.png" alt="A" class="img-fluid">
         </div>
         <!-- avatar -->
 
@@ -225,7 +225,7 @@
       <div class="company-profile-box">
         <!-- avatar -->
         <div class="avatar">
-          <img src="./uploads/users/avatar-09.png" alt="A" class="img-fluid">
+          <img src="./public/uploads/users/avatar-09.png" alt="A" class="img-fluid">
         </div>
         <!-- avatar -->
 
@@ -250,7 +250,7 @@
       <div class="company-profile-box">
         <!-- avatar -->
         <div class="avatar">
-          <img src="./uploads/users/avatar-10.png" alt="A" class="img-fluid">
+          <img src="./public/uploads/users/avatar-10.png" alt="A" class="img-fluid">
         </div>
         <!-- avatar -->
 
@@ -275,7 +275,7 @@
       <div class="company-profile-box">
         <!-- avatar -->
         <div class="avatar">
-          <img src="./uploads/users/avatar-05.png" alt="A" class="img-fluid">
+          <img src="./public/uploads/users/avatar-05.png" alt="A" class="img-fluid">
         </div>
         <!-- avatar -->
 
@@ -300,7 +300,7 @@
       <div class="company-profile-box">
         <!-- avatar -->
         <div class="avatar">
-          <img src="./uploads/users/avatar-07.png" alt="A" class="img-fluid">
+          <img src="./public/uploads/users/avatar-07.png" alt="A" class="img-fluid">
         </div>
         <!-- avatar -->
 
@@ -373,6 +373,6 @@
       </div>
     </div>
   </div>
-</div> 
+</div>
 @endsection
 {{-- add custmer form end --}}

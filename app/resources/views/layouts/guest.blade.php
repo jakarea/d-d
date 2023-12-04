@@ -13,7 +13,7 @@
     <meta name="theme-color" content="#fff">
 
     <!-- Bootstrap CSS start -->
-    <link rel="stylesheet" href="{{ url('assets/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url('public/assets/css/bootstrap.min.css') }}">
     <!-- Bootstrap CSS end -->
 
     <!-- plugin CSS start -->
@@ -23,8 +23,8 @@
     <!-- plugin CSS end -->
 
     <!-- custom CSS start -->
-    <link rel="stylesheet" href="{{ url('assets/css/style.css') }}">
-    <link rel="stylesheet" href="{{ url('assets/css/responsive.css') }}">
+    <link rel="stylesheet" href="{{ url('public/assets/css/style.css') }}">
+    <link rel="stylesheet" href="{{ url('public/assets/css/responsive.css') }}">
     <!-- custom CSS end -->
 
     <title>DnD || Authintication Pages @yield('title')</title>
@@ -34,8 +34,8 @@
         @yield('content')
 
         <!-- Bootstrap Bundle with Popper JS start -->
-        <script src="{{ url('assets/js/bootstrap.bundle.min.js') }}"></script>
-        <script src="{{ url('assets/js/custom.js') }}"></script>
+        <script src="{{ url('public/assets/js/bootstrap.bundle.min.js') }}"></script>
+        <script src="{{ url('public/assets/js/custom.js') }}"></script>
         <!-- Bootstrap Bundle with Popper JS end -->
 
     </body>

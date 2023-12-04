@@ -3,15 +3,15 @@
     <!-- Register page wrapper start -->
     <main class="auth-page-wrapper">
         <div class="container-fluid">
-        <div class="row"> 
+        <div class="row">
             <div class="col-12 col-xl-6">
             <!-- auth text start -->
-            <div class="auth-txt-box"> 
+            <div class="auth-txt-box">
 
                 <!-- auth register form start -->
                 <div class="auth-form-wrap register-auth-txt">
 
-                <div class="title"> 
+                <div class="title">
                     <h1 class="text-start">Get Started</h1>
                     <h6>Get started for free today!</h6>
                 </div>
@@ -37,7 +37,7 @@
                             </a>
                         </div>
                         @error('password') <span>{{ $message }}</span> @enderror
-                    </div> 
+                    </div>
                     <div class="form-submit">
                     <button class="btn btn-submit" type="submit">Create Account</button>
                     </div>
@@ -46,8 +46,8 @@
                     <p>Or register with</p>
                     </div>
                     <div class="login-with-social">
-                    <a href="#" class="bttn me-md-3 me-2"><img src="./assets/images/auth/google.svg" alt="G" class="img-fluid"> Google</a>
-                    <a href="#" class="bttn ms-md-3 ms-2"><img src="./assets/images/auth/apple.svg" alt="A" class="img-fluid"> Apple</a>
+                    <a href="#" class="bttn me-md-3 me-2"><img src="./public/assets/images/auth/google.svg" alt="G" class="img-fluid"> Google</a>
+                    <a href="#" class="bttn ms-md-3 ms-2"><img src="./public/assets/images/auth/apple.svg" alt="A" class="img-fluid"> Apple</a>
                     </div>
 
                     <div class="already-have text-start">
@@ -65,7 +65,7 @@
                     <li><a href="#">Terms &amp; Conditions</a></li>
                     <li><a href="#">Privacy Policy</a></li>
                 </ul>
-                
+
                 </div>
                 <!-- ftr -->
             </div>
@@ -78,8 +78,8 @@
                 <h5>We’re always ready for you</h5>
                 <p>We help to complete all your conveyancing needs easily</p>
                 </div>
-                <img src="./assets/images/auth/side-image.png" alt="Sidebar Image" class="img-fluid">
-                
+                <img src="./public/assets/images/auth/side-image.png" alt="Sidebar Image" class="img-fluid">
+
             </div>
             <!-- auth image end-->
             </div>
