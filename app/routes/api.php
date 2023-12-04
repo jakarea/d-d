@@ -13,6 +13,7 @@ use App\Http\Controllers\API\ReviewController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use App\Http\Controllers\API\WishlistController;
 
 /*
 |--------------------------------------------------------------------------
@@ -62,6 +63,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('review/like',[ReviewController::class, 'likeOfReview']);
         Route::post('review/dislike',[ReviewController::class, 'dislikeOfReview']);
         Route::post('review/reply',[ReviewController::class, 'replyOfReview']);
+
+        Route::get('wishlist',[WishlistController::class,'wishList']);
+        Route::post('wishlist',[WishlistController::class,'addtoWishList']);
 
     });
 });

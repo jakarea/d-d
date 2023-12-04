@@ -80,7 +80,7 @@ class ProductController extends ApiController
      * @return \Illuminate\Http\Response
      */
 
-    public function store(Request $request)
+    public function store(ProductAddRequest $request)
     {
 
         try {

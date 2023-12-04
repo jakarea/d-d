@@ -22,9 +22,6 @@ class ProductAddRequest extends BaseFormRequest
     public function rules()
     {
 
-
-        if (\Request::route()->getName() == "product.store")
-
             return [
 
                 'company_id' => [
@@ -40,7 +37,7 @@ class ProductAddRequest extends BaseFormRequest
                 ],
                 'cats' => [
                     'required',
-                    'string'
+                    'array'
                 ],
                 'product_url' => [
                     'nullable',
@@ -71,64 +68,20 @@ class ProductAddRequest extends BaseFormRequest
                     'nullable',
                     'string',
                 ],
-//                'product_varients'=>[
-//                    'required'
-//                ]
-            ];
-
-        if (\Request::route()->getName() == "product-varient.store")
-
-            return [
-
-                'company_id' => [
-                    'required',
-                    'integer',
-                    'exists:companies,id',
-                ],
-                'product_id' => [
-                    'required',
-                    'integer',
-                    'exists:products,id',
-                ],
-                'title' => [
-                    'required',
-                    'string',
-                    'min:2',
-                    'max:255'
-                ],
-                'cats' => [
+                'product_varients.*.title'=>[
                     'required',
                     'string'
                 ],
-                'product_url' => [
-                    'nullable',
-                    'url'
+                'product_varients.*.cats'=>[
+                    'required',
+                    'array'
                 ],
-                'price' => [
+                'product_varients.*.price'=>[
                     'required',
                     'numeric',
-                    'between:0,9999999.99',
+                    'between:0,9999999.99'
                 ],
-                'sell_price' => [
-                    'nullable',
-                    'numeric',
-                    'between:0,9999999.99',
-                    'lt:price'
-                ],
-                'cupon' => [
-                    'nullable',
-                    'string',
-                    'min:2',
-                    'max:20'
-                ],
-                'description' => [
-                    'nullable',
-                    'string',
-                ],
-                'images' => [
-                    'nullable',
-                    'string',
-                ],
+
             ];
 
 
