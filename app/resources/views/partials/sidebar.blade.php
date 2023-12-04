@@ -30,7 +30,7 @@
                 </a>
             </li>
             <li>
-                <a href="{{url('/customer')}}" class="{{ Request::is('customer*') ? 'active' : ''}}">
+                <a href="{{url('/users')}}" class="{{ Request::is('users*') ? 'active' : ''}}">
                     <img src="{{ asset('assets/images/icons/customer.svg') }}" alt="I" class="img-fluid"> 
                     Customer
                 </a>
