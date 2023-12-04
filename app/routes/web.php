@@ -52,14 +52,11 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/{slug}', 'show')->name('product.show'); 
     });
 
-    
-
-
     // company route
     Route::resource('/company', CompanyController::class); 
 
     // customer route
-    Route::resource('/customer', CustomerController::class);
+    Route::resource('/users', CustomerController::class);
     Route::get('/customer/{id}/edit/address', [CustomerController::class, 'editAddress'])->name('customer.editAddress');
     Route::post('/customer/{id}/edit/address', [CustomerController::class, 'updateAddress'])->name('customer.updateAddress');
  

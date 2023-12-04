@@ -44,7 +44,7 @@
                         $company->email }}</a>
 
                     <div class="details-bttn">
-                        <a href="{{ route('company.show', $company) }}" class="bttn">View Details {{ $company->id }}</a>
+                        <a href="{{ route('company.show', $company) }}" class="bttn">View Details </a>
                     </div>
 
                 </div>
@@ -122,14 +122,4 @@
 </div>
 {{-- add company modal end --}}
 @endsection
-
-@section('script')
-<script>
-    document.addEventListener('keydown', function(event) {
-        if (event.key === 'Enter') {
-            // Handle the Enter key press
-            console.log('Enter key pressed!');
-        }
-    }); 
-</script>
-@endsection
+ 
