@@ -29,7 +29,7 @@
                     {{-- @if ($company->user)
                     <img src="{{ $company->user->avatar }}" alt="A" class="img-fluid">
                     @else --}}
-                    <img src="{{asset('/uploads/users/avatar-01.png') }}" alt="A" class="img-fluid">
+                    <img src="{{asset('/public/uploads/users/avatar-01.png') }}" alt="A" class="img-fluid">
                     {{-- @endif --}}
                 </div>
                 <!-- avatar -->
@@ -122,4 +122,14 @@
 </div>
 {{-- add company modal end --}}
 @endsection
- 
+
+@section('script')
+<script>
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            // Handle the Enter key press
+            console.log('Enter key pressed!');
+        }
+    });
+</script>
+@endsection
