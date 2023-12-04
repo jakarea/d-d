@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Role;
 use App\Models\User;
+use App\Models\Company;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\Exceptions\MissingAbilityException;
@@ -52,10 +53,20 @@ class UserController extends API\ApiController {
             'kvk_number' => $creds['kvk_number'] ?? null,
             'verification_code' => $verificationCode,
             'email_verified_at' => null,
-        ]);
+        ]); 
 
-        $role = Role::where('slug', $creds['role'])->first();
+        $role = Role::where('slug', $creds['role'])->first(); 
         $user->roles()->attach($role);
+
+        if ($role->slug == 'company') {
+            $company = Company::create([
+                'name' => $user->name,
+                'email' => $user->email,
+                'user_id' => $user->id
+            ]);
+         
+            $company->save(); 
+        }
 
          // Send verification email
          try {
@@ -65,7 +76,7 @@ class UserController extends API\ApiController {
             $user->delete();
             return response()->json([
                 'error' => 500,
-                'message' => 'Error sending verification email ',
+                'message' => 'Failed to send verification email ',
                 'errors' => $e->getMessage(),
             ], 200);
         }

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('product_id')->constrained()->cascadeOnDelete();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('review');
+            $table->string('replies_to');
             $table->unsignedTinyInteger('rating');
             $table->boolean('status')->default(true);
             $table->timestamps();
