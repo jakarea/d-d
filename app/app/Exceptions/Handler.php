@@ -5,6 +5,14 @@ namespace App\Exceptions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Laravel\Sanctum\Exceptions\MissingAbilityException;
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+
+
+
 use Throwable;
 
 class Handler extends ExceptionHandler {
@@ -48,21 +56,73 @@ class Handler extends ExceptionHandler {
         });
     }
 
-    public function render($request, Throwable $exception) {
-        if ($exception instanceof ModelNotFoundException) {
-            return response([
-                'error' => 1,
-                'message' => $exception->getMessage(),
-            ], 404);
+    // public function render($request, Throwable $exception) {
+    //     if ($exception instanceof ModelNotFoundException) {
+    //         return response([
+    //             'error' => 1,
+    //             'message' => $exception->getMessage(),
+    //         ], 404);
+    //     }
+
+    //     if ($exception instanceof MissingAbilityException) {
+    //         return response([
+    //             'error' => 1,
+    //             'message' => 'Not authorized',
+    //         ], 409);
+    //     }
+
+    //     return parent::render($request, $exception);
+    // }
+
+    public function render($request, Throwable $exception)
+    {
+        if ($exception instanceof NotFoundHttpException && $this->isApiRequest($request)) {
+            return $this->renderApiNotFound();
         }
 
-        if ($exception instanceof MissingAbilityException) {
-            return response([
-                'error' => 1,
-                'message' => 'Not authorized',
-            ], 409);
+        if ($exception instanceof AuthenticationException && $this->isApiRequest($request)) {
+            return $this->renderApiAuthenticationError();
+        }
+
+        if ($exception instanceof MethodNotAllowedHttpException && $this->isApiRequest($request)) {
+            return $this->renderApiMethodNotAllowed();
         }
 
         return parent::render($request, $exception);
+    }
+
+    protected function renderApiNotFound(): JsonResponse
+    {
+        return response()->json([
+            'error' => 'Resource not found',
+            'message' => '404 | Not Found',
+            'data' => [],
+            'errors' => [],
+        ], 404);
+    }
+
+    protected function renderApiAuthenticationError(): JsonResponse
+    {
+        return response()->json([
+            'error' => 'Unauthenticated',
+            'message' => '401 | Unauthenticated',
+            'data' => [],
+            'errors' => [],
+        ], 401);
+    }
+
+    protected function renderApiMethodNotAllowed(): JsonResponse
+    {
+        return response()->json([
+            'error' => 'Method Not Allowed',
+            'message' => '405 | Method Not Allowed',
+            'data' => [],
+            'errors' => [],
+        ], 405);
+    }
+
+    protected function isApiRequest(Request $request): bool
+    {
+        return $request->wantsJson() || $request->is('api/*');
     }
 }
