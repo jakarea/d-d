@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\CustomerAddRequest;
 use App\Models\Company;
+use App\Models\Customer;
 use App\Models\User;
 use App\Models\Role;
 use Illuminate\Support\Facades\Hash;
@@ -18,7 +19,9 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        return view('customer/index');
+        $users = User::with('roles')->paginate(16); 
+ 
+        return view('customer/index',compact('users'));
     }
 
     /**
@@ -67,8 +70,9 @@ class CustomerController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(User $user)
-    {
-        return view('customer/single', compact('user'));
+    { 
+        // return $user->reviews; 
+        return view('customer/show', compact('user'));
     }
 
     /**
