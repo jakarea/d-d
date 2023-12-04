@@ -20,7 +20,8 @@
 
   <!-- company list start -->
   <div class="row">
-    <!-- company single box start -->
+    @foreach ($users as $user) 
+    <!-- user single box start -->
     <div class="col-12 col-sm-6 col-lg-4 col-xl-3 mb-15">
       <div class="company-profile-box">
         <!-- avatar -->
@@ -30,15 +31,20 @@
         <!-- avatar -->
 
         <div class="txt">
-          <h4>Claude Mitchell</h4>
-          <h6>Finance Manager</h6>
+          <h4>{{$user->name}}</h4>
+          @if ($user->roles)
+              @foreach ($user->roles as $role)
+                <h6>{{ $role->name ? $role->name : '--' }}</h6>
+              @endforeach
+          @endif
+           
 
           <hr>
 
-          <a href="#" class="mail"><i class="fa-regular fa-envelope me-2"></i> Dannie.King57@yahoo.com</a>
+          <a href="mailto:{{ $user->email }}" class="mail"><i class="fa-regular fa-envelope me-2"></i> {{ $user->email }}</a>
 
           <div class="details-bttn">
-            <a href="#" class="bttn">View Details</a>
+            <a href="{{ route('users.show', $user) }}" class="bttn">View Details</a>
           </div>
 
         </div>
@@ -320,6 +326,8 @@
       </div>
     </div>
     <!-- company single box end -->
+    <!-- user single box end --> 
+    @endforeach
   </div>
   <!-- company list end -->
 </section>

@@ -18,18 +18,23 @@
       <div class="company-about-box">
         <img src="{{ asset('/public/assets/images/user-bi.png') }}" alt="U" class="img-fluid main-avatar">
         <div class="txt">
-          <h1>Pristia Candra</h1>
-          <p>3D Designer</p>
+          <h1>{{ $user->name }}</h1>
+          @if ($user->roles)
+              @foreach ($user->roles as $role)
+                <p>{{ $role->name ? $role->name : '--' }}</p>
+              @endforeach
+          @endif
 
           <hr>
 
           <ul>
             <li>
+
               <p><img src="{{ asset('/public/assets/images/icons/envelope.svg') }}" alt="I" class="img-fluid">
                 cassandre66@gmail.com</p>
             </li>
             <li>
-              <p><img src="{{ asset('/public/assets/images/icons/call.svg') }}" alt="I" class="img-fluid"> 911-415-0350</p>
+
             </li>
             <li>
               <p><img src="{{ asset('/public/assets/images/icons/global.svg') }}" alt="I" class="img-fluid"> Bangladesh</p>
@@ -182,6 +187,7 @@
 
         <!-- review list start -->
         <div class="review-list">
+          @foreach ($user->reviews as $review)
           <!-- review single item start -->
           <div class="review-single-item">
             <div class="header">
@@ -189,7 +195,7 @@
                 <img src="{{ asset('/public/assets/images/user.png') }}" alt="U" class="img-fluid">
                 <div class="media-body">
                   <h5>Product Name</h5>
-                  <span>1 days ago</span>
+                  <span>{{ $review->created_at->diffForHumans() }} </span>
                 </div>
               </div>
               <ul>
@@ -200,93 +206,10 @@
                 <li><i class="fa-regular fa-star"></i></li>
               </ul>
             </div>
-            <p>The shoe runs really, really big!! I usually take an 11 for Nike, but this is really huge!</p>
+            <p>{{ $review->review }}</p>
           </div>
-          <!-- review single item end -->
-          <!-- review single item start -->
-          <div class="review-single-item">
-            <div class="header">
-              <div class="media">
-                <img src="{{ asset('/uploads/users/avatar-02.png') }}" alt="U" class="img-fluid">
-                <div class="media-body">
-                  <h5>Product Name</h5>
-                  <span>1 days ago</span>
-                </div>
-              </div>
-              <ul>
-                <li><i class="fas fa-star"></i></li>
-                <li><i class="fas fa-star"></i></li>
-                <li><i class="fas fa-star"></i></li>
-                <li><i class="fas fa-star"></i></li>
-                <li><i class="fa-regular fa-star"></i></li>
-              </ul>
-            </div>
-            <p>The shoe runs really, really big!! I usually take an 11 for Nike, but this is really huge!</p>
-          </div>
-          <!-- review single item end -->
-          <!-- review single item start -->
-          <div class="review-single-item">
-            <div class="header">
-              <div class="media">
-                <img src="{{ asset('/uploads/users/avatar-03.png') }}" alt="U" class="img-fluid">
-                <div class="media-body">
-                  <h5>Product Name</h5>
-                  <span>25 Sep, 2023</span>
-                </div>
-              </div>
-              <ul>
-                <li><i class="fas fa-star"></i></li>
-                <li><i class="fas fa-star"></i></li>
-                <li><i class="fas fa-star"></i></li>
-                <li><i class="fas fa-star"></i></li>
-                <li><i class="fa-regular fa-star"></i></li>
-              </ul>
-            </div>
-            <p>The shoe runs really, really big!! I usually take an 11 for Nike, but this is really huge!</p>
-          </div>
-          <!-- review single item end -->
-          <!-- review single item start -->
-          <div class="review-single-item">
-            <div class="header">
-              <div class="media">
-                <img src="{{ asset('/uploads/users/avatar-04.png') }}" alt="U" class="img-fluid">
-                <div class="media-body">
-                  <h5>Product Name</h5>
-                  <span>23 Sep, 2023</span>
-                </div>
-              </div>
-              <ul>
-                <li><i class="fas fa-star"></i></li>
-                <li><i class="fas fa-star"></i></li>
-                <li><i class="fas fa-star"></i></li>
-                <li><i class="fas fa-star"></i></li>
-                <li><i class="fa-regular fa-star"></i></li>
-              </ul>
-            </div>
-            <p>Adipisci ipsum consectetur aut. Voluptatem quo fuga ab voluptas. Culpa dignissimos soluta.</p>
-          </div>
-          <!-- review single item end -->
-          <!-- review single item start -->
-          <div class="review-single-item">
-            <div class="header">
-              <div class="media">
-                <img src="{{ asset('/uploads/users/avatar-05.png') }}" alt="U" class="img-fluid">
-                <div class="media-body">
-                  <h5>Product Name</h5>
-                  <span>2 days ago</span>
-                </div>
-              </div>
-              <ul>
-                <li><i class="fas fa-star"></i></li>
-                <li><i class="fas fa-star"></i></li>
-                <li><i class="fas fa-star"></i></li>
-                <li><i class="fas fa-star"></i></li>
-                <li><i class="fa-regular fa-star"></i></li>
-              </ul>
-            </div>
-            <p>The shoe runs really, really big!! I usually take an 11 for Nike, but this is really huge!</p>
-          </div>
-          <!-- review single item end -->
+          <!-- review single item end --> 
+          @endforeach
         </div>
         <!-- review list end -->
       </div>
