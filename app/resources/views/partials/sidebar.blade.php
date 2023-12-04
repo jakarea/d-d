@@ -30,13 +30,8 @@
                 </a>
             </li>
             <li>
-<<<<<<< HEAD
                 <a href="{{url('/users')}}" class="{{ Request::is('users*') ? 'active' : ''}}">
-                    <img src="{{ asset('assets/images/icons/customer.svg') }}" alt="I" class="img-fluid"> 
-=======
-                <a href="{{url('/customer')}}" class="{{ Request::is('customer*') ? 'active' : ''}}">
                     <img src="{{ asset('public/assets/images/icons/customer.svg') }}" alt="I" class="img-fluid">
->>>>>>> a36efbcc90c56f8dcf6b9b4cb65d9519cc697df7
                     Customer
                 </a>
             </li>
