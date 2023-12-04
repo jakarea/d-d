@@ -15,17 +15,17 @@
           <div class="d-flex">
             <h5>THE ROYAL COMPANY</h5>
             <a href="#">
-              <img src="./assets/images/icons/pen.svg" alt="I" class="img-fluid">
+              <img src="./public/assets/images/icons/pen.svg" alt="I" class="img-fluid">
             </a>
           </div>
           <h6>Empowering Innovation, Enriching Lives</h6>
 
           <ul>
-            <li><img src="./assets/images/icons/envelope.svg" alt="I" class="img-fluid">
+            <li><img src="./public/assets/images/icons/envelope.svg" alt="I" class="img-fluid">
               <span>cormier6@gmail.com</span>
             </li>
-            <li><img src="./assets/images/icons/call.svg" alt="I" class="img-fluid"> <span>437-782-0236</span></li>
-            <li><img src="./assets/images/icons/gps.svg" alt="I" class="img-fluid"> <span>491 Gaylord Ridges,
+            <li><img src="./public/assets/images/icons/call.svg" alt="I" class="img-fluid"> <span>437-782-0236</span></li>
+            <li><img src="./public/assets/images/icons/gps.svg" alt="I" class="img-fluid"> <span>491 Gaylord Ridges,
                 UK</span></li>
           </ul>
 
@@ -115,7 +115,7 @@
             <div class="review-single-item">
               <div class="header">
                 <div class="media">
-                  <img src="./assets/images/user.png" alt="U" class="img-fluid">
+                  <img src="./public/assets/images/user.png" alt="U" class="img-fluid">
                   <div class="media-body">
                     <h5>Dr. Mable Ullrich</h5>
                     <span>1 days ago</span>
@@ -136,7 +136,7 @@
             <div class="review-single-item">
               <div class="header">
                 <div class="media">
-                  <img src="./uploads/users/avatar-03.png" alt="U" class="img-fluid">
+                  <img src="./public/uploads/users/avatar-03.png" alt="U" class="img-fluid">
                   <div class="media-body">
                     <h5>Marion Koch</h5>
                     <span>2 days ago</span>
@@ -157,7 +157,7 @@
             <div class="review-single-item">
               <div class="header">
                 <div class="media">
-                  <img src="./uploads/users/avatar-04.png" alt="U" class="img-fluid">
+                  <img src="./public/uploads/users/avatar-04.png" alt="U" class="img-fluid">
                   <div class="media-body">
                     <h5>Ian Lueilwitz</h5>
                     <span>25 Sep, 2023</span>
@@ -178,7 +178,7 @@
             <div class="review-single-item">
               <div class="header">
                 <div class="media">
-                  <img src="./uploads/users/avatar-05.png" alt="U" class="img-fluid">
+                  <img src="./public/uploads/users/avatar-05.png" alt="U" class="img-fluid">
                   <div class="media-body">
                     <h5>Billy Schmidt</h5>
                     <span>23 Sep, 2023</span>
@@ -199,7 +199,7 @@
             <div class="review-single-item">
               <div class="header">
                 <div class="media">
-                  <img src="./uploads/users/avatar-06.png" alt="U" class="img-fluid">
+                  <img src="./public/uploads/users/avatar-06.png" alt="U" class="img-fluid">
                   <div class="media-body">
                     <h5>Marion Koch</h5>
                     <span>2 days ago</span>
@@ -232,7 +232,7 @@
                 <!-- thumbnail start -->
                 <div class="product-thumbnail">
                   <span>50%</span>
-                  <img src="./uploads/company/product-01.png" alt="Product Tumbnail" class="img-fluid">
+                  <img src="./public/uploads/company/product-01.png" alt="Product Tumbnail" class="img-fluid">
                   <a href=""><i class="fa-regular fa-heart"></i></a>
                 </div>
                 <!-- thumbnail end -->
@@ -267,7 +267,7 @@
                 <!-- thumbnail start -->
                 <div class="product-thumbnail">
                   <span>50%</span>
-                  <img src="./uploads/company/product-02.png" alt="Product Tumbnail" class="img-fluid">
+                  <img src="./public/uploads/company/product-02.png" alt="Product Tumbnail" class="img-fluid">
                   <a href=""><i class="fa-regular fa-heart"></i></a>
                 </div>
                 <!-- thumbnail end -->
@@ -302,7 +302,7 @@
                 <!-- thumbnail start -->
                 <div class="product-thumbnail">
                   <span>50%</span>
-                  <img src="./uploads/company/product-01.png" alt="Product Tumbnail" class="img-fluid">
+                  <img src="./public/uploads/company/product-01.png" alt="Product Tumbnail" class="img-fluid">
                   <a href=""><i class="fa-regular fa-heart"></i></a>
                 </div>
                 <!-- thumbnail end -->
@@ -337,7 +337,7 @@
                 <!-- thumbnail start -->
                 <div class="product-thumbnail">
                   <span>50%</span>
-                  <img src="./uploads/company/product-02.png" alt="Product Tumbnail" class="img-fluid">
+                  <img src="./public/uploads/company/product-02.png" alt="Product Tumbnail" class="img-fluid">
                   <a href=""><i class="fa-regular fa-heart"></i></a>
                 </div>
                 <!-- thumbnail end -->

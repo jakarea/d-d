@@ -52,7 +52,7 @@
                 <!-- thumbnail start -->
                 <div class="product-thumbnail">
                     <span>50%</span>
-                    <img src="./uploads/products/product-thumbnail-04.png" alt="Product Tumbnail" class="img-fluid">
+                    <img src="./public/uploads/products/product-thumbnail-04.png" alt="Product Tumbnail" class="img-fluid">
                     <a href=""><i class="fa-regular fa-heart"></i></a>
                 </div>
                 <!-- thumbnail end -->
@@ -87,7 +87,7 @@
                 <!-- thumbnail start -->
                 <div class="product-thumbnail">
                     <span>50%</span>
-                    <img src="./uploads/products/product-thumbnail-05.png" alt="Product Tumbnail" class="img-fluid">
+                    <img src="./public/uploads/products/product-thumbnail-05.png" alt="Product Tumbnail" class="img-fluid">
                     <a href=""><i class="fa-regular fa-heart"></i></a>
                 </div>
                 <!-- thumbnail end -->
@@ -122,7 +122,7 @@
                 <!-- thumbnail start -->
                 <div class="product-thumbnail">
                     <span>50%</span>
-                    <img src="./uploads/products/product-thumbnail-06.png" alt="Product Tumbnail" class="img-fluid">
+                    <img src="./public/uploads/products/product-thumbnail-06.png" alt="Product Tumbnail" class="img-fluid">
                     <a href=""><i class="fa-regular fa-heart"></i></a>
                 </div>
                 <!-- thumbnail end -->
@@ -157,7 +157,7 @@
                 <!-- thumbnail start -->
                 <div class="product-thumbnail">
                     <span>50%</span>
-                    <img src="./uploads/products/product-thumbnail-07.png" alt="Product Tumbnail" class="img-fluid">
+                    <img src="./public/uploads/products/product-thumbnail-07.png" alt="Product Tumbnail" class="img-fluid">
                     <a href=""><i class="fa-regular fa-heart"></i></a>
                 </div>
                 <!-- thumbnail end -->
@@ -192,7 +192,7 @@
                 <!-- thumbnail start -->
                 <div class="product-thumbnail">
                     <span>50%</span>
-                    <img src="./uploads/products/product-thumbnail-14.png" alt="Product Tumbnail" class="img-fluid">
+                    <img src="./public/uploads/products/product-thumbnail-14.png" alt="Product Tumbnail" class="img-fluid">
                     <a href=""><i class="fa-regular fa-heart"></i></a>
                 </div>
                 <!-- thumbnail end -->
@@ -227,7 +227,7 @@
                 <!-- thumbnail start -->
                 <div class="product-thumbnail">
                     <span>50%</span>
-                    <img src="./uploads/products/product-thumbnail-13.png" alt="Product Tumbnail" class="img-fluid">
+                    <img src="./public/uploads/products/product-thumbnail-13.png" alt="Product Tumbnail" class="img-fluid">
                     <a href=""><i class="fa-regular fa-heart"></i></a>
                 </div>
                 <!-- thumbnail end -->
@@ -262,7 +262,7 @@
                 <!-- thumbnail start -->
                 <div class="product-thumbnail">
                     <span>50%</span>
-                    <img src="./uploads/products/product-thumbnail-15.png" alt="Product Tumbnail" class="img-fluid">
+                    <img src="./public/uploads/products/product-thumbnail-15.png" alt="Product Tumbnail" class="img-fluid">
                     <a href=""><i class="fa-regular fa-heart"></i></a>
                 </div>
                 <!-- thumbnail end -->
@@ -297,7 +297,7 @@
                 <!-- thumbnail start -->
                 <div class="product-thumbnail">
                     <span>50%</span>
-                    <img src="./uploads/products/product-thumbnail-16.png" alt="Product Tumbnail" class="img-fluid">
+                    <img src="./public/uploads/products/product-thumbnail-16.png" alt="Product Tumbnail" class="img-fluid">
                     <a href=""><i class="fa-regular fa-heart"></i></a>
                 </div>
                 <!-- thumbnail end -->
@@ -332,7 +332,7 @@
                 <!-- thumbnail start -->
                 <div class="product-thumbnail">
                     <span>50%</span>
-                    <img src="./uploads/products/product-thumbnail-17.png" alt="Product Tumbnail" class="img-fluid">
+                    <img src="./public/uploads/products/product-thumbnail-17.png" alt="Product Tumbnail" class="img-fluid">
                     <a href=""><i class="fa-regular fa-heart"></i></a>
                 </div>
                 <!-- thumbnail end -->
@@ -367,7 +367,7 @@
                 <!-- thumbnail start -->
                 <div class="product-thumbnail">
                     <span>50%</span>
-                    <img src="./uploads/products/product-thumbnail-18.png" alt="Product Tumbnail" class="img-fluid">
+                    <img src="./public/uploads/products/product-thumbnail-18.png" alt="Product Tumbnail" class="img-fluid">
                     <a href=""><i class="fa-regular fa-heart"></i></a>
                 </div>
                 <!-- thumbnail end -->
@@ -402,7 +402,7 @@
                 <!-- thumbnail start -->
                 <div class="product-thumbnail">
                     <span>50%</span>
-                    <img src="./uploads/products/product-thumbnail-19.png" alt="Product Tumbnail" class="img-fluid">
+                    <img src="./public/uploads/products/product-thumbnail-19.png" alt="Product Tumbnail" class="img-fluid">
                     <a href=""><i class="fa-regular fa-heart"></i></a>
                 </div>
                 <!-- thumbnail end -->
@@ -437,7 +437,7 @@
                 <!-- thumbnail start -->
                 <div class="product-thumbnail">
                     <span>50%</span>
-                    <img src="./uploads/products/product-thumbnail-20.png" alt="Product Tumbnail" class="img-fluid">
+                    <img src="./public/uploads/products/product-thumbnail-20.png" alt="Product Tumbnail" class="img-fluid">
                     <a href=""><i class="fa-regular fa-heart"></i></a>
                 </div>
                 <!-- thumbnail end -->

@@ -8,7 +8,7 @@
                 <div class="col-12 col-xl-6 ps-lg-0">
                     <!-- auth image start-->
                     <div class="auth-image-box d-none d-xl-block">
-                        <img src="./assets/images/auth/side-image.png" alt="Sidebar Image" class="img-fluid">
+                        <img src="./public/assets/images/auth/side-image.png" alt="Sidebar Image" class="img-fluid">
                         <div class="img-txt">
                         <h5>We're always ready for you</h5>
                         <p>We help to complete all your conveyancing needs easily</p>
@@ -18,12 +18,12 @@
                 </div>
                 <div class="col-12 col-xl-6">
                     <!-- auth text start -->
-                    <div class="auth-txt-box"> 
+                    <div class="auth-txt-box">
                         <!-- auth login form start -->
                         <div class="auth-form-wrap">
 
                         <div class="title">
-                            <img src="./assets/images/auth/arrow-down.svg" alt="Arrow" class="img-fluid d-none d-xl-block">
+                            <img src="./public/assets/images/auth/arrow-down.svg" alt="Arrow" class="img-fluid d-none d-xl-block">
                             <h1>Login first to your account</h1>
                         </div>
 
@@ -62,8 +62,8 @@
                                 <p>Or login with</p>
                             </div>
                             <div class="login-with-social">
-                                <a href="#" class="bttn me-md-3 me-2"><img src="./assets/images/auth/google.svg" alt="G" class="img-fluid"> Google</a>
-                                <a href="#" class="bttn ms-md-3 ms-2"><img src="./assets/images/auth/apple.svg" alt="A" class="img-fluid"> Apple</a>
+                                <a href="#" class="bttn me-md-3 me-2"><img src="./public/assets/images/auth/google.svg" alt="G" class="img-fluid"> Google</a>
+                                <a href="#" class="bttn ms-md-3 ms-2"><img src="./public/assets/images/auth/apple.svg" alt="A" class="img-fluid"> Apple</a>
                             </div>
 
                             <div class="already-have">
@@ -81,7 +81,7 @@
                             <li><a href="#">Terms &amp; Conditions</a></li>
                             <li><a href="#">Privacy Policy</a></li>
                         </ul>
-                        
+
                         </div>
                         <!-- ftr -->
                     </div>

@@ -29,7 +29,7 @@
             </div>
             <div class="icon">
               <p>Icon</p>
-              <img src="./assets/images/icons/basic-plan.svg" alt="I" class="img-fluid">
+              <img src="./public/assets/images/icons/basic-plan.svg" alt="I" class="img-fluid">
             </div>
           </div>
           <!-- header -->
@@ -65,37 +65,37 @@
 
             <!-- feat item -->
             <div class="input-box">
-              <img src="./assets/images/icons/check.svg" alt="I" class="img-fluid">
+              <img src="./public/assets/images/icons/check.svg" alt="I" class="img-fluid">
               <input type="text" value="Access to all basic features" class="form-control" placeholder="Type here">
             </div>
             <!-- feat item -->
 
             <!-- feat item -->
             <div class="input-box">
-              <img src="./assets/images/icons/check.svg" alt="I" class="img-fluid">
+              <img src="./public/assets/images/icons/check.svg" alt="I" class="img-fluid">
               <input type="text" value="Basic reporting and analytics" class="form-control" placeholder="Type here">
             </div>
             <!-- feat item -->
             <!-- feat item -->
             <div class="input-box">
-              <img src="./assets/images/icons/check.svg" alt="I" class="img-fluid">
+              <img src="./public/assets/images/icons/check.svg" alt="I" class="img-fluid">
               <input type="text" value="Up to 10 individual users" class="form-control" placeholder="Type here">
             </div>
             <!-- feat item -->
             <!-- feat item -->
             <div class="input-box">
-              <img src="./assets/images/icons/check.svg" alt="I" class="img-fluid">
+              <img src="./public/assets/images/icons/check.svg" alt="I" class="img-fluid">
               <input type="text" value="20GB individual data each user" class="form-control" placeholder="Type here">
             </div>
             <!-- feat item -->
             <!-- feat item -->
             <div class="input-box">
-              <img src="./assets/images/icons/check.svg" alt="I" class="img-fluid">
+              <img src="./public/assets/images/icons/check.svg" alt="I" class="img-fluid">
               <input type="text" value="Basic chat and email support" class="form-control" placeholder="Type here">
             </div>
             <!-- feat item -->
             <div class="input-box">
-              <img src="./assets/images/icons/check.svg" alt="I" class="img-fluid">
+              <img src="./public/assets/images/icons/check.svg" alt="I" class="img-fluid">
               <input type="text" placeholder="Type here" class="form-control">
             </div>
             <!-- feat item -->
@@ -135,7 +135,7 @@
             </div>
             <div class="icon">
               <p>Icon</p>
-              <img src="./assets/images/icons/business-plan.svg" alt="I" class="img-fluid">
+              <img src="./public/assets/images/icons/business-plan.svg" alt="I" class="img-fluid">
             </div>
           </div>
           <!-- header -->
@@ -171,37 +171,37 @@
 
             <!-- feat item -->
             <div class="input-box">
-              <img src="./assets/images/icons/check.svg" alt="I" class="img-fluid">
+              <img src="./public/assets/images/icons/check.svg" alt="I" class="img-fluid">
               <input type="text" value="200+ integrations" class="form-control" placeholder="Type here">
             </div>
             <!-- feat item -->
 
             <!-- feat item -->
             <div class="input-box">
-              <img src="./assets/images/icons/check.svg" alt="I" class="img-fluid">
+              <img src="./public/assets/images/icons/check.svg" alt="I" class="img-fluid">
               <input type="text" value="Advanced reporting and analytics" class="form-control" placeholder="Type here">
             </div>
             <!-- feat item -->
             <!-- feat item -->
             <div class="input-box">
-              <img src="./assets/images/icons/check.svg" alt="I" class="img-fluid">
+              <img src="./public/assets/images/icons/check.svg" alt="I" class="img-fluid">
               <input type="text" value="Up to 20 individual users" class="form-control" placeholder="Type here">
             </div>
             <!-- feat item -->
             <!-- feat item -->
             <div class="input-box">
-              <img src="./assets/images/icons/check.svg" alt="I" class="img-fluid">
+              <img src="./public/assets/images/icons/check.svg" alt="I" class="img-fluid">
               <input type="text" value="40GB individual data each user" class="form-control" placeholder="Type here">
             </div>
             <!-- feat item -->
             <!-- feat item -->
             <div class="input-box">
-              <img src="./assets/images/icons/check.svg" alt="I" class="img-fluid">
+              <img src="./public/assets/images/icons/check.svg" alt="I" class="img-fluid">
               <input type="text" value="Priority chat and email support" class="form-control" placeholder="Type here">
             </div>
             <!-- feat item -->
             <div class="input-box">
-              <img src="./assets/images/icons/check.svg" alt="I" class="img-fluid">
+              <img src="./public/assets/images/icons/check.svg" alt="I" class="img-fluid">
               <input type="text" placeholder="Type here" class="form-control">
             </div>
             <!-- feat item -->
@@ -241,7 +241,7 @@
             </div>
             <div class="icon">
               <p>Icon</p>
-              <img src="./assets/images/icons/business-plan.svg" alt="I" class="img-fluid">
+              <img src="./public/assets/images/icons/business-plan.svg" alt="I" class="img-fluid">
             </div>
           </div>
           <!-- header -->
@@ -277,37 +277,37 @@
 
             <!-- feat item -->
             <div class="input-box">
-              <img src="./assets/images/icons/check.svg" alt="I" class="img-fluid">
+              <img src="./public/assets/images/icons/check.svg" alt="I" class="img-fluid">
               <input type="text" value="Advanced custom fields" class="form-control" placeholder="Type here">
             </div>
             <!-- feat item -->
 
             <!-- feat item -->
             <div class="input-box">
-              <img src="./assets/images/icons/check.svg" alt="I" class="img-fluid">
+              <img src="./public/assets/images/icons/check.svg" alt="I" class="img-fluid">
               <input type="text" value="Audit log and data history" class="form-control" placeholder="Type here">
             </div>
             <!-- feat item -->
             <!-- feat item -->
             <div class="input-box">
-              <img src="./assets/images/icons/check.svg" alt="I" class="img-fluid">
+              <img src="./public/assets/images/icons/check.svg" alt="I" class="img-fluid">
               <input type="text" value="Unlimited individual users" class="form-control" placeholder="Type here">
             </div>
             <!-- feat item -->
             <!-- feat item -->
             <div class="input-box">
-              <img src="./assets/images/icons/check.svg" alt="I" class="img-fluid">
+              <img src="./public/assets/images/icons/check.svg" alt="I" class="img-fluid">
               <input type="text" value="Unlimited individual data" class="form-control" placeholder="Type here">
             </div>
             <!-- feat item -->
             <!-- feat item -->
             <div class="input-box">
-              <img src="./assets/images/icons/check.svg" alt="I" class="img-fluid">
+              <img src="./public/assets/images/icons/check.svg" alt="I" class="img-fluid">
               <input type="text" value="Personalised+priotity service" class="form-control" placeholder="Type here">
             </div>
             <!-- feat item -->
             <div class="input-box">
-              <img src="./assets/images/icons/check.svg" alt="I" class="img-fluid">
+              <img src="./public/assets/images/icons/check.svg" alt="I" class="img-fluid">
               <input type="text" placeholder="Type here" class="form-control">
             </div>
             <!-- feat item -->
@@ -343,7 +343,7 @@
 
 @section('script')
 
-<script> 
+<script>
   function addFeatureItem() {
     const container = document.getElementById('container');
 
@@ -351,11 +351,11 @@
     const newItem = document.createElement('div');
     newItem.innerHTML = `
   <div class="input-box">
-    <img src="./assets/images/icons/check.svg" alt="I" class="img-fluid">
+    <img src="./public/assets/images/icons/check.svg" alt="I" class="img-fluid">
     <input type="text" placeholder="Type here" class="form-control">
   </div>
 `;
- 
+
     container.appendChild(newItem);
   }
 

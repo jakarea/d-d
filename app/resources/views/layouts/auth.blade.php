@@ -11,9 +11,9 @@
     <meta property="og:url" content="">
     <meta property="og:image" content="">
     <meta name="theme-color" content="#fff">
- 
+
     {{-- bootstrap css --}}
-    <link rel="stylesheet" href="{{ url('assets/css/bootstrap.min.css') }}"> 
+    <link rel="stylesheet" href="{{ url('public/assets/css/bootstrap.min.css') }}">
 
     <!-- plugin CSS start -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
@@ -22,9 +22,9 @@
     <!-- plugin CSS end -->
 
     <!-- custom CSS start -->
-    <link rel="stylesheet" href="{{ url('assets/css/custom.css') }}">
-    <link rel="stylesheet" href="{{ url('assets/css/style.css') }}">
-    <link rel="stylesheet" href="{{ url('assets/css/responsive.css') }}"> 
+    <link rel="stylesheet" href="{{ url('public/assets/css/custom.css') }}">
+    <link rel="stylesheet" href="{{ url('public/assets/css/style.css') }}">
+    <link rel="stylesheet" href="{{ url('public/assets/css/responsive.css') }}">
 
     @yield('style')
 
@@ -51,10 +51,10 @@
     @yield('drawer')
 
     <!-- Bootstrap Bundle with Popper JS start -->
-    <script src="{{ url('assets/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ url('assets/js/custom.js') }}"></script>
+    <script src="{{ url('public/assets/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url('public/assets/js/custom.js') }}"></script>
     <!-- Bootstrap Bundle with Popper JS end -->
     @yield('script')
-    
+
 </body>
 </html>
