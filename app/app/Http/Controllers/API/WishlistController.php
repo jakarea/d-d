@@ -10,15 +10,45 @@ use Illuminate\Http\Request;
 
 class WishlistController extends ApiController
 {
+
+    public function wishList()
+    {
+        $wishlist = WishList::with(['product'=>function($query){
+            $query->with(['company','productVarients','reviews'=>function($q){
+                $q->with(['likes','dislikes', 'replies']);
+
+            }]);
+        }])->where('user_id', auth()->user()->id)
+            ->get();
+
+        if(!$wishlist->isEmpty()){
+
+            return $this->jsonResponse(false, $this->success, $wishlist, $this->emptyArray, JsonResponse::HTTP_OK);
+        }else{
+            return $this->jsonResponse(true, $this->failed, $this->emptyArray, ['Data not found!'], JsonResponse::HTTP_NOT_FOUND);
+        }
+    }
+
     public function addtoWishList(AddToWishlistRequest $request)
     {
 
         try {
 
-            $request['user_id'] = auth()->user()->id;
-            $wishlist = WishList::create($request->except('_method', '_token'));
+            $wishlist = WishList::where('user_id', auth()->user()->id)
+                                ->where('product_id', $request->product_id)
+                                ->first();
 
-            return $this->jsonResponse(false, 'Added into wishlist',$wishlist, $this->emptyArray, JsonResponse::HTTP_CREATED);
+            if(empty($wishlist)){
+                $request['user_id'] = auth()->user()->id;
+                $wishlist = WishList::create($request->except('_method', '_token'));
+                $message = 'Added to wishlist';
+                $statusCode = JsonResponse::HTTP_CREATED;
+            }else{
+                $message = 'Already added to wishlist';
+                $statusCode = JsonResponse::HTTP_OK;
+            }
+
+            return $this->jsonResponse(false, $message, $wishlist, $this->emptyArray, JsonResponse::HTTP_CREATED, $statusCode);
 
         }catch (\Exception $e){
             return $this->jsonResponse(true, $this->failed, $this->emptyArray, [$e->getMessage()], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);

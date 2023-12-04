@@ -64,6 +64,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('review/dislike',[ReviewController::class, 'dislikeOfReview']);
         Route::post('review/reply',[ReviewController::class, 'replyOfReview']);
 
+        Route::get('wishlist',[WishlistController::class,'wishList']);
         Route::post('wishlist',[WishlistController::class,'addtoWishList']);
 
     });
