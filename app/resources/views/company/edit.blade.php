@@ -16,7 +16,7 @@
         <div class="col-12 col-md-4 col-xl-3">
             <!-- compnay about start -->
             <div class="company-about-box">
-                <img src="./uploads/company/thumbnail.png" alt="a" class="img-fluid main-thumb">
+                <img src="./public/uploads/company/thumbnail.png" alt="a" class="img-fluid main-thumb">
                 <div class="txt">
                     <h1>THE ROYAL COMPANY</h1>
                     <p>Empowering Innovation, Enriching Lives</p>
@@ -25,14 +25,14 @@
 
                     <ul>
                         <li>
-                            <p><img src="./assets/images/icons/envelope.svg" alt="I" class="img-fluid">
+                            <p><img src="./public/assets/images/icons/envelope.svg" alt="I" class="img-fluid">
                                 cassandre66@gmail.com</p>
                         </li>
                         <li>
-                            <p><img src="./assets/images/icons/call.svg" alt="I" class="img-fluid"> 911-415-0350</p>
+                            <p><img src="./public/assets/images/icons/call.svg" alt="I" class="img-fluid"> 911-415-0350</p>
                         </li>
                         <li>
-                            <p><img src="./assets/images/icons/global.svg" alt="I" class="img-fluid"> Bangladesh</p>
+                            <p><img src="./public/assets/images/icons/global.svg" alt="I" class="img-fluid"> Bangladesh</p>
                         </li>
                     </ul>
                 </div>
@@ -46,7 +46,7 @@
                     <div class="title">
                         <h3>Information</h3>
                         <a href="#">
-                            <img src="./assets/images/icons/pen.svg" alt="I" class="img-fluid">
+                            <img src="./public/assets/images/icons/pen.svg" alt="I" class="img-fluid">
                         </a>
                     </div>
                     <div class="form-group">

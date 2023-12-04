@@ -45,7 +45,7 @@
 
               <div>
                 <div class="pricing-icon">
-                  <img src="{{ asset('/assets/images/icons/basic-plan.svg') }}" alt="B" class="img-fluid">
+                  <img src="{{ asset('/public/assets/images/icons/basic-plan.svg') }}" alt="B" class="img-fluid">
                 </div>
                 <div class="txt">
                   <h5>Basic plan</h5>
@@ -54,23 +54,23 @@
 
                   <ul>
                     <li>
-                      <img src="{{ asset('/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
+                      <img src="{{ asset('/public/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
                       <span>Access to all basic features</span>
                     </li>
                     <li>
-                      <img src="{{ asset('/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
+                      <img src="{{ asset('/public/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
                       <span>Basic reporting and analytics</span>
                     </li>
                     <li>
-                      <img src="{{ asset('/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
+                      <img src="{{ asset('/public/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
                       <span>Up to 10 individual users</span>
                     </li>
                     <li>
-                      <img src="{{ asset('/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
+                      <img src="{{ asset('/public/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
                       <span>20GB individual data each user</span>
                     </li>
                     <li>
-                      <img src="{{ asset('/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
+                      <img src="{{ asset('/public/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
                       <span>Basic chat and email support</span>
                     </li>
                   </ul>
@@ -90,7 +90,7 @@
               </span>
               <div>
                 <div class="pricing-icon">
-                  <img src="{{ asset('/assets/images/icons/business-plan.svg') }}" alt="B" class="img-fluid">
+                  <img src="{{ asset('/public/assets/images/icons/business-plan.svg') }}" alt="B" class="img-fluid">
                 </div>
                 <div class="txt">
                   <h5>Business plan</h5>
@@ -99,23 +99,23 @@
 
                   <ul>
                     <li>
-                      <img src="{{ asset('/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
+                      <img src="{{ asset('/public/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
                       <span>200+ integrations</span>
                     </li>
                     <li>
-                      <img src="{{ asset('/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
+                      <img src="{{ asset('/public/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
                       <span>Advanced reporting and analytics</span>
                     </li>
                     <li>
-                      <img src="{{ asset('/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
+                      <img src="{{ asset('/public/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
                       <span>Up to 20 individual users</span>
                     </li>
                     <li>
-                      <img src="{{ asset('/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
+                      <img src="{{ asset('/public/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
                       <span>40GB individual data each user</span>
                     </li>
                     <li>
-                      <img src="{{ asset('/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
+                      <img src="{{ asset('/public/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
                       <span>Priority chat and email support</span>
                     </li>
                   </ul>
@@ -133,7 +133,7 @@
 
               <div>
                 <div class="pricing-icon">
-                  <img src="{{ asset('/assets/images/icons/enterprise-plan.svg') }}" alt="B" class="img-fluid">
+                  <img src="{{ asset('/public/assets/images/icons/enterprise-plan.svg') }}" alt="B" class="img-fluid">
                 </div>
                 <div class="txt">
                   <h5>Enterprise plan</h5>
@@ -142,23 +142,23 @@
 
                   <ul>
                     <li>
-                      <img src="{{ asset('/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
+                      <img src="{{ asset('/public/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
                       <span>Advanced custom fields</span>
                     </li>
                     <li>
-                      <img src="{{ asset('/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
+                      <img src="{{ asset('/public/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
                       <span>Audit log and data history</span>
                     </li>
                     <li>
-                      <img src="{{ asset('/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
+                      <img src="{{ asset('/public/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
                       <span>Unlimited individual users</span>
                     </li>
                     <li>
-                      <img src="{{ asset('/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
+                      <img src="{{ asset('/public/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
                       <span>Unlimited individual data</span>
                     </li>
                     <li>
-                      <img src="{{ asset('/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
+                      <img src="{{ asset('/public/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
                       <span>Personalised+priotity service</span>
                     </li>
                   </ul>
@@ -182,7 +182,7 @@
               </span>
               <div>
                 <div class="pricing-icon">
-                  <img src="{{ asset('/assets/images/icons/basic-plan.svg') }}" alt="B" class="img-fluid">
+                  <img src="{{ asset('/public/assets/images/icons/basic-plan.svg') }}" alt="B" class="img-fluid">
                 </div>
                 <div class="txt">
                   <h5>Basic plan</h5>
@@ -191,23 +191,23 @@
 
                   <ul>
                     <li>
-                      <img src="{{ asset('/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
+                      <img src="{{ asset('/public/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
                       <span>Access to all basic features</span>
                     </li>
                     <li>
-                      <img src="{{ asset('/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
+                      <img src="{{ asset('/public/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
                       <span>Basic reporting and analytics</span>
                     </li>
                     <li>
-                      <img src="{{ asset('/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
+                      <img src="{{ asset('/public/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
                       <span>Up to 10 individual users</span>
                     </li>
                     <li>
-                      <img src="{{ asset('/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
+                      <img src="{{ asset('/public/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
                       <span>20GB individual data each user</span>
                     </li>
                     <li>
-                      <img src="{{ asset('/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
+                      <img src="{{ asset('/public/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
                       <span>Basic chat and email support</span>
                     </li>
                   </ul>

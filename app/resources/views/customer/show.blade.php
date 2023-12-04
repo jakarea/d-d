@@ -16,7 +16,7 @@
     <div class="col-12 col-md-4 col-xl-3">
       <!-- customer about start -->
       <div class="company-about-box">
-        <img src="{{ asset('/assets/images/user-bi.png') }}" alt="U" class="img-fluid main-avatar">
+        <img src="{{ asset('/public/assets/images/user-bi.png') }}" alt="U" class="img-fluid main-avatar">
         <div class="txt">
           <h1>{{ $user->name }}</h1>
           @if ($user->roles)
@@ -29,13 +29,15 @@
 
           <ul>
             <li>
-              <p><img src="{{ asset('/assets/images/icons/envelope.svg') }}" alt="I" class="img-fluid"> {{ $user->email }}</p>
+
+              <p><img src="{{ asset('/public/assets/images/icons/envelope.svg') }}" alt="I" class="img-fluid">
+                cassandre66@gmail.com</p>
             </li>
             <li>
-              <p><img src="{{ asset('/assets/images/icons/call.svg') }}" alt="I" class="img-fluid"> {{ $user->kvk_number }}</p>
+
             </li>
             <li>
-              <p><img src="{{ asset('/assets/images/icons/global.svg') }}" alt="I" class="img-fluid"> Bangladesh</p>
+              <p><img src="{{ asset('/public/assets/images/icons/global.svg') }}" alt="I" class="img-fluid"> Bangladesh</p>
             </li>
           </ul>
         </div>
@@ -50,7 +52,7 @@
           <div class="title">
             <h3>Personal Info</h3>
             <a href="#">
-              <img src="{{ asset('/assets/images/icons/pen.svg') }}" alt="I" class="img-fluid">
+              <img src="{{ asset('/public/assets/images/icons/pen.svg') }}" alt="I" class="img-fluid">
             </a>
           </div>
 
@@ -123,7 +125,7 @@
           <div class="title">
             <h3>Address</h3>
             <a href="#">
-              <img src="{{ asset('/assets/images/icons/pen.svg') }}" alt="I" class="img-fluid">
+              <img src="{{ asset('/public/assets/images/icons/pen.svg') }}" alt="I" class="img-fluid">
             </a>
           </div>
 
@@ -190,7 +192,7 @@
           <div class="review-single-item">
             <div class="header">
               <div class="media">
-                <img src="{{ asset('/assets/images/user.png') }}" alt="U" class="img-fluid">
+                <img src="{{ asset('/public/assets/images/user.png') }}" alt="U" class="img-fluid">
                 <div class="media-body">
                   <h5>Product Name</h5>
                   <span>{{ $review->created_at->diffForHumans() }} </span>

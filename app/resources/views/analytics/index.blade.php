@@ -10,8 +10,8 @@
     <div class="col-12 col-sm-6 col-md-4 col-xl-3 mb-15">
       <div class="analytics-card-box">
         <div class="top">
-          <img src="{{ asset('/assets/images/icons/anlytic-01.svg') }}" alt="I" class="img-fluid">
-          <img src="{{ asset('/assets/images/icons/arrow-up-01.svg') }}" alt="I" class="img-fluid">
+          <img src="{{ asset('/public/assets/images/icons/anlytic-01.svg') }}" alt="I" class="img-fluid">
+          <img src="{{ asset('/public/assets/images/icons/arrow-up-01.svg') }}" alt="I" class="img-fluid">
         </div>
 
         <h4>$10,540</h4>
@@ -23,8 +23,8 @@
     <div class="col-12 col-sm-6 col-md-4 col-xl-3 mb-15">
       <div class="analytics-card-box">
         <div class="top">
-          <img src="{{ asset('/assets/images/icons/anlytic-02.svg') }}" alt="I" class="img-fluid">
-          <img src="{{ asset('/assets/images/icons/arrow-up-02.svg') }}" alt="I" class="img-fluid">
+          <img src="{{ asset('/public/assets/images/icons/anlytic-02.svg') }}" alt="I" class="img-fluid">
+          <img src="{{ asset('/public/assets/images/icons/arrow-up-02.svg') }}" alt="I" class="img-fluid">
         </div>
 
         <h4>$1,540</h4>
@@ -36,8 +36,8 @@
     <div class="col-12 col-sm-6 col-md-4 col-xl-3 mb-15">
       <div class="analytics-card-box">
         <div class="top">
-          <img src="{{ asset('/assets/images/icons/anlytic-03.svg') }}" alt="I" class="img-fluid">
-          <img src="{{ asset('/assets/images/icons/arrow-up-03.svg') }}" alt="I" class="img-fluid">
+          <img src="{{ asset('/public/assets/images/icons/anlytic-03.svg') }}" alt="I" class="img-fluid">
+          <img src="{{ asset('/public/assets/images/icons/arrow-up-03.svg') }}" alt="I" class="img-fluid">
         </div>
 
         <h4>$8,350</h4>
@@ -49,8 +49,8 @@
     <div class="col-12 col-sm-6 col-md-4 col-xl-3 mb-15">
       <div class="analytics-card-box">
         <div class="top">
-          <img src="{{ asset('/assets/images/icons/anlytic-02.svg') }}" alt="I" class="img-fluid">
-          <img src="{{ asset('/assets/images/icons/arrow-up-02.svg') }}" alt="I" class="img-fluid">
+          <img src="{{ asset('/public/assets/images/icons/anlytic-02.svg') }}" alt="I" class="img-fluid">
+          <img src="{{ asset('/public/assets/images/icons/arrow-up-02.svg') }}" alt="I" class="img-fluid">
         </div>
 
         <h4>$3,240</h4>
@@ -62,8 +62,8 @@
     <div class="col-12 col-sm-6 col-md-4 col-xl-3 mb-15">
       <div class="analytics-card-box">
         <div class="top">
-          <img src="{{ asset('/assets/images/icons/anlytic-01.svg') }}" alt="I" class="img-fluid">
-          <img src="{{ asset('/assets/images/icons/arrow-up-01.svg') }}" alt="I" class="img-fluid">
+          <img src="{{ asset('/public/assets/images/icons/anlytic-01.svg') }}" alt="I" class="img-fluid">
+          <img src="{{ asset('/public/assets/images/icons/arrow-up-01.svg') }}" alt="I" class="img-fluid">
         </div>
 
         <h4>$3,240</h4>
@@ -75,8 +75,8 @@
     <div class="col-12 col-sm-6 col-md-4 col-xl-3 mb-15">
       <div class="analytics-card-box">
         <div class="top">
-          <img src="{{ asset('/assets/images/icons/anlytic-02.svg') }}" alt="I" class="img-fluid">
-          <img src="{{ asset('/assets/images/icons/arrow-up-02.svg') }}" alt="I" class="img-fluid">
+          <img src="{{ asset('/public/assets/images/icons/anlytic-02.svg') }}" alt="I" class="img-fluid">
+          <img src="{{ asset('/public/assets/images/icons/arrow-up-02.svg') }}" alt="I" class="img-fluid">
         </div>
 
         <h4>$3,240</h4>
@@ -88,8 +88,8 @@
     <div class="col-12 col-sm-6 col-md-4 col-xl-3 mb-15">
       <div class="analytics-card-box">
         <div class="top">
-          <img src="{{ asset('/assets/images/icons/anlytic-10.svg') }}" alt="I" class="img-fluid">
-          <img src="{{ asset('/assets/images/icons/arrow-up-08.svg') }}" alt="I" class="img-fluid">
+          <img src="{{ asset('/public/assets/images/icons/anlytic-10.svg') }}" alt="I" class="img-fluid">
+          <img src="{{ asset('/public/assets/images/icons/arrow-up-08.svg') }}" alt="I" class="img-fluid">
         </div>
 
         <h4>$1,220</h4>
@@ -101,8 +101,8 @@
     <div class="col-12 col-sm-6 col-md-4 col-xl-3 mb-15">
       <div class="analytics-card-box">
         <div class="top">
-          <img src="{{ asset('/assets/images/icons/anlytic-11.svg') }}" alt="I" class="img-fluid">
-          <img src="{{ asset('/assets/images/icons/arrow-up-05.svg') }}" alt="I" class="img-fluid">
+          <img src="{{ asset('/public/assets/images/icons/anlytic-11.svg') }}" alt="I" class="img-fluid">
+          <img src="{{ asset('/public/assets/images/icons/arrow-up-05.svg') }}" alt="I" class="img-fluid">
         </div>
 
         <h4>$1,350</h4>
@@ -118,7 +118,7 @@
       <div class="chart-box-wrap">
         <div class="graph-head">
           <h5>Earnings</h5>
-          <p><span><img src="{{ asset('/assets/images/icons/arrow-top.svg') }}" alt="I" class="img-fluid"> 40%</span> vs
+          <p><span><img src="{{ asset('/public/assets/images/icons/arrow-top.svg') }}" alt="I" class="img-fluid"> 40%</span> vs
             last
             month</p>
         </div>
@@ -185,7 +185,7 @@
               <h5>Dan Bergstrom </h5>
               <p>zlincoln@unpixel.com</p>
             </div>
-            <img src="{{ asset('/assets/images/icons/trophy-01.svg') }}" alt="T" class="img-fluid">
+            <img src="{{ asset('/public/assets/images/icons/trophy-01.svg') }}" alt="T" class="img-fluid">
           </div>
           <!-- user one end -->
           <!-- user one start -->
@@ -195,7 +195,7 @@
               <h5>Dan Bergstrom </h5>
               <p>Sasha.Fisher@gmail.com</p>
             </div>
-            <img src="{{ asset('/assets/images/icons/trophy-02.svg') }}" alt="T" class="img-fluid">
+            <img src="{{ asset('/public/assets/images/icons/trophy-02.svg') }}" alt="T" class="img-fluid">
           </div>
           <!-- user one end -->
           <!-- user one start -->
@@ -205,7 +205,7 @@
               <h5>Dan Bergstrom </h5>
               <p>Devon74@yahoo.com</p>
             </div>
-            <img src="{{ asset('/assets/images/icons/trophy-03.svg') }}" alt="T" class="img-fluid">
+            <img src="{{ asset('/public/assets/images/icons/trophy-03.svg') }}" alt="T" class="img-fluid">
           </div>
           <!-- user one end -->
           <!-- user one start -->
@@ -215,7 +215,7 @@
               <h5>Dan Bergstrom </h5>
               <p>Leta.Hand@gmail.com</p>
             </div>
-            <img src="{{ asset('/assets/images/icons/trophy-03.svg') }}" alt="T" class="img-fluid">
+            <img src="{{ asset('/public/assets/images/icons/trophy-03.svg') }}" alt="T" class="img-fluid">
           </div>
           <!-- user one end -->
           <!-- user one start -->
@@ -225,7 +225,7 @@
               <h5>Dan Bergstrom </h5>
               <p>Yvonne.Klein26@yahoo.com</p>
             </div>
-            <img src="{{ asset('/assets/images/icons/trophy-03.svg') }}" alt="T" class="img-fluid">
+            <img src="{{ asset('/public/assets/images/icons/trophy-03.svg') }}" alt="T" class="img-fluid">
           </div>
           <!-- user one end -->
         </div>
