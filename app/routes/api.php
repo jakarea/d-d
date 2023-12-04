@@ -13,6 +13,7 @@ use App\Http\Controllers\API\ReviewController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use App\Http\Controllers\API\WishlistController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,7 +45,7 @@ Route::post('login', [UserController::class, 'login']);
 Route::apiResource('roles', RoleController::class)->except(['create', 'edit'])->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
 Route::apiResource('users.roles', UserRoleController::class)->except(['create', 'edit', 'show', 'update'])->middleware(['auth:sanctum', 'ability:admin,super-admin']);
 
-Route::middleware(['auth:sanctum', 'ability:admin,super-admin,user,company'])->group(function () {
+Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::prefix('client')->name('api.client.')->group(function () {
 
@@ -63,11 +64,14 @@ Route::middleware(['auth:sanctum', 'ability:admin,super-admin,user,company'])->g
         Route::post('review/dislike',[ReviewController::class, 'dislikeOfReview']);
         Route::post('review/reply',[ReviewController::class, 'replyOfReview']);
 
+        Route::get('wishlist',[WishlistController::class,'wishList']);
+        Route::post('wishlist',[WishlistController::class,'addtoWishList']);
+
     });
 });
 
 
-Route::middleware(['auth:sanctum', 'ability:admin,super-admin,user,company'])->group(function () {
+Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::prefix('company')->name('api.company.')->group(function () {
 
@@ -77,12 +81,11 @@ Route::middleware(['auth:sanctum', 'ability:admin,super-admin,user,company'])->g
         Route::get('product/{product}', [ProductController::class,'productDetails']);
         Route::get('/{company}/products', [ProductController::class, 'getProductsOfCompany']);
 
+        Route::get('reviews/{company}',[ReviewController::class,'reviewsOfCompany']);
+        Route::get('review/accept',[ReviewController::class,'reviewAcceptReject']);
+
     });
 });
 
-
-//Route::apiResource('product-varient', ProductVarientController::class)->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
-//Route::get('product/{product}/product-varients',[ProductVarientController::class,'getProductVarientofProduct'])->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
-
-Route::get('/verify-email/{user}/{code}', [VerificationController::class, 'verify'])->name('verify.email');
+Route::post('/verify-email/{user}/{code}', [VerificationController::class, 'verify'])->name('verify.email');
 Route::get('/resend-verification/{user}', [VerificationController::class, 'resend'])->name('verify.resend');

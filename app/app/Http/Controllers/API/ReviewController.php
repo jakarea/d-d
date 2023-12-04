@@ -4,6 +4,9 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AddReviewRequest;
+use App\Http\Requests\User\LikeRequest;
+use App\Http\Requests\User\ReplyRequest;
+use App\Http\Requests\User\ReviewAcceptRequest;
 use App\Models\Dislike;
 use App\Models\Like;
 use App\Models\Reply;
@@ -13,6 +16,43 @@ use Illuminate\Http\Request;
 
 class ReviewController extends ApiController
 {
+
+    public function reviewsOfCompany($companyId)
+    {
+        $reviews = Review::with(['likes','dislikes','replies'])
+            ->where('company_id', $companyId)
+            ->where('status', false)
+            ->get();
+
+        if(!empty($reviews)){
+            return $this->jsonResponse(false,$this->success, $reviews, $this->emptyArray,JsonResponse::HTTP_OK);
+        }else{
+            return $this->jsonResponse(true,$this->failed,$this->emptyArray, ['Review not found'], JsonResponse::HTTP_NOT_FOUND);
+        }
+    }
+
+    public function reviewAcceptReject(ReviewAcceptRequest $request)
+    {
+
+        $review = Review::where('id', $request->review_id)
+                         ->where('company_id', $request->company_id)
+                         ->first();
+
+        if(!empty($review)){
+            if(isset($request->status) && $request->status == true){
+                $review->status = true;
+                $review->save();
+                $message = "Review accepted";
+            }elseif (isset($request->status) && $request->status == false){
+                $review->delete();
+                $message = "Review rejected";
+            }
+            return $this->jsonResponse(false, $message, $review, $this->emptyArray, JsonResponse::HTTP_OK);
+        }else{
+            return $this->jsonResponse(true, $this->failed, $request->all(), ['Review not found'], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
     public function reviewOfProduct(AddReviewRequest $request): JsonResponse
     {
         try {
@@ -23,11 +63,11 @@ class ReviewController extends ApiController
             return $this->jsonResponse(false, "Review submitted successfully", $review, $this->emptyArray, JsonResponse::HTTP_CREATED);
 
         } catch (\Exception $e) {
-            return $this->jsonResponse(true, $this->failed, $request->all(), [$e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR]);
+            return $this->jsonResponse(true, $this->failed, $request->all(), [$e->getMessage()], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
-    public function likeOfReview(Request $request):JsonResponse
+    public function likeOfReview(LikeRequest $request):JsonResponse
     {
 
         try {
@@ -53,7 +93,7 @@ class ReviewController extends ApiController
     }
 
 
-    public function dislikeOfReview(Request $request):JsonResponse
+    public function dislikeOfReview(LikeRequest $request):JsonResponse
     {
 
         $dislike = Like::where('user_id', auth()->user()->id)->where('review_id', $request->review_id)->first();
@@ -81,7 +121,7 @@ class ReviewController extends ApiController
         }
     }
 
-    public function replyOfReview(Request $request):JsonResponse
+    public function replyOfReview(ReplyRequest $request):JsonResponse
     {
         try {
 

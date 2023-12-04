@@ -23,7 +23,7 @@ class VerificationController extends ApiController
                     'verification_code' => null, // Optional: Clear the verification code after successful verification
                 ]);
 
-                return $this->jsonResponse(0, 'Email verified successfully. You can now log in.', [], 200);
+                return $this->jsonResponse(false, 'Email verified successfully. You can now log in.', $this->emptyArray, $this->emptyArray, JsonResponse::HTTP_OK);
             }
 
             return $this->jsonResponse(1, 'Invalid verification code or user not found.', [], 422);
@@ -36,10 +36,10 @@ class VerificationController extends ApiController
     {
         //$user_id = Crypt::decrypt($user_id);
         $user = User::where('id', $user_id)->first();
-    
+
         // Check if the account is already verified
         if ($user->email_verified_at) {
-            return $this->jsonResponse(1, 'Account is already verified.', [], 422);
+            return $this->jsonResponse(false, 'Account is already verified.', $this->emptyArray, $this->emptyArray, 422);
         }
 
         try {
@@ -52,9 +52,9 @@ class VerificationController extends ApiController
             // Send the new verification code to the user's email
             $this->sendVerificationEmail($user, $newVerificationCode);
 
-            return $this->jsonResponse(0, 'Verification code resent successfully.');
+            return $this->jsonResponse(false, 'Verification code resent successfully.', $this->emptyArray, $this->emptyArray, JsonResponse::HTTP_OK);
         } catch (\Exception $e) {
-            return $this->jsonResponse(2, 'Error resending verification code.', [], 500);
+            return $this->jsonResponse(true, 'Error resending verification code.', $this->emptyArray, $this->emptyArray, 500);
         }
     }
 
