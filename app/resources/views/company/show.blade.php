@@ -15,18 +15,18 @@
           <div class="d-flex">
             <h5>{{ $company->name }}</h5>
             <a href="{{ route('company.edit', ['company' => $company, 'name' => $company->name])}}">
-              <img src="{{ asset('assets/images/icons/pen.svg') }}" alt="I" class="img-fluid">
+              <img src="{{ asset('public/assets/images/icons/pen.svg') }}" alt="I" class="img-fluid">
             </a>
           </div>
           <h6>{{ $company->tagline }}</h6>
 
           <ul>
-            <li><img src="{{ asset('assets/images/icons/envelope.svg') }}" alt="I" class="img-fluid">
+            <li><img src="{{ asset('public/assets/images/icons/envelope.svg') }}" alt="I" class="img-fluid">
               <span>{{ $company->email }}</span>
             </li>
-            <li><img src="{{ asset('assets/images/icons/call.svg') }}" alt="I" class="img-fluid"> <span>{{
+            <li><img src="{{ asset('public/assets/images/icons/call.svg') }}" alt="I" class="img-fluid"> <span>{{
                 $company->phone }}</span></li>
-            <li><img src="{{ asset('assets/images/icons/gps.svg') }}" alt="I" class="img-fluid"> <span>{{
+            <li><img src="{{ asset('public/assets/images/icons/gps.svg') }}" alt="I" class="img-fluid"> <span>{{
                 $company->location }}</span></li>
           </ul>
 
@@ -52,7 +52,7 @@
           <div class="review-statics-box">
             <div>
               <h4>{{ $allAverageRating }}<span class="h5">/5</span></h4>
-              <p>00 Rating . {{$allRevText}}</p> 
+              <p>00 Rating . {{$allRevText}}</p>
 
               <ul>
                 @for ($i = 1; $i <= 5; $i++)
@@ -69,7 +69,7 @@
                   $ratingCounts = $company->products->pluck('reviews')->collapse()->groupBy('rating')->map->count();
                   $totalReviews = $ratingCounts->sum();
               @endphp
-          
+
               @for($i = 5; $i >= 1; $i--)
                   <div class="item">
                       <p>{{ $i }} star</p>
@@ -88,8 +88,8 @@
                   </div>
               @endfor
           </div>
-          
-          
+
+
           </div>
 
           <!-- review list start -->
@@ -99,21 +99,21 @@
             <div class="review-single-item">
               <div class="header">
                 <div class="media">
-                  <img src="{{ asset('assets/images/user.png') }}" alt="U" class="img-fluid">
+                  <img src="{{ asset('public/assets/images/user.png') }}" alt="U" class="img-fluid">
                   <div class="media-body">
                     <h5>{{$review->user->name}}</h5>
                     <span>{{$review->created_at->diffForHumans()}}</span>
                   </div>
-                </div> 
+                </div>
 
                 <ul class="star-rating">
-                  @for ($i = 1; $i <= 5; $i++) 
+                  @for ($i = 1; $i <= 5; $i++)
                   @if ($i <=$review->rating)
                   <li><i class="fas fa-star"></i></li>
                     @else
                     <li><i class="far fa-star"></i></li>
                     @endif
-                    @endfor 
+                    @endfor
                 </ul>
 
               </div>
@@ -131,18 +131,18 @@
           <h3>Advertisement Deals</h3>
 
           <div class="row">
-            @foreach ($company->products->slice(0,4) as $product) 
+            @foreach ($company->products->slice(0,4) as $product)
             <!-- product item start -->
             <div class="col-12 col-xl-6 mb-3 mb-3">
               <div class="product-item-box">
                 <!-- thumbnail start -->
                 <div class="product-thumbnail">
                     @php
-                        $price = $product->price; 
+                        $price = $product->price;
                         $sellPrice = $product->sell_price;
                         $percentageDiscount = $price != 0 ? ((($price - $sellPrice) / $price) * 100) : 0;
                     @endphp
-                    
+
                     <span>{{ number_format($percentageDiscount, 0) }}%</span>
 
                     @if ($product->images)
