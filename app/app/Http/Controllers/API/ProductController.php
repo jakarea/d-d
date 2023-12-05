@@ -135,6 +135,13 @@ class ProductController extends ApiController
         }
     }
 
+    public function updateProduct(Request $request, $id)
+    {
+        $product =  ProductProcess::update($request, $id);
+
+        return $product;
+    }
+
     /**
      * Display the specified resource.
      *
