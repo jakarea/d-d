@@ -20,10 +20,31 @@ class ReviewController extends ApiController
 
     public function reviewsOfCompany($companyId)
     {
-        $reviews = Review::with(['likes','dislikes'])
+         $mainReviews = Review::with(['likes','dislikes'])
             ->where('company_id', $companyId)
             ->where('status', false)
-            ->get();
+            ->get()->toArray();
+
+         $ids = array_column($mainReviews, 'id'); 
+        $reviews = array_combine($ids, $mainReviews); 
+
+        $mainReviews = [];
+
+           foreach ($reviews as $review) {
+             if ($review['replies_to']) {
+                $reviews[$review['replies_to']]['reply'][] = $review;
+             } 
+           }
+
+           $filteredData = [];
+
+           foreach ($reviews as $item) {
+            if (!isset($item['replies_to']) || $item['replies_to'] === null) {
+                $filteredData[] = $item;
+            }
+        }
+
+        return  $filteredData;
 
         if(!empty($reviews)){
             return $this->jsonResponse(false,$this->success, $reviews, $this->emptyArray,JsonResponse::HTTP_OK);
@@ -147,8 +168,5 @@ class ReviewController extends ApiController
             return $this->jsonResponse(true, $this->failed, $request->all(), [$e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR]);
         }
     }
-
-
-
 
 }

@@ -59,6 +59,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('profile',[ClientController::class,'profileUpdate']);
         Route::post('security/settings',[ClientController::class,'securitySettings']);
 
+        Route::get('reviews/{company}',[ReviewController::class,'reviewsOfCompany']);
         Route::post('review',[ReviewController::class, 'reviewOfProduct']);
         Route::post('review/like',[ReviewController::class, 'likeOfReview']);
         Route::post('review/dislike',[ReviewController::class, 'dislikeOfReview']);
@@ -82,8 +83,15 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('product/{product}', [ProductController::class,'productDetails']);
         Route::get('/{company}/products', [ProductController::class, 'getProductsOfCompany']);
 
+        Route::get('profile',[ClientController::class,'profile']);
+        Route::post('profile',[ClientController::class,'profileUpdate']);
+        Route::post('security/settings',[ClientController::class,'securitySettings']);
+
         Route::get('reviews/{company}',[ReviewController::class,'reviewsOfCompany']);
         Route::get('review/accept',[ReviewController::class,'reviewAcceptReject']);
+        Route::post('review/like',[ReviewController::class, 'likeOfReview']);
+        Route::post('review/dislike',[ReviewController::class, 'dislikeOfReview']);
+        Route::post('review/reply',[ReviewController::class, 'replyOfReview']);
 
     });
 });
