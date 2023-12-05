@@ -25,19 +25,40 @@
     <!-- custom CSS start -->
     <link rel="stylesheet" href="{{ url('public/assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ url('public/assets/css/responsive.css') }}">
+    @yield('style')
     <!-- custom CSS end -->
 
-    <title>DnD || Authintication Pages @yield('title')</title>
-    </head>
+    <title>DnD || Authintication @yield('title')</title>
+</head>
 
-    <body>
-        @yield('content')
+<body>
+    @yield('content')
 
-        <!-- Bootstrap Bundle with Popper JS start -->
-        <script src="{{ url('public/assets/js/bootstrap.bundle.min.js') }}"></script>
-        <script src="{{ url('public/assets/js/custom.js') }}"></script>
-        <!-- Bootstrap Bundle with Popper JS end -->
+    <!-- Bootstrap Bundle with Popper JS start -->
+    <script src="{{ url('public/assets/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url('public/assets/js/custom.js') }}"></script>
 
-    </body>
+    <script>
+        var togglePassword = document.getElementById('togglePassword');
+            var passwordInput = document.getElementById('password');
+            var eyeIcon = document.getElementById('eyeIcon');
+        
+            togglePassword.addEventListener('click', function () {
+                // Toggle the type attribute
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    eyeIcon.classList.remove('fa-eye');
+                    eyeIcon.classList.add('fa-eye-slash');
+                } else {
+                    passwordInput.type = 'password';
+                    eyeIcon.classList.remove('fa-eye-slash');
+                    eyeIcon.classList.add('fa-eye');
+                }
+            });
+    </script>
+    @yield('script')
+    <!-- Bootstrap Bundle with Popper JS end -->
+
+</body>
 
 </html>
