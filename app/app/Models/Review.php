@@ -14,6 +14,7 @@ class Review extends Model
         'company_id',
         'product_id',
         'user_id',
+        'replies_to',
         'review',
         'rating'
     ];
