@@ -23,26 +23,26 @@ class ProductController extends ApiController
     public function index(Request $request)
     {
 
-        $company        = $request->company;
-        $searchTerm     = $request->keyword;
+        $company = $request->company;
+        $searchTerm = $request->keyword;
         $searchLocation = $request->location;
 
-        $sortBy         = $request->sortby;
-        $sortOrder      = $request->sortorder;
-        $category       = $request->category;
-        $priceOrder     = $request->price_order; 
-        $discountParam  = $request->offer_product;
+        $sortBy = $request->sortby;
+        $sortOrder = $request->sortorder;
+        $category = $request->category;
+        $priceOrder = $request->price_order;
+        $discountParam = $request->offer_product;
 
-        $query = Product::with(['productVarients','company','reviews'=>function($query){
-            $query->with(['likes','dislikes', 'replies']);
+        $query = Product::with(['productVarients', 'company', 'reviews' => function ($query) {
+            $query->with(['likes', 'dislikes', 'replies']);
 
         }]);
 
-        if(!is_null($company)){
+        if (!is_null($company)) {
             $query->where('company_id', $company);
         }
 
-        if(!is_null($category)){
+        if (!is_null($category)) {
 
             $query->where(function ($search) use ($category) {
                 $search->where('cats', 'LIKE', '%' . $category . '%');
@@ -65,9 +65,9 @@ class ProductController extends ApiController
         if (!is_null($sortBy) && !is_null($sortOrder)) {
             $sortBy = strip_tags(trim($sortBy));
             $query->orderBy($sortBy, $sortOrder);
-        }else{
+        } else {
             $query->orderByDesc('id');
-        } 
+        }
 
         if (!is_null($priceOrder)) {
             if ($priceOrder == 'high_to_low') {
@@ -124,6 +124,17 @@ class ProductController extends ApiController
         }
     }
 
+    public function editProduct($id)
+    {
+        $product = Product::with(['productVarients'])->where('id', $id)->first();
+
+        if (!empty($product)) {
+            return $this->jsonResponse(false, $this->success, $product, $this->emptyArray, JsonResponse::HTTP_OK);
+        } else {
+            return $this->jsonResponse(true, $this->failed, $this->emptyArray, ['Product not found'], JsonResponse::HTTP_NOT_FOUND);
+        }
+    }
+
     /**
      * Display the specified resource.
      *
@@ -133,14 +144,14 @@ class ProductController extends ApiController
     public function productDetails(Request $request, $id)
     {
 
-         $query =  Product::with(['productVarients','company','reviews'=>function($query){
-             $query->with(['likes','dislikes', 'replies']);
+        $query = Product::with(['productVarients', 'company', 'reviews' => function ($query) {
+            $query->with(['likes', 'dislikes', 'replies']);
 
-         }]);
+        }]);
 
-         if(!is_null($request->company)){
-             $query->where('company_id', $request->company);
-         }
+        if (!is_null($request->company)) {
+            $query->where('company_id', $request->company);
+        }
 
         $product = $query->find($id);
 
@@ -154,12 +165,12 @@ class ProductController extends ApiController
     public function getProductsOfCompany($companyId): JsonResponse
     {
 
-        $products = Company::with(['products'=>function($query){
-            $query->with(['reviews'=>function($q){
-                $q->with(['likes','dislikes', 'replies']);
+        $products = Company::with(['products' => function ($query) {
+            $query->with(['reviews' => function ($q) {
+                $q->with(['likes', 'dislikes', 'replies']);
             }]);
 
-        },'reviews'])->where('id', $companyId)->first();
+        }, 'reviews'])->where('id', $companyId)->first();
 
         if (!empty($products)) {
             return $this->jsonResponse(false, $this->success, $products, $this->emptyArray, JsonResponse::HTTP_OK);

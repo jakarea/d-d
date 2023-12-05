@@ -80,6 +80,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('product', [ProductController::class,'store']);
         Route::get('product', [ProductController::class,'index']);
         Route::get('product/{product}', [ProductController::class,'productDetails']);
+        Route::get('product/{product}/edit', [ProductController::class,'editProduct']);
         Route::get('/{company}/products', [ProductController::class, 'getProductsOfCompany']);
 
         Route::get('reviews/{company}',[ReviewController::class,'reviewsOfCompany']);
