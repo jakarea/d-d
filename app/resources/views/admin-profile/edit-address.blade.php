@@ -16,7 +16,7 @@
         <div class="col-12 col-md-4 col-xl-3">
             <!-- customer about start -->
             <div class="company-about-box">
-                <img src="{{asset('assets/images/user-bi.png')}}" alt="U" class="img-fluid main-avatar">
+                <img src="{{asset('public/assets/images/user-bi.png')}}" alt="U" class="img-fluid main-avatar">
                 <div class="txt">
                     <h1>Michael Windler</h1>
                     <p>Admin</p>
@@ -25,14 +25,14 @@
 
                     <ul>
                         <li>
-                            <p><img src="{{asset('assets/images/icons/envelope.svg')}}" alt="I" class="img-fluid">
+                            <p><img src="{{asset('public/assets/images/icons/envelope.svg')}}" alt="I" class="img-fluid">
                                 Elton26@hotmail.com</p>
                         </li>
                         <li>
-                            <p><img src="{{asset('assets/images/icons/call.svg')}}" alt="I" class="img-fluid"> 911-415-0350</p>
+                            <p><img src="{{asset('public/assets/images/icons/call.svg')}}" alt="I" class="img-fluid"> 911-415-0350</p>
                         </li>
                         <li>
-                            <p><img src="{{asset('assets/images/icons/global.svg')}}" alt="I" class="img-fluid">Singapore</p>
+                            <p><img src="{{asset('public/assets/images/icons/global.svg')}}" alt="I" class="img-fluid">Singapore</p>
                         </li>
                     </ul>
                 </div>
@@ -47,7 +47,7 @@
                     <div class="title">
                         <h3>Personal Info</h3>
                         <a href="#">
-                            <img src="{{asset('assets/images/icons/pen.svg')}}" alt="I" class="img-fluid">
+                            <img src="{{asset('public/assets/images/icons/pen.svg')}}" alt="I" class="img-fluid">
                         </a>
                     </div>
 
@@ -120,7 +120,7 @@
                     <div class="title">
                         <h3>Address</h3>
                         <a href="#">
-                            <img src="{{asset('assets/images/icons/pen.svg')}}" alt="I" class="img-fluid">
+                            <img src="{{asset('public/assets/images/icons/pen.svg')}}" alt="I" class="img-fluid">
                         </a>
                     </div>
                     <div class="form-group">

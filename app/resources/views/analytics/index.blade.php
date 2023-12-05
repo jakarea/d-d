@@ -180,7 +180,7 @@
         <div class="user-list">
           <!-- user one start -->
           <div class="media">
-            <img src="{{ asset('/uploads/users/avatar-01.png') }}" alt="A" class="img-fluid">
+            <img src="{{ asset('/public/uploads/users/avatar-01.png') }}" alt="A" class="img-fluid">
             <div class="media-body">
               <h5>Dan Bergstrom </h5>
               <p>zlincoln@unpixel.com</p>
@@ -190,7 +190,7 @@
           <!-- user one end -->
           <!-- user one start -->
           <div class="media">
-            <img src="{{ asset('/uploads/users/avatar-03.png') }}" alt="A" class="img-fluid">
+            <img src="{{ asset('/public/uploads/users/avatar-03.png') }}" alt="A" class="img-fluid">
             <div class="media-body">
               <h5>Dan Bergstrom </h5>
               <p>Sasha.Fisher@gmail.com</p>
@@ -200,7 +200,7 @@
           <!-- user one end -->
           <!-- user one start -->
           <div class="media">
-            <img src="{{ asset('/uploads/users/avatar-04.png') }}" alt="A" class="img-fluid">
+            <img src="{{ asset('/public/uploads/users/avatar-04.png') }}" alt="A" class="img-fluid">
             <div class="media-body">
               <h5>Dan Bergstrom </h5>
               <p>Devon74@yahoo.com</p>
@@ -210,7 +210,7 @@
           <!-- user one end -->
           <!-- user one start -->
           <div class="media">
-            <img src="{{ asset('/uploads/users/avatar-07.png') }}" alt="A" class="img-fluid">
+            <img src="{{ asset('/public/uploads/users/avatar-07.png') }}" alt="A" class="img-fluid">
             <div class="media-body">
               <h5>Dan Bergstrom </h5>
               <p>Leta.Hand@gmail.com</p>
@@ -220,7 +220,7 @@
           <!-- user one end -->
           <!-- user one start -->
           <div class="media">
-            <img src="{{ asset('/uploads/users/avatar-05.png') }}" alt="A" class="img-fluid">
+            <img src="{{ asset('/public/uploads/users/avatar-05.png') }}" alt="A" class="img-fluid">
             <div class="media-body">
               <h5>Dan Bergstrom </h5>
               <p>Yvonne.Klein26@yahoo.com</p>

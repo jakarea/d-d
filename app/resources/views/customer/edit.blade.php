@@ -19,7 +19,7 @@
         <div class="avatar-wrap">
           <img src="{{ asset('/public/assets/images/user-bi.png') }}" alt="U" class="img-fluid">
           <div class="ol">
-            <img src="{{ asset('assets/images/icons/photo.png') }}" alt="U" class="img-fluid logo-photo">
+            <img src="{{ asset('public/assets/images/icons/photo.png') }}" alt="U" class="img-fluid logo-photo">
             <span>Update Photo</span>
           </div>
         </div>
