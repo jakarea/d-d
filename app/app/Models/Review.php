@@ -32,10 +32,5 @@ class Review extends Model
     public function dislikes():HasMany
     {
         return $this->hasMany(Like::class)->where('like', false);
-    }
-
-    public function replies():HasMany
-    {
-        return $this->hasMany(Reply::class);
-    }
+    } 
 }

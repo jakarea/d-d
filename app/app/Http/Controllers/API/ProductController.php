@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\ProductAddRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\JsonResponse;
+use DB;
 
 class ProductController extends ApiController
 {
@@ -29,12 +30,10 @@ class ProductController extends ApiController
 
         $sortBy         = $request->sortby;
         $sortOrder      = $request->sortorder;
-        $category       = $request->category;
-        $priceOrder     = $request->price_order; 
-        $discountParam  = $request->offer_product;
+        $category       = $request->category;  
 
         $query = Product::with(['productVarients','company','reviews'=>function($query){
-            $query->with(['likes','dislikes', 'replies']);
+            $query->with(['likes','dislikes']);
 
         }]);
 
@@ -44,8 +43,8 @@ class ProductController extends ApiController
 
         if(!is_null($category)){
 
-            $query->where(function ($search) use ($category) {
-                $search->where('cats', 'LIKE', '%' . $category . '%');
+            $query->where(function ($q) use ($category) {
+                $q->where('cats', 'LIKE', '%' . $category . '%');
             });
         }
 
@@ -69,18 +68,14 @@ class ProductController extends ApiController
             $query->orderByDesc('id');
         } 
 
-        if (!is_null($priceOrder)) {
-            if ($priceOrder == 'high_to_low') {
-                $query->orderByDesc('price');
-            } elseif ($priceOrder == 'low_to_high') {
-                $query->orderBy('price');
-            }
-        }
+        // sort order by where discount price is greatter
+        if (!is_null($sortBy)) { 
 
-        if (!is_null($discountParam)) {
-            $query->where('sales_price', '<', DB::raw('price'));
-            $query->orderByDesc(DB::raw('price - sales_price'));
-        }
+            if ($sortBy == 'offer_product') { 
+                $query->orderByDesc(DB::raw('price - sell_price'));
+            }  
+        } 
+
 
         $products = $query->get();
 
@@ -134,7 +129,7 @@ class ProductController extends ApiController
     {
 
          $query =  Product::with(['productVarients','company','reviews'=>function($query){
-             $query->with(['likes','dislikes', 'replies']);
+             $query->with(['likes','dislikes']);
 
          }]);
 
@@ -156,7 +151,7 @@ class ProductController extends ApiController
 
         $products = Company::with(['products'=>function($query){
             $query->with(['reviews'=>function($q){
-                $q->with(['likes','dislikes', 'replies']);
+                $q->with(['likes','dislikes']);
             }]);
 
         },'reviews'])->where('id', $companyId)->first();

@@ -8,8 +8,7 @@ use App\Http\Requests\User\LikeRequest;
 use App\Http\Requests\User\ReplyRequest;
 use App\Http\Requests\User\ReviewAcceptRequest;
 use App\Models\Dislike;
-use App\Models\Like;
-use App\Models\Reply;
+use App\Models\Like; 
 use App\Models\Review;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -21,7 +20,7 @@ class ReviewController extends ApiController
 
     public function reviewsOfCompany($companyId)
     {
-        $reviews = Review::with(['likes','dislikes','replies'])
+        $reviews = Review::with(['likes','dislikes'])
             ->where('company_id', $companyId)
             ->where('status', false)
             ->get();
