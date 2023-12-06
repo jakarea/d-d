@@ -15,7 +15,7 @@ class WishlistController extends ApiController
     {
         $wishlist = WishList::with(['product'=>function($query){
             $query->with(['company','productVarients','reviews'=>function($q){
-                $q->with(['likes','dislikes', 'replies']);
+                $q->with(['likes','dislikes']);
 
             }]);
         }])->where('user_id', auth()->user()->id)
