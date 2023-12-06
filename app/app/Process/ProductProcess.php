@@ -5,6 +5,7 @@ namespace App\Process;
 use App\Http\Requests\Product\UpdateRequest;
 use App\Models\Product;
 use App\Traits\SlugTrait;
+use Illuminate\Http\Request;
 
 class ProductProcess{
     use SlugTrait;
@@ -17,7 +18,7 @@ class ProductProcess{
           return $product;
       }
 
-      public static function update(UpdateRequest $request, $productId)
+      public static function update($request, $productId)
       {
           $product = Product::find($productId);
           $product = (new self())->saveProduct($request, $product);

@@ -79,10 +79,14 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::prefix('company')->name('api.company.')->group(function () {
 
         Route::get('category', [CategoryController::class,'index']);
-        Route::post('product', [ProductController::class,'store']);
+
         Route::get('product', [ProductController::class,'index']);
-        Route::get('product/{product}', [ProductController::class,'productDetails']);
+        Route::post('product', [ProductController::class,'store']);
+        Route::get('product/{product}/edit', [ProductController::class,'editProduct']);
+        Route::post('product/{product}', [ProductController::class,'updateProduct']);
+
         Route::get('/{company}/products', [ProductController::class, 'getProductsOfCompany']);
+        Route::get('product/{product}', [ProductController::class,'productDetails']);
 
         Route::get('profile',[ClientController::class,'profile']);
         Route::post('profile',[ClientController::class,'profileUpdate']);

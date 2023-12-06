@@ -7,6 +7,7 @@ use App\Models\Company;
 use App\Models\Product;
 use App\Models\ProductVarient;
 use App\Process\ProductProcess;
+use App\Process\ProductVarientProcess;
 use Illuminate\Http\Request;
 use App\Http\Requests\ProductAddRequest;
 use Illuminate\Http\RedirectResponse;
@@ -24,8 +25,8 @@ class ProductController extends ApiController
     public function index(Request $request)
     {
 
-        $company        = $request->company;
-        $searchTerm     = $request->keyword;
+        $company = $request->company;
+        $searchTerm = $request->keyword;
         $searchLocation = $request->location;
 
         $sortBy         = $request->sortby;
@@ -37,11 +38,11 @@ class ProductController extends ApiController
 
         }]);
 
-        if(!is_null($company)){
+        if (!is_null($company)) {
             $query->where('company_id', $company);
         }
 
-        if(!is_null($category)){
+        if (!is_null($category)) {
 
             $query->where(function ($q) use ($category) {
                 $q->where('cats', 'LIKE', '%' . $category . '%');
@@ -64,9 +65,9 @@ class ProductController extends ApiController
         if (!is_null($sortBy) && !is_null($sortOrder)) {
             $sortBy = strip_tags(trim($sortBy));
             $query->orderBy($sortBy, $sortOrder);
-        }else{
+        } else {
             $query->orderByDesc('id');
-        } 
+        }
 
         // sort order by where discount price is greatter
         if (!is_null($sortBy)) { 
@@ -119,6 +120,58 @@ class ProductController extends ApiController
         }
     }
 
+    public function editProduct($id)
+    {
+        $product = Product::with(['productVarients'])->where('id', $id)->first();
+
+        if (!empty($product)) {
+            return $this->jsonResponse(false, $this->success, $product, $this->emptyArray, JsonResponse::HTTP_OK);
+        } else {
+            return $this->jsonResponse(true, $this->failed, $this->emptyArray, ['Product not found'], JsonResponse::HTTP_NOT_FOUND);
+        }
+    }
+
+    public function updateProduct(Request $request, $id)
+    {
+        try {
+            $product =  ProductProcess::update($request, $id);
+
+
+            $arrayofProductVarientId = ProductVarient::where('product_id', $id)->pluck('id')->toArray();
+
+            if (isset($request->product_varients)) {
+                foreach ($request->product_varients as $productVarient) {
+                    if (isset($productVarient['id']) && in_array($productVarient['id'], $arrayofProductVarientId)) {
+
+                        $productVarient['company_id'] = $product->company_id;
+                        $productVarient['product_id'] = $product->id;
+                        $productVarient['cats'] = json_encode($productVarient['cats']);
+
+                        ProductVarientProcess::update($productVarient, $productVarient['id']);
+                        $key = array_search($productVarient['id'], $arrayofProductVarientId);
+                        if ($key !== false) {
+                            unset($arrayofProductVarientId[$key]);
+                        }
+                    }else{
+                        $productVarient['user_id'] = auth()->user()->id;
+                        $productVarient['company_id'] = $product->company_id;
+                        $productVarient['product_id'] = $product->id;
+                        $productVarient['cats'] = json_encode($productVarient['cats']);
+                        ProductVarient::create($productVarient);
+                    }
+                }
+            }
+
+            ProductVarient::whereIn('id',$arrayofProductVarientId)->delete();
+
+
+            return  $product =  $product->productVarients;
+        }catch (\Exception $e){
+            echo $e->getMessage();
+        }
+
+    }
+
     /**
      * Display the specified resource.
      *
@@ -128,14 +181,16 @@ class ProductController extends ApiController
     public function productDetails(Request $request, $id)
     {
 
+
          $query =  Product::with(['productVarients','company','reviews'=>function($query){
              $query->with(['likes','dislikes']);
 
-         }]);
 
-         if(!is_null($request->company)){
-             $query->where('company_id', $request->company);
-         }
+        }]);
+
+        if (!is_null($request->company)) {
+            $query->where('company_id', $request->company);
+        }
 
         $product = $query->find($id);
 
@@ -149,12 +204,13 @@ class ProductController extends ApiController
     public function getProductsOfCompany($companyId): JsonResponse
     {
 
+
         $products = Company::with(['products'=>function($query){
             $query->with(['reviews'=>function($q){
                 $q->with(['likes','dislikes']);
             }]);
 
-        },'reviews'])->where('id', $companyId)->first();
+        }, 'reviews'])->where('id', $companyId)->first();
 
         if (!empty($products)) {
             return $this->jsonResponse(false, $this->success, $products, $this->emptyArray, JsonResponse::HTTP_OK);
