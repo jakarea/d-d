@@ -8,6 +8,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserRoleController;
 use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\VerificationController;
+use App\Http\Controllers\API\ForgotPasswordController;
 use App\Http\Controllers\API\ClientController;
 use App\Http\Controllers\API\ReviewController;
 use Illuminate\Http\Request;
@@ -98,3 +99,4 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 Route::post('/verify-email/{user}/{code}', [VerificationController::class, 'verify'])->name('verify.email');
 Route::post('/resend-verification/{user}', [VerificationController::class, 'resend'])->name('verify.resend');
+Route::post('forgot-password', [ForgotPasswordController::class, 'forgotPassword'])->name('password.forgot'); 

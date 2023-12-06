@@ -112,5 +112,4 @@
     </div>
 </main>
 <!-- login page wrapper end -->
-
 @endsection 
