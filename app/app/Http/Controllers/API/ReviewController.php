@@ -8,21 +8,43 @@ use App\Http\Requests\User\LikeRequest;
 use App\Http\Requests\User\ReplyRequest;
 use App\Http\Requests\User\ReviewAcceptRequest;
 use App\Models\Dislike;
-use App\Models\Like;
-use App\Models\Reply;
+use App\Models\Like; 
 use App\Models\Review;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Auth;
+
 
 class ReviewController extends ApiController
 {
 
     public function reviewsOfCompany($companyId)
     {
-        $reviews = Review::with(['likes','dislikes','replies'])
+         $mainReviews = Review::with(['likes','dislikes'])
             ->where('company_id', $companyId)
             ->where('status', false)
-            ->get();
+            ->get()->toArray();
+
+         $ids = array_column($mainReviews, 'id'); 
+        $reviews = array_combine($ids, $mainReviews); 
+
+        $mainReviews = [];
+
+           foreach ($reviews as $review) {
+             if ($review['replies_to']) {
+                $reviews[$review['replies_to']]['reply'][] = $review;
+             } 
+           }
+
+           $filteredData = [];
+
+           foreach ($reviews as $item) {
+            if (!isset($item['replies_to']) || $item['replies_to'] === null) {
+                $filteredData[] = $item;
+            }
+        }
+
+        return  $filteredData;
 
         if(!empty($reviews)){
             return $this->jsonResponse(false,$this->success, $reviews, $this->emptyArray,JsonResponse::HTTP_OK);
@@ -58,7 +80,7 @@ class ReviewController extends ApiController
         try {
             $request['user_id'] = auth()->user()->id;
 
-            $review = Review::create($request->except('_method', '_token'));
+            $review = Review::updateOrCreate($request->except('_method', '_token'));
 
             return $this->jsonResponse(false, "Review submitted successfully", $review, $this->emptyArray, JsonResponse::HTTP_CREATED);
 
@@ -125,26 +147,26 @@ class ReviewController extends ApiController
     {
         try {
 
-            $request['user_id'] = auth()->user()->id;
-            $review = Reply::create($request->except('_method', '_token'));
+            $request['user_id'] = Auth::id();
+            $mainReview = Review::find($request['review_id']);
 
-            // $request['user_id'] = auth()->user()->id;
+            if ($mainReview) {
+                $newReview = Review::create([
+                    'company_id'    => $mainReview->company_id,
+                    'product_id'    => $mainReview->product_id,
+                    'user_id'       => Auth::id(),
+                    'replies_to'    => $mainReview->id,
+                    'review'        => $request['reply'],
+                    'rating'        => NULL,
+                    'status'        => 0,
+                ]);  
+            }
 
-            // $mainReview = Review::find($yourReviewId); // Replace $yourReviewId with the actual ID of the main review
-
-            // $replies = $mainReview->replies_to ?? []; // Retrieve existing replies or initialize as an empty array
-            // $replies[] = $request->except('_method', '_token');
-
-            // $mainReview->update(['replies_to' => $replies]); 
-
-            return $this->jsonResponse(false, $this->success, $review, $this->emptyArray, JsonResponse::HTTP_CREATED);
+            return $this->jsonResponse(false, $this->success, $newReview, $this->emptyArray, JsonResponse::HTTP_CREATED);
 
         }catch (\Exception $e){
             return $this->jsonResponse(true, $this->failed, $request->all(), [$e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR]);
         }
     }
-
-
-
 
 }

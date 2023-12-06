@@ -173,9 +173,16 @@ class UserController extends API\ApiController {
     {
         try {
             $request->validate([
-                'new_password' => 'required|min:6',
+                'new_password' => [
+                    'required',
+                    'min:8',
+                    'regex:/^(?=.*[a-zA-Z])(?=.*\d)/',
+                ],
                 'confirm_password' => 'required|same:new_password',
+            ], [
+                'new_password.regex' => 'Ensure that the password contains at least one letter and one number.',
             ]);
+            
 
             // Update the user's password
             $user->update([
@@ -183,6 +190,7 @@ class UserController extends API\ApiController {
             ]);
 
             return $this->jsonResponse(0, 'Password updated successfully.');
+
         } catch (ValidationException $e) {
             return $this->validationErrorResponse($e, 422, 'Validation error', 1001);
         }

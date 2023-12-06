@@ -38,25 +38,37 @@ class ClientController extends ApiController
 
         try {
             $user = User::where('id', auth()->user()->id)->first();
-            $user->email = $request->email;
-            $user->password = Hash::make($request->password);
-            $user->save();
 
-
-            $personalInfo = PersonalInfo::updateOrCreate(
-                [
-                    'user_id' => auth()->user()->id,
+            $request->validate([
+                'password' => [
+                    'required',
+                    'min:8',
+                    'regex:/^(?=.*[a-zA-Z])(?=.*\d)/',
                 ],
-                [
-                    'name' =>  auth()->user()->name,
-                    'phone' => $request->get('phone'),
-                    'email' => $request->get('email')
-                ],
-            );
+            ], [
+                'password.regex' => 'Ensure that the password contains at least one letter and one number.',
+            ]);
 
-            $userInfo = array_merge($user->toArray(), $personalInfo->toArray());
+            if ($user->email === $request->email) {
+                $user->password = Hash::make($request->password);
+                $user->save();
 
-            return $this->jsonResponse(false, $this->success, $userInfo, $this->emptyArray, JsonResponse::HTTP_CREATED);
+                $personalInfo = PersonalInfo::updateOrCreate(
+                    [
+                        'user_id' => auth()->user()->id,
+                    ],
+                    [
+                        'name' =>  auth()->user()->name,
+                        'phone' => $request->get('phone'), 
+                    ],
+                );
+    
+                $userInfo = array_merge($user->toArray(), $personalInfo->toArray());
+    
+                return $this->jsonResponse(false, $this->success, $userInfo, $this->emptyArray, JsonResponse::HTTP_CREATED);
+            }else{ 
+                return $this->jsonResponse(true, 'Email does not match to our record', $request->all(), ['email' => ['Email not found!']], 404);
+            }
 
         } catch (\Exception $e) {
             return $this->jsonResponse(true, $this->failed, $request->all(), [$e->getMessage()], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);

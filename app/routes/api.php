@@ -8,6 +8,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserRoleController;
 use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\VerificationController;
+use App\Http\Controllers\API\ForgotPasswordController;
 use App\Http\Controllers\API\ClientController;
 use App\Http\Controllers\API\ReviewController;
 use Illuminate\Http\Request;
@@ -59,6 +60,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('profile',[ClientController::class,'profileUpdate']);
         Route::post('security/settings',[ClientController::class,'securitySettings']);
 
+        Route::get('reviews/{company}',[ReviewController::class,'reviewsOfCompany']);
         Route::post('review',[ReviewController::class, 'reviewOfProduct']);
         Route::post('review/like',[ReviewController::class, 'likeOfReview']);
         Route::post('review/dislike',[ReviewController::class, 'dislikeOfReview']);
@@ -86,11 +88,19 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/{company}/products', [ProductController::class, 'getProductsOfCompany']);
         Route::get('product/{product}', [ProductController::class,'productDetails']);
 
+        Route::get('profile',[ClientController::class,'profile']);
+        Route::post('profile',[ClientController::class,'profileUpdate']);
+        Route::post('security/settings',[ClientController::class,'securitySettings']);
+
         Route::get('reviews/{company}',[ReviewController::class,'reviewsOfCompany']);
         Route::get('review/accept',[ReviewController::class,'reviewAcceptReject']);
+        Route::post('review/like',[ReviewController::class, 'likeOfReview']);
+        Route::post('review/dislike',[ReviewController::class, 'dislikeOfReview']);
+        Route::post('review/reply',[ReviewController::class, 'replyOfReview']);
 
     });
 });
 
 Route::post('/verify-email/{user}/{code}', [VerificationController::class, 'verify'])->name('verify.email');
 Route::post('/resend-verification/{user}', [VerificationController::class, 'resend'])->name('verify.resend');
+Route::post('forgot-password', [ForgotPasswordController::class, 'forgotPassword'])->name('password.forgot'); 
