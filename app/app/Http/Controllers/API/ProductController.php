@@ -7,6 +7,7 @@ use App\Models\Company;
 use App\Models\Product;
 use App\Models\ProductVarient;
 use App\Process\ProductProcess;
+use App\Process\ProductVarientProcess;
 use Illuminate\Http\Request;
 use App\Http\Requests\ProductAddRequest;
 use Illuminate\Http\RedirectResponse;
@@ -137,9 +138,43 @@ class ProductController extends ApiController
 
     public function updateProduct(Request $request, $id)
     {
-        $product =  ProductProcess::update($request, $id);
+        try {
+            $product =  ProductProcess::update($request, $id);
 
-        return $product;
+
+            $arrayofProductVarientId = ProductVarient::where('product_id', $id)->pluck('id')->toArray();
+
+            if (isset($request->product_varients)) {
+                foreach ($request->product_varients as $productVarient) {
+                    if (isset($productVarient['id']) && in_array($productVarient['id'], $arrayofProductVarientId)) {
+
+                        $productVarient['company_id'] = $product->company_id;
+                        $productVarient['product_id'] = $product->id;
+                        $productVarient['cats'] = json_encode($productVarient['cats']);
+
+                        ProductVarientProcess::update($productVarient, $productVarient['id']);
+                        $key = array_search($productVarient['id'], $arrayofProductVarientId);
+                        if ($key !== false) {
+                            unset($arrayofProductVarientId[$key]);
+                        }
+                    }else{
+                        $productVarient['user_id'] = auth()->user()->id;
+                        $productVarient['company_id'] = $product->company_id;
+                        $productVarient['product_id'] = $product->id;
+                        $productVarient['cats'] = json_encode($productVarient['cats']);
+                        ProductVarient::create($productVarient);
+                    }
+                }
+            }
+
+            ProductVarient::whereIn('id',$arrayofProductVarientId)->delete();
+
+
+            return  $product =  $product->productVarients;
+        }catch (\Exception $e){
+            echo $e->getMessage();
+        }
+
     }
 
     /**

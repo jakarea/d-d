@@ -18,7 +18,7 @@ class ProductProcess{
           return $product;
       }
 
-      public static function update(Request $request, $productId)
+      public static function update($request, $productId)
       {
           $product = Product::find($productId);
           $product = (new self())->saveProduct($request, $product);
