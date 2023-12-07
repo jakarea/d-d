@@ -104,7 +104,7 @@ class CompanyController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'required|email',
-            'description' => 'required',
+            'about' => 'required',
             'tagline' => 'required',
             'phone' => 'required',
             'location' => 'required',
@@ -115,7 +115,7 @@ class CompanyController extends Controller
             $company->update([
                 'name' => $request->input('name'),
                 'email' => $request->input('email'),
-                'about' => $request->input('description'),
+                'about' => $request->input('about'),
                 'tagline' => $request->input('tagline'),
                 'phone' => $request->input('phone'),
                 'location' => $request->input('location'),

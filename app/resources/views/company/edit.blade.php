@@ -67,52 +67,67 @@
                     @csrf 
                     @method('PATCH')
                     <div class="title">
-                        <h3>Information</h3>
-                        {{-- <a href="#">
-                            <img src="{{ asset('public/assets/images/icons/plus.svg') }}" alt="I" class="img-fluid">
-                        </a> --}}
+                        <h3>Information</h3> 
                     </div>
-                    <div class="form-group">
+                    <div class="form-group form-error">
                         <label for="name">Company Name <span>*</span></label>
-                        <input type="text" class="form-control" placeholder="Company Name.." value="{{ $company->name }}"
-                            name="name" id="name">
+                        <input type="text" class="form-control @error('name') is-invalid @enderror" placeholder="Company Name.." value="{{ $company->name }}" name="name" id="name">
+
+                        <span class="invalid-feedback">@error('name'){{ $message }}
+                            @enderror</span>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group form-error">
                         <label for="tagline">Company Tagline <span>*</span></label>
-                        <input type="text" class="form-control" placeholder="Company Tagline.."
+                        <input type="text" class="form-control @error('tagline') is-invalid @enderror" placeholder="Company Tagline.."
                             value="{{ $company->tagline }}" name="tagline" id="tagline">
+                        <span class="invalid-feedback">@error('tagline'){{ $message }} @enderror</span>
                     </div>
-                    <div class="form-group">
-                        <label for="description">About Company <span>*</span></label>
-                        <textarea name="description" id="description" cols="30" rows="5" class="form-control" placeholder="Enter description">{{ $company->description }}</textarea>
+                    <div class="form-group form-error">
+                        <label for="about">About Company <span>*</span></label>
+                        <textarea name="about" id="about" cols="30" rows="5" class="form-control @error('about') is-invalid @enderror" placeholder="Type here">{{ $company->about }}</textarea>
+
+                        <span class="invalid-feedback">@error('about'){{ $message }}
+                            @enderror</span>
                     </div>
                     <div class="row">
                         <div class="col-lg-6">
-                            <div class="form-group">
+                            <div class="form-group form-error">
                                 <label for="email">Email <span>*</span></label>
-                                <input type="email" class="form-control" placeholder="Company Email"
+                                <input type="email" class="form-control @error('email') is-invalid @enderror" placeholder="Company Email"
                                     value="{{ $company->email }}" name="email" id="email">
+
+                                    <span class="invalid-feedback">@error('email'){{ $message }}
+                                        @enderror</span>
                             </div>
                         </div>
                         <div class="col-lg-6">
-                            <div class="form-group">
+                            <div class="form-group form-error">
                                 <label for="phone">Phone <span>*</span></label>
-                                <input type="text" class="form-control" placeholder="Enter phone number"
+                                <input type="text" class="form-control @error('phone') is-invalid @enderror" placeholder="Enter phone number"
                                     value="{{ $company->phone }}" name="phone" id="phone">
+
+                                <span class="invalid-feedback">@error('phone'){{ $message }}
+                                        @enderror</span>
                             </div>
                         </div>
                         <div class="col-lg-6">
-                            <div class="form-group">
+                            <div class="form-group form-error">
                                 <label for="country">Country <span>*</span></label>
-                                <input type="text" class="form-control" placeholder="Enter country name" value="{{ $company->country }}"
+                                <input type="text" class="form-control @error('country') is-invalid @enderror" placeholder="Enter country name" value="{{ $company->country }}"
                                     name="country" id="country">
+
+                                    <span class="invalid-feedback">@error('country'){{ $message }}
+                                        @enderror</span>
                             </div>
                         </div>
                         <div class="col-lg-6">
-                            <div class="form-group">
+                            <div class="form-group form-error">
                                 <label for="location">Location <span>*</span></label>
-                                <input type="text" class="form-control" placeholder="Location.." value="{{ $company->location }}"
+                                <input type="text" class="form-control @error('location') is-invalid @enderror" placeholder="Location.." value="{{ $company->location }}"
                                     name="location" id="location">
+
+                                    <span class="invalid-feedback">@error('location'){{ $message }}
+                                        @enderror</span>
                             </div>
                         </div>
                     </div>
