@@ -39,6 +39,7 @@ class UserProcess
             [
                 'user_id' => auth()->user()->id,
                 'name' => $request->get('first_name') . ' ' . $request->get('last_name'),
+                'avatar' => $request->get("avatar"),
                 'gender' => $request->get("gender"),
                 'designation' => $request->get('designation'),
                 'maritual_status' => $request->get('maritual_status'),

@@ -13,6 +13,7 @@ use App\Http\Requests\ProductAddRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\JsonResponse;
 use DB;
+use Auth;
 
 class ProductController extends ApiController
 {
@@ -220,7 +221,8 @@ class ProductController extends ApiController
      */
     public function destroy($id)
     {
-        $product = Product::find($id);
+      
+        $product = Product::where('user_id',Auth::id())->where('id',$id)->first();
 
         if (!empty($product)) {
 
@@ -232,6 +234,8 @@ class ProductController extends ApiController
         }
     }
 
+<<<<<<< HEAD
+=======
     protected function updateProductVarient($request, $product, $arrayofProductVarientId)
     {
         if (isset($request->product_varients)) {
@@ -263,4 +267,5 @@ class ProductController extends ApiController
     }
 
 
+>>>>>>> 11ec81eedf5d4101f40aec3da8671c82f2569967
 }
