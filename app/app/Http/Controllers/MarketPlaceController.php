@@ -14,11 +14,14 @@ class MarketPlaceController extends Controller
     public function index()
     {
         $category = isset($_GET['category']) ? $_GET['category'] : '';
-        $products = Product::with('reviews');
+        $products = Product::with('reviews','company');
 
-        $selectedCat = $category;
+        $selectedCat = '';
+        if (!empty($category)) {
+            $selectedCat = Category::find($category);
+        }
 
-        if ($category) {
+        if (!empty($category)) {
             $products->where('cats', 'like', '%' . $category . '%')->orderBy('id', 'desc');
         }
 
@@ -30,7 +33,11 @@ class MarketPlaceController extends Controller
 
     public function show($slug)
     {
-       $product = Product::where('slug',$slug)->with('reviews')->first();
-        return view('marketplace/show',compact('product'));
+        $product = Product::where('slug',$slug)->with('reviews','productVarients','company')->first();
+
+        $productVarients = $product->productVarients;
+        $company = $product->company;
+
+        return view('marketplace/show',compact('product','productVarients','company'));
     }
 }

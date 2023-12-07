@@ -74,8 +74,7 @@ class CompanyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Company $company){ 
-        // $company = $company->where('id',$company->id)->with('products.reviews.user')->first();
+    public function show(Company $company){  
         return view('company/show',compact('company'));
     }
 
@@ -85,9 +84,9 @@ class CompanyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
+    public function edit(Company $company)
+    { 
+         return view('company/edit',compact('company'));
     }
 
     /**
@@ -98,8 +97,34 @@ class CompanyController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
-        //
+    { 
+
+        $company = Company::find($id);
+
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email',
+            'about' => 'required',
+            'tagline' => 'required',
+            'phone' => 'required',
+            'location' => 'required',
+            'country' => 'required',
+        ]);
+        
+        if ($company) {
+            $company->update([
+                'name' => $request->input('name'),
+                'email' => $request->input('email'),
+                'about' => $request->input('about'),
+                'tagline' => $request->input('tagline'),
+                'phone' => $request->input('phone'),
+                'location' => $request->input('location'),
+                'country' => $request->input('country'),
+            ]);
+        }
+        
+
+        return redirect()->route('company.index')->with('success', 'Company Updated Successfuly!');
     }
 
     /**

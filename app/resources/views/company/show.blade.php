@@ -10,24 +10,40 @@
     <!-- top part -->
     <div class="company-information">
       <div class="media align-items-start">
-        <img src="{{ asset('uploads/company/thumbnail.png') }}" alt="Company Thumbnail" class="img-fluid main-thumb">
+
+          @if ($company->user->personalInfo)
+            @if ($company->user->personalInfo->avatar)
+            <img src="{{ $company->user->personalInfo->avatar }}" alt="A" class="img-fluid main-thumb">
+            @else
+            <img src="{{asset('/public/uploads/company/thumbnail.png') }}" alt="A" class="img-fluid main-thumb">
+            @endif
+          @else 
+          <img src="{{asset('/public/uploads/company/thumbnail.png') }}" alt="A" class="img-fluid main-thumb">
+          @endif
+ 
         <div class="media-body">
           <div class="d-flex">
             <h5>{{ $company->name }}</h5>
-            <a href="{{ route('company.edit', ['company' => $company, 'name' => $company->name])}}">
+            <a href="{{ route('company.edit', $company) }}">
               <img src="{{ asset('public/assets/images/icons/pen.svg') }}" alt="I" class="img-fluid">
             </a>
           </div>
           <h6>{{ $company->tagline }}</h6>
 
           <ul>
+            @if ($company->email)
             <li><img src="{{ asset('public/assets/images/icons/envelope.svg') }}" alt="I" class="img-fluid">
               <span>{{ $company->email }}</span>
             </li>
+            @endif
+            @if ($company->phone)
             <li><img src="{{ asset('public/assets/images/icons/call.svg') }}" alt="I" class="img-fluid"> <span>{{
-                $company->phone }}</span></li>
+              $company->phone }}</span></li>
+            @endif
+            @if ($company->location)
             <li><img src="{{ asset('public/assets/images/icons/gps.svg') }}" alt="I" class="img-fluid"> <span>{{
-                $company->location }}</span></li>
+              $company->location }}</span></li>
+            @endif 
           </ul>
 
           <p>{{ $company->about }}</p>
@@ -43,26 +59,27 @@
         <div class="company-reviews">
           <h3>Reviews</h3>
 
-            @php
-                $allReviewCount = count($company->products->pluck('reviews')->collapse());
-                $allAverageRating = $allReviewCount > 0 ? number_format($company->products->pluck('reviews')->collapse()->avg('rating'), 1) : 0;
-                $allRevText = $allReviewCount === 0 ? 'No Reviews' : ($allReviewCount === 1 ? '1 Review' : $allReviewCount . ' Reviews');
-            @endphp
-
-          <div class="review-statics-box">
-            <div>
+          @php
+          $allTotalStars = $company->products->pluck('reviews')->collapse()->sum('rating');
+          $allReviewCount = count($company->products->pluck('reviews')->collapse());
+          $allAverageRating = $allReviewCount > 0 ? number_format($allTotalStars / $allReviewCount, 1) : 0;
+          $allRevText = $allReviewCount === 0 ? 'No Reviews' : ($allReviewCount === 1 ? '1 Review' : $allReviewCount . ' Reviews');
+      @endphp
+      
+      <div class="review-statics-box">
+          <div>
               <h4>{{ $allAverageRating }}<span class="h5">/5</span></h4>
-              <p>00 Rating . {{$allRevText}}</p>
-
+              <p>{{ $allTotalStars }} Rating . {{ $allRevText }}</p>
+      
               <ul>
-                @for ($i = 1; $i <= 5; $i++)
-                    @if ($i <= $allAverageRating)
-                        <li><i class="fas fa-star"></i></li>
-                    @else
-                        <li><i class="far fa-star"></i></li>
-                    @endif
-                @endfor
-            </ul>
+                  @for ($i = 1; $i <= 5; $i++)
+                      @if ($i <= $allAverageRating)
+                          <li><i class="fas fa-star"></i></li>
+                      @else
+                          <li><i class="far fa-star"></i></li>
+                      @endif
+                  @endfor
+              </ul>
             </div>
             <div class="rev-item-list">
               @php

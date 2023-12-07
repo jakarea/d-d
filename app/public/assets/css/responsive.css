@@ -271,3 +271,19 @@
     white-space: nowrap;
   }
 }
+
+@media (min-width: 1100px) and (max-width: 1850px) {
+  .auth-txt-box .title h1{
+    margin-top: 0;
+  }
+  .auth-txt-box .auth-form-wrap .form-group{
+    margin-bottom: 0.5rem;
+  }
+  .auth-txt-box .auth-form-wrap .options{
+    margin: 1.5rem 0;
+  }
+
+  .register-auth-txt .title h6{
+    margin-bottom: 1rem;
+  }
+}

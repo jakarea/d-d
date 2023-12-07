@@ -26,6 +26,6 @@ class Product extends Model
 
     public function productVarients():HasMany
     {
-        return $this->hasMany(ProductVarient::class);
+        return $this->hasMany(ProductVarient::class, 'product_id', 'id');
     }
 }
