@@ -70,7 +70,9 @@ class ProductAddRequest extends BaseFormRequest
                 ],
                 'product_varients.*.title'=>[
                     'required',
-                    'string'
+                    'string',
+                    'min:2',
+                    'max:255'
                 ],
                 'product_varients.*.cats'=>[
                     'required',
