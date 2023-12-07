@@ -8,15 +8,17 @@ use App\Models\Product;
 use App\Models\ProductVarient;
 use App\Process\ProductProcess;
 use App\Process\ProductVarientProcess;
+use App\Traits\FileTrait;
 use Illuminate\Http\Request;
 use App\Http\Requests\ProductAddRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\JsonResponse;
-use DB;
-use Auth;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends ApiController
 {
+    use FileTrait;
 
     /**
      * Display a listing of the resource.
@@ -94,6 +96,9 @@ class ProductController extends ApiController
 
     public function store(ProductAddRequest $request)
     {
+
+        return $this->fileUpload($request->input('image'), "product");
+        exit();
 
         try {
 
@@ -221,7 +226,7 @@ class ProductController extends ApiController
      */
     public function destroy($id)
     {
-      
+
         $product = Product::where('user_id',Auth::id())->where('id',$id)->first();
 
         if (!empty($product)) {
