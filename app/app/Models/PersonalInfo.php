@@ -12,6 +12,7 @@ class PersonalInfo extends Model
     protected $fillable = [
         'user_id',
         'name',
+        'avatar',
         'gender',
         'designation',
         'maritual_status',

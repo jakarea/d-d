@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('name');
+            $table->string('avatar')->nullable();
             $table->string('gender')->nullable();
             $table->string('designation')->nullable();
             $table->string('maritual_status')->nullable();
