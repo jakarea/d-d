@@ -30,12 +30,12 @@ class ProductController extends ApiController
         $searchTerm = $request->keyword;
         $searchLocation = $request->location;
 
-        $sortBy         = $request->sortby;
-        $sortOrder      = $request->sortorder;
-        $category       = $request->category;  
+        $sortBy = $request->sortby;
+        $sortOrder = $request->sortorder;
+        $category = $request->category;
 
-        $query = Product::with(['productVarients','company','reviews'=>function($query){
-            $query->with(['likes','dislikes']);
+        $query = Product::with(['productVarients', 'company', 'reviews' => function ($query) {
+            $query->with(['likes', 'dislikes']);
 
         }]);
 
@@ -71,12 +71,12 @@ class ProductController extends ApiController
         }
 
         // sort order by where discount price is greatter
-        if (!is_null($sortBy)) { 
+        if (!is_null($sortBy)) {
 
-            if ($sortBy == 'offer_product') { 
+            if ($sortBy == 'offer_product') {
                 $query->orderByDesc(DB::raw('price - sell_price'));
-            }  
-        } 
+            }
+        }
 
 
         $products = $query->get();
@@ -132,43 +132,24 @@ class ProductController extends ApiController
         }
     }
 
-    public function updateProduct(Request $request, $id)
+    public function updateProduct(UpdateRequest $request, $id)
     {
         try {
-            $product =  ProductProcess::update($request, $id);
-
+            $product = ProductProcess::update($request, $id);
 
             $arrayofProductVarientId = ProductVarient::where('product_id', $id)->pluck('id')->toArray();
 
-            if (isset($request->product_varients)) {
-                foreach ($request->product_varients as $productVarient) {
-                    if (isset($productVarient['id']) && in_array($productVarient['id'], $arrayofProductVarientId)) {
+            $deletableProductVarient = $this->updateProductVarient($request, $product, $arrayofProductVarientId);
 
-                        $productVarient['company_id'] = $product->company_id;
-                        $productVarient['product_id'] = $product->id;
-                        $productVarient['cats'] = json_encode($productVarient['cats']);
+            ProductVarient::whereIn('id', $deletableProductVarient)->delete();
 
-                        ProductVarientProcess::update($productVarient, $productVarient['id']);
-                        $key = array_search($productVarient['id'], $arrayofProductVarientId);
-                        if ($key !== false) {
-                            unset($arrayofProductVarientId[$key]);
-                        }
-                    }else{
-                        $productVarient['user_id'] = auth()->user()->id;
-                        $productVarient['company_id'] = $product->company_id;
-                        $productVarient['product_id'] = $product->id;
-                        $productVarient['cats'] = json_encode($productVarient['cats']);
-                        ProductVarient::create($productVarient);
-                    }
-                }
+            if (isset($product->productVarients)) {
+                $product->productVarients;
             }
+            return $this->jsonResponse(false, "Product updated successfully", $product, $this->emptyArray, JsonResponse::HTTP_OK);
 
-            ProductVarient::whereIn('id',$arrayofProductVarientId)->delete();
-
-
-            return  $product =  $product->productVarients;
-        }catch (\Exception $e){
-            echo $e->getMessage();
+        } catch (\Exception $e) {
+            return $this->jsonResponse(true, 'Failed to update product', $request->all(), [$e->getMessage()], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
 
     }
@@ -182,17 +163,13 @@ class ProductController extends ApiController
     public function productDetails(Request $request, $id)
     {
 
-
-         $query =  Product::with(['productVarients','company','reviews'=>function($query){
-             $query->with(['likes','dislikes']);
-
-
+        $query = Product::with(['productVarients', 'company', 'reviews' => function ($query) {
+            $query->with(['likes', 'dislikes']);
         }]);
 
         if (!is_null($request->company)) {
             $query->where('company_id', $request->company);
         }
-
         $product = $query->find($id);
 
         if (!empty($product)) {
@@ -205,10 +182,9 @@ class ProductController extends ApiController
     public function getProductsOfCompany($companyId): JsonResponse
     {
 
-
-        $products = Company::with(['products'=>function($query){
-            $query->with(['reviews'=>function($q){
-                $q->with(['likes','dislikes']);
+        $products = Company::with(['products' => function ($query) {
+            $query->with(['reviews' => function ($q) {
+                $q->with(['likes', 'dislikes']);
             }]);
 
         }, 'reviews'])->where('id', $companyId)->first();
@@ -238,27 +214,6 @@ class ProductController extends ApiController
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateRequest $request, $id)
-    {
-
-        try {
-
-            $product = ProductProcess::update($request, $id);
-
-            return $this->jsonResponse(false, 'Product updated successfully', $product, $this->emptyArray, JsonResponse::HTTP_OK);
-
-        } catch (\Exception $e) {
-            return $this->jsonResponse(true, 'Failed to update product', $request->all(), [$e->getMessage()], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    /**
      * Remove the specified resource from storage.
      *
      * @param int $id
@@ -279,4 +234,38 @@ class ProductController extends ApiController
         }
     }
 
+<<<<<<< HEAD
+=======
+    protected function updateProductVarient($request, $product, $arrayofProductVarientId)
+    {
+        if (isset($request->product_varients)) {
+            foreach ($request->product_varients as $productVarient) {
+                if (isset($productVarient['id']) && in_array($productVarient['id'], $arrayofProductVarientId)) {
+
+                    $productVarient['user_id'] = auth()->user()->id;
+                    $productVarient['company_id'] = $product->company_id;
+                    $productVarient['product_id'] = $product->id;
+                    $productVarient['cats'] = $productVarient['cats'];
+
+                    ProductVarientProcess::update($productVarient, $productVarient['id']);
+                    $key = array_search($productVarient['id'], $arrayofProductVarientId);
+                    if ($key !== false) {
+                        unset($arrayofProductVarientId[$key]);
+                    }
+                } else {
+                    $productVarient['user_id'] = auth()->user()->id;
+                    $productVarient['company_id'] = $product->company_id;
+                    $productVarient['product_id'] = $product->id;
+                    $productVarient['cats'] = json_encode($productVarient['cats']);
+
+                    ProductVarient::create($productVarient);
+                }
+            }
+        }
+
+        return $arrayofProductVarientId;
+    }
+
+
+>>>>>>> 11ec81eedf5d4101f40aec3da8671c82f2569967
 }

@@ -27,16 +27,16 @@ class ProductVarientProcess
     {
 
         $productVarient->user_id = auth()->user()->id;
-        $productVarient->company_id = $request['company_id'];
-        $productVarient->product_id = $request['product_id'];
-        $productVarient->title = $request['title'];
-        $productVarient->cats = $request['cats'];
-        $productVarient->product_url = $request['product_url'];
-        $productVarient->price = $request['price'];
-        $productVarient->sell_price = $request['sell_price'];
-        $productVarient->cupon = $request['cupon'];
-        $productVarient->description = $request['description'];
-        $productVarient->images = $request['images'];
+        $productVarient->company_id = isset($request['company_id']) ? $request['company_id']:null;
+        $productVarient->product_id = isset($request['product_id']) ? $request['product_id']:null;
+        $productVarient->title = isset($request['title']) ? $request['title']:null;
+        $productVarient->cats = isset($request['cats']) ? $request['cats']:null;
+        $productVarient->product_url = isset($request['product_url']) ? $request['product_url']:null;
+        $productVarient->price = isset($request['price']) ? $request['price']:null;
+        $productVarient->sell_price = isset($request['sell_price']) ? $request['sell_price']:null;
+        $productVarient->cupon = isset($request['cupon']) ? $request['cupon']:null;
+        $productVarient->description = isset($request['description']) ? $request['description']:null;
+        $productVarient->images = isset($request['images']) ? $request['images']:null;
         $productVarient->save();
 
         return $productVarient;
