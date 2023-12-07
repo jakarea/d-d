@@ -1015,6 +1015,9 @@ body {
   font-style: normal;
   font-weight: 500;
   line-height: 160%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .company-profile-box .txt a.mail i {
@@ -1063,6 +1066,7 @@ body {
   -o-object-fit: cover;
   object-fit: cover;
   margin-right: 2rem;
+  border-radius: 1rem;
 }
 
 .company-details-box .company-information .media .d-flex {
@@ -2235,4 +2239,26 @@ body {
   border-radius: 4px;
   color: #fff;
   margin-left: 15px;
+}
+
+
+.paggination-wrap .pagination .page-item .page-link {
+  padding: 0.5rem 1rem;
+  color: var(--text-light-primary, #212B36);
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 1.5rem;
+  margin: 0 0.2rem;
+  background-color: transparent;
+  border: 0;
+  border-radius: 8px;
+  transition: all linear 0.3s;
+}
+
+.paggination-wrap .pagination .page-item .page-link:hover {
+  background: #fff!important;
+}
+.paggination-wrap .pagination .page-item.active .page-link {
+  background: #fff!important;
 }

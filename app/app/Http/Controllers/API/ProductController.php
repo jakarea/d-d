@@ -234,8 +234,6 @@ class ProductController extends ApiController
         }
     }
 
-<<<<<<< HEAD
-=======
     protected function updateProductVarient($request, $product, $arrayofProductVarientId)
     {
         if (isset($request->product_varients)) {
@@ -267,5 +265,4 @@ class ProductController extends ApiController
     }
 
 
->>>>>>> 11ec81eedf5d4101f40aec3da8671c82f2569967
 }
