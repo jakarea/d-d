@@ -29,7 +29,7 @@
                     @if ($company->user->personalInfo)
                     <img src="{{ $company->user->personalInfo->avatar }}" alt="A" class="img-fluid">
                     @else
-                    <img src="{{asset('/public/uploads/users/avatar-01.png') }}" alt="A" class="img-fluid">
+                    <img src="{{asset('/public/uploads/company/thumbnail.png') }}" alt="A" class="img-fluid">
                     @endif
                 </div>
                 <!-- avatar -->
@@ -37,9 +37,7 @@
                 <div class="txt">
                     <h4>{{ $company->name }}</h4>
                     <h6>{{ $company->tagline ? $company->tagline : '--' }}</h6>
-
                     <hr>
-
                     <a href="mailto:{{ $company->email }}" class="mail"><i class="fa-regular fa-envelope me-2"></i> {{ $company->email }}</a>
 
                     <div class="details-bttn">
