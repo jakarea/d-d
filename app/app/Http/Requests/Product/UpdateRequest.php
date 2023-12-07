@@ -25,7 +25,7 @@ class UpdateRequest extends BaseFormRequest
     {
         return [
 
-            'company_id'=>[
+            'company_id' => [
                 'required',
                 'integer',
                 'exists:companies,id',
@@ -38,7 +38,7 @@ class UpdateRequest extends BaseFormRequest
             ],
             'cats' => [
                 'required',
-                'string'
+                'array'
             ],
             'product_url' => [
                 'nullable',
@@ -69,6 +69,22 @@ class UpdateRequest extends BaseFormRequest
                 'nullable',
                 'string',
             ],
+            'product_varients.*.title'=>[
+                'required',
+                'string',
+                'min:2',
+                'max:255'
+            ],
+            'product_varients.*.cats'=>[
+                'required',
+                'array'
+            ],
+            'product_varients.*.price'=>[
+                'required',
+                'numeric',
+                'between:0,9999999.99'
+            ],
+
         ];
     }
 }
