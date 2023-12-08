@@ -66,7 +66,7 @@ class ProductAddRequest extends BaseFormRequest
                 ],
                 'images' => [
                     'nullable',
-                    'string',
+                    'array',
                 ],
                 'product_varients.*.title'=>[
                     'required',

@@ -25,10 +25,7 @@ trait FileTrait
         // Store the image in the storage/app/public directory
         Storage::disk('public')->put($destinationPath . '/' . $fileName, $imageData);
 
-        // Get the path to the stored image
-        $filePath = Storage::url($fileName);
-
-        return $filePath;
+        return $fileName;
     }
 
 }

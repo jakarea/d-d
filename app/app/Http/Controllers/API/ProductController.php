@@ -96,10 +96,6 @@ class ProductController extends ApiController
 
     public function store(ProductAddRequest $request)
     {
-
-        return $this->fileUpload($request->input('image'), "product");
-        exit();
-
         try {
 
             $product = ProductProcess::create($request);
