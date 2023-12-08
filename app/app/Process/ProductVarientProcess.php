@@ -3,9 +3,12 @@
 namespace App\Process;
 
 use App\Models\ProductVarient;
+use App\Traits\FileTrait;
 
 class ProductVarientProcess
 {
+
+    use FileTrait;
 
     public static function create($request)
     {
@@ -36,9 +39,30 @@ class ProductVarientProcess
         $productVarient->sell_price = isset($request['sell_price']) ? $request['sell_price']:null;
         $productVarient->cupon = isset($request['cupon']) ? $request['cupon']:null;
         $productVarient->description = isset($request['description']) ? $request['description']:null;
-        $productVarient->images = isset($request['images']) ? $request['images']:null;
+
+        if (isset($request['images'])) {
+            $arrayofImage =  $this->imageProcess($request);
+            $productVarient->images  = json_encode($arrayofImage);
+        }
+
         $productVarient->save();
 
         return $productVarient;
     }
+
+    public function imageProcess($request)
+    {
+        $arrayofImages = [];
+
+        foreach ($request['images'] as $image) {
+            $filePath = $this->fileUpload($image, "product-varients");
+            $arrayofImages[] = asset('storage/product-varients/' . $filePath);
+        }
+
+        return $arrayofImages;
+    }
+
+
+
+
 }

@@ -78,6 +78,14 @@ class ProductAddRequest extends BaseFormRequest
                     'required',
                     'array'
                 ],
+                'product_varients.*.product_url'=>[
+                    'nullable',
+                    'url'
+                ],
+                'product_varients.*.images'=>[
+                    'nullable',
+                    'array',
+                ],
                 'product_varients.*.price'=>[
                     'required',
                     'numeric',
