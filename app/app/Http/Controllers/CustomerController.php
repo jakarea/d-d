@@ -7,6 +7,7 @@ use App\Http\Requests\CustomerAddRequest;
 use App\Models\Company;
 use App\Models\Customer;
 use App\Models\User;
+use App\Models\PersonalInfo;
 use App\Models\Role;
 use Illuminate\Support\Facades\Hash;
 
@@ -99,7 +100,48 @@ class CustomerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // return $request->all();
+        // return $id;
+        $user = User::find($id); 
+
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required', 
+            'designation' => 'required',
+            'phone' => 'required',
+            'dob' => 'required',
+            'gender' => 'required',
+            'nationality' => 'required',
+            'maritual_status' => 'required',
+        ]);
+ 
+
+        if ($user) {
+            $user->update([
+                'name' => $request->input('name'),
+                'email' => $request->input('email'), 
+            ]);
+        } 
+
+        // Use updateOrCreate to either update the existing PersonalInfo or create a new one
+        PersonalInfo::updateOrCreate(
+            ['user_id' => $user->id],
+            [
+                'name' => $request->input('name'),
+                'user_id' => $user->id,
+                'email' => $request->input('email'),
+                'designation' => $request->input('designation'),
+                'phone' => $request->input('phone'),
+                'dob' => $request->input('dob'),
+                'gender' => $request->input('gender'),
+                'nationality' => $request->input('nationality'),
+                'maritual_status' => $request->input('maritual_status'), 
+            ]
+        );
+
+        
+
+        return redirect()->route('users.index')->with('success', 'User Information Updated Successfuly!');
     }
 
     /**

@@ -26,7 +26,12 @@
       <div class="company-profile-box">
         <!-- avatar -->
         <div class="avatar">
-          <img src="./public/uploads/users/avatar-01.png" alt="A" class="img-fluid">
+          @if ($user->personalInfo)
+          <img src="{{ $user->personalInfo->avatar ? $user->personalInfo->avatar : '' }}" alt="A" class="img-fluid">
+          @else 
+          <span class="no-avatar nva-sm">{!! strtoupper($user->name[0]) !!}</span>
+          @endif
+          
         </div>
         <!-- avatar -->
 
@@ -38,7 +43,6 @@
               @endforeach
           @endif
            
-
           <hr>
 
           <a href="mailto:{{ $user->email }}" class="mail"><i class="fa-regular fa-envelope me-2"></i> {{ $user->email }}</a>

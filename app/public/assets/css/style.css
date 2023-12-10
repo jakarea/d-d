@@ -1300,6 +1300,7 @@ body {
   height: 6.25rem;
   -o-object-fit: cover;
   object-fit: cover;
+  border-radius: 50%;
 }
 
 .company-about-box h1 {
@@ -2261,4 +2262,26 @@ body {
 }
 .paggination-wrap .pagination .page-item.active .page-link {
   background: #fff!important;
+}
+
+.no-avatar{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-weight: 700;
+  color: #000; 
+  background-color: #A0AEC0;
+}
+
+.nva-sm{
+  width: 3.5rem;
+  height: 3.5rem;
+  font-size: 1.25rem; 
+  
+}
+.nva-lg{
+  width: 6.25rem;
+  height: 6.25rem;
+  font-size: 2.25rem;
 }

@@ -17,7 +17,12 @@
     <div class="col-12 col-md-4 col-xl-3">
       <!-- customer about start -->
       <div class="company-about-box">
-        <img src="{{ asset('/public/assets/images/user-bi.png') }}" alt="U" class="img-fluid main-avatar">
+        @if ($user->personalInfo)
+          <img src="{{ $user->personalInfo->avatar ? $user->personalInfo->avatar : '' }}" alt="A" class="img-fluid main-avatar">
+          @else 
+          <span class="no-avatar nva-lg">{!! strtoupper($user->name[0]) !!}</span>
+          @endif 
+
         <div class="txt">
           <h1>{{ $user->name }}</h1>
           @if ($user->roles)
@@ -25,19 +30,20 @@
           <p>{{ $role->name ? $role->name : '--' }}</p>
           @endforeach
           @endif
-
           <hr>
-
           <ul>
             <li>
-
               <p><img src="{{ asset('/public/assets/images/icons/envelope.svg') }}" alt="I" class="img-fluid">
                 {{ $user->email }}</p>
             </li>
+            @if ($user->personalInfo)
             <li>
-
+              <p><img src="{{ asset('/public/assets/images/icons/call.svg') }}" alt="I" class="img-fluid">
+                {{ optional($user->personalInfo)->phone }} 
+              </p>
             </li>
-            @if ($user->address)
+            @endif
+            @if ($user->address)  
             <li>
               <p><img src="{{ asset('/public/assets/images/icons/global.svg') }}" alt="I" class="img-fluid">
                 {{ optional($user->address)->country }} 
@@ -57,7 +63,7 @@
         <div class="form-box">
           <div class="title">
             <h3>Personal Info</h3>
-            <a href="#">
+            <a href="{{ route('users.edit', $user) }}">
               <img src="{{ asset('/public/assets/images/icons/pen.svg') }}" alt="I" class="img-fluid">
             </a>
           </div>
@@ -251,8 +257,5 @@
     </div>
   </div>
   <!-- customer edit end -->
-
 </section>
-
-
 @endsection

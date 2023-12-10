@@ -63,7 +63,7 @@
         <div class="col-12 col-md-8 col-xl-9">
             <!-- company edit form start -->
             <div class="company-edit-from-wrapper">
-                <form action="{{ route('company.update', $company) }}" class="form-box" method="POST">
+                <form action="{{ route('company.update', $company) }}" class="form-box" method="POST" enctype="multipart/form-data">
                     @csrf 
                     @method('PATCH')
                     <div class="title">
@@ -73,8 +73,9 @@
                         <label for="name">Company Name <span>*</span></label>
                         <input type="text" class="form-control @error('name') is-invalid @enderror" placeholder="Company Name.." value="{{ $company->name }}" name="name" id="name">
 
-                        <span class="invalid-feedback">@error('name'){{ $message }}
-                            @enderror</span>
+                        <span class="invalid-feedback">
+                            @error('name'){{ $message }} @enderror
+                        </span>
                     </div>
                     <div class="form-group form-error">
                         <label for="tagline">Company Tagline <span>*</span></label>
