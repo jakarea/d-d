@@ -19,7 +19,11 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $users = User::with('roles')->paginate(16); 
+        $users = User::with('roles')
+        ->whereHas('roles', function ($query) {
+            $query->where('slug', 'client');
+        })
+        ->paginate(16);
  
         return view('customer/index',compact('users'));
     }
@@ -57,10 +61,10 @@ class CustomerController extends Controller
         $role = Role::where('slug', 'client')->first();
         $user->roles()->attach($role);
 
-         // Send verification email
-        //$this->sendVerificationEmail($user, $verificationCode);
+        //  Send verification email
+        // $this->sendVerificationEmail($user, $verificationCode);
 
-        return $user;
+        // return $user;
     }
 
     /**

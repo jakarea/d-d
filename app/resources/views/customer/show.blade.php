@@ -3,6 +3,7 @@
 @section('title','Customer Details Page')
 
 @section('content')
+
 <!-- main page wrapper start -->
 <section class="main-page-wrapper marketplace-page-wrapper">
   <!-- page title -->
@@ -20,9 +21,9 @@
         <div class="txt">
           <h1>{{ $user->name }}</h1>
           @if ($user->roles)
-              @foreach ($user->roles as $role)
-                <p>{{ $role->name ? $role->name : '--' }}</p>
-              @endforeach
+          @foreach ($user->roles as $role)
+          <p>{{ $role->name ? $role->name : '--' }}</p>
+          @endforeach
           @endif
 
           <hr>
@@ -31,14 +32,19 @@
             <li>
 
               <p><img src="{{ asset('/public/assets/images/icons/envelope.svg') }}" alt="I" class="img-fluid">
-                cassandre66@gmail.com</p>
+                {{ $user->email }}</p>
             </li>
             <li>
 
             </li>
+            @if ($user->address)
             <li>
-              <p><img src="{{ asset('/public/assets/images/icons/global.svg') }}" alt="I" class="img-fluid"> Bangladesh</p>
+              <p><img src="{{ asset('/public/assets/images/icons/global.svg') }}" alt="I" class="img-fluid">
+                {{ optional($user->address)->country }} 
+              </p>
             </li>
+            @endif
+           
           </ul>
         </div>
       </div>
@@ -55,8 +61,9 @@
               <img src="{{ asset('/public/assets/images/icons/pen.svg') }}" alt="I" class="img-fluid">
             </a>
           </div>
-
+ 
           <!-- table start -->
+          @if ($user->personalInfo)
           <div class="personal-info-table-wrap">
             <table>
               <tr>
@@ -64,13 +71,13 @@
                   <p>Full Name</p>
                 </td>
                 <td>
-                  <h6>Pristia Candra Nelson</h6>
+                  <h6>{{ optional($user->personalInfo)->name }}</h6>
                 </td>
                 <td>
                   <p>Gender</p>
                 </td>
                 <td>
-                  <h6>Female</h6>
+                  <h6>{{ optional($user->personalInfo)->gender }}</h6>
                 </td>
               </tr>
               <tr>
@@ -78,13 +85,13 @@
                   <p>Designation</p>
                 </td>
                 <td>
-                  <h6>3D Designer</h6>
+                  <h6>{{ optional($user->personalInfo)->designation }} </h6>
                 </td>
                 <td>
                   <p>Marital Status</p>
                 </td>
                 <td>
-                  <h6>Unmarried</h6>
+                  <h6>{{ optional($user->personalInfo)->maritual_status }}</h6>
                 </td>
               </tr>
               <tr>
@@ -92,13 +99,13 @@
                   <p>Date of Birth</p>
                 </td>
                 <td>
-                  <h6>21 Oct 1995</h6>
+                  <h6>{{ optional($user->personalInfo)->dob }}</h6>
                 </td>
                 <td>
                   <p>Phone Number</p>
                 </td>
                 <td>
-                  <h6>911-415-0350</h6>
+                  <h6>{{ optional($user->personalInfo)->phone }}</h6>
                 </td>
               </tr>
               <tr>
@@ -106,17 +113,28 @@
                   <p>Nationality</p>
                 </td>
                 <td>
-                  <h6>Indonesia</h6>
+                  <h6>{{ optional($user->personalInfo)->nationality }}</h6>
                 </td>
                 <td>
                   <p>Email Address</p>
                 </td>
                 <td>
-                  <h6>cassandre66@gmail.com</h6>
+                  <h6>{{ optional($user->personalInfo)->email }}</h6>
                 </td>
               </tr>
             </table>
           </div>
+          @else 
+          <div class="personal-info-table-wrap">
+            <table>
+              <tr>
+                <td colspan="4" class="text-center">
+                  <p>No Personal Information Found!</p>
+                </td> 
+              </tr> 
+            </table>
+          </div>
+          @endif
           <!-- table end -->
         </div>
         <!-- customer personal info end -->
@@ -130,6 +148,7 @@
           </div>
 
           <!-- table start -->
+          @if ($user->address)
           <div class="personal-info-table-wrap">
             <table>
               <tr>
@@ -137,7 +156,7 @@
                   <p>Primary addresss</p>
                 </td>
                 <td>
-                  <h6>Banyumanik Street, Central Java. Semarang Indonesia</h6>
+                  <h6>{{ optional($user->address)->primary_address }}</h6>
                 </td>
               </tr>
               <tr>
@@ -145,7 +164,7 @@
                   <p>Country</p>
                 </td>
                 <td>
-                  <h6>Indonesia</h6>
+                  <h6>{{ optional($user->address)->country }}</h6>
                 </td>
               </tr>
               <tr>
@@ -153,7 +172,7 @@
                   <p>State</p>
                 </td>
                 <td>
-                  <h6>Central Java</h6>
+                  <h6>{{ optional($user->address)->state }}</h6>
                 </td>
               </tr>
               <tr>
@@ -161,7 +180,7 @@
                   <p>City</p>
                 </td>
                 <td>
-                  <h6>Semarang</h6>
+                  <h6>{{ optional($user->address)->city }}</h6>
                 </td>
               </tr>
               <tr>
@@ -169,11 +188,22 @@
                   <p>Post Code</p>
                 </td>
                 <td>
-                  <h6>03125</h6>
+                  <h6>{{ optional($user->address)->post_code }}</h6>
                 </td>
               </tr>
             </table>
           </div>
+          @else 
+          <div class="personal-info-table-wrap">
+            <table>
+              <tr>
+                <td colspan="4" class="text-center">
+                  <p>No Address Found!</p>
+                </td> 
+              </tr> 
+            </table>
+          </div>
+          @endif
           <!-- table end -->
         </div>
         <!-- customer address info end -->
@@ -182,123 +212,47 @@
     </div>
     <div class="col-12">
       <!-- reviews box -->
+      @if (count($user->reviews) > 0)
       <div class="company-reviews customer-reviews-box">
         <h3>Reviews</h3>
-
         <!-- review list start -->
         <div class="review-list">
           @foreach ($user->reviews as $review)
           <!-- review single item start -->
           <div class="review-single-item">
-            <div class="header">
-              <div class="media">
-                <img src="{{ asset('/public/assets/images/user.png') }}" alt="U" class="img-fluid">
-                <div class="media-body">
-                  <h5>Product Name</h5>
-                  <span>{{ $review->created_at->diffForHumans() }} </span>
-                </div>
+              <div class="header">
+                  <div class="media">
+                      <img src="{{ $review->product->images }}" alt="Product Image" class="img-fluid">
+                      <div class="media-body">
+                          <h5>{{ $review->product->title }}</h5>
+                          <span>{{ $review->created_at->diffForHumans() }} </span>
+                      </div>
+                  </div>
+      
+                  <ul class="star-rating">
+                      @for ($i = 1; $i <= 5; $i++)
+                          @if ($i <= $review->rating)
+                              <li><i class="fas fa-star"></i></li>
+                          @else
+                              <li><i class="far fa-star"></i></li>
+                          @endif
+                      @endfor
+                  </ul>
               </div>
-              <ul>
-                <li><i class="fas fa-star"></i></li>
-                <li><i class="fas fa-star"></i></li>
-                <li><i class="fas fa-star"></i></li>
-                <li><i class="fas fa-star"></i></li>
-                <li><i class="fa-regular fa-star"></i></li>
-              </ul>
-            </div>
-            <p>{{ $review->review }}</p>
+              <p>{{ $review->review }}</p>
           </div>
           <!-- review single item end -->
-          <!-- review single item start -->
-          <div class="review-single-item">
-            <div class="header">
-              <div class="media">
-                <img src="{{ asset('/public/uploads/users/avatar-02.png') }}" alt="U" class="img-fluid">
-                <div class="media-body">
-                  <h5>Product Name</h5>
-                  <span>1 days ago</span>
-                </div>
-              </div>
-              <ul>
-                <li><i class="fas fa-star"></i></li>
-                <li><i class="fas fa-star"></i></li>
-                <li><i class="fas fa-star"></i></li>
-                <li><i class="fas fa-star"></i></li>
-                <li><i class="fa-regular fa-star"></i></li>
-              </ul>
-            </div>
-            <p>The shoe runs really, really big!! I usually take an 11 for Nike, but this is really huge!</p>
-          </div>
-          <!-- review single item end -->
-          <!-- review single item start -->
-          <div class="review-single-item">
-            <div class="header">
-              <div class="media">
-                <img src="{{ asset('/public/uploads/users/avatar-03.png') }}" alt="U" class="img-fluid">
-                <div class="media-body">
-                  <h5>Product Name</h5>
-                  <span>25 Sep, 2023</span>
-                </div>
-              </div>
-              <ul>
-                <li><i class="fas fa-star"></i></li>
-                <li><i class="fas fa-star"></i></li>
-                <li><i class="fas fa-star"></i></li>
-                <li><i class="fas fa-star"></i></li>
-                <li><i class="fa-regular fa-star"></i></li>
-              </ul>
-            </div>
-            <p>The shoe runs really, really big!! I usually take an 11 for Nike, but this is really huge!</p>
-          </div>
-          <!-- review single item end -->
-          <!-- review single item start -->
-          <div class="review-single-item">
-            <div class="header">
-              <div class="media">
-                <img src="{{ asset('/public/uploads/users/avatar-04.png') }}" alt="U" class="img-fluid">
-                <div class="media-body">
-                  <h5>Product Name</h5>
-                  <span>23 Sep, 2023</span>
-                </div>
-              </div>
-              <ul>
-                <li><i class="fas fa-star"></i></li>
-                <li><i class="fas fa-star"></i></li>
-                <li><i class="fas fa-star"></i></li>
-                <li><i class="fas fa-star"></i></li>
-                <li><i class="fa-regular fa-star"></i></li>
-              </ul>
-            </div>
-            <p>Adipisci ipsum consectetur aut. Voluptatem quo fuga ab voluptas. Culpa dignissimos soluta.</p>
-          </div>
-          <!-- review single item end -->
-          <!-- review single item start -->
-          <div class="review-single-item">
-            <div class="header">
-              <div class="media">
-                <img src="{{ asset('/public/uploads/users/avatar-05.png') }}" alt="U" class="img-fluid">
-                <div class="media-body">
-                  <h5>Product Name</h5>
-                  <span>2 days ago</span>
-                </div>
-              </div>
-              <ul>
-                <li><i class="fas fa-star"></i></li>
-                <li><i class="fas fa-star"></i></li>
-                <li><i class="fas fa-star"></i></li>
-                <li><i class="fas fa-star"></i></li>
-                <li><i class="fa-regular fa-star"></i></li>
-              </ul>
-            </div>
-            <p>The shoe runs really, really big!! I usually take an 11 for Nike, but this is really huge!</p>
-          </div>
-          <!-- review single item end -->
+          @endforeach
         </div>
         <!-- review list end -->
-      </div>
+      </div> 
+      @endif
       <!-- reviews box -->
     </div>
   </div>
   <!-- customer edit end -->
+
 </section>
+
+
 @endsection

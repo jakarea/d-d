@@ -58,8 +58,8 @@ Route::group(['middleware' => ['auth']], function () {
 
     // customer route
     Route::resource('/users', CustomerController::class);
-    Route::get('/customer/{id}/edit/address', [CustomerController::class, 'editAddress'])->name('customer.editAddress');
-    Route::post('/customer/{id}/edit/address', [CustomerController::class, 'updateAddress'])->name('customer.updateAddress');
+    Route::get('/users/{id}/edit/address', [CustomerController::class, 'editAddress'])->name('users.editAddress');
+    Route::post('/users/{id}/edit/address', [CustomerController::class, 'updateAddress'])->name('users.updateAddress');
  
     // analytics route
     Route::get('/analytics', [AnalyticsController::class, 'analytics']);
