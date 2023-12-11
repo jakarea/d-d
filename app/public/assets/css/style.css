@@ -654,7 +654,7 @@ body {
   background-color: #F3F3F3;
 }
 
-.header-area .header-icons-box ul li a span {
+.header-area .header-icons-box ul li a span.dot {
   display: inline-block;
   width: 0.7rem;
   height: 0.7rem;
@@ -2272,6 +2272,7 @@ body {
   font-weight: 700;
   color: #000; 
   background-color: #A0AEC0;
+  flex-shrink: 0;
 }
 
 .nva-sm{

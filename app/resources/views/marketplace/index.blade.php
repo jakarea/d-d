@@ -137,20 +137,12 @@
     document.addEventListener("DOMContentLoaded", function() {
         let inputField = document.getElementById("inputField");
         let dropdownItems = document.querySelectorAll(".filterItem");
-        let form = document.getElementById("myForm");
-        // let dropbtn = document.getElementById("dropdownBttn");
-        // let queryString = window.location.search;
-        // let urlParams = new URLSearchParams(queryString);
-       //  let status = urlParams.get('category');
-       // if (status) {
-       //      dropbtn.innerHTML = status + '<i class="fas fa-angle-down"></i>';
-       // }
+        let form = document.getElementById("myForm"); 
 
         dropdownItems.forEach(item => {
             item.addEventListener("click", function(e) {
                 e.preventDefault();
-                inputField.value = this.getAttribute("data-value");
-                // dropbtn.innerText = item.innerText;
+                inputField.value = this.getAttribute("data-value"); 
                 form.submit();
             });
         });

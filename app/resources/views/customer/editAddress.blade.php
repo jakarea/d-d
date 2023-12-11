@@ -67,7 +67,7 @@
         <div class="form-box">
           <div class="title">
             <h3>Personal Info</h3>
-            <a href="#">
+            <a href="{{ route('users.edit', $user) }}">
               <img src="{{ asset('/public/assets/images/icons/pen.svg') }}" alt="I" class="img-fluid">
             </a>
           </div>

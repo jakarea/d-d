@@ -17,7 +17,7 @@
     <div class="col-12 col-md-4 col-xl-3">
       <!-- customer about start -->
       <div class="company-about-box">
-        @if ($user->personalInfo)
+        @if ($user->personalInfo && $user->personalInfo->avatar)
           <img src="{{ $user->personalInfo->avatar ? $user->personalInfo->avatar : '' }}" alt="A" class="img-fluid main-avatar">
           @else 
           <span class="no-avatar nva-lg">{!! strtoupper($user->name[0]) !!}</span>

@@ -11,7 +11,7 @@
     <div class="company-information">
       <div class="media align-items-start">
 
-          @if ($company->user->personalInfo) 
+          @if ($company->user->personalInfo && $company->user->personalInfo->avatar) 
             <img src="{{ $company->user->personalInfo->avatar }}" alt="A" class="img-fluid main-thumb"> 
           @else 
           <span class="no-avatar nva-lg me-4">{!! strtoupper($company->user->name[0]) !!}</span>
