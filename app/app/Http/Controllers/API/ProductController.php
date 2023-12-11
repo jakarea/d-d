@@ -8,15 +8,17 @@ use App\Models\Product;
 use App\Models\ProductVarient;
 use App\Process\ProductProcess;
 use App\Process\ProductVarientProcess;
+use App\Traits\FileTrait;
 use Illuminate\Http\Request;
 use App\Http\Requests\ProductAddRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\JsonResponse;
-use DB;
-use Auth;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends ApiController
 {
+    use FileTrait;
 
     /**
      * Display a listing of the resource.
@@ -94,29 +96,22 @@ class ProductController extends ApiController
 
     public function store(ProductAddRequest $request)
     {
-
         try {
 
             $product = ProductProcess::create($request);
 
             if (isset($request->product_varients) && count($request->product_varients) > 0) {
-
                 foreach ($request->product_varients as $productVarient) {
                     $productVarient['user_id'] = auth()->user()->id;
                     $productVarient['company_id'] = $product->company_id;
                     $productVarient['product_id'] = $product->id;
                     $productVarient['cats'] = json_encode($productVarient['cats']);
-
-                    ProductVarient::create($productVarient);
+                    ProductVarientProcess::create($productVarient);
                 }
             }
-
             $product = Product::with(['productVarients'])->where('id', $product->id)->first();
-
-            // Return a JSON response indicating success
             return $this->jsonResponse(false, 'Product created successfully', $product, [], JsonResponse::HTTP_CREATED);
         } catch (\Exception $e) {
-            // Handle any exceptions or errors
             return $this->jsonResponse(true, 'Failed to create product', $request->all(), [$e->getMessage()], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -221,8 +216,8 @@ class ProductController extends ApiController
      */
     public function destroy($id)
     {
-      
-        $product = Product::where('user_id',Auth::id())->where('id',$id)->first();
+
+        $product = Product::where('user_id', Auth::id())->where('id', $id)->first();
 
         if (!empty($product)) {
 

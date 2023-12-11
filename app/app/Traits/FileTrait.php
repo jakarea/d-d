@@ -8,24 +8,24 @@ use Illuminate\Support\Facades\Storage;
 
 trait FileTrait
 {
-    protected function fileUpload($request, $inputName, $destinationPath)
+    protected function fileUpload($base64Image, $destinationPath)
     {
-        if ($request->hasFile($inputName)) {
 
-            if (!Storage::exists($destinationPath)) {
-                Storage::makeDirectory($destinationPath);
-            }
-
-            $file = $request->file($inputName);
-            $fileName = Carbon::now()->toDateString() . '-' . uniqid() . '-' . $file->getClientOriginalName();
-            $filePath = $request->file($inputName)->storeAs($destinationPath, $fileName);
-
-            return $fileName;
+        if (!Storage::disk('public')->exists($destinationPath)) {
+            Storage::disk('public')->makeDirectory($destinationPath);
         }
+
+        list($type, $base64Image) = explode(';', $base64Image);
+        list(, $base64Image) = explode(',', $base64Image);
+        $imageData = base64_decode($base64Image);
+
+        // Generate a unique filename
+        $fileName = Carbon::now()->toDateString() . '-' . uniqid() . '.png';
+
+        // Store the image in the storage/app/public directory
+        Storage::disk('public')->put($destinationPath . '/' . $fileName, $imageData);
+
+        return $fileName;
     }
 
-    protected function fileDelete()
-    {
-        //
-    }
 }

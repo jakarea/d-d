@@ -66,7 +66,7 @@ class ProductAddRequest extends BaseFormRequest
                 ],
                 'images' => [
                     'nullable',
-                    'string',
+                    'array',
                 ],
                 'product_varients.*.title'=>[
                     'required',
@@ -78,12 +78,35 @@ class ProductAddRequest extends BaseFormRequest
                     'required',
                     'array'
                 ],
+                'product_varients.*.product_url'=>[
+                    'nullable',
+                    'url'
+                ],
                 'product_varients.*.price'=>[
                     'required',
                     'numeric',
                     'between:0,9999999.99'
                 ],
-
+                'product_varients.*.sell_price'=>[
+                    'nullable',
+                    'numeric',
+                    'between:0,9999999.99',
+                    'lt:price'
+                ],
+                'product_varients.*.cupon' => [
+                    'nullable',
+                    'string',
+                    'min:2',
+                    'max:20'
+                ],
+                'product_varients.*.description' => [
+                    'nullable',
+                    'string',
+                ],
+                'product_varients.*.images' => [
+                    'nullable',
+                    'array',
+                ]
             ];
 
 
