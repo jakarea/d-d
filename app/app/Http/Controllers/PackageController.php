@@ -13,7 +13,10 @@ class PackageController extends Controller
     use SlugTrait;
 
     public function index(){
-        return view('packages/index');
+
+        $packages = PricingPackage::get(); 
+
+        return view('packages/index',compact('packages'));
     }
 
     public function edit(){
