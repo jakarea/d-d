@@ -26,8 +26,8 @@
       <div class="company-profile-box">
         <!-- avatar -->
         <div class="avatar">
-          @if ($user->personalInfo)
-          <img src="{{ $user->personalInfo->avatar ? $user->personalInfo->avatar : '' }}" alt="Avatar" class="img-fluid">
+          @if ($user->personalInfo && $user->personalInfo->avatar)
+          <img src="{{ $user->personalInfo->avatar }}" alt="Avatar" class="img-fluid">
           @else 
           <span class="no-avatar nva-sm">{!! strtoupper($user->name[0]) !!}</span>
           @endif
