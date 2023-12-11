@@ -68,9 +68,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/earning', [EarningController::class, 'index']);
 
     // package subscription route
-    Route::get('/packages', [PackageController::class, 'index']);
-    Route::get('/package-update', [PackageController::class, 'editPackage']);
-    Route::post('/package-update', [PackageController::class, 'updatePackage']);
+    Route::get('/packages', [PackageController::class, 'index'])->name('pricing.packages');
+    Route::get('/package-update', [PackageController::class, 'edit']);
+    Route::post('/package-update/{id}', [PackageController::class, 'update'])->name('pricing.package.update');
 
     // advertisement route
     Route::get('/advertisement', function () {

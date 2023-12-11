@@ -25,11 +25,11 @@
         <div class="col-12 col-sm-6 col-lg-6 col-xl-4 col-xxl-3 mb-15">
             <div class="company-profile-box">
                 <!-- avatar -->
-                <div class="avatar">
+                <div class="avatar"> 
                     @if ($company->user->personalInfo)
                     <img src="{{ $company->user->personalInfo->avatar }}" alt="A" class="img-fluid">
                     @else
-                    <img src="{{asset('/public/uploads/company/thumbnail.png') }}" alt="A" class="img-fluid">
+                    <span class="no-avatar nva-sm">{!! strtoupper($company->user->name[0]) !!}</span>
                     @endif
                 </div>
                 <!-- avatar -->

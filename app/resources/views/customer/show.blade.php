@@ -148,7 +148,7 @@
         <div class="form-box mt-4">
           <div class="title">
             <h3>Address</h3>
-            <a href="#">
+            <a href="{{ route('users.editAddress', $user->id) }}">
               <img src="{{ asset('/public/assets/images/icons/pen.svg') }}" alt="I" class="img-fluid">
             </a>
           </div>

@@ -27,7 +27,7 @@
         <!-- avatar -->
         <div class="avatar">
           @if ($user->personalInfo)
-          <img src="{{ $user->personalInfo->avatar ? $user->personalInfo->avatar : '' }}" alt="A" class="img-fluid">
+          <img src="{{ $user->personalInfo->avatar ? $user->personalInfo->avatar : '' }}" alt="Avatar" class="img-fluid">
           @else 
           <span class="no-avatar nva-sm">{!! strtoupper($user->name[0]) !!}</span>
           @endif

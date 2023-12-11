@@ -6,8 +6,13 @@ use Illuminate\Http\Request;
 use App\Http\Requests\CustomerAddRequest;
 use App\Models\Company;
 use App\Models\Customer;
+use App\Models\Address;
 use App\Models\User;
 use App\Models\PersonalInfo;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\VerificationMail;
 use App\Models\Role;
 use Illuminate\Support\Facades\Hash;
 
@@ -63,9 +68,16 @@ class CustomerController extends Controller
         $user->roles()->attach($role);
 
         //  Send verification email
-        // $this->sendVerificationEmail($user, $verificationCode);
+        $this->sendVerificationEmail($user, $verificationCode);
 
-        // return $user;
+        return redirect()->route('users.index')->with('success', 'User Created Successfuly!');
+ 
+    }
+
+    protected function sendVerificationEmail(User $user, $verificationCode)
+    {
+        // Use your email template and customize as needed
+        Mail::to($user->email)->send(new VerificationMail($user,$verificationCode));
     }
 
     /**
@@ -75,8 +87,7 @@ class CustomerController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(User $user)
-    { 
-        // return $user->reviews; 
+    {  
         return view('customer/show', compact('user'));
     }
 
@@ -100,8 +111,6 @@ class CustomerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // return $request->all();
-        // return $id;
         $user = User::find($id); 
 
         $request->validate([
@@ -122,9 +131,8 @@ class CustomerController extends Controller
                 'email' => $request->input('email'), 
             ]);
         } 
-
-        // Use updateOrCreate to either update the existing PersonalInfo or create a new one
-        PersonalInfo::updateOrCreate(
+ 
+        $userInfos = PersonalInfo::updateOrCreate(
             ['user_id' => $user->id],
             [
                 'name' => $request->input('name'),
@@ -139,7 +147,27 @@ class CustomerController extends Controller
             ]
         );
 
+        $slugg = Str::slug($request->name);
+
+        if ($request->hasFile('avatar')) {
+            if ($userInfos->avatar) {
+                $oldFile = public_path($userInfos->avatar);
+                if (file_exists($oldFile)) {
+                    unlink($oldFile);
+                }
+            }
         
+            $file = $request->file('avatar');
+            $image = Image::make($file);
+            $uniqueFileName = $slugg . '-' . uniqid() . '.webp';
+            $image->save(public_path('uploads/users/' . $uniqueFileName));  // Save with the full path
+        
+            // Generate the full URL using the url helper
+            $image_path = url('public/uploads/users/' . $uniqueFileName);
+        
+            $userInfos->avatar = $image_path;
+            $userInfos->save(); // Save the user model to update the avatar path in the database
+        }        
 
         return redirect()->route('users.index')->with('success', 'User Information Updated Successfuly!');
     }
@@ -155,7 +183,39 @@ class CustomerController extends Controller
         //
     }
 
-    public function editAddress(User $user){
+    public function editAddress(User $user,$id){
+        $user = User::find($id);
         return view('customer/editAddress', compact('user'));
+    }
+    
+    public function updateAddress(Request $request,$id){
+        //  return $request->all();
+
+        $request->validate([
+            'primary_address' => 'required',
+            'country' => 'required', 
+            'city' => 'required',
+            'state' => 'required',
+            'post_code' => 'required'
+        ]);
+
+        $user = User::find($id); 
+
+        if ($user) {
+            Address::updateOrCreate(
+                ['user_id' => $user->id],
+                [
+                    'primary_address' => $request->input('primary_address'),
+                    'user_id' => $user->id,
+                    'country' => $request->input('country'),
+                    'city' => $request->input('city'),
+                    'state' => $request->input('state'),
+                    'post_code' => $request->input('post_code')
+                ]
+            );
+        } 
+
+        return redirect()->route('users.index')->with('success', 'User Address Information Updated Successfuly!');
+
     }
 }

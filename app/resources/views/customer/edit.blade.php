@@ -15,25 +15,22 @@
     <div class="col-12 col-md-4 col-xl-3">
       <!-- customer about start -->
       <div class="company-about-box">
-
         <div class="avatar-wrap">
           <div id="avatar-container">
-              @if ($user->personalInfo && $user->personalInfo->avatar)
-                  <img src="{{ $user->personalInfo->avatar }}" alt="A" class="img-fluid main-avatar" id="avatar-preview">
-              @else
-                  <span class="no-avatar nva-lg">{!! strtoupper($user->name[0]) !!}</span>
-              @endif
+            @if ($user->personalInfo && $user->personalInfo->avatar)
+            <img src="{{ $user->personalInfo->avatar }}" alt="A" class="img-fluid main-avatar" id="avatar-preview">
+            @else
+            <span class="no-avatar nva-lg">{!! strtoupper($user->name[0]) !!}</span>
+            @endif
           </div>
-      
-          <label for="avatar" class="avatar-label">
-              <div class="ol">
-                  <img src="{{ asset('public/assets/images/icons/photo.png') }}" alt="U" class="img-fluid logo-photo">
-                  <span>Update Photo</span>
-              </div>
-          </label> 
-      </div>
-      
 
+          <label for="avatar" class="avatar-label">
+            <div class="ol">
+              <img src="{{ asset('public/assets/images/icons/photo.png') }}" alt="U" class="img-fluid logo-photo">
+              <span>Update Photo</span>
+            </div>
+          </label>
+        </div>
         <div class="txt">
           <h1>{{$user->name}}</h1>
           @if ($user->roles)
@@ -86,23 +83,24 @@
           {{-- user avatar --}}
           <div class="form-group form-error">
             <label for="name">Full Name <span>*</span></label>
-            <input type="text" class="form-control @error('name') is-invalid @enderror" placeholder="Pristia Candra Nelson"
-              value="{{ optional($user->personalInfo)->name }}" name="name" id="name">
+            <input type="text" class="form-control @error('name') is-invalid @enderror"
+              placeholder="Pristia Candra Nelson" value="{{ optional($user->personalInfo)->name }}" name="name"
+              id="name">
 
-              <span class="invalid-feedback">
-                @error('name'){{ $message }} @enderror
+            <span class="invalid-feedback">
+              @error('name'){{ $message }} @enderror
             </span>
-            
+
           </div>
           <div class="form-group form-error">
             <label for="designation">Designation<span>*</span></label>
             <input type="text" class="form-control @error('designation') is-invalid @enderror" placeholder="Input here"
               value="{{ optional($user->personalInfo)->designation }}" name="designation" id="designation">
-              
-              <span class="invalid-feedback">
-                @error('designation'){{ $message }} @enderror
+
+            <span class="invalid-feedback">
+              @error('designation'){{ $message }} @enderror
             </span>
-            
+
           </div>
           <div class="row">
             <div class="col-lg-6">
@@ -111,10 +109,10 @@
                 <input type="date" class="form-control @error('dob') is-invalid @enderror" placeholder="Input here"
                   value="{{ optional($user->personalInfo)->dob }}" name="dob" id="dob">
 
-                  <span class="invalid-feedback">
-                    @error('dob'){{ $message }} @enderror
+                <span class="invalid-feedback">
+                  @error('dob'){{ $message }} @enderror
                 </span>
-             
+
               </div>
             </div>
             <div class="col-lg-6">
@@ -135,8 +133,8 @@
 
                 <span class="invalid-feedback">
                   @error('gender'){{ $message }} @enderror
-              </span>
-              
+                </span>
+
               </div>
             </div>
             <div class="col-lg-6">
@@ -144,47 +142,49 @@
                 <label for="email">Email Address <span>*</span></label>
                 <input type="email" class="form-control @error('email') is-invalid @enderror" placeholder="Enter email"
                   value="{{ optional($user->personalInfo)->email }}" name="email" id="email">
-                  <span class="invalid-feedback">
-                    @error('email'){{ $message }} @enderror
+                <span class="invalid-feedback">
+                  @error('email'){{ $message }} @enderror
                 </span>
-                
+
               </div>
             </div>
             <div class="col-lg-6">
               <div class="form-group form-error">
                 <label for="phone">Phone Number<span>*</span></label>
-                <input type="text" class="form-control @error('phone') is-invalid @enderror" placeholder="Enter phone number"
-                  value="{{ optional($user->personalInfo)->phone }}" name="phone" id="phone">
+                <input type="text" class="form-control @error('phone') is-invalid @enderror"
+                  placeholder="Enter phone number" value="{{ optional($user->personalInfo)->phone }}" name="phone"
+                  id="phone">
 
-                  <span class="invalid-feedback">
-                    @error('phone'){{ $message }} @enderror
+                <span class="invalid-feedback">
+                  @error('phone'){{ $message }} @enderror
                 </span>
-                
+
               </div>
             </div>
             <div class="col-lg-6">
               <div class="form-group form-error">
                 <label for="nationality">Nationality <span>*</span></label>
-                <input type="text" class="form-control @error('nationality') is-invalid @enderror" placeholder="Nationality.."
-                  value="{{ optional($user->personalInfo)->nationality }}" name="nationality" id="nationality">
+                <input type="text" class="form-control @error('nationality') is-invalid @enderror"
+                  placeholder="Nationality.." value="{{ optional($user->personalInfo)->nationality }}"
+                  name="nationality" id="nationality">
 
-                  <span class="invalid-feedback">
-                    @error('nationality'){{ $message }} @enderror
+                <span class="invalid-feedback">
+                  @error('nationality'){{ $message }} @enderror
                 </span>
-                
+
               </div>
             </div>
             <div class="col-lg-6">
               <div class="form-group form-error">
                 <label for="maritual_status">Marital Status<span>*</span></label>
-                <input type="text" class="form-control @error('maritual_status') is-invalid @enderror" placeholder="Input here status"
-                  value="{{ optional($user->personalInfo)->maritual_status }}" name="maritual_status"
-                  id="maritual_status">
+                <input type="text" class="form-control @error('maritual_status') is-invalid @enderror"
+                  placeholder="Input here status" value="{{ optional($user->personalInfo)->maritual_status }}"
+                  name="maritual_status" id="maritual_status">
 
-                  <span class="invalid-feedback">
-                    @error('maritual_status'){{ $message }} @enderror
+                <span class="invalid-feedback">
+                  @error('maritual_status'){{ $message }} @enderror
                 </span>
-                
+
               </div>
             </div>
           </div>
@@ -197,7 +197,7 @@
         <div class="form-box mt-4">
           <div class="title">
             <h3>Address</h3>
-            <a href="#">
+            <a href="{{ route('users.editAddress', $user->id) }}">
               <img src="{{ asset('/public/assets/images/icons/pen.svg') }}" alt="I" class="img-fluid">
             </a>
           </div>
@@ -297,4 +297,4 @@
       });
   });
 </script>
-@endsection 
+@endsection
