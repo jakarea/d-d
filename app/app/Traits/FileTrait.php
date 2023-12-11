@@ -20,7 +20,7 @@ trait FileTrait
         $imageData = base64_decode($base64Image);
 
         // Generate a unique filename
-        $fileName = Carbon::now()->toDateString() . '-' . uniqid() . '-' . '.png';
+        $fileName = Carbon::now()->toDateString() . '-' . uniqid() . '.png';
 
         // Store the image in the storage/app/public directory
         Storage::disk('public')->put($destinationPath . '/' . $fileName, $imageData);

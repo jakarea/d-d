@@ -4,6 +4,8 @@ namespace App\Process;
 
 use App\Models\ProductVarient;
 use App\Traits\FileTrait;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Storage;
 
 class ProductVarientProcess
 {
@@ -21,6 +23,12 @@ class ProductVarientProcess
     public static function update($request, $id)
     {
         $productVarient =  ProductVarient::find($id);
+
+        if (isset($request['images']) && isset($productVarient->images)) {
+            $arrayofImages = json_decode($productVarient->images);
+            (new self())->deleteImage($arrayofImages);
+        }
+
         $productVarient = (new self())->saveProductVarient($request, $productVarient);
 
         return $productVarient;
@@ -41,7 +49,7 @@ class ProductVarientProcess
         $productVarient->description = isset($request['description']) ? $request['description']:null;
 
         if (isset($request['images'])) {
-            $arrayofImage =  $this->imageProcess($request);
+            $arrayofImage =  $this->saveImage($request);
             $productVarient->images  = json_encode($arrayofImage);
         }
 
@@ -50,7 +58,7 @@ class ProductVarientProcess
         return $productVarient;
     }
 
-    public function imageProcess($request)
+    public function saveImage($request)
     {
         $arrayofImages = [];
 
@@ -60,6 +68,16 @@ class ProductVarientProcess
         }
 
         return $arrayofImages;
+    }
+
+    public function deleteImage($arrayofImages)
+    {
+
+        $fileUrl =  Config::get('app.file_url');
+        foreach ($arrayofImages as $image){
+            $image = str_replace($fileUrl, "", $image);
+            Storage::disk('public')->delete($image);
+        }
     }
 
 

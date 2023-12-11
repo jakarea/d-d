@@ -7,6 +7,8 @@ use App\Models\Product;
 use App\Traits\FileTrait;
 use App\Traits\SlugTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Storage;
 
 class ProductProcess
 {
@@ -23,6 +25,12 @@ class ProductProcess
     public static function update($request, $productId)
     {
         $product = Product::find($productId);
+
+        if (isset($request->images) && isset($product->images)) {
+            $arrayofImages = json_decode($product->images);
+            (new self())->deleteImage($arrayofImages);
+        }
+
         $product = (new self())->saveProduct($request, $product);
 
         return $product;
@@ -42,7 +50,7 @@ class ProductProcess
         $product->description = $request->description;
 
         if (isset($request->images)) {
-            $arrayofImage =  $this->imageProcess($request);
+            $arrayofImage =  $this->saveImage($request);
             $product->images = json_encode($arrayofImage);
         }
 
@@ -51,7 +59,7 @@ class ProductProcess
         return $product;
     }
 
-    public function imageProcess($request)
+    public function saveImage($request)
     {
         $arrayofImages = [];
 
@@ -61,6 +69,16 @@ class ProductProcess
         }
 
         return $arrayofImages;
+    }
+
+    public function deleteImage($arrayofImages)
+    {
+
+        $fileUrl =  Config::get('app.file_url');
+         foreach ($arrayofImages as $image){
+             $image = str_replace($fileUrl, "", $image);
+             Storage::disk('public')->delete($image);
+         }
     }
 
 
