@@ -9,6 +9,8 @@ use App\Http\Controllers\EarningController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\MarketPlaceController;
+use App\Http\Controllers\AdvertisementController;
+use App\Http\Controllers\AdminProfileController;
 use App\Http\Controllers\API\ForgotPasswordController;
 /*
 |--------------------------------------------------------------------------
@@ -58,35 +60,28 @@ Route::group(['middleware' => ['auth']], function () {
 
     // customer route
     Route::resource('/users', CustomerController::class);
-    Route::get('/customer/{id}/edit/address', [CustomerController::class, 'editAddress'])->name('customer.editAddress');
-    Route::post('/customer/{id}/edit/address', [CustomerController::class, 'updateAddress'])->name('customer.updateAddress');
+    Route::get('/users/{id}/edit/address', [CustomerController::class, 'editAddress'])->name('users.editAddress');
+    Route::post('/users/{id}/edit/address', [CustomerController::class, 'updateAddress'])->name('users.updateAddress');
  
     // analytics route
     Route::get('/analytics', [AnalyticsController::class, 'analytics']);
-
     // earning route
     Route::get('/earning', [EarningController::class, 'index']);
 
     // package subscription route
-    Route::get('/packages', [PackageController::class, 'index']);
-    Route::get('/package-update', [PackageController::class, 'editPackage']);
-    Route::post('/package-update', [PackageController::class, 'updatePackage']);
+    Route::get('/packages', [PackageController::class, 'index'])->name('pricing.packages');
+    Route::get('/packages-update', [PackageController::class, 'edit'])->name('pricing.package.edit');
+    Route::post('/packages-update/{id}', [PackageController::class, 'update'])->name('pricing.package.update');
 
-    // advertisement route
-    Route::get('/advertisement', function () {
-        return view('advertisement/index');
-    });
+    // advertisment route
+    Route::get('/advertisement', [AdvertisementController::class, 'index'])->name('advertise.products');
 
     // admin profile route
-    Route::get('/account/my-profile', function () {
-        return view('admin-profile/details');
-    });
-    Route::get('/account/edit-profile', function () {
-        return view('admin-profile/edit');
-    });
-    Route::get('/account/edit-address', function () {
-        return view('admin-profile/edit-address');
-    });
+    Route::get('/account/my-profile', [AdminProfileController::class, 'index'])->name('admin.profile');
+    Route::get('/account/edit-profile', [AdminProfileController::class, 'edit'])->name('admin.profile.edit');
+    Route::post('/account/edit-profile', [AdminProfileController::class, 'update'])->name('admin.profile.update');
+    Route::get('/account/edit-address', [AdminProfileController::class, 'editAddress'])->name('admin.profile.address.edit');
+    Route::post('/account/edit-address', [AdminProfileController::class, 'updateAddress'])->name('admin.profile.address.update');
 
     // category route
     Route::resource('/category', CategoryController::class);

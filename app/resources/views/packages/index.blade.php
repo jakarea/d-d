@@ -39,185 +39,88 @@
       <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab"
         tabindex="0">
         <div class="row justify-content-center">
+          @foreach ($packages as $package) 
           <!-- plan single monthly start -->
           <div class="col-xl-4 col-sm-10 col-md-6 mb-3">
             <div class="pricing-box">
-
               <div>
                 <div class="pricing-icon">
-                  <img src="{{ asset('/public/assets/images/icons/basic-plan.svg') }}" alt="B" class="img-fluid">
+                  @if ($package->name == 'Basic plan')
+                    <img src="{{ asset('/public/assets/images/icons/basic-plan.svg') }}" alt="Basic" class="img-fluid">
+                  @elseif($package->name == 'Business plan')
+                  <img src="{{ asset('/public/assets/images/icons/business-plan.svg') }}" alt="Business" class="img-fluid">
+                  @elseif($package->name == 'Enterprise plan')
+                  <img src="{{ asset('/public/assets/images/icons/enterprise-plan.svg') }}" alt="Enterprise" class="img-fluid">
+                  @endif
+                  
                 </div>
                 <div class="txt">
-                  <h5>Basic plan</h5>
-                  <h3> $10/mth </h3>
-                  <h6>Billed monthly</h6>
-
+                  <h5>{{ $package->name }}</h5>
+                  <h3> €{{ $package->price }}/mth </h3>
+                  <h6>Billed {{ $package->package_type }}</h6>
+ 
                   <ul>
+                    @foreach (json_decode($package->features) as $feature) 
                     <li>
                       <img src="{{ asset('/public/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
-                      <span>Access to all basic features</span>
+                      <span>{{ $feature }}</span>
                     </li>
-                    <li>
-                      <img src="{{ asset('/public/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
-                      <span>Basic reporting and analytics</span>
-                    </li>
-                    <li>
-                      <img src="{{ asset('/public/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
-                      <span>Up to 10 individual users</span>
-                    </li>
-                    <li>
-                      <img src="{{ asset('/public/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
-                      <span>20GB individual data each user</span>
-                    </li>
-                    <li>
-                      <img src="{{ asset('/public/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
-                      <span>Basic chat and email support</span>
-                    </li>
+                    @endforeach
                   </ul>
                 </div>
               </div>
               <div class="bttn">
-                <a href="#" class="will-subscribe">Edit Plan</a>
+                <a href="{{ route('pricing.package.edit') }}" class="will-subscribe">Edit Plan</a>
               </div>
             </div>
           </div>
-          <!-- plan single monthly end -->
-          <!-- plan single monthly start -->
-          <div class="col-xl-4 col-sm-10 col-md-6 mb-3">
-            <div class="pricing-box">
-              <span class="current-plan">
-                Feature
-              </span>
-              <div>
-                <div class="pricing-icon">
-                  <img src="{{ asset('/public/assets/images/icons/business-plan.svg') }}" alt="B" class="img-fluid">
-                </div>
-                <div class="txt">
-                  <h5>Business plan</h5>
-                  <h3> $20/mth </h3>
-                  <h6>Billed monthly</h6>
+          <!-- plan single monthly end --> 
+          @endforeach 
 
-                  <ul>
-                    <li>
-                      <img src="{{ asset('/public/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
-                      <span>200+ integrations</span>
-                    </li>
-                    <li>
-                      <img src="{{ asset('/public/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
-                      <span>Advanced reporting and analytics</span>
-                    </li>
-                    <li>
-                      <img src="{{ asset('/public/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
-                      <span>Up to 20 individual users</span>
-                    </li>
-                    <li>
-                      <img src="{{ asset('/public/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
-                      <span>40GB individual data each user</span>
-                    </li>
-                    <li>
-                      <img src="{{ asset('/public/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
-                      <span>Priority chat and email support</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <div class="bttn">
-                <a href="#" class="will-subscribe">Edit Plan</a>
-              </div>
-            </div>
-          </div>
-          <!-- plan single monthly end -->
-          <!-- plan single monthly start -->
-          <div class="col-xl-4 col-sm-10 col-md-6 mb-3">
-            <div class="pricing-box">
-
-              <div>
-                <div class="pricing-icon">
-                  <img src="{{ asset('/public/assets/images/icons/enterprise-plan.svg') }}" alt="B" class="img-fluid">
-                </div>
-                <div class="txt">
-                  <h5>Enterprise plan</h5>
-                  <h3> $40/mth </h3>
-                  <h6>Billed monthly</h6>
-
-                  <ul>
-                    <li>
-                      <img src="{{ asset('/public/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
-                      <span>Advanced custom fields</span>
-                    </li>
-                    <li>
-                      <img src="{{ asset('/public/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
-                      <span>Audit log and data history</span>
-                    </li>
-                    <li>
-                      <img src="{{ asset('/public/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
-                      <span>Unlimited individual users</span>
-                    </li>
-                    <li>
-                      <img src="{{ asset('/public/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
-                      <span>Unlimited individual data</span>
-                    </li>
-                    <li>
-                      <img src="{{ asset('/public/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
-                      <span>Personalised+priotity service</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <div class="bttn">
-                <a href="#" class="will-subscribe">Edit Plan</a>
-              </div>
-            </div>
-          </div>
-          <!-- plan single monthly end -->
         </div>
       </div>
 
       <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
         <div class="row justify-content-center">
+          @foreach ($packages as $package) 
+          <!-- plan single monthly start -->
+          @if ($package->yearly_price > 0)
           <div class="col-xl-4 col-sm-10 col-md-6 mb-3">
             <div class="pricing-box">
-              <span class="current-plan">
-                Feature
-              </span>
               <div>
                 <div class="pricing-icon">
-                  <img src="{{ asset('/public/assets/images/icons/basic-plan.svg') }}" alt="B" class="img-fluid">
+                  @if ($package->name == 'Basic plan')
+                    <img src="{{ asset('/public/assets/images/icons/basic-plan.svg') }}" alt="Basic" class="img-fluid">
+                  @elseif($package->name == 'Business plan')
+                  <img src="{{ asset('/public/assets/images/icons/business-plan.svg') }}" alt="Business" class="img-fluid">
+                  @elseif($package->name == 'Enterprise plan')
+                  <img src="{{ asset('/public/assets/images/icons/enterprise-plan.svg') }}" alt="Enterprise" class="img-fluid">
+                  @endif
+                  
                 </div>
                 <div class="txt">
-                  <h5>Basic plan</h5>
-                  <h3> $10/mth </h3>
-                  <h6>Billed monthly</h6>
-
+                  <h5>{{ $package->name }}</h5>
+                  <h3> €{{ $package->price }}/year </h3>
+                  <h6>Billed {{ $package->package_type }}</h6>
+ 
                   <ul>
+                    @foreach (json_decode($package->features) as $feature) 
                     <li>
                       <img src="{{ asset('/public/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
-                      <span>Access to all basic features</span>
+                      <span>{{ $feature }}</span>
                     </li>
-                    <li>
-                      <img src="{{ asset('/public/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
-                      <span>Basic reporting and analytics</span>
-                    </li>
-                    <li>
-                      <img src="{{ asset('/public/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
-                      <span>Up to 10 individual users</span>
-                    </li>
-                    <li>
-                      <img src="{{ asset('/public/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
-                      <span>20GB individual data each user</span>
-                    </li>
-                    <li>
-                      <img src="{{ asset('/public/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
-                      <span>Basic chat and email support</span>
-                    </li>
+                    @endforeach
                   </ul>
                 </div>
               </div>
               <div class="bttn">
-                <a href="#" class="will-subscribe">Edit Plan</a>
+                <a href="{{ route('pricing.package.edit') }}" class="will-subscribe">Edit Plan</a>
               </div>
             </div>
-          </div>
+          </div>  
+          @endif
+          <!-- plan single monthly end --> 
+          @endforeach
         </div>
       </div>
     </div>

@@ -15,14 +15,18 @@
         <ul class="main">
             <li>
                 <a href="#">
-                    <span></span>
+                    <span class="dot"></span>
                     <img src="{{ asset('public/assets/images/icons/bell.svg') }}" alt="B" class="img-fluid">
                 </a>
             </li>
             <li>
                 <div class="dropdown p-0 header-dropdown">
                     <a class="p-0 user" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="{{ asset('public/assets/images/user.png') }}" alt="B" class="img-fluid">
+                        @if (auth()->user()->personalInfo && auth()->user()->personalInfo->avatar)
+                            <img src="{{ auth()->user()->personalInfo->avatar }}" alt="A" class="img-fluid">
+                        @else  
+                        <span class="no-avatar nva-sm" style="width: 2.75rem; height: 2.75rem;">{!! strtoupper(auth()->user()->name[0]) !!}</span>
+                        @endif
                         <i class="fas fa-angle-down ms-2"></i>
                     </a>
 

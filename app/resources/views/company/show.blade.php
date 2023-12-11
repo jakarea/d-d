@@ -11,14 +11,10 @@
     <div class="company-information">
       <div class="media align-items-start">
 
-          @if ($company->user->personalInfo)
-            @if ($company->user->personalInfo->avatar)
-            <img src="{{ $company->user->personalInfo->avatar }}" alt="A" class="img-fluid main-thumb">
-            @else
-            <img src="{{asset('/public/uploads/company/thumbnail.png') }}" alt="A" class="img-fluid main-thumb">
-            @endif
+          @if ($company->user->personalInfo && $company->user->personalInfo->avatar) 
+            <img src="{{ $company->user->personalInfo->avatar }}" alt="A" class="img-fluid main-thumb"> 
           @else 
-          <img src="{{asset('/public/uploads/company/thumbnail.png') }}" alt="A" class="img-fluid main-thumb">
+          <span class="no-avatar nva-lg me-4">{!! strtoupper($company->user->name[0]) !!}</span>
           @endif
  
         <div class="media-body">
@@ -106,7 +102,6 @@
               @endfor
           </div>
 
-
           </div>
 
           <!-- review list start -->
@@ -116,7 +111,7 @@
             <div class="review-single-item">
               <div class="header">
                 <div class="media">
-                  <img src="{{ asset('public/assets/images/user.png') }}" alt="U" class="img-fluid">
+                  <img src="{{ $review->user->personalInfo->avatar }}" alt="U" class="img-fluid">
                   <div class="media-body">
                     <h5>{{$review->user->name}}</h5>
                     <span>{{$review->created_at->diffForHumans()}}</span>
