@@ -57,7 +57,7 @@
                 <div class="txt">
                   <h5>{{ $package->name }}</h5>
                   <h3> €{{ $package->price }}/mth </h3>
-                  <h6>Billed {{ $package->package_type }}</h6>
+                  <h6>Billed Monthly</h6>
  
                   <ul>
                     @foreach (json_decode($package->features) as $feature) 
@@ -101,7 +101,7 @@
                 <div class="txt">
                   <h5>{{ $package->name }}</h5>
                   <h3> €{{ $package->yearly_price }}/year </h3>
-                  <h6>Billed {{ $package->package_type }}</h6>
+                  <h6>Billed Yearly</h6>
  
                   <ul>
                     @foreach (json_decode($package->features) as $feature) 
