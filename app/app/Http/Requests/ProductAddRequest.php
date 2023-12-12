@@ -23,7 +23,6 @@ class ProductAddRequest extends BaseFormRequest
     {
 
             return [
-
                 'company_id' => [
                     'required',
                     'integer',

@@ -21,11 +21,11 @@ class ProductController extends ApiController
     use FileTrait;
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Display list of products
+     * @param \Illuminate\Http\Request $request
+     * @return JsonResponse
      */
-    public function index(Request $request)
+    public function index(Request $request):JsonResponse
     {
 
         $company = $request->company;
@@ -57,7 +57,6 @@ class ProductController extends ApiController
             $query->where('title', 'LIKE', "%{$searchTerm}%");
         }
 
-
         if (!is_null($searchLocation)) {
             $searchLocation = strip_tags(trim($searchLocation));
             $query->whereHas('company', function ($q) use ($searchLocation) {
@@ -80,7 +79,6 @@ class ProductController extends ApiController
             }
         }
 
-
         $products = $query->get();
 
         return $this->jsonResponse(false, $this->success, $products, $this->emptyArray, JsonResponse::HTTP_OK);
@@ -88,14 +86,13 @@ class ProductController extends ApiController
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
+     * Store product with product varients
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
-
-    public function store(ProductAddRequest $request)
+    public function store(ProductAddRequest $request): JsonResponse
     {
+
         try {
 
             $product = ProductProcess::create($request);
@@ -110,24 +107,39 @@ class ProductController extends ApiController
                 }
             }
             $product = Product::with(['productVarients'])->where('id', $product->id)->first();
+
             return $this->jsonResponse(false, 'Product created successfully', $product, [], JsonResponse::HTTP_CREATED);
         } catch (\Exception $e) {
+
             return $this->jsonResponse(true, 'Failed to create product', $request->all(), [$e->getMessage()], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
-    public function editProduct($id)
+    /**
+     * Edit specific product
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function editProduct($id):JsonResponse
     {
         $product = Product::with(['productVarients'])->where('id', $id)->first();
 
         if (!empty($product)) {
+
             return $this->jsonResponse(false, $this->success, $product, $this->emptyArray, JsonResponse::HTTP_OK);
         } else {
+
             return $this->jsonResponse(true, $this->failed, $this->emptyArray, ['Product not found'], JsonResponse::HTTP_NOT_FOUND);
         }
     }
 
-    public function updateProduct(UpdateRequest $request, $id)
+    /**
+     * Update product & product varients
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function updateProduct(UpdateRequest $request, $id):JsonResponse
     {
         try {
             $product = ProductProcess::update($request, $id);
@@ -141,21 +153,22 @@ class ProductController extends ApiController
             if (isset($product->productVarients)) {
                 $product->productVarients;
             }
-            return $this->jsonResponse(false, "Product updated successfully", $product, $this->emptyArray, JsonResponse::HTTP_OK);
 
+            return $this->jsonResponse(false, "Product updated successfully", $product, $this->emptyArray, JsonResponse::HTTP_OK);
         } catch (\Exception $e) {
+
             return $this->jsonResponse(true, 'Failed to update product', $request->all(), [$e->getMessage()], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
 
     }
 
     /**
-     * Display the specified resource.
-     *
+     * Display the specified product
+     * @param \Illuminate\Http\Request $request
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
-    public function productDetails(Request $request, $id)
+    public function productDetails(Request $request, $id):JsonResponse
     {
 
         $query = Product::with(['productVarients', 'company', 'reviews' => function ($query) {
@@ -168,12 +181,19 @@ class ProductController extends ApiController
         $product = $query->find($id);
 
         if (!empty($product)) {
+
             return $this->jsonResponse(false, $this->success, $product, $this->emptyArray, JsonResponse::HTTP_OK);
         } else {
+
             return $this->jsonResponse(true, $this->failed, $this->emptyArray, ['Product not found'], JsonResponse::HTTP_NOT_FOUND);
         }
     }
 
+    /**
+     * Show products for specific company
+     * @param $companyId
+     * @return JsonResponse
+     */
     public function getProductsOfCompany($companyId): JsonResponse
     {
 
@@ -185,34 +205,42 @@ class ProductController extends ApiController
         }, 'reviews'])->where('id', $companyId)->first();
 
         if (!empty($products)) {
+
             return $this->jsonResponse(false, $this->success, $products, $this->emptyArray, JsonResponse::HTTP_OK);
         } else {
+
             return $this->jsonResponse(true, $this->failed, $this->emptyArray, ['Products not found'], JsonResponse::HTTP_NOT_FOUND);
         }
     }
 
-    public function companyProductDetails($companyId, $productId)
+    /**
+     * Show company product details
+     * @param $companyId
+     * @param $productId
+     * @return JsonResponse
+     */
+    public function companyProductDetails($companyId, $productId):JsonResponse
     {
         $product = Product::with(['productVarients'])
             ->where('company_id', $companyId)
             ->where('id', $productId)
             ->first();
 
-
         if (!empty($product)) {
+
             return $this->jsonResponse(false, $this->success, $product, $this->emptyArray, JsonResponse::HTTP_OK);
         } else {
+
             return $this->jsonResponse(true, $this->failed, $this->emptyArray, ['Product not found'], JsonResponse::HTTP_NOT_FOUND);
         }
-
 
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete product with product varients
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
     public function destroy($id)
     {
@@ -229,7 +257,13 @@ class ProductController extends ApiController
         }
     }
 
-    protected function updateProductVarient($request, $product, $arrayofProductVarientId)
+    /**
+     * @param $request
+     * @param $product
+     * @param $arrayofProductVarientId
+     * @return array
+     */
+    protected function updateProductVarient($request, $product, $arrayofProductVarientId):array
     {
         if (isset($request->product_varients)) {
             foreach ($request->product_varients as $productVarient) {
@@ -251,7 +285,7 @@ class ProductController extends ApiController
                     $productVarient['product_id'] = $product->id;
                     $productVarient['cats'] = json_encode($productVarient['cats']);
 
-                    ProductVarient::create($productVarient);
+                    ProductVarientProcess::create($productVarient);
                 }
             }
         }

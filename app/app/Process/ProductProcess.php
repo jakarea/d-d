@@ -26,7 +26,7 @@ class ProductProcess
     {
         $product = Product::find($productId);
 
-        if (isset($request->images) && isset($product->images)) {
+        if (isset($request->images) && count($request->images) > 0 && isset($product->images)) {
             $arrayofImages = json_decode($product->images);
             (new self())->deleteImage($arrayofImages);
         }
@@ -49,7 +49,7 @@ class ProductProcess
         $product->cupon = $request->cupon;
         $product->description = $request->description;
 
-        if (isset($request->images)) {
+        if (isset($request->images) && count($request->images) > 0) {
             $arrayofImage =  $this->saveImage($request);
             $product->images = json_encode($arrayofImage);
         }
