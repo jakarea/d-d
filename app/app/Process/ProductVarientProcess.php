@@ -3,9 +3,14 @@
 namespace App\Process;
 
 use App\Models\ProductVarient;
+use App\Traits\FileTrait;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Storage;
 
 class ProductVarientProcess
 {
+
+    use FileTrait;
 
     public static function create($request)
     {
@@ -18,6 +23,12 @@ class ProductVarientProcess
     public static function update($request, $id)
     {
         $productVarient =  ProductVarient::find($id);
+
+        if (isset($request['images']) && isset($productVarient->images)) {
+            $arrayofImages = json_decode($productVarient->images);
+            (new self())->deleteImage($arrayofImages);
+        }
+
         $productVarient = (new self())->saveProductVarient($request, $productVarient);
 
         return $productVarient;
@@ -36,9 +47,40 @@ class ProductVarientProcess
         $productVarient->sell_price = isset($request['sell_price']) ? $request['sell_price']:null;
         $productVarient->cupon = isset($request['cupon']) ? $request['cupon']:null;
         $productVarient->description = isset($request['description']) ? $request['description']:null;
-        $productVarient->images = isset($request['images']) ? $request['images']:null;
+
+        if (isset($request['images'])) {
+            $arrayofImage =  $this->saveImage($request);
+            $productVarient->images  = json_encode($arrayofImage);
+        }
+
         $productVarient->save();
 
         return $productVarient;
     }
+
+    public function saveImage($request)
+    {
+        $arrayofImages = [];
+
+        foreach ($request['images'] as $image) {
+            $filePath = $this->fileUpload($image, "product-varients");
+            $arrayofImages[] = asset('storage/product-varients/' . $filePath);
+        }
+
+        return $arrayofImages;
+    }
+
+    public function deleteImage($arrayofImages)
+    {
+
+        $fileUrl =  Config::get('app.file_url');
+        foreach ($arrayofImages as $image){
+            $image = str_replace($fileUrl, "", $image);
+            Storage::disk('public')->delete($image);
+        }
+    }
+
+
+
+
 }
