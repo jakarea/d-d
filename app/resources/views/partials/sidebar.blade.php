@@ -18,6 +18,12 @@
                 </a>
             </li>
             <li>
+                <a href="{{url('/category')}}" class="{{ Request::is('category*') ? 'active' : ''}}">
+                    <img src="{{ asset('public/assets/images/icons/marketplace.svg') }}" alt="I" class="img-fluid">
+                    Categories
+                </a>
+            </li>
+            <li>
                 <a href="{{url('/marketplace')}}" class="{{ Request::is('marketplace*') ? 'active' : ''}}">
                     <img src="{{ asset('public/assets/images/icons/marketplace.svg') }}" alt="I" class="img-fluid">
                     Marketplace

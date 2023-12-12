@@ -270,7 +270,6 @@
 <!-- main page wrapper end -->
 @endsection
 
-
 @section('script')
 {{-- image upload preview --}}
 <script>

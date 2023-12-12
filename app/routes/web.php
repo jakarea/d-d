@@ -12,6 +12,7 @@ use App\Http\Controllers\MarketPlaceController;
 use App\Http\Controllers\AdvertisementController;
 use App\Http\Controllers\AdminProfileController;
 use App\Http\Controllers\API\ForgotPasswordController;
+use Illuminate\Support\Facades\Artisan;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -49,6 +50,9 @@ Route::group(['middleware' => ['auth']], function () {
         return view('dashboard/index');
     });
 
+    // category route
+    Route::resource('/category', CategoryController::class);
+
     // marketplace route
     Route::prefix('marketplace')->controller(MarketPlaceController::class)->group(function () {
         Route::get('/', 'index')->name('product.list'); 
@@ -83,9 +87,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/account/edit-address', [AdminProfileController::class, 'editAddress'])->name('admin.profile.address.edit');
     Route::post('/account/edit-address', [AdminProfileController::class, 'updateAddress'])->name('admin.profile.address.update');
 
-    // category route
-    Route::resource('/category', CategoryController::class);
-
     // logout route
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -98,5 +99,15 @@ Route::group(['middleware' => ['web','guest']], function () {
     Route::get('api/reset-password/{token}', [ForgotPasswordController::class, 'showResetForm'])->name('password.reset');
     Route::get('api/reset-update', [ForgotPasswordController::class, 'showStatusPage'])->name('password.status');
     Route::post('reset-password', [ForgotPasswordController::class, 'resetPassword'])->name('password.update');
+});
 
+// all cache clear route
+Route::get('/clear-cache', function () {
+    Artisan::call('cache:clear'); 
+    Artisan::call('config:clear'); 
+    Artisan::call('route:clear'); 
+    Artisan::call('view:clear');
+    Artisan::call('clear-compiled');
+    Artisan::call('storage:link');
+    return redirect('/');
 });

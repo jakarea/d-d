@@ -18,8 +18,8 @@ class CategoryController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        $categories = Category::all();
+    { 
+        $categories = Category::paginate(16); 
         return view('category/index',compact('categories'));
     }
 
