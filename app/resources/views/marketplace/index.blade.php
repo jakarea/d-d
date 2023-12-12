@@ -55,15 +55,21 @@
                             if (!$sellPrice || !$price) {
                                 $percentageDiscount = 0;
                             }
-
                         @endphp
                         
                         <span>{{ number_format($percentageDiscount, 0) }}%</span>
 
-                        @if ($product->images)
-                            <img src="{{ $product->images }}" alt="Product Tumbnail" class="img-fluid">
+                        @php
+                            $imageUrls = [];
+                            if (isset($product) && !empty($product->images)) {
+                                $imageUrls = json_decode($product->images);
+                            }
+                        @endphp
+                        
+                        @if(is_array($imageUrls) && count($imageUrls) > 0)
+                            <img src="{{ $imageUrls[0] }}" alt="Product Thumbnail" class="img-fluid">
                         @else
-                        <img src="{{ asset('public/uploads/products/product-thumbnail-01.png')}}" alt="Product Tumbnail" class="img-fluid">
+                            <img src="{{ asset('public/uploads/products/product-thumbnail-01.png')}}" alt="Product Thumbnail" class="img-fluid">
                         @endif 
 
                         <a href="#"><i class="fa-regular fa-heart"></i></a>
