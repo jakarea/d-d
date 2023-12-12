@@ -51,6 +51,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::prefix('marketplace')->controller(MarketPlaceController::class)->group(function () {
         Route::get('/', 'index')->name('product.list'); 
         Route::get('/{slug}', 'show')->name('product.show'); 
+        Route::get('/{slug}/edit', 'edit')->name('product.edit'); 
+        Route::post('/{slug}/edit', 'update')->name('product.update'); 
     });
 
     // company route

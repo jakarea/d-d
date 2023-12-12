@@ -24,7 +24,7 @@ class CompanyAddRequest extends FormRequest
     public function rules()
     {
         return [
-            'company_name' => 'required',
+            'name' => 'required',
             'tagline' => 'required',
             'email' => 'required|email|unique:users,email',
             'phone' => 'required',

@@ -72,39 +72,50 @@
 
                 <form action="" method="POST">
                     @csrf
-                    <div class="form-group">
+                    <div class="form-group form-error">
                         <label for="name">Company Name <span>*</span></label>
-                        <input type="text" class="form-control" placeholder="Company Name.."
-                            value="{{ old('company_name')}}" name="company_name" id="name">
-                        @error('company_name') <span>{{ $message }}</span> @enderror
+                        <input type="text" class="form-control @error('name') is-invalid @enderror" placeholder="Company Name.."
+                            value="{{ old('name')}}" name="name" id="name">
+
+                       <span class="invalid-feedback">
+                            @error('name'){{ $message }} @enderror
+                        </span>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group form-error">
                         <label for="tagline">Company Tagline <span>*</span></label>
-                        <input type="text" class="form-control" placeholder="Company Tagline.."
+                        <input type="text" class="form-control @error('tagline') is-invalid @enderror" placeholder="Company Tagline.."
                             value="{{ old('tagline')}}" name="tagline" id="tagline">
-                        @error('tagline') <span>{{ $message }}</span> @enderror
+                            <span class="invalid-feedback">
+                                @error('tagline'){{ $message }} @enderror
+                              </span>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group form-error">
                         <label for="email">Email Address <span>*</span></label>
-                        <input type="email" class="form-control" placeholder="Company Email" value="{{ old('email')}}"
+                        <input type="email" class="form-control @error('email') is-invalid @enderror" placeholder="Company Email" value="{{ old('email')}}"
                             name="email" id="email">
-                        @error('email') <span>{{ $message }}</span> @enderror
+                            <span class="invalid-feedback">
+                                @error('email'){{ $message }} @enderror
+                              </span>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group form-error">
                         <label for="phone">Phone <span>*</span></label>
-                        <input type="text" class="form-control" placeholder="Company Phone Number"
+                        <input type="text" class="form-control @error('phone') is-invalid @enderror" placeholder="Company Phone Number"
                             value="{{ old('phone')}}" name="phone" id="phone">
-                        @error('phone') <span>{{ $message }}</span> @enderror
+                            <span class="invalid-feedback">
+                                @error('phone'){{ $message }} @enderror
+                              </span>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group form-error">
                         <label for="location">Location <span>*</span></label>
-                        <input type="text" class="form-control" placeholder="Company Location"
+                        <input type="text" class="form-control @error('location') is-invalid @enderror" placeholder="Company Location"
                             value="{{ old('location')}}" name="location" id="location">
-                        @error('location') <span>{{ $message }}</span> @enderror
+                            <span class="invalid-feedback">
+                                @error('location'){{ $message }} @enderror
+                              </span>
                     </div>
 
                     <div class="form-submit">

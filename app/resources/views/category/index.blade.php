@@ -24,51 +24,56 @@
 
   <!-- category list start -->
   <div class="row">
-    @foreach($categories as $category)
-    <!-- company single box start -->
-    <div class="col-12 col-sm-6 col-lg-4 col-xl-3 mb-15">
-      <div class="company-profile-box">
+    @if (count($categories) > 0) 
+        @foreach($categories as $category)
+        <!-- company single box start -->
+        <div class="col-12 col-sm-6 col-lg-4 col-xl-3 mb-15">
+          <div class="company-profile-box">
+            {{-- actions --}}
+            <div class="header-action">
+              <div class="dropdown">
+                <button class="btn btn-ellipse" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="fa-solid fa-ellipsis-vertical"></i>
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="{{ route('category.edit', $category) }}">Edit</a></li>
+                  <li>
+                    <form method="POST" class="d-block ps-0 dropdown-item" action="{{ route('category.destroy', $category) }}">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn text-danger">Delete
+                        </button>
+                    </form>
+                </li> 
 
-        {{-- actions --}}
-        <div class="header-action">
-          <div class="dropdown">
-            <button class="btn btn-ellipse" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <i class="fa-solid fa-ellipsis-vertical"></i>
-            </button>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="{{ route('category.edit', $category) }}">Edit</a></li>
-              <li>
-                <form method="POST" class="d-block ps-0 dropdown-item" action="{{ route('category.destroy', $category) }}">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn text-danger">Delete
-                    </button>
-                </form>
-            </li> 
+                </ul>
+              </div>
+            </div>
+            {{-- actions --}}
 
-            </ul>
+            <!-- avatar -->
+            <div class="avatar">
+              <img src="{{ $category->icon }}" alt="{{ $category->name}}" class="img-fluid">
+            </div>
+            <!-- avatar -->
+
+            <div class="txt">
+              <h4>{{ $category->name}}</h4>
+              <hr>
+              <div class="details-bttn">
+                <a href="{{ url('marketplace?category='.$category->id) }}" class="bttn">View Products</a>
+              </div>
+
+            </div>
           </div>
         </div>
-        {{-- actions --}}
-
-        <!-- avatar -->
-        <div class="avatar">
-          <img src="{{ $category->icon }}" alt="{{ $category->name}}" class="img-fluid">
-        </div>
-        <!-- avatar -->
-
-        <div class="txt">
-          <h4>{{ $category->name}}</h4>
-          <hr>
-          <div class="details-bttn">
-            <a href="{{ url('marketplace?category='.$category->id) }}" class="bttn">View Products</a>
-          </div>
-
-        </div>
-      </div>
-    </div>
-    <!-- company single box end -->
-    @endforeach
+        <!-- company single box end -->
+        @endforeach
+    @else 
+        {{-- no data found component --}}
+        <x-EmptyDataComponent :dynamicData="'No Category Found!'" /> 
+        {{-- no data found component --}}
+    @endif
   </div>
   <!-- category list end -->
 

@@ -122,7 +122,6 @@
         @else 
             {{-- no data found component --}}
             <x-EmptyDataComponent :dynamicData="'No Products Found!'" /> 
-
             {{-- no data found component --}}
         @endif
     </div>
