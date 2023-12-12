@@ -226,7 +226,7 @@
             @endforeach
             @else
             {{-- no data found component --}}
-            <x-emptyDataComponent :dynamicData="'No Variants Found for this Product!'" />
+            <x-EmptyDataComponent :dynamicData="'No Variants Found for this Product!'" />
             {{-- no data found component --}}
             @endif
           </div>
