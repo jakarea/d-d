@@ -24,7 +24,7 @@ class ProductVarientProcess
     {
         $productVarient =  ProductVarient::find($id);
 
-        if (isset($request['images']) && isset($productVarient->images)) {
+        if (isset($request['images']) && count($request['images']) > 0 && isset($productVarient->images)) {
             $arrayofImages = json_decode($productVarient->images);
             (new self())->deleteImage($arrayofImages);
         }
@@ -48,7 +48,7 @@ class ProductVarientProcess
         $productVarient->cupon = isset($request['cupon']) ? $request['cupon']:null;
         $productVarient->description = isset($request['description']) ? $request['description']:null;
 
-        if (isset($request['images'])) {
+        if (isset($request['images']) && count($request['images']) > 0) {
             $arrayofImage =  $this->saveImage($request);
             $productVarient->images  = json_encode($arrayofImage);
         }
