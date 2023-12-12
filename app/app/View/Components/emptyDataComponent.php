@@ -4,7 +4,7 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class emptyDataComponent extends Component
+class EmptyDataComponent extends Component
 {
     /**
      * Create a new component instance.

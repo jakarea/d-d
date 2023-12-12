@@ -121,7 +121,8 @@
             @endforeach 
         @else 
             {{-- no data found component --}}
-            <x-emptyDataComponent :dynamicData="'No Products Found!'" />
+            <x-EmptyDataComponent :dynamicData="'No Products Found!'" /> 
+
             {{-- no data found component --}}
         @endif
     </div>
