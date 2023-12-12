@@ -62,6 +62,10 @@ class UpdateRequest extends BaseFormRequest
             'country'=>[
                 'required',
             ],
+            'avatar'=>[
+                'nullable',
+                'string'
+            ],
         ];
     }
 }

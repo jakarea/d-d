@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Hash;
 class ClientController extends ApiController
 {
     public function profile():JsonResponse
-    { 
+    {
        $user = User::with(['personalInfo','address','company'])->where('id', auth()->user()->id)->first();
 
         return $this->jsonResponse(false, $this->success, $user, $this->emptyArray, JsonResponse::HTTP_OK);
@@ -59,14 +59,14 @@ class ClientController extends ApiController
                     ],
                     [
                         'name' =>  auth()->user()->name,
-                        'phone' => $request->get('phone'), 
+                        'phone' => $request->get('phone'),
                     ],
                 );
-    
+
                 $userInfo = array_merge($user->toArray(), $personalInfo->toArray());
-    
+
                 return $this->jsonResponse(false, $this->success, $userInfo, $this->emptyArray, JsonResponse::HTTP_CREATED);
-            }else{ 
+            }else{
                 return $this->jsonResponse(true, 'Email does not match to our record', $request->all(), ['email' => ['Email not found!']], 404);
             }
 
