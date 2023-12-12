@@ -4,6 +4,7 @@ namespace App\Traits;
 
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
 
 trait FileTrait
@@ -26,6 +27,19 @@ trait FileTrait
         Storage::disk('public')->put($destinationPath . '/' . $fileName, $imageData);
 
         return $fileName;
+    }
+
+    public function deleteFile($directory, $arrayofImages)
+    {
+
+        $fileUrl = Config::get('app.file_url');
+
+        foreach ($arrayofImages as $image) {
+            $image = str_replace($fileUrl, "", $image);
+            if (Storage::disk($directory)->exists($image)) {
+                Storage::disk($directory)->delete($image);
+            }
+        }
     }
 
 }
