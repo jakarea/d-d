@@ -14,8 +14,8 @@ use Illuminate\Support\Facades\Hash;
 class ClientController extends ApiController
 {
     public function profile():JsonResponse
-    {
-        $user = User::with(['personalInfo','address'])->where('id', auth()->user()->id)->first();
+    { 
+       $user = User::with(['personalInfo','address','company'])->where('id', auth()->user()->id)->first();
 
         return $this->jsonResponse(false, $this->success, $user, $this->emptyArray, JsonResponse::HTTP_OK);
     }
