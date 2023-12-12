@@ -140,22 +140,29 @@ class ProductController extends ApiController
      * @param int $id
      * @return JsonResponse
      */
-    public function updateProduct(UpdateRequest $request, $id): JsonResponse
+    public function updateProduct(UpdateRequest $request, $id)
     {
+
         try {
-            $product = ProductProcess::update($request, $id);
+            $product =  Product::find($id);
+            if(!empty($product)){
 
-            $arrayofProductVarientId = ProductVarient::where('product_id', $id)->pluck('id')->toArray();
+                $product = ProductProcess::update($request, $id);
 
-            $deletableProductVarient = $this->updateProductVarient($request, $product, $arrayofProductVarientId);
+                $arrayofProductVarientId = ProductVarient::where('product_id', $id)->pluck('id')->toArray();
 
-            ProductVarient::whereIn('id', $deletableProductVarient)->delete();
+                $deletableProductVarient = $this->updateProductVarient($request, $product, $arrayofProductVarientId);
 
-            if (isset($product->productVarients)) {
-                $product->productVarients;
+                ProductVarient::whereIn('id', $deletableProductVarient)->delete();
+
+                if (isset($product->productVarients)) {
+                    $product->productVarients;
+                }
+
+                return $this->jsonResponse(false, "Product updated successfully", $product, $this->emptyArray, JsonResponse::HTTP_OK);
+            }else{
+                return $this->jsonResponse(false,$this->failed,['Product not found'], $this->emptyArray, JsonResponse::HTTP_NOT_FOUND);
             }
-
-            return $this->jsonResponse(false, "Product updated successfully", $product, $this->emptyArray, JsonResponse::HTTP_OK);
         } catch (\Exception $e) {
 
             return $this->jsonResponse(true, 'Failed to update product', $request->all(), [$e->getMessage()], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
