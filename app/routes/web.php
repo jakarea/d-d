@@ -35,21 +35,15 @@ Route::group(['middleware' => ['guest']], function () {
     Route::post('/login', [AuthController::class,'login']);
 });
 
+
+// initial redirection route
 Route::group(['middleware' => ['auth']], function () {
+    Route::get('/', function () { return redirect('/dashboard'); });
+    Route::get('/home', function () { return redirect('/dashboard'); }); 
+    Route::get('/dashboard', function () { return view('dashboard/index'); });
+});
 
-    // initial redirection route
-    Route::get('/', function () {
-        return redirect('/dashboard');
-    });
-    Route::get('/home', function () {
-        return redirect('/dashboard');
-    });
-
-    // dashboard route
-    Route::get('/dashboard', function () {
-        return view('dashboard/index');
-    });
-
+Route::group(['middleware' => ['auth']], function () {
     // category route
     Route::resource('/category', CategoryController::class);
 
