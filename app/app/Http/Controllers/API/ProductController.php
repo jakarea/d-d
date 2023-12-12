@@ -15,6 +15,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends ApiController
 {
@@ -25,7 +26,7 @@ class ProductController extends ApiController
      * @param \Illuminate\Http\Request $request
      * @return JsonResponse
      */
-    public function index(Request $request):JsonResponse
+    public function index(Request $request): JsonResponse
     {
 
         $company = $request->company;
@@ -120,7 +121,7 @@ class ProductController extends ApiController
      * @param int $id
      * @return JsonResponse
      */
-    public function editProduct($id):JsonResponse
+    public function editProduct($id): JsonResponse
     {
         $product = Product::with(['productVarients'])->where('id', $id)->first();
 
@@ -139,7 +140,7 @@ class ProductController extends ApiController
      * @param int $id
      * @return JsonResponse
      */
-    public function updateProduct(UpdateRequest $request, $id):JsonResponse
+    public function updateProduct(UpdateRequest $request, $id): JsonResponse
     {
         try {
             $product = ProductProcess::update($request, $id);
@@ -168,7 +169,7 @@ class ProductController extends ApiController
      * @param int $id
      * @return JsonResponse
      */
-    public function productDetails(Request $request, $id):JsonResponse
+    public function productDetails(Request $request, $id): JsonResponse
     {
 
         $query = Product::with(['productVarients', 'company', 'reviews' => function ($query) {
@@ -219,7 +220,7 @@ class ProductController extends ApiController
      * @param $productId
      * @return JsonResponse
      */
-    public function companyProductDetails($companyId, $productId):JsonResponse
+    public function companyProductDetails($companyId, $productId): JsonResponse
     {
         $product = Product::with(['productVarients'])
             ->where('company_id', $companyId)
@@ -247,12 +248,29 @@ class ProductController extends ApiController
 
         $product = Product::where('user_id', Auth::id())->where('id', $id)->first();
 
+        //delete product images
+        if (isset($product->images)) {
+            $arrayofImages = json_decode($product->images);
+            $this->deleteFile("public", $arrayofImages);
+        }
+
+        //delete product varient images
+        if(isset($product->productVarients))
+        {
+            foreach ($product->productVarients as $proVarient)
+            {
+                $arrayofImages = json_decode($proVarient->images);
+                $this->deleteFile("public", $arrayofImages);
+            }
+        }
+
         if (!empty($product)) {
 
             $product->delete();
 
             return $this->jsonResponse(false, 'Product deleted successfully', $product, $this->emptyArray, JsonResponse::HTTP_OK);
         } else {
+
             return $this->jsonResponse(true, $this->failed, $this->emptyArray, ['Product not found'], JsonResponse::HTTP_NOT_FOUND);
         }
     }
@@ -263,7 +281,7 @@ class ProductController extends ApiController
      * @param $arrayofProductVarientId
      * @return array
      */
-    protected function updateProductVarient($request, $product, $arrayofProductVarientId):array
+    protected function updateProductVarient($request, $product, $arrayofProductVarientId): array
     {
         if (isset($request->product_varients)) {
             foreach ($request->product_varients as $productVarient) {
