@@ -73,14 +73,6 @@ class ProductAddRequest extends BaseFormRequest
                     'min:2',
                     'max:255'
                 ],
-                'product_varients.*.cats'=>[
-                    'required',
-                    'array'
-                ],
-                'product_varients.*.product_url'=>[
-                    'nullable',
-                    'url'
-                ],
                 'product_varients.*.price'=>[
                     'required',
                     'numeric',

@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use Illuminate\Support\Str;
 use App\Models\Category;
+// use App\Models\Product;
 
 trait SlugTrait
 {
@@ -18,14 +19,16 @@ trait SlugTrait
      * @return string  The unique slug.
      */
     
-    protected function makeUniqueSlug($name, $originalSlug = null)
-    {
+    protected function makeUniqueSlug($name,$model, $originalSlug = null)
+    {   
+        $modelClass = '\App\Models' . '\\' . $model;
+
         $iteration = 1;
-        $existingCategory = null;
+        $existingItem = null;
         $toSlug = $name;
 
         while (true) {
-            if ($existingCategory) {
+            if ($existingItem) {
                 $toSlug = $name . '-' . $iteration;
             }
 
@@ -33,10 +36,10 @@ trait SlugTrait
             $slug = Str::slug($toSlug);
 
             // Check if the slug is unique in the database
-            $existingCategory = Category::where('slug', $slug)->first();
+            $existingItem = $modelClass::where('slug', $slug)->first();
 
             // If the slug is unique, or it belongs to the original category being updated
-            if (!$existingCategory || ($originalSlug && $existingCategory->id == $originalSlug)) {
+            if (!$existingItem || ($originalSlug && $existingItem->id == $originalSlug)) {
                 return $slug;
             }
 

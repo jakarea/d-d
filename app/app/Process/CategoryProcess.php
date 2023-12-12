@@ -15,7 +15,7 @@ class CategoryProcess{
     {
         $category = new Category();
         $category->name = $request->name;
-        $category->slug = (new self())->makeUniqueSlug($request->name);
+        $category->slug = (new self())->makeUniqueSlug($request->name,'Category');
         $category->created_by = auth()->user()->id;
 
         if ($request->file('icon') != null) {

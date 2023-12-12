@@ -44,7 +44,7 @@ class CategoryController extends Controller
 
         $name = $request->input('name');
         // Ensure the slug is unique
-        $slug = $this->makeUniqueSlug($name);
+        $slug = $this->makeUniqueSlug($name,'Category');
 
         $icon = $request->file('icon');
         // Resize and compress the image

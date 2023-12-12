@@ -71,7 +71,7 @@ class PackageController extends Controller
  
         $pricingPackage->update([
             'name' => $request->input('name'),
-            'slug' => $this->makeUniqueSlug($request->name),
+            'slug' => $this->makeUniqueSlug($request->name,'PricingPackage',$request->slug),
             'price' => $request->input('price'),
             'yearly_price' => $request->input('yearly_price'),
             'package_type' => $request->input('package_type'),
