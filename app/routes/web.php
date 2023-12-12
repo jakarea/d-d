@@ -35,21 +35,15 @@ Route::group(['middleware' => ['guest']], function () {
     Route::post('/login', [AuthController::class,'login']);
 });
 
+
+// initial redirection route
 Route::group(['middleware' => ['auth']], function () {
+    Route::get('/', function () { return redirect('/dashboard'); });
+    Route::get('/home', function () { return redirect('/dashboard'); }); 
+    Route::get('/dashboard', function () { return view('dashboard/index'); });
+});
 
-    // initial redirection route
-    Route::get('/', function () {
-        return redirect('/dashboard');
-    });
-    Route::get('/home', function () {
-        return redirect('/dashboard');
-    });
-
-    // dashboard route
-    Route::get('/dashboard', function () {
-        return view('dashboard/index');
-    });
-
+Route::group(['middleware' => ['auth']], function () {
     // category route
     Route::resource('/category', CategoryController::class);
 
@@ -57,6 +51,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::prefix('marketplace')->controller(MarketPlaceController::class)->group(function () {
         Route::get('/', 'index')->name('product.list'); 
         Route::get('/{slug}', 'show')->name('product.show'); 
+        Route::get('/{slug}/edit', 'edit')->name('product.edit'); 
+        Route::post('/{slug}/edit', 'update')->name('product.update'); 
     });
 
     // company route

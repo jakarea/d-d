@@ -79,25 +79,36 @@
 
         <form action="" method="POST">
           @csrf
-          <div class="form-group">
+          <div class="form-group form-error">
             <label for="name">Name <span>*</span></label>
-            <input type="text" class="form-control" placeholder="Full Name.." value="{{ old('name')}}" name="name"
+            <input type="text" class="form-control @error('name') is-invalid @enderror" placeholder="Full Name.." value="{{ old('name')}}" name="name"
               id="name">
-            @error('name') <span>{{ $message }}</span> @enderror
+
+              <span class="invalid-feedback">
+                @error('name'){{ $message }} @enderror
+              </span>
+
           </div>
 
-          <div class="form-group">
+          <div class="form-group form-error">
             <label for="email">Email Address <span>*</span></label>
-            <input type="email" class="form-control" placeholder="Enter Email" value="{{ old('email')}}" name="email"
+            <input type="email" class="form-control @error('email') is-invalid @enderror" placeholder="Enter Email" value="{{ old('email')}}" name="email"
               id="email">
-            @error('email') <span>{{ $message }}</span> @enderror
+
+              <span class="invalid-feedback">
+                @error('email'){{ $message }} @enderror
+              </span>
+
           </div>
 
-          <div class="form-group">
-            <label for="kvk_number">kvk number <span>*</span></label>
-            <input type="text" class="form-control" placeholder="Enter kvk number Number" value="{{ old('kvk_number')}}"
-              name="kvk_number" id="kvk_number">
-            @error('kvk_number') <span>{{ $message }}</span> @enderror
+          <div class="form-group form-error">
+            <label for="kvk_number">kvk number </label>
+            <input type="text" class="form-control @error('kvk_number') is-invalid @enderror" placeholder="Enter kvk number Number" value="{{ old('kvk_number')}}" name="kvk_number" id="kvk_number">
+
+            <span class="invalid-feedback">
+                @error('kvk_number'){{ $message }} @enderror
+              </span>
+
           </div>
 
           <div class="form-submit">

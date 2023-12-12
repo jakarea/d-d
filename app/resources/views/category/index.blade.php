@@ -4,7 +4,7 @@
 
 @section('style')
 <link rel="stylesheet" href="{{ asset('public/assets/css/custom.css') }}">
-@endsection 
+@endsection
 
 @section('content')
 <!-- main page wrapper start -->
@@ -24,38 +24,66 @@
 
   <!-- category list start -->
   <div class="row">
-    @foreach($categories as $category)
-    <!-- company single box start -->
-    <div class="col-12 col-sm-6 col-lg-4 col-xl-3 mb-15">
-      <div class="company-profile-box">
-        <!-- avatar -->
-        <div class="avatar">
-          <img src="{{ $category->icon }}" alt="{{ $category->name}}" class="img-fluid">
-        </div>
-        <!-- avatar -->
+    @if (count($categories) > 0) 
+        @foreach($categories as $category)
+        <!-- company single box start -->
+        <div class="col-12 col-sm-6 col-lg-4 col-xl-3 mb-15">
+          <div class="company-profile-box">
+            {{-- actions --}}
+            <div class="header-action">
+              <div class="dropdown">
+                <button class="btn btn-ellipse" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="fa-solid fa-ellipsis-vertical"></i>
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="{{ route('category.edit', $category) }}">Edit</a></li>
+                  <li>
+                    <form method="POST" class="d-block ps-0 dropdown-item" action="{{ route('category.destroy', $category) }}">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn text-danger">Delete
+                        </button>
+                    </form>
+                </li> 
 
-        <div class="txt">
-          <h4>{{ $category->name}}</h4>
-          <hr>
-          <div class="details-bttn">
-            <a href="{{ url('marketplace?category='.$category->id) }}" class="bttn">View Products</a>
+                </ul>
+              </div>
+            </div>
+            {{-- actions --}}
+
+            <!-- avatar -->
+            <div class="avatar">
+              <img src="{{ $category->icon }}" alt="{{ $category->name}}" class="img-fluid">
+            </div>
+            <!-- avatar -->
+
+            <div class="txt">
+              <h4>{{ $category->name}}</h4>
+              <hr>
+              <div class="details-bttn">
+                <a href="{{ url('marketplace?category='.$category->id) }}" class="bttn">View Products</a>
+              </div>
+
+            </div>
           </div>
-
         </div>
-      </div>
-    </div>
-    <!-- company single box end -->
-    @endforeach
+        <!-- company single box end -->
+        @endforeach
+    @else 
+        {{-- no data found component --}}
+        <x-EmptyDataComponent :dynamicData="'No Category Found!'" /> 
+        {{-- no data found component --}}
+    @endif
   </div>
   <!-- category list end -->
 
   {{-- paggination wrap --}}
   <div class="row">
     <div class="col-12 paggination-wrap">
-        {{ $categories->links('pagination::bootstrap-5') }}
+      {{ $categories->links('pagination::bootstrap-5') }}
     </div>
-</div>
-{{-- paggination wrap --}}
+  </div>
+  {{-- paggination wrap --}}
 
 </section>
 <!-- main page wrapper end -->
@@ -80,19 +108,21 @@
           @csrf
           <div class="form-group form-error">
             <label for="name">Name <span>*</span></label>
-            <input type="text" class="form-control @error('name') is-invalid @enderror" placeholder="Name.." name="name" id="name">
+            <input type="text" class="form-control @error('name') is-invalid @enderror" placeholder="Name.." name="name"
+              id="name">
             @error('name') <span>{{ $message }}</span> @enderror
           </div>
 
           <div class="form-group form-error">
             <label for="icon">Icon<span>*</span></label>
-            <input type="file" class="form-control @error('icon') is-invalid @enderror" placeholder="Enter icon" name="icon" id="icon">
+            <input type="file" class="form-control @error('icon') is-invalid @enderror" placeholder="Enter icon"
+              name="icon" id="icon">
             @error('icon') <span>{{ $message }}</span> @enderror
-        </div>
-        
-        <div id="icon-container" class="mt-2">
+          </div>
+
+          <div id="icon-container" class="mt-2">
             <img src="" alt="" class="img-fluid rounded" id="icon-preview">
-        </div>
+          </div>
 
           <div class="form-submit">
             <button type="reset" class="btn btn-cancel">Cancel</button>

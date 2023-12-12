@@ -43,10 +43,10 @@ class CompanyController extends Controller
         $verificationCode = str_pad(mt_rand(0, 99999), 5, '0', STR_PAD_LEFT);
         $password = str_pad(mt_rand(0, 99999999), 8, '0', STR_PAD_LEFT);
         $user = User::create([
-            'name' => $request->input('company_name'),
+            'name' => $request->input('name'),
             'email' => $request->input('email'),
             'password' => Hash::make($password),
-            'role' => 'company', // Set the user role as 'company'
+            'role' => 'company',
             'verification_code' => $verificationCode,
             'email_verified_at' => null,
         ]);
@@ -57,7 +57,7 @@ class CompanyController extends Controller
             $message = 'Successfully added a new company.';
             $status = 'success';
             $company = Company::create([
-                'name' => $request->input('company_name'),
+                'name' => $request->input('name'),
                 'email' => $request->input('email'),
                 'tagline' => $request->input('tagline'),
                 'phone' => $request->input('phone'),

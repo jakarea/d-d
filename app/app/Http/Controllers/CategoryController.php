@@ -6,8 +6,9 @@ use App\Traits\SlugTrait;
 use Illuminate\Http\Request;
 use App\Http\Requests\CategoryAddRequest;
 use Illuminate\Support\Str;
-use Intervention\Image\Facades\Image;
-use Auth;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image; 
 class CategoryController extends Controller
 {
     use SlugTrait;
@@ -93,9 +94,9 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
+    public function edit(Category $category)
+    { 
+        return view('category/edit',compact('category'));
     }
 
     /**
@@ -105,9 +106,56 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Category $category)
     {
-        //
+        // Validate the request data
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'icon' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        // Ensure the slug is unique
+        $slug = $this->makeUniqueSlug($request->input('name'), 'Category', $category->id);
+
+        // Update category data
+        $category->name = $request->input('name');
+        $category->slug = $slug;
+
+        // Update the icon if a new file is provided
+        if ($request->hasFile('icon')) {
+            $icon = $request->file('icon');
+            $url = $this->updateIcon($icon, $category);
+            $category->icon = $url;
+        }
+
+        $category->save();
+
+        $status = 'success';
+        $message = 'Category updated successfully!';
+
+        return redirect()->route('category.index')->with($status, $message);
+    }
+
+    // Helper method to update icon and return the URL
+    protected function updateIcon($icon, $category)
+    {
+        $resizedImage = Image::make($icon)
+            ->resize(100, 100)
+            ->encode('jpg', 80);
+
+        $directory = 'public/uploads/category';
+        $filename = uniqid('icon_') . '.jpg';
+
+        $resizedImage->save($directory . '/' . $filename);
+
+        $url = asset($directory . '/' . $filename);
+
+        // Delete the old icon if it exists
+        if (Storage::exists($category->icon)) {
+            Storage::delete($category->icon);
+        }
+
+        return $url;
     }
 
     /**
@@ -116,9 +164,20 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Category $category)
     {
-        //
+        if (Storage::exists($category->icon)) {
+            Storage::delete($category->icon);
+        }
+    
+        // Delete the category
+        $category->delete();
+    
+        $status = 'success';
+        $message = 'Category deleted successfully!';
+    
+        return redirect()->route('category.index')->with($status, $message);
+    
     }
 
 }

@@ -27,9 +27,9 @@
         <div class="media-body">
           <div class="d-flex">
             <h5>{{ $product->title }}</h5>
-            {{-- <a href="#">
+            <a href="{{ route('product.edit',$product->slug) }}">
               <img src="{{asset('public/assets/images/icons/pen.svg')}}" alt="I" class="img-fluid">
-            </a> --}}
+            </a>
           </div>
           <h6>{{ $company->name }}</h6>
 
@@ -57,6 +57,8 @@
           </ul>
 
           <p>{{$product->description}}</p>
+
+          <h5 class="mt-2">€{{ $product->sell_price ? $product->sell_price : $product->price }}</h5>
 
         </div>
       </div>
