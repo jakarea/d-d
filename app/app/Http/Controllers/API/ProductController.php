@@ -101,8 +101,7 @@ class ProductController extends ApiController
                 foreach ($request->product_varients as $productVarient) {
                     $productVarient['user_id'] = auth()->user()->id;
                     $productVarient['company_id'] = $product->company_id;
-                    $productVarient['product_id'] = $product->id;
-                    $productVarient['cats'] = json_encode($productVarient['cats']);
+                    $productVarient['product_id'] = $product->id; 
                     ProductVarientProcess::create($productVarient);
                 }
             }
@@ -271,8 +270,7 @@ class ProductController extends ApiController
 
                     $productVarient['user_id'] = auth()->user()->id;
                     $productVarient['company_id'] = $product->company_id;
-                    $productVarient['product_id'] = $product->id;
-                    $productVarient['cats'] = $productVarient['cats'];
+                    $productVarient['product_id'] = $product->id; 
 
                     ProductVarientProcess::update($productVarient, $productVarient['id']);
                     $key = array_search($productVarient['id'], $arrayofProductVarientId);
@@ -282,8 +280,7 @@ class ProductController extends ApiController
                 } else {
                     $productVarient['user_id'] = auth()->user()->id;
                     $productVarient['company_id'] = $product->company_id;
-                    $productVarient['product_id'] = $product->id;
-                    $productVarient['cats'] = json_encode($productVarient['cats']);
+                    $productVarient['product_id'] = $product->id; 
 
                     ProductVarientProcess::create($productVarient);
                 }

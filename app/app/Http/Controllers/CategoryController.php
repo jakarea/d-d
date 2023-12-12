@@ -44,7 +44,7 @@ class CategoryController extends Controller
 
         $name = $request->input('name');
         // Ensure the slug is unique
-        $slug = $this->makeUniqueSlug($name);
+        $slug = $this->makeUniqueSlug($name,'Category');
 
         $icon = $request->file('icon');
         // Resize and compress the image
@@ -53,14 +53,15 @@ class CategoryController extends Controller
             ->encode('jpg', 80); // Adjust quality as needed
 
         // Define the directory and file name
-        $directory = 'uploads/category';
+        $directory = 'public/uploads/category'; // Add 'public/' before 'uploads/'
         $filename = uniqid('icon_') . '.jpg'; // You can adjust the file extension
 
         // Save the resized and compressed image to the desired location
-        $resizedImage->save(public_path($directory . '/' . $filename));
+        $resizedImage->save($directory . '/' . $filename);
 
         // Construct the full URL
         $url = asset($directory . '/' . $filename);
+
     
         $category = Category::create([
             'name' => $request->input('name'),

@@ -23,7 +23,7 @@
           <div class="company-profile-box">
             <!-- avatar -->
             <div class="avatar">
-              <img src="{{ $category->icon}}" alt="{{ $category->name}}" class="img-fluid">
+              <img src="{{ $category->icon }}" alt="{{ $category->name}}" class="img-fluid">
             </div>
             <!-- avatar -->
 

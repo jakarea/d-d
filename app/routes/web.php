@@ -95,7 +95,6 @@ Route::group(['middleware' => ['auth']], function () {
 
 // forgot password handle routes for mobile app user
 Route::group(['middleware' => ['web','guest']], function () {
-
     Route::get('api/reset-password/{token}', [ForgotPasswordController::class, 'showResetForm'])->name('password.reset');
     Route::get('api/reset-update', [ForgotPasswordController::class, 'showStatusPage'])->name('password.status');
     Route::post('reset-password', [ForgotPasswordController::class, 'resetPassword'])->name('password.update');
