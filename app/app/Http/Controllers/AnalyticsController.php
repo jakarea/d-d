@@ -24,10 +24,67 @@ class AnalyticsController extends Controller
         $totalUsersByMonths = [];
         $totalUsersByMonths = $this->getUserCountPerMonth(); 
 
-        // total products
+        // total and active draft products
         $totalProducts = Product::count();
+        $activeProducts = 0;
+        $draftProducts = 0;
+        $products = Product::get();
+        if ($products) {
+            foreach ($products as $product) { 
+                if ($product->status == 0) {
+                    $draftProducts++;
+                } elseif ($product->status == 1) {
+                    $activeProducts++;
+                }
+            }
+        }
+ 
+        // company users
+        $activeCompanyUsers = [];
+        $activeCompanyUsers = $this->getTopActiveCompanyUsers();
+        $activeInactiveCompanyUserCurrentMonth = [];
+        $activeInactiveCompanyUserCurrentMonth = $this->getActiveInactiveCompanyUserbyMonth(); 
 
-        return view('analytics/index',compact('totalUsersByMonths','totalProducts'));
+        return view('analytics/index',compact('totalUsersByMonths','totalProducts','activeProducts','draftProducts','activeCompanyUsers','activeInactiveCompanyUserCurrentMonth'));
+    }
+
+    // top active user by company
+    public function getTopActiveCompanyUsers()
+    {
+        $usersWithCompanyRole = User::with('roles')
+        ->whereHas('roles', function ($query) {
+            $query->where('slug', 'company');
+        })
+        ->where('status',1)
+        ->get();
+
+        return $usersWithCompanyRole;
+    }
+
+    // total active inactive user by current month
+    public function getActiveInactiveCompanyUserbyMonth()
+    {
+        $activeCountByDate = [];
+        $inactiveCountByDate = [];
+
+        $currentMonth = Carbon::now()->month;
+
+        $activeCountByDate = User::where('status', '1')
+            ->whereHas('roles', function ($query) {
+                $query->where('slug', 'company');
+            })
+            ->whereMonth('created_at', $currentMonth)
+            ->count();
+
+        $inactiveCountByDate = User::where('status', NULL)
+            ->whereHas('roles', function ($query) {
+                $query->where('slug', 'company');
+            })
+            ->whereMonth('created_at', $currentMonth)
+            ->count();
+
+
+        return [$activeCountByDate, $inactiveCountByDate];
     }
 
     // total user by months
@@ -46,5 +103,5 @@ class AnalyticsController extends Controller
         $userCounts = array_reverse($userCounts);
 
         return $userCounts;
-    }
+    } 
 }

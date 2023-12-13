@@ -26,10 +26,10 @@ class MarketPlaceController extends Controller
         }
 
         if (!empty($category)) {
-            $products->where('cats', 'like', '%' . $category . '%')->orderBy('id', 'desc');
+            $products->where('cats', 'like', '%' . $category . '%');
         }
 
-        $products = $products->paginate(16);
+        $products = $products->orderBy('id', 'desc')->paginate(16);
         $categories = Category::all();
  
         return view('marketplace/index',compact('products','categories','selectedCat'));

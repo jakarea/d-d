@@ -29,6 +29,7 @@ class CustomerController extends Controller
         ->whereHas('roles', function ($query) {
             $query->where('slug', 'client');
         })
+        ->orderBy('id', 'desc')
         ->paginate(16);
  
         return view('customer/index',compact('users'));
