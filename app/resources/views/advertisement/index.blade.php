@@ -18,17 +18,27 @@
             <div class="page-filter d-flex">
                 <div class="dropdown me-3">
                     <button class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        All Product <i class="fas fa-angle-down"></i>
+                        {{ $selectedStatus == 'Active' ? 'Active Product' : ($selectedStatus == 'Inactive' ? 'Inactive Product' : 'All Product') }}
+                       <i class="fas fa-angle-down"></i>
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">All Product <i class="fas fa-check"></i></a></li>
-                        <li><a class="dropdown-item" href="#">Active Product</a></li>
-                        <li><a class="dropdown-item" href="#">Inactive Product</a></li>
+                        <li><a class="dropdown-item select-status" href="#" data-status="">All Product </a></li>
+                        <li><a class="dropdown-item select-status" href="#" data-status="Active">Active Product
+                        @if ($selectedStatus == 'Active')
+                            <i class="fas fa-check"></i>
+                        @endif    
+                        </a></li>
+                        <li><a class="dropdown-item select-status" href="#" data-status="Inactive">Inactive Product
+                        @if ($selectedStatus == 'Inactive')
+                            <i class="fas fa-check"></i>
+                        @endif     
+                        </a></li>
                     </ul>
                 </div>
                 <div class="dropdown">
                     <button class="btn" type="button" id="dropdownBttn" data-bs-toggle="dropdown" aria-expanded="false">
-                        Categories <i class="fas fa-angle-down"></i>
+                        {{ $selectedCat->slug ?? 'Categories' }}
+                        <i class="fas fa-angle-down"></i>
                     </button>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item filterItem" href="#" data-value="">All Product</a></li>
@@ -36,7 +46,6 @@
                         <li>
                             <a class="dropdown-item filterItem" href="#" data-value="{{$category->id}}">
                                 {{$category->name}}
-
                                 @if ($selectedCat && $selectedCat->slug == $category->slug)
                                 <i class="fas fa-check"></i>
                                 @endif
@@ -46,6 +55,7 @@
                     </ul>
                 </div>
                 <input type="hidden" name="category" id="inputField">
+                <input type="hidden" name="status" id="inputField2">
             </div>
         </form>
     </div>
@@ -57,7 +67,7 @@
         @foreach ($products as $product)
         <!-- product item start -->
         <div class="col-12 col-sm-6 col-lg-6 col-xl-4 col-xxl-3 mb-69">
-            <div class="product-item-box">
+            <div class="product-item-box {{ $product->status == 1 ? '' : 'inactive' }}">
                 <!-- thumbnail start -->
                 <div class="product-thumbnail">
                     @php
@@ -154,6 +164,8 @@
 @endsection
 
 @section('script')
+
+{{-- category filter js --}}
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         let inputField = document.getElementById("inputField");
@@ -164,6 +176,23 @@
             item.addEventListener("click", function(e) {
                 e.preventDefault();
                 inputField.value = this.getAttribute("data-value"); 
+                form.submit();
+            });
+        });
+    });
+</script>
+
+{{-- product status filter js --}}
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        let inputField = document.getElementById("inputField2");
+        let dropdownItems = document.querySelectorAll(".select-status");
+        let form = document.getElementById("myForm"); 
+
+        dropdownItems.forEach(item => {
+            item.addEventListener("click", function(e) {
+                e.preventDefault();
+                inputField.value = this.getAttribute("data-status"); 
                 form.submit();
             });
         });

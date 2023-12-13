@@ -155,10 +155,10 @@
 }
 
 .categories-wrapper .company-profile-box .avatar img {
-  width: 5rem;
-  height: 4rem;
-  border-radius: 10%;
+  width:7rem; 
+  height: auto;
   -o-object-fit: cover;
   object-fit: cover;
   margin: 0 auto;
+  border-radius: 0!important;
 }

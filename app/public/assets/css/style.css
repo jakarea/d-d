@@ -954,6 +954,22 @@ body {
   color: #fff;
 }
 
+.product-item-box.inactive {
+  opacity: .5;
+}
+
+.product-item-box.inactive .take-deal-bttn .bttn {
+  border: 1px solid var(--Icon-color, rgba(160, 174, 192, 0.9));
+  color: #A0AEC0;
+  cursor:auto;
+}
+
+.product-item-box.inactive .take-deal-bttn .bttn:hover{
+  background-color: transparent;
+  color: #A0AEC0;
+  
+}
+
 .mb-15 {
   margin-bottom: 1.5rem;
 }
@@ -1690,7 +1706,7 @@ body {
   padding: 0;
   width: 100%;
   position: relative;
-  top: 1rem;
+  top: 0rem;
 }
 
 #legend ul {
@@ -2258,45 +2274,52 @@ body {
 }
 
 .paggination-wrap .pagination .page-item .page-link:hover {
-  background: #fff!important;
-}
-.paggination-wrap .pagination .page-item.active .page-link {
-  background: #fff!important;
+  background: #fff !important;
 }
 
-.no-avatar{
+.paggination-wrap .pagination .page-item.active .page-link {
+  background: #fff !important;
+}
+
+.no-avatar {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
   font-weight: 700;
-  color: #000; 
-  background-color: #A0AEC0;
+  color: #fff;
+  background-color: #ff9f29;
   flex-shrink: 0;
 }
 
-.nva-sm{
+.nva-sm {
   width: 3.5rem;
   height: 3.5rem;
-  font-size: 1.25rem; 
-  
+  font-size: 1.25rem;
+
 }
-.nva-lg{
+
+.nva-lg {
   width: 6.25rem;
   height: 6.25rem;
   font-size: 2.25rem;
 }
 
-.cate-icon{
-  width: 150px!important;
-  height: 150px!important;
+.cate-icon {
+  width: 150px !important;
+  height: 150px !important;
 }
 
-.company-about-box .cate-icon  img.main-avatar{
-  width: 100%!important;
-  height: 100%!important;
+.company-about-box .cate-icon img.main-avatar {
+  width: 100% !important;
+  height: 100% !important;
 }
 
-.chart-box-wrap{
+.chart-box-wrap {
   height: 100%;
+}
+
+#avatar-container{
+  width: 100% !important;
+  height: 100% !important;
 }

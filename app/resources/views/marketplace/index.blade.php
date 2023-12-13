@@ -14,7 +14,8 @@
             <div class="page-filter">
                 <div class="dropdown">
                     <button class="btn" type="button" id="dropdownBttn" data-bs-toggle="dropdown" aria-expanded="false">
-                        Categories <i class="fas fa-angle-down"></i>
+                        {{ $selectedCat->slug ?? 'Categories' }} 
+                        <i class="fas fa-angle-down"></i>
                     </button>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item filterItem" href="#" data-value="">All Product</a></li>

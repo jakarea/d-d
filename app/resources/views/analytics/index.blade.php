@@ -187,7 +187,7 @@
             @endif 
 
             <div class="media-body">
-              <h5><a href="{{ route('users.show', $activeCompanyUser) }}">{{ $activeCompanyUser->name }}</a></h5>
+              <h5><a href="{{ route('company.show', $activeCompanyUser->company) }}">{{ $activeCompanyUser->name }}</a></h5>
               <p>{{ $activeCompanyUser->email }}</p>
             </div> 
 

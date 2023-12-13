@@ -29,31 +29,17 @@
         <!-- company single box start -->
         <div class="col-12 col-sm-6 col-lg-4 col-xl-3 mb-15">
           <div class="company-profile-box">
-            {{-- actions --}}
-            <div class="header-action">
-              <div class="dropdown">
-                <button class="btn btn-ellipse" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  <i class="fa-solid fa-ellipsis-vertical"></i>
-                </button>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="{{ route('category.edit', $category) }}">Edit</a></li>
-                  <li>
-                    <form method="POST" class="d-block ps-0 dropdown-item" action="{{ route('category.destroy', $category) }}">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn text-danger">Delete
-                        </button>
-                    </form>
-                </li> 
-
-                </ul>
-              </div>
-            </div>
-            {{-- actions --}}
-
+            <a href="{{ route('category.edit', $category) }}">
+              <i class="fa-regular fa-pen-to-square"></i>
+            </a>
             <!-- avatar -->
             <div class="avatar">
-              <img src="{{ $category->icon }}" alt="{{ $category->name}}" class="img-fluid">
+
+              @if ($category->icon)
+                <img src="{{ $category->icon }}" alt="ICON" class="img-fluid">
+                @else
+                <span class="no-avatar nva-lg">{!! strtoupper($category->name[0]) !!}</span>
+                @endif 
             </div>
             <!-- avatar -->
 
