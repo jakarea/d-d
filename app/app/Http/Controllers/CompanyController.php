@@ -6,7 +6,13 @@ use Illuminate\Http\Request;
 use App\Http\Requests\CompanyAddRequest;
 use App\Models\Company;
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
+use App\Models\PersonalInfo;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\VerificationMail;
+use App\Models\Role;
+use Illuminate\Support\Facades\Hash; 
 
 class CompanyController extends Controller
 {
@@ -100,6 +106,7 @@ class CompanyController extends Controller
     { 
 
         $company = Company::find($id);
+        $user = User::find($company->user_id); 
 
         $request->validate([
             'name' => 'required',
@@ -110,6 +117,13 @@ class CompanyController extends Controller
             'location' => 'required',
             'country' => 'required',
         ]);
+
+        if ($user) {
+            $user->update([
+                'name' => $request->input('name'),
+                'email' => $request->input('email'), 
+            ]);
+        } 
         
         if ($company) {
             $company->update([
@@ -122,6 +136,38 @@ class CompanyController extends Controller
                 'country' => $request->input('country'),
             ]);
         }
+
+        $userInfos = PersonalInfo::updateOrCreate(
+            ['user_id' => $user->id],
+            [
+                'name' => $request->input('name'),
+                'user_id' => $user->id,
+                'email' => $request->input('email'), 
+                'phone' => $request->input('phone'), 
+                'nationality' => $request->input('country'), 
+            ]
+        );
+
+        $slugg = Str::slug($request->name);
+
+        if ($request->hasFile('avatar')) {
+            if ($userInfos->avatar) {
+                $oldFile = public_path($userInfos->avatar);
+                if (file_exists($oldFile)) {
+                    unlink($oldFile);
+                }
+            }
+        
+            $file = $request->file('avatar');
+            $image = Image::make($file);
+            $uniqueFileName = $slugg . '-' . uniqid() . '.webp';
+            $image->save(public_path('uploads/users/' . $uniqueFileName));
+         
+            $image_path = url('public/uploads/users/' . $uniqueFileName);
+        
+            $userInfos->avatar = $image_path;
+            $userInfos->save();
+        }  
         
 
         return redirect()->route('company.index')->with('success', 'Company Updated Successfuly!');

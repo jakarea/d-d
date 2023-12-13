@@ -118,9 +118,7 @@
       <div class="chart-box-wrap">
         <div class="graph-head">
           <h5>Earnings</h5>
-          <p><span><img src="{{ asset('/public/assets/images/icons/arrow-top.svg') }}" alt="I" class="img-fluid"> 40%</span> vs
-            last
-            month</p>
+          <p><span><img src="{{ asset('/public/assets/images/icons/arrow-top.svg') }}" alt="I" class="img-fluid"> 40%</span> vs last month</p>
         </div>
         <div id="earningChart"></div>
       </div>
@@ -145,7 +143,7 @@
         </div>
         <div class="product-progress-box">
           <div class="txt">
-            <h5>12,375</h5>
+            <h5>{{ $totalProducts }}</h5>
             <p>Total Products</p>
           </div>
           <canvas id="productStatus"></canvas>
@@ -488,10 +486,13 @@ chart.render();
 
 <!-- total user graph js start -->
 <script>
+
+  const totalUsersByMonths = @json($totalUsersByMonths);
+
   var options = {
   series: [{
     name: 'Net Profit',
-    data: [44, 55, 23, 56, 61, 28, 63, 35, 66, 30, 45, 33]
+    data: totalUsersByMonths
   }],
   chart: {
     type: 'bar',

@@ -1690,7 +1690,7 @@ body {
   padding: 0;
   width: 100%;
   position: relative;
-  top: -4.5rem;
+  top: 1rem;
 }
 
 #legend ul {
@@ -2295,4 +2295,8 @@ body {
 .company-about-box .cate-icon  img.main-avatar{
   width: 100%!important;
   height: 100%!important;
+}
+
+.chart-box-wrap{
+  height: 100%;
 }
