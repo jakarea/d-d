@@ -53,9 +53,9 @@ class UserController extends API\ApiController {
             'kvk_number' => $creds['kvk_number'] ?? null,
             'verification_code' => $verificationCode,
             'email_verified_at' => null,
-        ]); 
+        ]);
 
-        $role = Role::where('slug', $creds['role'])->first(); 
+        $role = Role::where('slug', $creds['role'])->first();
         $user->roles()->attach($role);
 
         if ($role->slug == 'company') {
@@ -64,8 +64,8 @@ class UserController extends API\ApiController {
                 'email' => $user->email,
                 'user_id' => $user->id
             ]);
-         
-            $company->save(); 
+
+            $company->save();
         }
 
          // Send verification email
@@ -182,7 +182,7 @@ class UserController extends API\ApiController {
             ], [
                 'new_password.regex' => 'Ensure that the password contains at least one letter and one number.',
             ]);
-            
+
 
             // Update the user's password
             $user->update([

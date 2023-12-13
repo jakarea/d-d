@@ -49,7 +49,7 @@ class User extends Authenticatable {
     public function roles() {
         return $this->belongsToMany(Role::class, 'user_roles');
     }
- 
+
     public function reviews() {
         return $this->hasMany(Review::class, 'user_id', 'id');
     }
@@ -60,11 +60,13 @@ class User extends Authenticatable {
 
     public function address()
     {
-        return $this->hasOne(Address::class); 
+        return $this->hasOne(Address::class);
     }
 
     public function company()
     {
-        return $this->hasOne(Company::class); 
+        return $this->hasOne(Company::class);
     }
+
+
 }

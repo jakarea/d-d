@@ -139,7 +139,7 @@ class ProductController extends ApiController
      * @param int $id
      * @return JsonResponse
      */
-    public function updateProduct(UpdateRequest $request, $id)
+    public function updateProduct(UpdateRequest $request, $id):JsonResponse
     {
 
         try {

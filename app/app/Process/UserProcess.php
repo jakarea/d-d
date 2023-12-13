@@ -5,10 +5,14 @@ namespace App\Process;
 use App\Models\Address;
 use App\Models\PersonalInfo;
 use App\Models\User;
+use App\Traits\FileTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Storage;
 
 class UserProcess
 {
+    use FileTrait;
 
     public static function update(Request $request, $user)
     {
@@ -32,14 +36,34 @@ class UserProcess
 
     public function savePersonalInfo($request)
     {
+
+        $avatarPath = null;
+
+        $authUser = auth()->user();
+
+        if(isset($request->avatar)){
+            $avatarPath = $this->saveAvatar($request->avatar);
+            $avatarPath = asset('storage/avatar/' . $avatarPath);
+        }
+
+        if(isset($request->avatar) && isset($authUser->personalInfo) && isset($authUser->personalInfo->avatar)){
+
+            $fileUrl = Config::get('app.file_url');
+            $image = str_replace($fileUrl, "", $authUser->personalInfo->avatar);
+
+            if (Storage::disk("public")->exists($image)) {
+                Storage::disk("public")->delete($image);
+            }
+        }
+
         $personalInfo = PersonalInfo::updateOrCreate(
             [
-                'user_id' => auth()->user()->id,
+                'user_id' =>  auth()->user()->id,
             ],
             [
                 'user_id' => auth()->user()->id,
                 'name' => $request->get('first_name') . ' ' . $request->get('last_name'),
-                'avatar' => $request->get("avatar"),
+                'avatar' => $avatarPath,
                 'gender' => $request->get("gender"),
                 'designation' => $request->get('designation'),
                 'maritual_status' => $request->get('maritual_status'),
@@ -55,6 +79,7 @@ class UserProcess
 
     public function saveAddress($request)
     {
+
         $address = Address::updateOrCreate(
             [
                 'user_id' => auth()->user()->id,
@@ -70,6 +95,13 @@ class UserProcess
         );
 
         return $address;
+    }
+
+    public function saveAvatar($avatar)
+    {
+        $filePath = $this->fileUpload($avatar, "avatar");
+
+        return $filePath;
     }
 
 }
