@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\API\WishlistController;
+use App\Http\Controllers\API\PackageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,25 +51,25 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::prefix('client')->name('api.client.')->group(function () {
 
-        Route::get('category', [CategoryController::class,'index']);
+        Route::get('category', [CategoryController::class, 'index']);
 
-        Route::get('product', [ProductController::class,'index']);
-        Route::get('product/{product}', [ProductController::class,'productDetails']);
+        Route::get('product', [ProductController::class, 'index']);
+        Route::get('product/{product}', [ProductController::class, 'productDetails']);
         Route::get('/{company}/products', [ProductController::class, 'getProductsOfCompany']);
 
-        Route::get('profile',[ClientController::class,'profile']);
-        Route::post('profile',[ClientController::class,'profileUpdate']);
-        Route::post('security/settings',[ClientController::class,'securitySettings']);
+        Route::get('profile', [ClientController::class, 'profile']);
+        Route::post('profile', [ClientController::class, 'profileUpdate']);
+        Route::post('security/settings', [ClientController::class, 'securitySettings']);
 
-        Route::get('reviews/{company}',[ReviewController::class,'reviewsOfCompany']);
-        Route::post('review',[ReviewController::class, 'reviewOfProduct']);
-        Route::post('review/like',[ReviewController::class, 'likeOfReview']);
-        Route::post('review/dislike',[ReviewController::class, 'dislikeOfReview']);
-        Route::post('review/reply',[ReviewController::class, 'replyOfReview']);
+        Route::get('reviews/{company}', [ReviewController::class, 'reviewsOfCompany']);
+        Route::post('review', [ReviewController::class, 'reviewOfProduct']);
+        Route::post('review/like', [ReviewController::class, 'likeOfReview']);
+        Route::post('review/dislike', [ReviewController::class, 'dislikeOfReview']);
+        Route::post('review/reply', [ReviewController::class, 'replyOfReview']);
 
-        Route::get('wishlist',[WishlistController::class,'wishList']);
-        Route::post('wishlist',[WishlistController::class,'addtoWishList']);
-        Route::get('wishlist/remove/{id}',[WishlistController::class,'removeFromWishlist']);
+        Route::get('wishlist', [WishlistController::class, 'wishList']);
+        Route::post('wishlist', [WishlistController::class, 'addtoWishList']);
+        Route::get('wishlist/remove/{id}', [WishlistController::class, 'removeFromWishlist']);
 
     });
 });
@@ -78,30 +79,32 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::prefix('company')->name('api.company.')->group(function () {
 
-        Route::get('category', [CategoryController::class,'index']);
+        Route::get('category', [CategoryController::class, 'index']);
 
-        Route::get('product', [ProductController::class,'index']);
-        Route::post('product', [ProductController::class,'store']);
-        Route::get('product/{product}/edit', [ProductController::class,'editProduct']);
-        Route::post('product/{product}', [ProductController::class,'updateProduct']);
-        Route::get('product/destroy/{id}', [ProductController::class,'destroy']);
+        Route::get('product', [ProductController::class, 'index']);
+        Route::post('product', [ProductController::class, 'store']);
+        Route::get('product/{product}/edit', [ProductController::class, 'editProduct']);
+        Route::post('product/{product}', [ProductController::class, 'updateProduct']);
+        Route::get('product/destroy/{id}', [ProductController::class, 'destroy']);
 
         Route::get('/{company}/products', [ProductController::class, 'getProductsOfCompany']);
-        Route::get('product/{product}', [ProductController::class,'productDetails']);
+        Route::get('product/{product}', [ProductController::class, 'productDetails']);
 
-        Route::get('profile',[ClientController::class,'profile']);
-        Route::post('profile',[ClientController::class,'profileUpdate']);
-        Route::post('security/settings',[ClientController::class,'securitySettings']);
+        Route::get('profile', [ClientController::class, 'profile']);
+        Route::post('profile', [ClientController::class, 'profileUpdate']);
+        Route::post('security/settings', [ClientController::class, 'securitySettings']);
 
-        Route::get('reviews/{company}',[ReviewController::class,'reviewsOfCompany']);
-        Route::get('review/accept',[ReviewController::class,'reviewAcceptReject']);
-        Route::post('review/like',[ReviewController::class, 'likeOfReview']);
-        Route::post('review/dislike',[ReviewController::class, 'dislikeOfReview']);
-        Route::post('review/reply',[ReviewController::class, 'replyOfReview']);
+        Route::get('reviews/{company}', [ReviewController::class, 'reviewsOfCompany']);
+        Route::get('review/accept', [ReviewController::class, 'reviewAcceptReject']);
+        Route::post('review/like', [ReviewController::class, 'likeOfReview']);
+        Route::post('review/dislike', [ReviewController::class, 'dislikeOfReview']);
+        Route::post('review/reply', [ReviewController::class, 'replyOfReview']);
+
+        Route::get('pricing-plane', [PackageController::class, 'index']);
 
     });
 });
 
 Route::post('/verify-email/{user}/{code}', [VerificationController::class, 'verify'])->name('verify.email');
 Route::post('/resend-verification/{user}', [VerificationController::class, 'resend'])->name('verify.resend');
-Route::post('forgot-password', [ForgotPasswordController::class, 'forgotPassword'])->name('password.forgot'); 
+Route::post('forgot-password', [ForgotPasswordController::class, 'forgotPassword'])->name('password.forgot');
