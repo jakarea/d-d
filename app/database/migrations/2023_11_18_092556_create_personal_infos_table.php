@@ -16,8 +16,7 @@ return new class extends Migration
         Schema::create('personal_infos', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->string('name');
-            $table->string('avatar')->nullable();
+            $table->string('name'); 
             $table->string('gender')->nullable();
             $table->string('designation')->nullable();
             $table->string('maritual_status')->nullable();

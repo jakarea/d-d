@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('personal_infos', function (Blueprint $table) {
-            $table->string('avatar')->nullable()->after('email'); 
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('status')->nullable()->after('verification_code');
         });
     }
 
@@ -25,8 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('personal_infos', function (Blueprint $table) {
-            Schema::dropIfExists('avatar');
+        Schema::table('users', function (Blueprint $table) {
+            //
         });
     }
 };

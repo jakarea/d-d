@@ -176,56 +176,31 @@
       <div class="top-active-company-user">
         <h4>Top Active Company User</h4>
         <div class="user-list">
+          @foreach ($activeCompanyUsers->slice(0,5) as $index => $activeCompanyUser)
           <!-- user one start -->
           <div class="media">
-            <img src="{{ asset('/public/uploads/users/avatar-01.png') }}" alt="A" class="img-fluid">
+
+            @if ($activeCompanyUser->personalInfo && $activeCompanyUser->personalInfo->avatar) 
+            <img src="{{ $activeCompanyUser->personalInfo->avatar }}" alt="A" class="img-fluid">
+            @else 
+            <span class="no-avatar nva-sm me-3" style="width: 2.75rem; height: 2.75rem;">{!! strtoupper(auth()->user()->name[0]) !!}</span>
+            @endif 
+
             <div class="media-body">
-              <h5>Dan Bergstrom </h5>
-              <p>zlincoln@unpixel.com</p>
-            </div>
+              <h5><a href="{{ route('users.show', $activeCompanyUser) }}">{{ $activeCompanyUser->name }}</a></h5>
+              <p>{{ $activeCompanyUser->email }}</p>
+            </div> 
+
+            @if ($index == 0)
             <img src="{{ asset('/public/assets/images/icons/trophy-01.svg') }}" alt="T" class="img-fluid">
+            @elseif ($index == 1)
+                <img src="{{ asset('/public/assets/images/icons/trophy-02.svg') }}" alt="T" class="img-fluid">
+            @else
+                <img src="{{ asset('/public/assets/images/icons/trophy-03.svg') }}" alt="T" class="img-fluid">
+            @endif 
           </div>
-          <!-- user one end -->
-          <!-- user one start -->
-          <div class="media">
-            <img src="{{ asset('/public/uploads/users/avatar-03.png') }}" alt="A" class="img-fluid">
-            <div class="media-body">
-              <h5>Dan Bergstrom </h5>
-              <p>Sasha.Fisher@gmail.com</p>
-            </div>
-            <img src="{{ asset('/public/assets/images/icons/trophy-02.svg') }}" alt="T" class="img-fluid">
-          </div>
-          <!-- user one end -->
-          <!-- user one start -->
-          <div class="media">
-            <img src="{{ asset('/public/uploads/users/avatar-04.png') }}" alt="A" class="img-fluid">
-            <div class="media-body">
-              <h5>Dan Bergstrom </h5>
-              <p>Devon74@yahoo.com</p>
-            </div>
-            <img src="{{ asset('/public/assets/images/icons/trophy-03.svg') }}" alt="T" class="img-fluid">
-          </div>
-          <!-- user one end -->
-          <!-- user one start -->
-          <div class="media">
-            <img src="{{ asset('/public/uploads/users/avatar-07.png') }}" alt="A" class="img-fluid">
-            <div class="media-body">
-              <h5>Dan Bergstrom </h5>
-              <p>Leta.Hand@gmail.com</p>
-            </div>
-            <img src="{{ asset('/public/assets/images/icons/trophy-03.svg') }}" alt="T" class="img-fluid">
-          </div>
-          <!-- user one end -->
-          <!-- user one start -->
-          <div class="media">
-            <img src="{{ asset('/public/uploads/users/avatar-05.png') }}" alt="A" class="img-fluid">
-            <div class="media-body">
-              <h5>Dan Bergstrom </h5>
-              <p>Yvonne.Klein26@yahoo.com</p>
-            </div>
-            <img src="{{ asset('/public/assets/images/icons/trophy-03.svg') }}" alt="T" class="img-fluid">
-          </div>
-          <!-- user one end -->
+          <!-- user one end --> 
+          @endforeach
         </div>
       </div>
     </div>
@@ -491,7 +466,7 @@ chart.render();
 
   var options = {
   series: [{
-    name: 'Net Profit',
+    name: 'Total',
     data: totalUsersByMonths
   }],
   chart: {
@@ -538,7 +513,7 @@ chart.render();
   tooltip: {
     y: {
       formatter: function (val) {
-        return "$ " + val + " thousands"
+        return val + " Users"
       }
     }
   }
@@ -551,7 +526,7 @@ chart.render();
 
 <!-- product status graph js start -->
 <script>
-  var datas = [70, 30];
+  var datas = [{{ $activeProducts }}, {{ $draftProducts }}];
 
   var backgroundColor = ['#35B254', '#FFAB00'];
   var ctx = document.getElementById('productStatus').getContext('2d');
@@ -610,13 +585,16 @@ document.getElementById("legend").innerHTML = legendHtml;
 
 <!-- company user graph js start -->
 <script>
+ 
+ const data = @json($activeInactiveCompanyUserCurrentMonth);
+
   var options = {
   series: [{
-    name: 'series1',
-    data: [31, 40, 28, 51, 42, 109, 100]
+    name: 'active',
+    data: data
   }, {
-    name: 'series2',
-    data: [11, 32, 45, 32, 34, 52, 41]
+    name: 'inactive',
+    data: data
   }],
   chart: {
     height: 350,
