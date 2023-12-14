@@ -84,7 +84,7 @@
           <div class="form-group form-error">
             <label for="name">Full Name <span>*</span></label>
             <input type="text" class="form-control @error('name') is-invalid @enderror"
-              placeholder="Pristia Candra Nelson" value="{{ optional($user->personalInfo)->name }}" name="name"
+              placeholder="Enter Name" value="{{ $user->name }}" name="name"
               id="name">
 
             <span class="invalid-feedback">
@@ -141,7 +141,7 @@
               <div class="form-group form-error">
                 <label for="email">Email Address <span>*</span></label>
                 <input type="email" class="form-control @error('email') is-invalid @enderror" placeholder="Enter email"
-                  value="{{ optional($user->personalInfo)->email }}" name="email" id="email">
+                  value="{{ $user->email }}" name="email" id="email">
                 <span class="invalid-feedback">
                   @error('email'){{ $message }} @enderror
                 </span>

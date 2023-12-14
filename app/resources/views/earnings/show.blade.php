@@ -16,7 +16,7 @@
         <div class="col-12 col-md-4 col-xl-3">
             <!-- customer about start -->
             <div class="company-about-box">
-                <img src="./public/assets/images/user-bi.png" alt="U" class="img-fluid main-avatar">
+                <img src="{{ asset('public/assets/images/user-bi.png') }}" alt="U" class="img-fluid main-avatar">
                 <div class="txt">
                     <h1>Lela Mraz</h1>
                     <p>lincoln@unpixel.com</p>
@@ -25,14 +25,14 @@
 
                     <ul>
                         <li>
-                            <p><img src="./public/assets/images/icons/envelope.svg" alt="I"
+                            <p><img src="{{ asset('public/assets/images/icons/envelope.svg') }}" alt="I"
                                     class="img-fluid">zcassandre66@gmail.com</p>
                         </li>
                         <li>
-                            <p><img src="./public/assets/images/icons/call.svg" alt="I" class="img-fluid">911-415-0350</p>
+                            <p><img src="{{ asset('public/assets/images/icons/call.svg') }}" alt="I" class="img-fluid">911-415-0350</p>
                         </li>
                         <li>
-                            <p><img src="./public/assets/images/icons/global.svg" alt="I" class="img-fluid">Indonesia</p>
+                            <p><img src="{{ asset('public/assets/images/icons/global.svg') }}" alt="I" class="img-fluid">Indonesia</p>
                         </li>
                     </ul>
                 </div>
@@ -64,7 +64,7 @@
                                     <p>Payment Amount</p>
                                 </td>
                                 <td>
-                                    <h6>$390</h6>
+                                    <h6>€390</h6>
                                 </td>
                             </tr>
                             <tr>
@@ -93,8 +93,9 @@
                             </tr>
                         </table>
                         <div class="form-submit">
-                            <button class="btn btn-download" type="submit"><img src="./public/assets/images/download.png"
-                                    class="im-fluid" alt=""> Download Invoice</button>
+                            <button class="btn btn-download" type="submit">
+                                <img src="{{ asset('public/assets/images/download.png') }}" class="im-fluid" alt="I"> Download Invoice
+                            </button>
                         </div>
                     </div>
                     <!-- table end -->

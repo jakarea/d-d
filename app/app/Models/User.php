@@ -20,6 +20,7 @@ class User extends Authenticatable {
         'email',
         'password',
         'kvk_number',
+        'status',
         'verification_code',
         'email_verified_at'
     ];

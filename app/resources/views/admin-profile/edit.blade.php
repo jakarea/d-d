@@ -84,7 +84,7 @@
             <div class="form-group form-error">
               <label for="name">Full Name <span>*</span></label>
               <input type="text" class="form-control @error('name') is-invalid @enderror"
-                placeholder="Pristia Candra Nelson" value="{{ optional($user->personalInfo)->name }}" name="name"
+                placeholder="Enter Name.." value="{{ optional($user->personalInfo)->name }}" name="name"
                 id="name">
   
               <span class="invalid-feedback">

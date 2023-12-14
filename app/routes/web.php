@@ -24,17 +24,14 @@ use Illuminate\Support\Facades\Artisan;
 |
 */
 
-
 Route::group(['middleware' => ['guest']], function () {
     // Registration
     Route::get('/register', [AuthController::class,'showRegistrationForm'])->name('register');
     Route::post('/register', [AuthController::class,'register']);
-
     // Login
     Route::get('/login', [AuthController::class,'showLoginForm'])->name('login');
     Route::post('/login', [AuthController::class,'login']);
 });
-
 
 // initial redirection route
 Route::group(['middleware' => ['auth']], function () {
@@ -46,7 +43,6 @@ Route::group(['middleware' => ['auth']], function () {
 Route::group(['middleware' => ['auth']], function () {
     // category route
     Route::resource('/category', CategoryController::class);
-
     // marketplace route
     Route::prefix('marketplace')->controller(MarketPlaceController::class)->group(function () {
         Route::get('/', 'index')->name('product.list'); 
@@ -54,41 +50,36 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/{slug}/edit', 'edit')->name('product.edit'); 
         Route::post('/{slug}/edit', 'update')->name('product.update'); 
     });
-
     // company route
     Route::resource('/company', CompanyController::class); 
-
     // customer route
     Route::resource('/users', CustomerController::class);
     Route::get('/users/{id}/edit/address', [CustomerController::class, 'editAddress'])->name('users.editAddress');
     Route::post('/users/{id}/edit/address', [CustomerController::class, 'updateAddress'])->name('users.updateAddress');
- 
     // analytics route
     Route::get('/analytics', [AnalyticsController::class, 'analytics']);
     // earning route
     Route::get('/earning', [EarningController::class, 'index']);
-
+    Route::get('/earning/{id}', [EarningController::class, 'show']);
     // package subscription route
     Route::get('/packages', [PackageController::class, 'index'])->name('pricing.packages');
     Route::get('/packages-update', [PackageController::class, 'edit'])->name('pricing.package.edit');
     Route::post('/packages-update/{id}', [PackageController::class, 'update'])->name('pricing.package.update');
-
     // advertisment route
     Route::get('/advertisement', [AdvertisementController::class, 'index'])->name('advertise.products');
-
     // admin profile route
-    Route::get('/account/my-profile', [AdminProfileController::class, 'index'])->name('admin.profile');
-    Route::get('/account/edit-profile', [AdminProfileController::class, 'edit'])->name('admin.profile.edit');
-    Route::post('/account/edit-profile', [AdminProfileController::class, 'update'])->name('admin.profile.update');
-    Route::get('/account/edit-address', [AdminProfileController::class, 'editAddress'])->name('admin.profile.address.edit');
-    Route::post('/account/edit-address', [AdminProfileController::class, 'updateAddress'])->name('admin.profile.address.update');
-
+    Route::prefix('account')->controller(AdminProfileController::class)->group(function () { 
+        Route::get('/my-profile', 'index')->name('admin.profile');
+        Route::get('/edit-profile', 'edit')->name('admin.profile.edit');
+        Route::post('/edit-profile', 'update')->name('admin.profile.update');
+        Route::get('/edit-address', 'editAddress')->name('admin.profile.address.edit');
+        Route::post('/edit-address', 'updateAddress')->name('admin.profile.address.update');
+    });
     // logout route
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     
 });
-
 
 // forgot password handle routes for mobile app user
 Route::group(['middleware' => ['web','guest']], function () {

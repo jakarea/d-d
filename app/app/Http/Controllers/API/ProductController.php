@@ -4,10 +4,11 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Requests\Product\UpdateRequest;
 use App\Models\Company;
+use App\Models\User;
 use App\Models\Product;
-use App\Models\ProductVarient;
+use App\Models\ProductVariant;
 use App\Process\ProductProcess;
-use App\Process\ProductVarientProcess;
+use App\Process\ProductVariantProcess;
 use App\Traits\FileTrait;
 use Illuminate\Http\Request;
 use App\Http\Requests\ProductAddRequest;
@@ -37,7 +38,7 @@ class ProductController extends ApiController
         $sortOrder = $request->sortorder;
         $category = $request->category;
 
-        $query = Product::with(['productVarients', 'company', 'reviews' => function ($query) {
+        $query = Product::with(['productVariants', 'company', 'reviews' => function ($query) {
             $query->with(['likes', 'dislikes']);
 
         }]);
@@ -71,8 +72,7 @@ class ProductController extends ApiController
         } else {
             $query->orderByDesc('id');
         }
-
-        // sort order by where discount price is greatter
+ 
         if (!is_null($sortBy)) {
 
             if ($sortBy == 'offer_product') {
@@ -81,36 +81,41 @@ class ProductController extends ApiController
         }
 
         $products = $query->get();
-
         return $this->jsonResponse(false, $this->success, $products, $this->emptyArray, JsonResponse::HTTP_OK);
 
     }
 
     /**
-     * Store product with product varients
+     * Store product with product variants
      * @param \Illuminate\Http\Request $request
      * @return JsonResponse
      */
     public function store(ProductAddRequest $request): JsonResponse
     {
-
         try {
+            
+            $company = Company::find($request->company_id);
+            $user = User::findOrFail($company->user_id);
+            
+            if ($user->id == auth()->user()->id) { 
+                $product = ProductProcess::create($request);
 
-            $product = ProductProcess::create($request);
-
-            if (isset($request->product_varients) && count($request->product_varients) > 0) {
-                foreach ($request->product_varients as $productVarient) {
-                    $productVarient['user_id'] = auth()->user()->id;
-                    $productVarient['company_id'] = $product->company_id;
-                    $productVarient['product_id'] = $product->id; 
-                    ProductVarientProcess::create($productVarient);
+                if (isset($request->product_variants) && count($request->product_variants) > 0) {
+                    foreach ($request->product_variants as $productVariant) {
+                        $productVariant['user_id'] = auth()->user()->id;
+                        $productVariant['company_id'] = $product->company_id;
+                        $productVariant['product_id'] = $product->id;
+                        ProductVariantProcess::create($productVariant);
+                    }
                 }
-            }
-            $product = Product::with(['productVarients'])->where('id', $product->id)->first();
 
-            return $this->jsonResponse(false, 'Product created successfully', $product, [], JsonResponse::HTTP_CREATED);
+                $product = Product::with(['productVariants'])->find($product->id);
+
+                return $this->jsonResponse(false, 'Product created successfully', $product, [], JsonResponse::HTTP_CREATED);
+            } else {
+                return $this->jsonResponse(true, 'Unauthorized user', $request->all(), [], JsonResponse::HTTP_UNAUTHORIZED);
+            } 
         } catch (\Exception $e) {
-
             return $this->jsonResponse(true, 'Failed to create product', $request->all(), [$e->getMessage()], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -122,7 +127,7 @@ class ProductController extends ApiController
      */
     public function editProduct($id): JsonResponse
     {
-        $product = Product::with(['productVarients'])->where('id', $id)->first();
+        $product = Product::with(['productVariants'])->where('id', $id)->first();
 
         if (!empty($product)) {
 
@@ -134,7 +139,7 @@ class ProductController extends ApiController
     }
 
     /**
-     * Update product & product varients
+     * Update product & product variants
      * @param \Illuminate\Http\Request $request
      * @param int $id
      * @return JsonResponse
@@ -148,14 +153,14 @@ class ProductController extends ApiController
 
                 $product = ProductProcess::update($request, $id);
 
-                $arrayofProductVarientId = ProductVarient::where('product_id', $id)->pluck('id')->toArray();
+                $arrayofProductVariantId = ProductVariant::where('product_id', $id)->pluck('id')->toArray();
 
-                $deletableProductVarient = $this->updateProductVarient($request, $product, $arrayofProductVarientId);
+                $deletableProductVariant = $this->updateProductVariant($request, $product, $arrayofProductVariantId);
 
-                ProductVarient::whereIn('id', $deletableProductVarient)->delete();
+                ProductVariant::whereIn('id', $deletableProductVariant)->delete();
 
-                if (isset($product->productVarients)) {
-                    $product->productVarients;
+                if (isset($product->productVariants)) {
+                    $product->productVariants;
                 }
 
                 return $this->jsonResponse(false, "Product updated successfully", $product, $this->emptyArray, JsonResponse::HTTP_OK);
@@ -178,7 +183,7 @@ class ProductController extends ApiController
     public function productDetails(Request $request, $id): JsonResponse
     {
 
-        $query = Product::with(['productVarients', 'company', 'reviews' => function ($query) {
+        $query = Product::with(['productVariants', 'company', 'reviews' => function ($query) {
             $query->with(['likes', 'dislikes']);
         }]);
 
@@ -228,7 +233,7 @@ class ProductController extends ApiController
      */
     public function companyProductDetails($companyId, $productId): JsonResponse
     {
-        $product = Product::with(['productVarients'])
+        $product = Product::with(['productVariants'])
             ->where('company_id', $companyId)
             ->where('id', $productId)
             ->first();
@@ -244,7 +249,7 @@ class ProductController extends ApiController
     }
 
     /**
-     * Delete product with product varients
+     * Delete product with product variants
      *
      * @param int $id
      * @return JsonResponse
@@ -260,12 +265,12 @@ class ProductController extends ApiController
             $this->deleteFile("public", $arrayofImages);
         }
 
-        //delete product varient images
-        if(isset($product->productVarients))
+        //delete product variant images
+        if(isset($product->productVariants))
         {
-            foreach ($product->productVarients as $proVarient)
+            foreach ($product->productVariants as $proVariant)
             {
-                $arrayofImages = json_decode($proVarient->images);
+                $arrayofImages = json_decode($proVariant->images);
                 $this->deleteFile("public", $arrayofImages);
             }
         }
@@ -284,35 +289,35 @@ class ProductController extends ApiController
     /**
      * @param $request
      * @param $product
-     * @param $arrayofProductVarientId
+     * @param $arrayofProductVariantId
      * @return array
      */
-    protected function updateProductVarient($request, $product, $arrayofProductVarientId): array
+    protected function updateProductVariant($request, $product, $arrayofProductVariantId): array
     {
-        if (isset($request->product_varients)) {
-            foreach ($request->product_varients as $productVarient) {
-                if (isset($productVarient['id']) && in_array($productVarient['id'], $arrayofProductVarientId)) {
+        if (isset($request->product_variants)) {
+            foreach ($request->product_variants as $ProductVariant) {
+                if (isset($ProductVariant['id']) && in_array($ProductVariant['id'], $arrayofProductVariantId)) {
 
-                    $productVarient['user_id'] = auth()->user()->id;
-                    $productVarient['company_id'] = $product->company_id;
-                    $productVarient['product_id'] = $product->id; 
+                    $ProductVariant['user_id'] = auth()->user()->id;
+                    $ProductVariant['company_id'] = $product->company_id;
+                    $ProductVariant['product_id'] = $product->id; 
 
-                    ProductVarientProcess::update($productVarient, $productVarient['id']);
-                    $key = array_search($productVarient['id'], $arrayofProductVarientId);
+                    ProductVariantProcess::update($ProductVariant, $ProductVariant['id']);
+                    $key = array_search($ProductVariant['id'], $arrayofProductVariantId);
                     if ($key !== false) {
-                        unset($arrayofProductVarientId[$key]);
+                        unset($arrayofProductVariantId[$key]);
                     }
                 } else {
-                    $productVarient['user_id'] = auth()->user()->id;
-                    $productVarient['company_id'] = $product->company_id;
-                    $productVarient['product_id'] = $product->id; 
+                    $ProductVariant['user_id'] = auth()->user()->id;
+                    $ProductVariant['company_id'] = $product->company_id;
+                    $ProductVariant['product_id'] = $product->id; 
 
-                    ProductVarientProcess::create($productVarient);
+                    ProductVariantProcess::create($ProductVariant);
                 }
             }
         }
 
-        return $arrayofProductVarientId;
+        return $arrayofProductVariantId;
     }
 
 

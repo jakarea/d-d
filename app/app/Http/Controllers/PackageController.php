@@ -16,6 +16,10 @@ class PackageController extends Controller
 
         $packages = PricingPackage::get(); 
 
+        if (count($packages) <= 0) {  
+            Artisan::call('db:seed', ['--class' => 'PricingPackageSeeder']);
+        }
+
         return view('packages/index',compact('packages'));
     }
 
@@ -23,26 +27,27 @@ class PackageController extends Controller
 
         $packages = PricingPackage::get();
 
-        if (!$packages || empty($packages)) {
+        if (count($packages) <= 0) { 
             Artisan::call('db:seed', ['--class' => 'PricingPackageSeeder']);
+        } 
+
+        if ($packages && count($packages) > 0) {
+            $packageOne = $packages[0];
+            $packageOneFeatures = json_decode($packageOne->features);
+
+            $packageTwo = $packages[1];
+            $packageTwoFeatures = json_decode($packageTwo->features);
+
+            $packageThree = $packages[2];
+            $packageThreeFeatures = json_decode($packageThree->features);
         }
-
-        $packageOne = $packages[0];
-        $packageOneFeatures = json_decode($packageOne->features);
-
-        $packageTwo = $packages[1];
-        $packageTwoFeatures = json_decode($packageTwo->features);
-
-        $packageThree = $packages[2];
-        $packageThreeFeatures = json_decode($packageThree->features);
  
         return view('packages.edit',compact('packageOne','packageTwo','packageThree','packageOneFeatures','packageTwoFeatures','packageThreeFeatures'));
 
     }
 
     public function update(Request $request, $id)
-    {
-        // return $request->all();
+    { 
 
         $request->validate([
             'name' => 'required|string', 

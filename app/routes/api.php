@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\CategoryController;
-use App\Http\Controllers\API\ProductVarientController;
+use App\Http\Controllers\API\ProductVariantController;
 use App\Http\Controllers\HydraController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;

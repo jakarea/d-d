@@ -53,6 +53,7 @@ class UserController extends API\ApiController {
             'kvk_number' => $creds['kvk_number'] ?? null,
             'verification_code' => $verificationCode,
             'email_verified_at' => null,
+            'status' => 0,
         ]);
 
         $role = Role::where('slug', $creds['role'])->first();

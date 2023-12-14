@@ -20,37 +20,52 @@
 
     <!-- company list start -->
     <div class="row">
-        @foreach ($companies as $company)
-        <!-- company single box start -->
-        <div class="col-12 col-sm-6 col-lg-6 col-xl-4 col-xxl-3 mb-15">
-            <div class="company-profile-box">
-                <!-- avatar -->
-                <div class="avatar"> 
-                    @if ($company->user->personalInfo && $company->user->personalInfo->avatar)
-                    <img src="{{ $company->user->personalInfo->avatar }}" alt="A" class="img-fluid">
-                    @else
-                    <span class="no-avatar nva-sm">{!! strtoupper($company->user->name[0]) !!}</span>
-                    @endif
-                </div>
-                <!-- avatar -->
-
-                <div class="txt">
-                    <h4>{{ $company->name }}</h4>
-                    <h6>{{ $company->tagline ? $company->tagline : '--' }}</h6>
-                    <hr>
-                    <a href="mailto:{{ $company->email }}" class="mail"><i class="fa-regular fa-envelope me-2"></i> {{ $company->email }}</a>
-
-                    <div class="details-bttn">
-                        <a href="{{ route('company.show', $company) }}" class="bttn">View Details </a>
+        @if (count($companies) > 0) 
+            @foreach ($companies as $company)
+            <!-- company single box start -->
+            <div class="col-12 col-sm-6 col-lg-6 col-xl-4 col-xxl-3 mb-15">
+                <div class="company-profile-box">
+                    <!-- avatar -->
+                    <div class="avatar"> 
+                        @if ($company->user->personalInfo && $company->user->personalInfo->avatar)
+                        <img src="{{ $company->user->personalInfo->avatar }}" alt="A" class="img-fluid">
+                        @else
+                        <span class="no-avatar nva-sm">{!! strtoupper($company->user->name[0]) !!}</span>
+                        @endif
                     </div>
+                    <!-- avatar -->
 
+                    <div class="txt">
+                        <h4>{{ $company->name }}</h4>
+                        <h6>{{ $company->tagline ? $company->tagline : '--' }}</h6>
+                        <hr>
+                        <a href="mailto:{{ $company->email }}" class="mail"><i class="fa-regular fa-envelope me-2"></i> {{ $company->email }}</a>
+
+                        <div class="details-bttn">
+                            <a href="{{ route('company.show', $company) }}" class="bttn">View Details </a>
+                        </div>
+
+                    </div>
                 </div>
             </div>
-        </div>
-        <!-- company single box end -->
-        @endforeach
+            <!-- company single box end -->
+            @endforeach
+        @else 
+        {{-- no data found component --}}
+        <x-EmptyDataComponent :dynamicData="'No Company Found!'" /> 
+        {{-- no data found component --}}
+    @endif
     </div>
     <!-- company list end -->
+
+     {{-- paggination wrap --}}
+  <div class="row">
+    <div class="col-12 paggination-wrap">
+      {{ $companies->links('pagination::bootstrap-5') }}
+    </div>
+  </div>
+  {{-- paggination wrap --}}
+
 </section>
 <!-- main page wrapper end -->
 @endsection
