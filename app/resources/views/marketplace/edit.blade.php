@@ -33,7 +33,7 @@
                 <div class="txt">
                     <h1>{{ $product->title }}</h1>
                     <p>{{ optional($product->company)->name }} </p>
-                    <p style="font-weight: 700; font-size:14px">Product Varient: {{ count($product->productVarients) }} </p>
+                    <p style="font-weight: 700; font-size:14px">Product Variant: {{ count($product->productVariants) }} </p>
                     <hr>
 
                     <ul> 

@@ -161,11 +161,11 @@
       </div>
       <div class="col-lg-6">
         <div class="advertismewnt-deal-box">
-          <h3>Product Varients</h3>
+          <h3>Product Variants</h3>
 
           <div class="row">
-            @if (!empty($productVarients) && $productVarients != NULL)
-            @foreach ($productVarients->slice(0,4) as $v_product)
+            @if (!empty($productVariants) && $productVariants != NULL)
+            @foreach ($productVariants->slice(0,4) as $v_product)
             <!-- product item start -->
             <div class="col-12 col-xl-6 mb-3 mb-3">
               <div class="product-item-box">

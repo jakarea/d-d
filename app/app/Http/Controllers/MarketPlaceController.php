@@ -37,17 +37,17 @@ class MarketPlaceController extends Controller
 
     public function show($slug)
     {
-        $product = Product::where('slug',$slug)->with('reviews','productVarients','company')->first();
+        $product = Product::where('slug',$slug)->with('reviews','productVariants','company')->first();
 
-        $productVarients = $product->productVarients;
+        $productVariants = $product->productVariants;
         $company = $product->company;
 
-        return view('marketplace/show',compact('product','productVarients','company'));
+        return view('marketplace/show',compact('product','productVariants','company'));
     }
 
     public function edit($slug)
     {
-       $product = Product::where('slug',$slug)->with('reviews','productVarients','company')->first();
+       $product = Product::where('slug',$slug)->with('reviews','productVariants','company')->first();
         return view('marketplace/edit',compact('product'));
     }
 

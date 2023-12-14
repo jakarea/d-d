@@ -20,7 +20,8 @@ class VerificationController extends ApiController
                 // Verification successful
                 $user->update([
                     'email_verified_at' => now(),
-                    'verification_code' => null, // Optional: Clear the verification code after successful verification
+                    'verification_code' => null,
+                    'status' => 1,
                 ]);
 
                 return $this->jsonResponse(0, 'Email verified successfully. You can now log in.', [], 200);

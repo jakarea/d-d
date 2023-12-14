@@ -18,46 +18,62 @@
   </div>
   <!-- page title -->
 
-  <!-- company list start -->
+  <!-- user list start -->
   <div class="row">
-    @foreach ($users as $user) 
-    <!-- user single box start -->
-    <div class="col-12 col-sm-6 col-lg-4 col-xl-3 mb-15">
-      <div class="company-profile-box">
-        <!-- avatar -->
-        <div class="avatar">
-          @if ($user->personalInfo && $user->personalInfo->avatar)
-          <img src="{{ $user->personalInfo->avatar }}" alt="Avatar" class="img-fluid">
-          @else 
-          <span class="no-avatar nva-sm">{!! strtoupper($user->name[0]) !!}</span>
-          @endif
-          
-        </div>
-        <!-- avatar -->
-
-        <div class="txt">
-          <h4>{{$user->name}}</h4>
-          @if ($user->roles)
-              @foreach ($user->roles as $role)
-                <h6>{{ $role->name ? $role->name : '--' }}</h6>
-              @endforeach
-          @endif
-           
-          <hr>
-
-          <a href="mailto:{{ $user->email }}" class="mail"><i class="fa-regular fa-envelope me-2"></i> {{ $user->email }}</a>
-
-          <div class="details-bttn">
-            <a href="{{ route('users.show', $user) }}" class="bttn">View Details</a>
+    @if (count($users) > 0) 
+      @foreach ($users as $user) 
+      <!-- user single box start -->
+      <div class="col-12 col-sm-6 col-lg-4 col-xl-3 mb-15">
+        <div class="company-profile-box">
+          <!-- avatar -->
+          <div class="avatar">
+            @if ($user->personalInfo && $user->personalInfo->avatar)
+            <img src="{{ $user->personalInfo->avatar }}" alt="Avatar" class="img-fluid">
+            @else 
+            <span class="no-avatar nva-sm">{!! strtoupper($user->name[0]) !!}</span>
+            @endif
+            
           </div>
+          <!-- avatar -->
 
+          <div class="txt">
+            <h4>{{$user->name}}</h4>
+            @if ($user->roles)
+                @foreach ($user->roles as $role)
+                  <h6>{{ $role->name ? $role->name : '--' }}</h6>
+                @endforeach
+            @endif
+            
+            <hr>
+
+            <a href="mailto:{{ $user->email }}" class="mail"><i class="fa-regular fa-envelope me-2"></i> {{ $user->email }}</a>
+
+            <div class="details-bttn">
+              <a href="{{ route('users.show', $user) }}" class="bttn">View Details</a>
+            </div>
+
+          </div>
         </div>
-      </div>
-    </div> 
-    <!-- user single box end --> 
-    @endforeach
+      </div> 
+      <!-- user single box end --> 
+      @endforeach
+    @else 
+        {{-- no data found component --}}
+        <x-EmptyDataComponent :dynamicData="'No Customer Found!'" /> 
+        {{-- no data found component --}}
+    @endif
   </div>
-  <!-- company list end -->
+  <!-- user list end -->
+
+  {{-- paggination wrap --}}
+  <div class="row">
+    <div class="col-12 paggination-wrap">
+      {{ $users->links('pagination::bootstrap-5') }}
+    </div>
+  </div>
+  {{-- paggination wrap --}}
+
+
 </section>
 <!-- main page wrapper end -->
 @endsection

@@ -11,7 +11,7 @@ class Product extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'user_id','company_id','title', 'cats', 'product_url', 'price', 'sell_price', 'cupon', 'description', 'images',
+        'user_id','company_id','title', 'cats', 'product_url', 'price', 'status', 'sell_price', 'cupon', 'description', 'images',
     ];
 
     public function company():BelongsTo
@@ -24,8 +24,8 @@ class Product extends Model
         return $this->hasMany(Review::class);
     }
 
-    public function productVarients():HasMany
+    public function productVariants():HasMany
     {
-        return $this->hasMany(ProductVarient::class, 'product_id', 'id');
+        return $this->hasMany(ProductVariant::class, 'product_id', 'id');
     }
 }
