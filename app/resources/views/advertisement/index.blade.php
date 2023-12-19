@@ -26,12 +26,12 @@
                         <li><a class="dropdown-item select-status" href="#" data-status="Active">Active Product
                         @if ($selectedStatus == 'Active')
                             <i class="fas fa-check"></i>
-                        @endif    
+                        @endif
                         </a></li>
                         <li><a class="dropdown-item select-status" href="#" data-status="Inactive">Inactive Product
                         @if ($selectedStatus == 'Inactive')
                             <i class="fas fa-check"></i>
-                        @endif     
+                        @endif
                         </a></li>
                     </ul>
                 </div>
@@ -145,7 +145,8 @@
         @endforeach
         @else
         {{-- no data found component --}}
-        <x-EmptyDataComponent :dynamicData="'No Advertisement Products Found!'" />
+        {{-- <x-EmptyDataComponent :dynamicData="'No Advertisement Products Found!'" /> --}}
+        <p>No Advertisement Products Found!</p>
         {{-- no data found component --}}
         @endif
     </div>
@@ -170,12 +171,12 @@
     document.addEventListener("DOMContentLoaded", function() {
         let inputField = document.getElementById("inputField");
         let dropdownItems = document.querySelectorAll(".filterItem");
-        let form = document.getElementById("myForm"); 
+        let form = document.getElementById("myForm");
 
         dropdownItems.forEach(item => {
             item.addEventListener("click", function(e) {
                 e.preventDefault();
-                inputField.value = this.getAttribute("data-value"); 
+                inputField.value = this.getAttribute("data-value");
                 form.submit();
             });
         });
@@ -187,12 +188,12 @@
     document.addEventListener("DOMContentLoaded", function() {
         let inputField = document.getElementById("inputField2");
         let dropdownItems = document.querySelectorAll(".select-status");
-        let form = document.getElementById("myForm"); 
+        let form = document.getElementById("myForm");
 
         dropdownItems.forEach(item => {
             item.addEventListener("click", function(e) {
                 e.preventDefault();
-                inputField.value = this.getAttribute("data-status"); 
+                inputField.value = this.getAttribute("data-status");
                 form.submit();
             });
         });

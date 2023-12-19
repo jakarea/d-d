@@ -129,11 +129,11 @@
               <div class="header">
                 <div class="media">
                   @if ($review->user->personalInfo && $review->user->personalInfo->avatar)
-                  <img src="{{ $review->user->personalInfo->avatar }}" alt="A" class="img-fluid">  
-                  @else 
+                  <img src="{{ $review->user->personalInfo->avatar }}" alt="A" class="img-fluid">
+                  @else
                   <span class="no-avatar nva-sm">{!! strtoupper(auth()->user()->name[0]) !!}</span>
                   @endif
-                  
+
                   <div class="media-body">
                     <h5>{{$review->user->personalInfo->name}}</h5>
                     <span>{{$review->created_at->diffForHumans()}}</span>
@@ -228,7 +228,8 @@
             @endforeach
             @else
             {{-- no data found component --}}
-            <x-EmptyDataComponent :dynamicData="'No Variants Found for this Product!'" />
+            {{-- <x-EmptyDataComponent :dynamicData="'No Variants Found for this Product!'" /> --}}
+            <p>No Variants Found for this Product!</p>
             {{-- no data found component --}}
             @endif
           </div>
