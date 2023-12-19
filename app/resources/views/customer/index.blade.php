@@ -20,8 +20,8 @@
 
   <!-- user list start -->
   <div class="row">
-    @if (count($users) > 0) 
-      @foreach ($users as $user) 
+    @if (count($users) > 0)
+      @foreach ($users as $user)
       <!-- user single box start -->
       <div class="col-12 col-sm-6 col-lg-4 col-xl-3 mb-15">
         <div class="company-profile-box">
@@ -29,10 +29,10 @@
           <div class="avatar">
             @if ($user->personalInfo && $user->personalInfo->avatar)
             <img src="{{ $user->personalInfo->avatar }}" alt="Avatar" class="img-fluid">
-            @else 
+            @else
             <span class="no-avatar nva-sm">{!! strtoupper($user->name[0]) !!}</span>
             @endif
-            
+
           </div>
           <!-- avatar -->
 
@@ -43,7 +43,7 @@
                   <h6>{{ $role->name ? $role->name : '--' }}</h6>
                 @endforeach
             @endif
-            
+
             <hr>
 
             <a href="mailto:{{ $user->email }}" class="mail"><i class="fa-regular fa-envelope me-2"></i> {{ $user->email }}</a>
@@ -54,12 +54,13 @@
 
           </div>
         </div>
-      </div> 
-      <!-- user single box end --> 
+      </div>
+      <!-- user single box end -->
       @endforeach
-    @else 
+    @else
         {{-- no data found component --}}
-        <x-EmptyDataComponent :dynamicData="'No Customer Found!'" /> 
+        {{-- <x-EmptyDataComponent :dynamicData="'No Customer Found!'" />  --}}
+        <p>No Customer Found!</p>
         {{-- no data found component --}}
     @endif
   </div>

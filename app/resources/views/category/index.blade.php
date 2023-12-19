@@ -24,7 +24,7 @@
 
   <!-- category list start -->
   <div class="row">
-    @if (count($categories) > 0) 
+    @if (count($categories) > 0)
         @foreach($categories as $category)
         <!-- company single box start -->
         <div class="col-12 col-sm-6 col-lg-4 col-xl-3 mb-15">
@@ -39,7 +39,7 @@
                 <img src="{{ $category->icon }}" alt="ICON" class="img-fluid">
                 @else
                 <span class="no-avatar nva-lg">{!! strtoupper($category->name[0]) !!}</span>
-                @endif 
+                @endif
             </div>
             <!-- avatar -->
 
@@ -55,9 +55,10 @@
         </div>
         <!-- company single box end -->
         @endforeach
-    @else 
+    @else
         {{-- no data found component --}}
-        <x-EmptyDataComponent :dynamicData="'No Category Found!'" /> 
+        {{-- <x-EmptyDataComponent :dynamicData="'No Category Found!'" />  --}}
+        <p>No Category Found!</p>
         {{-- no data found component --}}
     @endif
   </div>
@@ -136,7 +137,7 @@
           var input = e.target;
           var file = input.files[0];
 
-          if (file) { 
+          if (file) {
               if (!avatarPreview) {
                   avatarPreview = document.createElement('img');
                   avatarPreview.id = 'icon-preview';
@@ -157,7 +158,7 @@
                   });
                   avatarContainer.appendChild(closeIcon);
               }
- 
+
               var reader = new FileReader();
               reader.onload = function (e) {
                   avatarPreview.src = e.target.result;

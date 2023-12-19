@@ -228,7 +228,15 @@
           <div class="review-single-item">
               <div class="header">
                   <div class="media">
-                      <img src="{{ $review->product->images }}" alt="Product Image" class="img-fluid">
+                    @php 
+                      $jsonString = $review->product->images;
+                      $imageLinks = json_decode($jsonString);
+                      $firstImageLink = "";
+                      if ($imageLinks !== null && is_array($imageLinks) && count($imageLinks) > 0) {
+                        $firstImageLink = $imageLinks[0];
+                      }
+                    @endphp
+                      <img src="{{ $firstImageLink }}" alt="Product Image" class="img-fluid">
                       <div class="media-body">
                           <h5>{{ $review->product->title }}</h5>
                           <span>{{ $review->created_at->diffForHumans() }} </span>

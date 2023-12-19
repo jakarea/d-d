@@ -14,7 +14,7 @@
             <div class="page-filter">
                 <div class="dropdown">
                     <button class="btn" type="button" id="dropdownBttn" data-bs-toggle="dropdown" aria-expanded="false">
-                        {{ $selectedCat->slug ?? 'Categories' }} 
+                        {{ $selectedCat->slug ?? 'Categories' }}
                         <i class="fas fa-angle-down"></i>
                     </button>
                     <ul class="dropdown-menu">
@@ -29,7 +29,7 @@
                                     @endif
                                 </a>
                             </li>
-                        @endforeach 
+                        @endforeach
                     </ul>
                 </div>
             </div>
@@ -37,19 +37,19 @@
         </form>
         <!-- filter -->
     </div>
-    <!-- page title --> 
+    <!-- page title -->
 
     <!-- product list start -->
     <div class="row">
-        @if (count($products) > 0) 
-            @foreach ($products as $product) 
+        @if (count($products) > 0)
+            @foreach ($products as $product)
             <!-- product item start -->
             <div class="col-12 col-sm-6 col-lg-6 col-xl-4 col-xxl-3 mb-69">
                 <div class="product-item-box">
                     <!-- thumbnail start -->
                     <div class="product-thumbnail">
                         @php
-                            $price = $product->price; 
+                            $price = $product->price;
                             $sellPrice = $product->sell_price;
                             $percentageDiscount = $price != 0 ? ((($price - $sellPrice) / $price) * 100) : 0;
 
@@ -57,7 +57,7 @@
                                 $percentageDiscount = 0;
                             }
                         @endphp
-                        
+
                         <span>{{ number_format($percentageDiscount, 0) }}%</span>
 
                         @php
@@ -66,12 +66,12 @@
                                 $imageUrls = json_decode($product->images);
                             }
                         @endphp
-                        
+
                         @if(is_array($imageUrls) && count($imageUrls) > 0)
                             <img src="{{ $imageUrls[0] }}" alt="Product Thumbnail" class="img-fluid">
                         @else
                             <img src="{{ asset('public/uploads/products/product-thumbnail-01.png')}}" alt="Product Thumbnail" class="img-fluid">
-                        @endif 
+                        @endif
 
                         <a href="#"><i class="fa-regular fa-heart"></i></a>
                     </div>
@@ -119,10 +119,11 @@
                 </div>
             </div>
             <!-- product item end -->
-            @endforeach 
-        @else 
+            @endforeach
+        @else
             {{-- no data found component --}}
-            <x-EmptyDataComponent :dynamicData="'No Products Found!'" /> 
+            {{-- <x-EmptyDataComponent :dynamicData="'No Products Found!'" />  --}}
+            <p>No Products Found!</p>
             {{-- no data found component --}}
         @endif
     </div>
@@ -144,15 +145,15 @@
     document.addEventListener("DOMContentLoaded", function() {
         let inputField = document.getElementById("inputField");
         let dropdownItems = document.querySelectorAll(".filterItem");
-        let form = document.getElementById("myForm"); 
+        let form = document.getElementById("myForm");
 
         dropdownItems.forEach(item => {
             item.addEventListener("click", function(e) {
                 e.preventDefault();
-                inputField.value = this.getAttribute("data-value"); 
+                inputField.value = this.getAttribute("data-value");
                 form.submit();
             });
         });
     });
 </script>
-@endsection 
+@endsection

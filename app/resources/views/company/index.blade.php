@@ -20,13 +20,13 @@
 
     <!-- company list start -->
     <div class="row">
-        @if (count($companies) > 0) 
+        @if (count($companies) > 0)
             @foreach ($companies as $company)
             <!-- company single box start -->
             <div class="col-12 col-sm-6 col-lg-6 col-xl-4 col-xxl-3 mb-15">
                 <div class="company-profile-box">
                     <!-- avatar -->
-                    <div class="avatar"> 
+                    <div class="avatar">
                         @if ($company->user->personalInfo && $company->user->personalInfo->avatar)
                         <img src="{{ $company->user->personalInfo->avatar }}" alt="A" class="img-fluid">
                         @else
@@ -50,9 +50,10 @@
             </div>
             <!-- company single box end -->
             @endforeach
-        @else 
+        @else
         {{-- no data found component --}}
-        <x-EmptyDataComponent :dynamicData="'No Company Found!'" /> 
+        {{-- <x-EmptyDataComponent :dynamicData="'No Company Found!'" />  --}}
+        <p>No Company Found!</p>
         {{-- no data found component --}}
     @endif
     </div>
