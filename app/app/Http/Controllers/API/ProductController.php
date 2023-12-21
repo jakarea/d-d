@@ -27,7 +27,7 @@ class ProductController extends ApiController
      * @param \Illuminate\Http\Request $request
      * @return JsonResponse
      */
-    public function index(Request $request)
+    public function index(Request $request):JsonResponse
     {
 
         $company = $request->company;
@@ -84,6 +84,12 @@ class ProductController extends ApiController
         }
 
         $products = $query->get();
+
+        //decode product image
+        foreach ($products as $product) {
+            $this->decodeProductImage($product);
+        }
+
         return $this->jsonResponse(false, $this->success, $products, $this->emptyArray, JsonResponse::HTTP_OK);
 
     }
@@ -114,6 +120,7 @@ class ProductController extends ApiController
 
                 $product = Product::with(['productVariants'])->find($product->id);
 
+                //decode product image
                 $this->decodeProductImage($product);
 
                 return $this->jsonResponse(false, 'Product created successfully', $product, [], JsonResponse::HTTP_CREATED);
@@ -136,6 +143,7 @@ class ProductController extends ApiController
 
         if (!empty($product)) {
 
+            //decode product image
             $this->decodeProductImage($product);
 
             return $this->jsonResponse(false, $this->success, $product, $this->emptyArray, JsonResponse::HTTP_OK);
@@ -327,7 +335,7 @@ class ProductController extends ApiController
 
     public function decodeProductImage($product)
     {
-        if(isset($product->images)){
+        if (isset($product->images)) {
             $product->images = json_decode($product->images);
         }
 
