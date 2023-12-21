@@ -27,7 +27,7 @@ class ProductController extends ApiController
      * @param \Illuminate\Http\Request $request
      * @return JsonResponse
      */
-    public function index(Request $request): JsonResponse
+    public function index(Request $request)
     {
 
         $company = $request->company;
@@ -43,8 +43,11 @@ class ProductController extends ApiController
 
         }]);
 
-        if (!is_null($company)) {
-            $query->where('company_id', $company);
+        $company = Company::firstwhere('user_id', auth()->user()->id);
+        $routeName = \Route::currentRouteName();
+
+        if ($routeName === "api.company.product.list") {
+            $query->where('company_id', $company->id);
         }
 
         if (!is_null($category)) {
