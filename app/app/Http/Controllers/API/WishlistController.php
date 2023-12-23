@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AddToWishlistRequest;
 use App\Models\WishList;
+use App\Models\Product;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -48,7 +49,9 @@ class WishlistController extends ApiController
                 $statusCode = JsonResponse::HTTP_OK;
             }
 
-            return $this->jsonResponse(false, $message, $wishlist, $this->emptyArray, JsonResponse::HTTP_CREATED, $statusCode);
+            $infos = Product::where('id',$wishlist->product_id)->with('company','reviews')->first();  
+
+            return $this->jsonResponse(false, $message, $infos, $this->emptyArray, JsonResponse::HTTP_CREATED, $statusCode);
 
         }catch (\Exception $e){
             return $this->jsonResponse(true, $this->failed, $this->emptyArray, [$e->getMessage()], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
@@ -59,12 +62,13 @@ class WishlistController extends ApiController
     public function removeFromWishlist($id)
     {
         $wishList = WishList::find($id);
-
+        
         if (!empty($wishList)) {
-
+            $infos = Product::where('id',$wishList->product_id)->with('company','reviews')->first(); 
+            
             $wishList->delete();
 
-            return $this->jsonResponse(false, 'WishList deleted successfully', $wishList, $this->emptyArray, JsonResponse::HTTP_OK);
+            return $this->jsonResponse(false, 'WishList deleted successfully', $infos, $this->emptyArray, JsonResponse::HTTP_OK);
         } else {
             return $this->jsonResponse(true, $this->failed, $this->emptyArray, ['WishList not found'], JsonResponse::HTTP_NOT_FOUND);
         }

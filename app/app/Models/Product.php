@@ -24,6 +24,11 @@ class Product extends Model
         return $this->hasMany(Review::class);
     }
 
+    public function wishlist():HasMany
+    {
+        return $this->hasMany(WishList::class);
+    }
+
     public function productVariants():HasMany
     {
         return $this->hasMany(ProductVariant::class, 'product_id', 'id');
