@@ -27,7 +27,7 @@ class ProductController extends ApiController
      * @param \Illuminate\Http\Request $request
      * @return JsonResponse
      */
-    public function index(Request $request): JsonResponse
+    public function index(Request $request):JsonResponse
     {
 
         $company = $request->company;
@@ -43,8 +43,11 @@ class ProductController extends ApiController
 
         }]);
 
-        if (!is_null($company)) {
-            $query->where('company_id', $company);
+        $company = Company::firstwhere('user_id', auth()->user()->id);
+        $routeName = \Route::currentRouteName();
+
+        if ($routeName === "api.company.product.list") {
+            $query->where('company_id', $company->id);
         }
 
         if (!is_null($category)) {
@@ -72,7 +75,7 @@ class ProductController extends ApiController
         } else {
             $query->orderByDesc('id');
         }
- 
+
         if (!is_null($sortBy)) {
 
             if ($sortBy == 'offer_product') {
@@ -81,6 +84,12 @@ class ProductController extends ApiController
         }
 
         $products = $query->get();
+
+        //decode product image
+        foreach ($products as $product) {
+            $this->decodeProductImage($product);
+        }
+
         return $this->jsonResponse(false, $this->success, $products, $this->emptyArray, JsonResponse::HTTP_OK);
 
     }
@@ -93,11 +102,11 @@ class ProductController extends ApiController
     public function store(ProductAddRequest $request): JsonResponse
     {
         try {
-            
+
             $company = Company::find($request->company_id);
             $user = User::findOrFail($company->user_id);
-            
-            if ($user->id == auth()->user()->id) { 
+
+            if ($user->id == auth()->user()->id) {
                 $product = ProductProcess::create($request);
 
                 if (isset($request->product_variants) && count($request->product_variants) > 0) {
@@ -111,10 +120,13 @@ class ProductController extends ApiController
 
                 $product = Product::with(['productVariants'])->find($product->id);
 
+                //decode product image
+                $this->decodeProductImage($product);
+
                 return $this->jsonResponse(false, 'Product created successfully', $product, [], JsonResponse::HTTP_CREATED);
             } else {
                 return $this->jsonResponse(true, 'Unauthorized user', $request->all(), [], JsonResponse::HTTP_UNAUTHORIZED);
-            } 
+            }
         } catch (\Exception $e) {
             return $this->jsonResponse(true, 'Failed to create product', $request->all(), [$e->getMessage()], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
@@ -131,6 +143,9 @@ class ProductController extends ApiController
 
         if (!empty($product)) {
 
+            //decode product image
+            $this->decodeProductImage($product);
+
             return $this->jsonResponse(false, $this->success, $product, $this->emptyArray, JsonResponse::HTTP_OK);
         } else {
 
@@ -144,12 +159,12 @@ class ProductController extends ApiController
      * @param int $id
      * @return JsonResponse
      */
-    public function updateProduct(UpdateRequest $request, $id):JsonResponse
+    public function updateProduct(UpdateRequest $request, $id): JsonResponse
     {
 
         try {
-            $product =  Product::find($id);
-            if(!empty($product)){
+            $product = Product::find($id);
+            if (!empty($product)) {
 
                 $product = ProductProcess::update($request, $id);
 
@@ -164,8 +179,8 @@ class ProductController extends ApiController
                 }
 
                 return $this->jsonResponse(false, "Product updated successfully", $product, $this->emptyArray, JsonResponse::HTTP_OK);
-            }else{
-                return $this->jsonResponse(false,$this->failed,['Product not found'], $this->emptyArray, JsonResponse::HTTP_NOT_FOUND);
+            } else {
+                return $this->jsonResponse(false, $this->failed, ['Product not found'], $this->emptyArray, JsonResponse::HTTP_NOT_FOUND);
             }
         } catch (\Exception $e) {
 
@@ -266,10 +281,8 @@ class ProductController extends ApiController
         }
 
         //delete product variant images
-        if(isset($product->productVariants))
-        {
-            foreach ($product->productVariants as $proVariant)
-            {
+        if (isset($product->productVariants)) {
+            foreach ($product->productVariants as $proVariant) {
                 $arrayofImages = json_decode($proVariant->images);
                 $this->deleteFile("public", $arrayofImages);
             }
@@ -300,7 +313,7 @@ class ProductController extends ApiController
 
                     $ProductVariant['user_id'] = auth()->user()->id;
                     $ProductVariant['company_id'] = $product->company_id;
-                    $ProductVariant['product_id'] = $product->id; 
+                    $ProductVariant['product_id'] = $product->id;
 
                     ProductVariantProcess::update($ProductVariant, $ProductVariant['id']);
                     $key = array_search($ProductVariant['id'], $arrayofProductVariantId);
@@ -310,7 +323,7 @@ class ProductController extends ApiController
                 } else {
                     $ProductVariant['user_id'] = auth()->user()->id;
                     $ProductVariant['company_id'] = $product->company_id;
-                    $ProductVariant['product_id'] = $product->id; 
+                    $ProductVariant['product_id'] = $product->id;
 
                     ProductVariantProcess::create($ProductVariant);
                 }
@@ -318,6 +331,21 @@ class ProductController extends ApiController
         }
 
         return $arrayofProductVariantId;
+    }
+
+    public function decodeProductImage($product)
+    {
+        if (isset($product->images)) {
+            $product->images = json_decode($product->images);
+        }
+
+        if (isset($product->productVariants)) {
+            foreach ($product->productVariants as $proVarient) {
+                if (isset($proVarient->images)) {
+                    $proVarient->images = json_decode($proVarient->images);
+                }
+            }
+        }
     }
 
 
