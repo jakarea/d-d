@@ -1,22 +1,23 @@
 <?php
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\API\CategoryController;
-use App\Http\Controllers\API\ProductVariantController;
 use App\Http\Controllers\HydraController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserRoleController;
+
+use App\Http\Controllers\API\CategoryController;
+use App\Http\Controllers\API\ProductVariantController;
 use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\VerificationController;
 use App\Http\Controllers\API\ForgotPasswordController;
 use App\Http\Controllers\API\ClientController;
 use App\Http\Controllers\API\ReviewController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\API\WishlistController;
-use App\Http\Controllers\API\PackageController;
+use App\Http\Controllers\API\SubscriptionController;
 
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -100,7 +101,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('review/dislike', [ReviewController::class, 'dislikeOfReview']);
         Route::post('review/reply', [ReviewController::class, 'replyOfReview']);
 
-        Route::get('pricing-plane', [PackageController::class, 'index']);
+        Route::get('wishlist', [WishlistController::class, 'wishList']);
+        Route::post('wishlist', [WishlistController::class, 'addtoWishList']);
+        Route::get('wishlist/remove/{id}', [WishlistController::class, 'removeFromWishlist']);
+
+        Route::get('subscription-packages', [SubscriptionController::class, 'index']);
 
     });
 });
