@@ -20,15 +20,15 @@
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item filterItem" href="#" data-value="">All Product</a></li>
                         @foreach ($categories as $category)
-                            <li>
-                                <a class="dropdown-item filterItem" href="#" data-value="{{$category->id}}">
-                                    {{$category->name}}
+                        <li>
+                            <a class="dropdown-item filterItem" href="#" data-value="{{$category->id}}">
+                                {{$category->name}}
 
-                                    @if ($selectedCat && $selectedCat->slug == $category->slug)
-                                        <i class="fas fa-check"></i>
-                                    @endif
-                                </a>
-                            </li>
+                                @if ($selectedCat && $selectedCat->slug == $category->slug)
+                                <i class="fas fa-check"></i>
+                                @endif
+                            </a>
+                        </li> 
                         @endforeach
                     </ul>
                 </div>
@@ -41,7 +41,7 @@
 
     <!-- product list start -->
     <div class="row">
-        @if (count($products) > 0)
+        @if (count($products) > 0) 
             @foreach ($products as $product)
             <!-- product item start -->
             <div class="col-12 col-sm-6 col-lg-6 col-xl-4 col-xxl-3 mb-69">
@@ -99,32 +99,31 @@
                             @endfor
                             <li><span class="avg-star">{{ $averageRating }}</span></li>
                             <li><span class="total-rev">({{ $revText }})</span></li>
-                        </ul>
+                    </ul>
 
-                        @if ($product->sell_price && $product->price)
-                        <h4>€{{ $product->sell_price }} <span>€{{ $product->price }}</span></h4>
-                        @elseif(!$product->sell_price && $product->price)
-                        <h4>€{{ $product->price }}</h4>
-                        @elseif($product->sell_price && !$product->price)
-                        <h4>€{{ $product->sell_price }}</h4>
-                        @else
-                        <h4>€{{ $product->price }}</h4>
-                        @endif
+                    @if ($product->sell_price && $product->price)
+                    <h4>€{{ $product->sell_price }} <span>€{{ $product->price }}</span></h4>
+                    @elseif(!$product->sell_price && $product->price)
+                    <h4>€{{ $product->price }}</h4>
+                    @elseif($product->sell_price && !$product->price)
+                    <h4>€{{ $product->sell_price }}</h4>
+                    @else
+                    <h4>€{{ $product->price }}</h4>
+                    @endif
 
-                        <div class="take-deal-bttn">
-                            <button class="btn bttn" type="button">Take Deal</button>
-                        </div>
+                    <div class="take-deal-bttn">
+                        <button class="btn bttn" type="button">Take Deal</button>
                     </div>
-                    <!-- txt -->
                 </div>
+                <!-- txt -->
             </div>
-            <!-- product item end -->
-            @endforeach
+        </div>
+        <!-- product item end -->
+        @endforeach
         @else
-            {{-- no data found component --}}
-            {{-- <x-EmptyDataComponent :dynamicData="'No Products Found!'" />  --}}
-            <p>No Products Found!</p>
-            {{-- no data found component --}}
+        {{-- no data found component --}}
+        <x-EmptyDataComponent :dynamicData="'No Products Found!'" />
+        {{-- no data found component --}} 
         @endif
     </div>
     <!-- product list end -->
@@ -155,5 +154,5 @@
             });
         });
     });
-</script>
-@endsection
+</script> 
+@endsection 

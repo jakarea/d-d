@@ -22,63 +22,66 @@ class ProductVariantProcess
 
     public static function update($request, $id)
     {
-        $ProductVariant =  ProductVariant::find($id);
+        $productVariant = ProductVariant::find($id);
 
-        if (isset($request['images']) && count($request['images']) > 0 && isset($ProductVariant->images)) {
-            $arrayofImages = json_decode($ProductVariant->images);
-            (new self())->deleteImage($arrayofImages);
+        // Delete existing images if any
+        if (isset($request['images']) && count($request['images']) > 0 && isset($productVariant->images)) {
+            (new self())->deleteImage($productVariant->images);
         }
 
-        $ProductVariant = (new self())->saveProductVariant($request, $ProductVariant);
+        // Update product variant with new data and images
+        $productVariant = (new self())->saveProductVariant($request, $productVariant);
 
-        return $ProductVariant;
+        return $productVariant;
     }
 
-    public function saveProductVariant($request, $ProductVariant)
+    public function saveProductVariant($request, $productVariant)
     {
+        $productVariant->user_id = auth()->user()->id;
+        $productVariant->company_id = $request['company_id'] ?? null;
+        $productVariant->product_id = $request['product_id'] ?? null;
+        $productVariant->title = $request['title'] ?? null; 
+        $productVariant->price = $request['price'] ?? null;
+        $productVariant->sell_price = $request['sell_price'] ?? null;
+        $productVariant->cupon = $request['cupon'] ?? null;
+        $productVariant->description = $request['description'] ?? null;
 
-        $ProductVariant->user_id = auth()->user()->id;
-        $ProductVariant->company_id = isset($request['company_id']) ? $request['company_id']:null;
-        $ProductVariant->product_id = isset($request['product_id']) ? $request['product_id']:null;
-        $ProductVariant->title = isset($request['title']) ? $request['title']:null; 
-        $ProductVariant->price = isset($request['price']) ? $request['price']:null;
-        $ProductVariant->sell_price = isset($request['sell_price']) ? $request['sell_price']:null;
-        $ProductVariant->cupon = isset($request['cupon']) ? $request['cupon']:null;
-        $ProductVariant->description = isset($request['description']) ? $request['description']:null;
-
+        // Save images as a comma-separated string
         if (isset($request['images']) && count($request['images']) > 0) {
-            $arrayofImage =  $this->saveImage($request);
-            $ProductVariant->images  = json_encode($arrayofImage);
+            $imageString = $this->saveImage($request);
+            $productVariant->images = $imageString;
         }
 
-        $ProductVariant->save();
+        $productVariant->save();
 
-        return $ProductVariant;
+        return $productVariant;
     }
 
     public function saveImage($request)
     {
-        $arrayofImages = [];
+        $imageString = '';
 
         foreach ($request['images'] as $image) {
             $filePath = $this->fileUpload($image, "product-variants");
-            $arrayofImages[] = asset('storage/product-variants/' . $filePath);
+            $imageString .= asset('storage/product-variants/' . $filePath) . ',';
         }
 
-        return $arrayofImages;
+        // Remove the trailing comma
+        $imageString = rtrim($imageString, ',');
+
+        return $imageString;
     }
 
-    public function deleteImage($arrayofImages)
+    public function deleteImage($imageString)
     {
+        $fileUrl = Config::get('app.file_url');
 
-        $fileUrl =  Config::get('app.file_url');
-        foreach ($arrayofImages as $image){
+        // Convert the comma-separated string to an array
+        $arrayofImages = explode(',', $imageString);
+
+        foreach ($arrayofImages as $image) {
             $image = str_replace($fileUrl, "", $image);
             Storage::disk('public')->delete($image);
         }
     }
-
-
-
-
 }
