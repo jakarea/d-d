@@ -25,16 +25,20 @@ class ProductProcess
     public static function update($request, $productId)
     {
         $product = Product::find($productId);
-
+ 
         if (isset($request->images) && count($request->images) > 0 && isset($product->images)) {
-            $arrayofImages = json_decode($product->images);
-            (new self())->deleteImage($arrayofImages);
+            (new self())->deleteImage($product->images);
         }
-
-        $product = (new self())->saveProduct($request, $product);
+ 
+        if (isset($request->images) && count($request->images) > 0) {
+            $imageString = (new self())->saveImage($request);
+            $product->images = $imageString;
+            $product->save(); 
+        }
 
         return $product;
     }
+
 
     public function saveProduct($request, $product)
     { 
@@ -51,8 +55,9 @@ class ProductProcess
         $product->description = $request->description;
 
         if (isset($request->images) && count($request->images) > 0) {
-            $arrayofImage =  $this->saveImage($request);
-            $product->images = json_encode($arrayofImage);
+            $imageString = $this->saveImage($request);
+            $product->images = $imageString;
+            $product->save(); 
         }
 
         $product->save();
@@ -62,24 +67,29 @@ class ProductProcess
 
     public function saveImage($request)
     {
-        $arrayofImages = [];
-
+        $imageString = '';
         foreach ($request->images as $image) {
             $filePath = $this->fileUpload($image, "product");
-            $arrayofImages[] = asset('storage/product/' . $filePath);
+            $imageUrl = asset('storage/product/' . $filePath);
+            $imageString .= $imageUrl . ',';
         }
 
-        return $arrayofImages;
+        $imageString = rtrim($imageString, ',');
+
+        return $imageString;
     }
 
-    public function deleteImage($arrayofImages)
+    public function deleteImage($imageString)
     {
+        $fileUrl = Config::get('app.file_url');
+         
+        $arrayofImages = explode(',', $imageString);
 
-        $fileUrl =  Config::get('app.file_url');
-         foreach ($arrayofImages as $image){
-             $image = str_replace($fileUrl, "", $image);
-             Storage::disk('public')->delete($image);
-         }
+        foreach ($arrayofImages as $image) { 
+            $image = str_replace($fileUrl, "", $image); 
+            Storage::disk('public')->delete($image);
+        }
     }
+
 
 }
