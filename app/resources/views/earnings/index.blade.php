@@ -70,7 +70,8 @@
                             <div class="dropdown">
                                 <button class="btn p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false"
                                     id="dropdownBttn">
-                                    <img src="{{ asset('public/assets/images/icons/sort-icon.svg') }}" alt="I" class="img-fluid">
+                                    <img src="{{ asset('public/assets/images/icons/sort-icon.svg') }}" alt="I"
+                                        class="img-fluid">
                                 </button>
                                 <ul class="dropdown-menu">
                                     <li><a class="dropdown-item filterItem" href="#" data-value="asc">In order
@@ -85,6 +86,8 @@
                     <th>Payment Amount</th>
                     <th>Action</th>
                 </tr>
+                @if (count($earnings) > 0)
+                @foreach ($earnings as $earning)
                 <!-- payment single item start -->
                 <tr>
                     <td>
@@ -94,8 +97,8 @@
                         <div class="media">
                             <img src="{{ asset('public/uploads/users/avatar-01.png') }}" alt="A" class="img-fluid">
                             <div class="media-body">
-                                <h5>Lela Mraz</h5>
-                                <span>zlincoln@unpixel.com</span>
+                                <h5>{{ optional($earning->user)->name }}</h5>
+                                <span>{{ optional($earning->user)->email }}</span>
                             </div>
                         </div>
                     </td>
@@ -117,294 +120,10 @@
                     </td>
                 </tr>
                 <!-- payment single item end -->
-                <!-- payment single item start -->
-                <tr>
-                    <td>
-                        2
-                    </td>
-                    <td>
-                        <div class="media">
-                            <img src="{{ asset('public/uploads/users/avatar-02.png') }}" alt="A" class="img-fluid">
-                            <div class="media-body">
-                                <h5>Cecil Sporer</h5>
-                                <span>lincoln@unpixel.com</span>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <p>09 Oct, 2023</p>
-                    </td>
-                    <td>
-                        <p>€2,640</p>
-                    </td>
-                    <td>
-                        <ul>
-                            <li>
-                                <a href="#" class="btn-view btn-export">Export</a>
-                            </li>
-                            <li>
-                                <a href="{{ url('earning/1') }}" class="btn-view">View</a>
-                            </li>
-                        </ul>
-                    </td>
-                </tr>
-                <!-- payment single item end -->
-                <!-- payment single item start -->
-                <tr>
-                    <td>
-                        3
-                    </td>
-                    <td>
-                        <div class="media">
-                            <img src="{{ asset('public/uploads/users/avatar-03.png') }}" alt="A" class="img-fluid">
-                            <div class="media-body">
-                                <h5>Leah Skiles</h5>
-                                <span>lincoln@unpixel.com</span>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <p>09 Oct, 2023</p>
-                    </td>
-                    <td>
-                        <p>€1,290</p>
-                    </td>
-                    <td>
-                        <ul>
-                            <li>
-                                <a href="#" class="btn-view btn-export">Export</a>
-                            </li>
-                            <li>
-                                <a href="{{ url('earning/1') }}" class="btn-view">View</a>
-                            </li>
-                        </ul>
-                    </td>
-                </tr>
-                <!-- payment single item end -->
-                <!-- payment single item start -->
-                <tr>
-                    <td>
-                        4
-                    </td>
-                    <td>
-                        <div class="media">
-                            <img src="{{ asset('public/uploads/users/avatar-04.png') }}" alt="A" class="img-fluid">
-                            <div class="media-body">
-                                <h5>Bradley Heathcote</h5>
-                                <span>lincoln@unpixel.com</span>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <p>09 Oct, 2023</p>
-                    </td>
-                    <td>
-                        <p>€2,609</p>
-                    </td>
-                    <td>
-                        <ul>
-                            <li>
-                                <a href="#" class="btn-view btn-export">Export</a>
-                            </li>
-                            <li>
-                                <a href="{{ url('earning/1') }}" class="btn-view">View</a>
-                            </li>
-                        </ul>
-                    </td>
-                </tr>
-                <!-- payment single item end -->
-                <!-- payment single item start -->
-                <tr>
-                    <td>
-                        5
-                    </td>
-                    <td>
-                        <div class="media">
-                            <img src="{{ asset('public/uploads/users/avatar-05.png') }}" alt="A" class="img-fluid">
-                            <div class="media-body">
-                                <h5>Claire Turcotte</h5>
-                                <span>lincoln@unpixel.com</span>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <p>09 Oct, 2023</p>
-                    </td>
-                    <td>
-                        <p>€2,608</p>
-                    </td>
-                    <td>
-                        <ul>
-                            <li>
-                                <a href="#" class="btn-view btn-export">Export</a>
-                            </li>
-                            <li>
-                                <a href="{{ url('earning/1') }}" class="btn-view">View</a>
-                            </li>
-                        </ul>
-                    </td>
-                </tr>
-                <!-- payment single item end -->
-                <!-- payment single item start -->
-                <tr>
-                    <td>
-                        6
-                    </td>
-                    <td>
-                        <div class="media">
-                            <img src="{{ asset('public/uploads/users/avatar-06.png') }}" alt="A" class="img-fluid">
-                            <div class="media-body">
-                                <h5>Rita Kovacek</h5>
-                                <span>lincoln@unpixel.com</span>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <p>09 Oct, 2023</p>
-                    </td>
-                    <td>
-                        <p>€6,560</p>
-                    </td>
-                    <td>
-                        <ul>
-                            <li>
-                                <a href="#" class="btn-view btn-export">Export</a>
-                            </li>
-                            <li>
-                                <a href="{{ url('earning/1') }}" class="btn-view">View</a>
-                            </li>
-                        </ul>
-                    </td>
-                </tr>
-                <!-- payment single item end -->
-                <!-- payment single item start -->
-                <tr>
-                    <td>
-                        7
-                    </td>
-                    <td>
-                        <div class="media">
-                            <img src="{{ asset('public/uploads/users/avatar-07.png') }}" alt="A" class="img-fluid">
-                            <div class="media-body">
-                                <h5>Mr. Roy Cole</h5>
-                                <span>lincoln@unpixel.com</span>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <p>09 Oct, 2023</p>
-                    </td>
-                    <td>
-                        <p>€2,880</p>
-                    </td>
-                    <td>
-                        <ul>
-                            <li>
-                                <a href="#" class="btn-view btn-export">Export</a>
-                            </li>
-                            <li>
-                                <a href="{{ url('earning/1') }}" class="btn-view">View</a>
-                            </li>
-                        </ul>
-                    </td>
-                </tr>
-                <!-- payment single item end -->
-                <!-- payment single item start -->
-                <tr>
-                    <td>
-                        8
-                    </td>
-                    <td>
-                        <div class="media">
-                            <img src="{{ asset('public/uploads/users/avatar-08.png') }}" alt="A" class="img-fluid">
-                            <div class="media-body">
-                                <h5>Cecilia Fisher</h5>
-                                <span>lincoln@unpixel.com</span>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <p>09 Oct, 2023</p>
-                    </td>
-                    <td>
-                        <p>€9,365</p>
-                    </td>
-                    <td>
-                        <ul>
-                            <li>
-                                <a href="#" class="btn-view btn-export">Export</a>
-                            </li>
-                            <li>
-                                <a href="{{ url('earning/1') }}" class="btn-view">View</a>
-                            </li>
-                        </ul>
-                    </td>
-                </tr>
-                <!-- payment single item end -->
-                <!-- payment single item start -->
-                <tr>
-                    <td>
-                        9
-                    </td>
-                    <td>
-                        <div class="media">
-                            <img src="{{ asset('public/uploads/users/avatar-09.png') }}" alt="A" class="img-fluid">
-                            <div class="media-body">
-                                <h5>Shelley Collins</h5>
-                                <span>lincoln@unpixel.com</span>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <p>09 Oct, 2023</p>
-                    </td>
-                    <td>
-                        <p>€9365</p>
-                    </td>
-                    <td>
-                        <ul>
-                            <li>
-                                <a href="#" class="btn-view btn-export">Export</a>
-                            </li>
-                            <li>
-                                <a href="{{ url('earning/1') }}" class="btn-view">View</a>
-                            </li>
-                        </ul>
-                    </td>
-                </tr>
-                <!-- payment single item end -->
-                <!-- payment single item start -->
-                <tr>
-                    <td>
-                        10
-                    </td>
-                    <td>
-                        <div class="media">
-                            <img src="{{ asset('public/uploads/users/avatar-10.png') }}" alt="A" class="img-fluid">
-                            <div class="media-body">
-                                <h5>Shelley Collins</h5>
-                                <span>lincoln@unpixel.com</span>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <p>09 Oct, 2023</p>
-                    </td>
-                    <td>
-                        <p>€9365</p>
-                    </td>
-                    <td>
-                        <ul>
-                            <li>
-                                <a href="#" class="btn-view btn-export">Export</a>
-                            </li>
-                            <li>
-                                <a href="{{ url('earning/1') }}" class="btn-view">View</a>
-                            </li>
-                        </ul>
-                    </td>
-                </tr>
-                <!-- payment single item end -->
+                @endforeach
+                @else
+                <p>No Payment history found!</p>
+                @endif
             </table>
         </div>
     </div>

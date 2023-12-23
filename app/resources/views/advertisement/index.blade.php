@@ -67,7 +67,7 @@
         @foreach ($products as $product)
         <!-- product item start -->
         <div class="col-12 col-sm-6 col-lg-6 col-xl-4 col-xxl-3 mb-69">
-            <div class="product-item-box {{ $product->status == 1 ? '' : 'inactive' }}">
+            <div class="product-item-box  {{ $product->status == 1 ? '' : 'inactive' }}">
                 <!-- thumbnail start -->
                 <div class="product-thumbnail">
                     @php
@@ -85,11 +85,11 @@
                     @php
                     $imageUrls = [];
                     if (isset($product) && !empty($product->images)) {
-                    $imageUrls = json_decode($product->images);
+                    $imageUrls = explode(',', $product->images);
                     }
                     @endphp
 
-                    @if(is_array($imageUrls) && count($imageUrls) > 0)
+                    @if(count($imageUrls) > 0)
                     <img src="{{ $imageUrls[0] }}" alt="Product Thumbnail" class="img-fluid">
                     @else
                     <img src="{{ asset('public/uploads/products/product-thumbnail-01.png')}}" alt="Product Thumbnail"
@@ -145,8 +145,8 @@
         @endforeach
         @else
         {{-- no data found component --}}
-        {{-- <x-EmptyDataComponent :dynamicData="'No Advertisement Products Found!'" /> --}}
-        <p>No Advertisement Products Found!</p>
+        {{-- <x-EmptyDataComponent :dynamicData="'No Products Found!'" /> --}}
+        <p>No Products Found!</p>
         {{-- no data found component --}}
         @endif
     </div>

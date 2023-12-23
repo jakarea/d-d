@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Earning;
 
 class EarningController extends Controller
 {
     public function index(){
-        return view('earnings/index');
+        $earnings = Earning::all();
+        return view('earnings/index',compact('earnings'));
     }
 
     public function show(){

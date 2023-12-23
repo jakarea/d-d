@@ -10,6 +10,7 @@ use App\Http\Requests\User\ReviewAcceptRequest;
 use App\Models\Dislike;
 use App\Models\Like; 
 use App\Models\Review;
+use App\Models\Product;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Auth;
@@ -111,7 +112,8 @@ class ReviewController extends ApiController
                 $like = Like::create($request->except('_method', '_token'));
             }
 
-            return $this->jsonResponse(false, $this->success, $like, $this->emptyArray, JsonResponse::HTTP_OK);
+            $infos = Review::with('product', 'likes')->find($like->review_id); 
+            return $this->jsonResponse(false, $this->success, $infos, $this->emptyArray, JsonResponse::HTTP_OK);
 
         } catch (\Exception $e) {
 
@@ -139,8 +141,9 @@ class ReviewController extends ApiController
                 $request['like'] = false;
                 $dislike = Like::create($request->except('_method', '_token'));
             }
+            $infos = Review::with('product', 'dislikes')->find($dislike->review_id); 
 
-            return $this->jsonResponse(false, $this->success, $dislike, $this->emptyArray, JsonResponse::HTTP_OK);
+            return $this->jsonResponse(false, $this->success, $infos, $this->emptyArray, JsonResponse::HTTP_OK);
 
         } catch (\Exception $e) {
 
@@ -166,8 +169,9 @@ class ReviewController extends ApiController
                     'status'        => 0,
                 ]);  
             }
+            $newReviewWithUser = $newReview->load('user.personalInfo', 'user.address');
 
-            return $this->jsonResponse(false, $this->success, $newReview, $this->emptyArray, JsonResponse::HTTP_CREATED);
+              return $this->jsonResponse(false, $this->success, $newReviewWithUser, $this->emptyArray, JsonResponse::HTTP_CREATED); 
 
         }catch (\Exception $e){
             return $this->jsonResponse(true, $this->failed, $request->all(), [$e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR]);
