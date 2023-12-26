@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Role;
 use App\Models\User;
+use App\Models\PricingPackage;
 use App\Models\Company;
+use App\Models\Earning;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\Exceptions\MissingAbilityException;
@@ -126,10 +128,25 @@ class UserController extends API\ApiController {
         }
 
         $roles = $user->roles->pluck('slug')->all();
-
         $plainTextToken = $user->createToken('hydra-api-token', $roles)->plainTextToken;
+ 
+        $company = Company::where('user_id',$user->id)->first(); 
+        $earning = Earning::where('user_id',$user->id)->where('status','paid')->first(); 
 
-        return response(['error' => false, 'id' => $user->id, 'token' => $plainTextToken], 200);
+        $package = NULL;
+        if ($earning) {
+            $package = PricingPackage::where('id',$earning->pricing_packages_id)->first();
+        }
+        
+        $userInfo = [
+            'token' => $plainTextToken,
+            'user_info' => $user,
+            'user_company' => $company,
+            'current_package' => $package
+            
+        ];
+
+        return $this->jsonResponse(false, $this->success, $userInfo, $this->emptyArray, JsonResponse::HTTP_CREATED); 
     }
 
     /**

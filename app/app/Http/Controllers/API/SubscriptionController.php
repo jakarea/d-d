@@ -27,7 +27,7 @@ class SubscriptionController extends ApiController
         }
     }
 
-    public function handleIinitialization(Request $request)
+    public function handlePaymentRequest(Request $request)
     {
         Stripe::setApiKey(env('STRIPE_SECRET'));
 
@@ -120,13 +120,9 @@ class SubscriptionController extends ApiController
             $earning->save();
 
             $data = [
-                'package' => $package,
-                'payment_info' => [
-                    'payment_status' => $paymentStatus,
-                    'payment_id' => $paymentId,
-                    'amount' => $amountPaid,
-                ],
-                'earnings' => $earning
+                'payment_info' => $earning,
+                'purchased_package' => $package,
+                // 'earnings' => $earning
             ];
 
             return $this->jsonResponse(false, $this->success, $data, $this->emptyArray, JsonResponse::HTTP_OK);
