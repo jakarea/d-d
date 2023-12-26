@@ -4,27 +4,120 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\PricingPackage;
+use App\Models\Earning;
+use App\Models\Company;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Stripe\Stripe;
+use Stripe\Checkout\Session;
+use Illuminate\Support\Carbon;
+use Stripe\Stripe; 
+use Stripe\Price;
+use Stripe\Product; 
 
 class SubscriptionController extends ApiController
 {
 
     public function index()
     { 
-
-        Stripe::setApiKey(env('STRIPE_SECRET')); 
-
-        $packages = PricingPackage::get();
-        $responseData = [
-            'error' => false,
-            'message' => $this->success,
-            'data' => $packages->toArray(),
-            // 'stripe_secret_key' => env('STRIPE_SECRET'),
-            'errors' => $this->emptyArray,
-        ];
- 
-        return response()->json($responseData, JsonResponse::HTTP_OK);
+        $packages = PricingPackage::all();
+        if ($packages) {
+            return $this->jsonResponse(false,$this->success, $packages, $this->emptyArray,JsonResponse::HTTP_OK);
+        }else{
+            return $this->jsonResponse(true,$this->failed,$this->emptyArray, ['Packages not found'], JsonResponse::HTTP_NOT_FOUND);
+        }
     }
+
+    public function handleIinitialization(Request $request)
+    {
+        Stripe::setApiKey(env('STRIPE_SECRET'));
+
+        try {
+            $package = PricingPackage::find($request->package_id);
+
+            $price = ($request->package_type === 'Yearly') ? $package->yearly_price : $package->price;
+
+            // Create a Product in Stripe
+            $product = Product::create([
+                'name' => $package->name, 
+                'description' => 'Package Type: ' . $request->package_type === 'Yearly' ? 'Yearly' : 'Monthly',
+                'images' => [asset('assets/images/logo.svg')],
+            ]);
+
+            // Create a Price in Stripe
+            $stripePrice = Price::create([
+                'product' => $product->id,
+                'unit_amount' => $price * 100,
+                'currency' => 'eur',
+            ]);
+
+            // Create a Checkout Session
+            $session = Session::create([
+                'payment_method_types' => ['card'],
+                'line_items' => [
+                    [
+                        'price' => $stripePrice->id,
+                        'quantity' => 1,
+                    ],
+                ],
+                'mode' => 'payment',
+                'success_url' => url('payment/success') . '?session_id={CHECKOUT_SESSION_ID}&package_id=' . $package->id . '&user_id=' . $request->user_id,
+                'cancel_url' => url('payment/cancel'),
+            ]);
+
+            return $this->jsonResponse(false,$this->success, $session->url, $this->emptyArray,JsonResponse::HTTP_OK);
+
+        } catch (\Exception $e) {
+            return $this->jsonResponse(true, $this->failed, $request->all(), [$e->getMessage()], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+    public function handleSuccess(Request $request)
+    {
+
+        try {
+            
+            Stripe::setApiKey(env('STRIPE_SECRET'));
+            
+            $sessionId = $request->input('session_id'); 
+            $packageId = $request->input('package_id'); 
+            $userId = $request->input('user_id'); 
+            $session = Session::retrieve($sessionId);
+            $package = PricingPackage::find($packageId);
+            $paymentId = $session->payment_intent;
+            $paymentStatus = $session->payment_status; 
+            $amountPaid = $session->amount_total / 100;    
+            $company = Company::find($userId);
+
+            $earning = new Earning();
+            $earning->pricing_packages_id = $packageId;
+            $earning->company_id = $company->id;
+            $earning->user_id = $userId;
+            $earning->package_name = $package->name;
+            $earning->payment_id = $paymentId;
+            $earning->amount = $amountPaid;
+            $earning->package_type = $package->type === 'Yearly' ? 'Yearly' : 'Monthly';
+            $earning->status = $paymentStatus;
+            $earning->start_at = Carbon::now();
+            $earning->end_at = Carbon::now()->addDays(30);
+            $earning->save();
+
+            $data = [
+                'payment_status' => $paymentStatus,
+                'payment_id' => $paymentId,
+                'amount' => $amountPaid,
+            ];
+
+            return $this->jsonResponse(false, $this->success, $data, $this->emptyArray, JsonResponse::HTTP_OK);
+
+        } catch (\Exception $e) {
+            return $this->jsonResponse(true, $this->failed, $request->all(), [$e->getMessage()], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function handleCancel(Request $request)
+    {
+        return response()->json(['data' => 'FAILED']);
+    }
+    
 }

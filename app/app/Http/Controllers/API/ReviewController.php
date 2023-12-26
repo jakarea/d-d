@@ -45,9 +45,6 @@ class ReviewController extends ApiController
                 $filteredData[] = $item;
             }
         }
- 
-
-        // return  $filteredData;
 
         if(!empty($reviews)){
             return $this->jsonResponse(false,$this->success, $reviews, $this->emptyArray,JsonResponse::HTTP_OK);

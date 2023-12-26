@@ -95,18 +95,23 @@
                     </td>
                     <td>
                         <div class="media">
-                            <img src="{{ asset('public/uploads/users/avatar-01.png') }}" alt="A" class="img-fluid">
+                            @if ($earning->user->personalInfo && $earning->user->personalInfo->avatar)
+                            <img src="{{ $earning->user->personalInfo->avatar }}" alt="A" class="img-fluid">
+                            @else
+                            <span class="no-avatar nva-sm">{!! strtoupper($earning->user->name[0]) !!}</span>
+                            @endif
                             <div class="media-body">
-                                <h5>{{ optional($earning->user)->name }}</h5>
+                                <h5><a href="{{ url('company',optional($earning->user)->id) }}">{{ optional($earning->user)->name }}</a></h5>
                                 <span>{{ optional($earning->user)->email }}</span>
                             </div>
                         </div>
                     </td>
                     <td>
-                        <p>09 Oct, 2023</p>
+                        <p>{{ $earning->created_at->format('d F Y') }}
+                        </p>
                     </td>
                     <td>
-                        <p>€1,290</p>
+                        <p>€{{ $earning->amount}}</p>
                     </td>
                     <td>
                         <ul>
@@ -114,7 +119,7 @@
                                 <a href="#" class="btn-view btn-export">Export</a>
                             </li>
                             <li>
-                                <a href="{{ url('earning/1') }}" class="btn-view">View</a>
+                                <a href="{{ url('earning',$earning->id) }}" class="btn-view">View</a>
                             </li>
                         </ul>
                     </td>
@@ -122,7 +127,11 @@
                 <!-- payment single item end -->
                 @endforeach
                 @else
-                <p>No Payment history found!</p>
+                <tr>
+                    <td colspan="6" class="text-center">
+                        No Payment history found!
+                    </td>
+                </tr>
                 @endif
             </table>
         </div>
