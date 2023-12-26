@@ -21,6 +21,7 @@ class ReviewController extends ApiController
 
     public function reviewsOfCompany($companyId)
     {
+        // return 23;
          $mainReviews = Review::with(['likes','dislikes'])
             ->where('company_id', $companyId)
             ->where('status', false)
@@ -31,21 +32,19 @@ class ReviewController extends ApiController
 
         $mainReviews = [];
 
-           foreach ($reviews as $review) {
-             if ($review['replies_to']) {
-                $reviews[$review['replies_to']]['reply'][] = $review;
-             } 
-           }
+        foreach ($reviews as $review) {
+            if ($review['replies_to']) {
+            $reviews[$review['replies_to']]['reply'][] = $review;
+            } 
+        }
 
-           $filteredData = [];
+        $filteredData = [];
 
-           foreach ($reviews as $item) {
+        foreach ($reviews as $item) {
             if (!isset($item['replies_to']) || $item['replies_to'] === null) {
                 $filteredData[] = $item;
             }
         }
-
-        return  $filteredData;
 
         if(!empty($reviews)){
             return $this->jsonResponse(false,$this->success, $reviews, $this->emptyArray,JsonResponse::HTTP_OK);

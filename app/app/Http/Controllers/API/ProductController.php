@@ -38,7 +38,7 @@ class ProductController extends ApiController
         $sortOrder = $request->sortorder;
         $category = $request->category;
 
-        $query = Product::with(['productVariants', 'company', 'reviews' => function ($query) {
+        $query = Product::with(['productVariants', 'company','wishlist', 'reviews' => function ($query) {
             $query->with(['likes', 'dislikes']);
 
         }]);
