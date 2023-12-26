@@ -33,13 +33,29 @@ class SubscriptionController extends ApiController
 
         try {
             $package = PricingPackage::find($request->package_id);
+            $company = Company::find($request->user_id);
+            $price = ($request->package_type == 'Yearly') ? $package->yearly_price : $package->price;
 
-            $price = ($request->package_type === 'Yearly') ? $package->yearly_price : $package->price;
+            if ($request->package_id == ($package->price || $package->yearly_price)) {
+
+                $earning = new Earning();
+                $earning->pricing_packages_id = $package->id;
+                $earning->company_id = $company->id;
+                $earning->user_id = $request->user_id;
+                $earning->package_name = $package->name;
+                $earning->payment_id = '';
+                $earning->amount = $price;
+                $earning->package_type = $request->package_type;
+                $earning->status = "Pending";
+                $earning->start_at = NULL;
+                $earning->end_at = NULL;
+                $earning->save();
+            }
 
             // Create a Product in Stripe
             $product = Product::create([
                 'name' => $package->name, 
-                'description' => 'Package Type: ' . $request->package_type === 'Yearly' ? 'Yearly' : 'Monthly',
+                'description' => $request->package_type == 'Yearly' ? 'Package Type: Yearly' : 'Package Type: Monthly',
                 'images' => [asset('assets/images/logo.svg')],
             ]);
 
@@ -60,7 +76,7 @@ class SubscriptionController extends ApiController
                     ],
                 ],
                 'mode' => 'payment',
-                'success_url' => url('payment/success') . '?session_id={CHECKOUT_SESSION_ID}&package_id=' . $package->id . '&user_id=' . $request->user_id,
+                'success_url' => url('payment/success') . '?session_id={CHECKOUT_SESSION_ID}&package_id=' . $package->id . '&earning_id=' . $earning->id,
                 'cancel_url' => url('payment/cancel'),
             ]);
 
@@ -78,34 +94,32 @@ class SubscriptionController extends ApiController
         try {
             
             Stripe::setApiKey(env('STRIPE_SECRET'));
-            
             $sessionId = $request->input('session_id'); 
             $packageId = $request->input('package_id'); 
-            $userId = $request->input('user_id'); 
+            $earningId = $request->input('earning_id'); 
+
             $session = Session::retrieve($sessionId);
             $package = PricingPackage::find($packageId);
             $paymentId = $session->payment_intent;
             $paymentStatus = $session->payment_status; 
             $amountPaid = $session->amount_total / 100;    
-            $company = Company::find($userId);
-
-            $earning = new Earning();
-            $earning->pricing_packages_id = $packageId;
-            $earning->company_id = $company->id;
-            $earning->user_id = $userId;
-            $earning->package_name = $package->name;
+            
+            $earning = Earning::find($earningId);   
             $earning->payment_id = $paymentId;
-            $earning->amount = $amountPaid;
-            $earning->package_type = $package->type === 'Yearly' ? 'Yearly' : 'Monthly';
+            $earning->amount = $amountPaid; 
             $earning->status = $paymentStatus;
             $earning->start_at = Carbon::now();
             $earning->end_at = Carbon::now()->addDays(30);
             $earning->save();
 
             $data = [
-                'payment_status' => $paymentStatus,
-                'payment_id' => $paymentId,
-                'amount' => $amountPaid,
+                'package' => $package,
+                'payment_info' => [
+                    'payment_status' => $paymentStatus,
+                    'payment_id' => $paymentId,
+                    'amount' => $amountPaid,
+                ],
+                // 'earnings' => $earning
             ];
 
             return $this->jsonResponse(false, $this->success, $data, $this->emptyArray, JsonResponse::HTTP_OK);
