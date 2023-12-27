@@ -42,13 +42,14 @@ class SubscriptionController extends ApiController
             }
 
             $checkout2 = Earning::where('user_id', $request->user_id)->where('status','paid')->first();
+
             if($checkout2){
-                return $this->jsonResponse(true,$this->failed,$this->emptyArray, ['You have already purchased another Package!'], JsonResponse::HTTP_NOT_FOUND);
+                 $checkout2->status = 'expired';
+                 $checkout2->save();
             }
 
             if ($price == ($package->price || $package->yearly_price)) {
 
-                 
                 $earning = new Earning();
                 $earning->pricing_packages_id = $package->id;
                 $earning->company_id = $company->id;

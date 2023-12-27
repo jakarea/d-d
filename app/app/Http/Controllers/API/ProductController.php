@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Requests\Product\UpdateRequest;
 use App\Models\Company;
+use App\Models\WishList;
 use App\Models\User;
 use App\Models\Product;
 use App\Models\ProductVariant;
@@ -40,7 +41,6 @@ class ProductController extends ApiController
 
         $query = Product::with(['productVariants', 'company','wishlist', 'reviews' => function ($query) {
             $query->with(['likes', 'dislikes']);
-
         }]);
 
         $company = Company::firstwhere('user_id', auth()->user()->id);
@@ -80,13 +80,16 @@ class ProductController extends ApiController
                 $query->orderByDesc(DB::raw('price - sell_price'));
             }
         }
+        
+        // wishlist flag
+        $user_id = auth()->user()->id;
+        $query->addSelect(['is_wishlist' => WishList::selectRaw('1')
+            ->whereColumn('product_id', 'products.id')
+            ->where('user_id', $user_id)
+            ->limit(1)
+        ]);
 
         $products = $query->get();
-
-        //decode product image
-        // foreach ($products as $product) {
-        //     $this->decodeProductImage($product);
-        // }
 
         return $this->jsonResponse(false, $this->success, $products, $this->emptyArray, JsonResponse::HTTP_OK);
 
