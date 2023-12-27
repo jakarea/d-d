@@ -86,9 +86,9 @@ class ProductController extends ApiController
         $products = $query->get();
 
         //decode product image
-        foreach ($products as $product) {
-            $this->decodeProductImage($product);
-        }
+        // foreach ($products as $product) {
+        //     $this->decodeProductImage($product);
+        // }
 
         return $this->jsonResponse(false, $this->success, $products, $this->emptyArray, JsonResponse::HTTP_OK);
 
