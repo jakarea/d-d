@@ -37,9 +37,13 @@ class SubscriptionController extends ApiController
             $price = ($request->package_type == 'Yearly') ? $package->yearly_price : $package->price;
 
             $checkout = Earning::where('user_id', $request->user_id)->where('pricing_packages_id',$request->package_id)->where('status','paid')->first();
-
             if($checkout){
                 return $this->jsonResponse(true,$this->failed,$this->emptyArray, ['You have already purchased this Package!'], JsonResponse::HTTP_NOT_FOUND);
+            }
+
+            $checkout2 = Earning::where('user_id', $request->user_id)->where('status','paid')->first();
+            if($checkout2){
+                return $this->jsonResponse(true,$this->failed,$this->emptyArray, ['You have already purchased another Package!'], JsonResponse::HTTP_NOT_FOUND);
             }
 
             if ($price == ($package->price || $package->yearly_price)) {
@@ -83,8 +87,8 @@ class SubscriptionController extends ApiController
                     ],
                 ],
                 'mode' => 'payment',
-                'success_url' => url('payment/success') . '?session_id={CHECKOUT_SESSION_ID}&package_id=' . $package->id . '&earning_id=' . $earning->id,
-                'cancel_url' => url('payment/cancel'),
+                'success_url' => url('purchase/success') . '?session_id={CHECKOUT_SESSION_ID}&package_id=' . $package->id . '&purchase_id=' . $earning->id,
+                'cancel_url' => url('purchase/cancel'),
             ]);
 
             return $this->jsonResponse(false,$this->success, $session->url, $this->emptyArray,JsonResponse::HTTP_OK);
@@ -103,7 +107,7 @@ class SubscriptionController extends ApiController
             Stripe::setApiKey(env('STRIPE_SECRET'));
             $sessionId = $request->input('session_id'); 
             $packageId = $request->input('package_id'); 
-            $earningId = $request->input('earning_id'); 
+            $earningId = $request->input('purchase_id'); 
 
             $session = Session::retrieve($sessionId);
             $package = PricingPackage::find($packageId);
@@ -120,9 +124,8 @@ class SubscriptionController extends ApiController
             $earning->save();
 
             $data = [
-                'payment_info' => $earning,
-                'purchased_package' => $package,
-                // 'earnings' => $earning
+                'purchased_info' => $earning,
+                'current_package' => $package,
             ];
 
             return $this->jsonResponse(false, $this->success, $data, $this->emptyArray, JsonResponse::HTTP_OK);
@@ -134,7 +137,7 @@ class SubscriptionController extends ApiController
 
     public function handleCancel(Request $request)
     {
-        $earningId = $request->input('earning_id');
+        $earningId = $request->input('purchase_id');
         $earning = Earning::find($earningId);   
         $earning->payment_id = 'N/A';
         $earning->amount = '00.00'; 

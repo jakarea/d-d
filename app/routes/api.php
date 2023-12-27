@@ -106,9 +106,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('wishlist/remove/{id}', [WishlistController::class, 'removeFromWishlist']);
 
         Route::get('subscription-packages', [SubscriptionController::class, 'index']);  
-        Route::post('payment/request', [SubscriptionController::class, 'handlePaymentRequest']); 
-        Route::post('payment/success', [SubscriptionController::class, 'handleSuccess'])->name('payment.success'); 
-        Route::post('payment/cancel', [SubscriptionController::class, 'handleCancel'])->name('payment.cancel'); 
+        Route::post('purchase/request', [SubscriptionController::class, 'handlePaymentRequest']); 
+        Route::post('purchase/success', [SubscriptionController::class, 'handleSuccess'])->name('purchase.success'); 
+        Route::post('purchase/cancel', [SubscriptionController::class, 'handleCancel'])->name('purchase.cancel'); 
  
 
     });
