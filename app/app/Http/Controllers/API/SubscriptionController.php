@@ -19,7 +19,16 @@ class SubscriptionController extends ApiController
 
     public function index()
     { 
-        $packages = PricingPackage::all();
+        $packages = PricingPackage::all(); 
+        
+        foreach ($packages as $package) { 
+            $package->features = json_decode($package->features, true);
+            $features = [];
+            foreach ($package->features as $feature) {
+                 $features[] = $feature;
+            }
+            $package->features = $features;
+        }
         if ($packages) {
             return $this->jsonResponse(false,$this->success, $packages, $this->emptyArray,JsonResponse::HTTP_OK);
         }else{

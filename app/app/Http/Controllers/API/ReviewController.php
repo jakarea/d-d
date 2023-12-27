@@ -20,14 +20,14 @@ class ReviewController extends ApiController
 {
 
     public function reviewsOfCompany($companyId)
-    {
-        // return 23;
+    { 
          $mainReviews = Review::with(['likes','dislikes'])
             ->where('company_id', $companyId)
             ->where('status', false)
+            ->with('user.personalInfo')
             ->get()->toArray();
 
-         $ids = array_column($mainReviews, 'id'); 
+        $ids = array_column($mainReviews, 'id'); 
         $reviews = array_combine($ids, $mainReviews); 
 
         $mainReviews = [];
@@ -58,6 +58,7 @@ class ReviewController extends ApiController
 
         $review = Review::where('id', $request->review_id)
                          ->where('company_id', $request->company_id)
+                         ->with('user.personalInfo')
                          ->first();
 
         if(!empty($review)){
