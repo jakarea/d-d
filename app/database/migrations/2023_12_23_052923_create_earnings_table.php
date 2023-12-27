@@ -19,12 +19,12 @@ return new class extends Migration
             $table->foreignId('company_id')->constrained()->cascadeOnDelete();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('package_name')->nullable();
-            $table->bigInteger('payment_id');
+            $table->string('payment_id');
             $table->decimal('amount', 8, 2);
             $table->string('package_type');
-            $table->enum('status', ['pending', 'completed', 'failed']);
-            $table->date('start_at');
-            $table->date('end_at');
+            $table->enum('status', ['pending', 'completed', 'failed', 'paid', 'cancled', 'refunded']);
+            $table->date('start_at')->nullable();
+            $table->date('end_at')->nullable();
             $table->timestamps();
         });
     }

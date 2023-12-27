@@ -36,7 +36,7 @@ class SubscriptionController extends ApiController
             $company = Company::find($request->user_id);
             $price = ($request->package_type == 'Yearly') ? $package->yearly_price : $package->price;
 
-            $checkout = Earning::where('user_id', $request->user_id)->where('pricing_packages_id',$request->package_id)->first();
+            $checkout = Earning::where('user_id', $request->user_id)->where('pricing_packages_id',$request->package_id)->where('status','paid')->first();
 
             if($checkout){
                 return $this->jsonResponse(true,$this->failed,$this->emptyArray, ['You have already purchased this Package!'], JsonResponse::HTTP_NOT_FOUND);
