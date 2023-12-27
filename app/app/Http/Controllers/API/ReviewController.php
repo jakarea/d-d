@@ -24,7 +24,7 @@ class ReviewController extends ApiController
          $mainReviews = Review::with(['likes','dislikes'])
             ->where('company_id', $companyId)
             ->where('status', false)
-            ->with('user.personalInfo')
+            ->with('user.personalInfo','likeStatus') 
             ->get()->toArray();
 
         $ids = array_column($mainReviews, 'id'); 
@@ -66,7 +66,7 @@ class ReviewController extends ApiController
                 $review->status = true;
                 $review->save();
                 $message = "Review accepted";
-            }elseif (isset($request->status) && $request->status == false){
+            }elseif (isset($request->status) && $request->status == -1){
                 $review->delete();
                 $message = "Review rejected";
             }
@@ -102,9 +102,10 @@ class ReviewController extends ApiController
 
             $like = Like::where('user_id', auth()->user()->id)->where('review_id', $request->review_id)->first();
 
-            if(!empty($like) && $like->like == true){
-                $like->delete();
-            }elseif(!empty($like) && $like->like == false){
+            if(!empty($like) && $like->like == 1){ 
+                $like->delete(); 
+
+            }elseif(!empty($like) && $like->like == -1){
                 $like->like = true;
                 $like->save();
             }else{
@@ -131,14 +132,14 @@ class ReviewController extends ApiController
 
             $dislike = Like::where('user_id', auth()->user()->id)->where('review_id', $request->review_id)->first();
 
-            if(!empty($dislike) && $dislike->like == false){
+            if(!empty($dislike) && $dislike->like == -1){
                 $dislike->delete();
-            }elseif(!empty($dislike) && $dislike->like == true){
-                $dislike->like = false;
+            }elseif(!empty($dislike) && $dislike->like == 1){
+                $dislike->like = -1;
                 $dislike->save();
             }else{
                 $request['user_id'] = auth()->user()->id;
-                $request['like'] = false;
+                $request['like'] = -1;
                 $dislike = Like::create($request->except('_method', '_token'));
             }
             $infos = Review::with('product', 'dislikes')->find($dislike->review_id); 
