@@ -19,6 +19,11 @@ class Review extends Model
         'rating'
     ];
 
+    protected $hidden = [ 
+        'created_at',
+        'updated_at',
+    ];
+
 
     public function likes():HasMany
     {
@@ -29,8 +34,14 @@ class Review extends Model
         return $this->hasOne(User::class, 'id', 'user_id');
     }
 
-    public function product() {
+    public function product() 
+    {
         return $this->hasOne(Product::class, 'id', 'product_id');
+    }
+
+    public function likeStatus()
+    {
+        return $this->hasOne(Like::class)->where('user_id', auth()->user()->id);
     }
 
     public function dislikes():HasMany

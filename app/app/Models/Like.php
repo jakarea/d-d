@@ -10,4 +10,9 @@ class Like extends Model
     use HasFactory;
 
     protected $fillable = ['user_id', 'review_id','like'];
+
+    protected $hidden = [ 
+        'created_at',
+        'updated_at',
+    ];
 }
