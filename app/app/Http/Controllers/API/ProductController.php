@@ -51,7 +51,6 @@ class ProductController extends ApiController
         }
 
         if (!is_null($category)) {
-
             $query->where(function ($q) use ($category) {
                 $q->where('cats', 'LIKE', '%' . $category . '%');
             });
@@ -77,7 +76,6 @@ class ProductController extends ApiController
         }
 
         if (!is_null($sortBy)) {
-
             if ($sortBy == 'offer_product') {
                 $query->orderByDesc(DB::raw('price - sell_price'));
             }
