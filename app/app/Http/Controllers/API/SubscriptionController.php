@@ -19,7 +19,16 @@ class SubscriptionController extends ApiController
 
     public function index()
     { 
-        $packages = PricingPackage::all();
+        $packages = PricingPackage::all(); 
+        
+        foreach ($packages as $package) { 
+            $package->features = json_decode($package->features, true);
+            $features = [];
+            foreach ($package->features as $feature) {
+                 $features[] = $feature;
+            }
+            $package->features = $features;
+        }
         if ($packages) {
             return $this->jsonResponse(false,$this->success, $packages, $this->emptyArray,JsonResponse::HTTP_OK);
         }else{
@@ -42,13 +51,14 @@ class SubscriptionController extends ApiController
             }
 
             $checkout2 = Earning::where('user_id', $request->user_id)->where('status','paid')->first();
+
             if($checkout2){
-                return $this->jsonResponse(true,$this->failed,$this->emptyArray, ['You have already purchased another Package!'], JsonResponse::HTTP_NOT_FOUND);
+                 $checkout2->status = 'expired';
+                 $checkout2->save();
             }
 
             if ($price == ($package->price || $package->yearly_price)) {
 
-                 
                 $earning = new Earning();
                 $earning->pricing_packages_id = $package->id;
                 $earning->company_id = $company->id;
