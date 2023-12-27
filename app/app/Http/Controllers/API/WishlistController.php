@@ -61,11 +61,10 @@ class WishlistController extends ApiController
 
     public function removeFromWishlist($id)
     {
-        $wishList = WishList::find($id);
+        $wishList = WishList::where('product_id',$id)->where('user_id',auth()->user()->id)->first();
         
         if (!empty($wishList)) {
             $infos = Product::where('id',$wishList->product_id)->with('company','reviews')->first(); 
-            
             $wishList->delete();
 
             return $this->jsonResponse(false, 'WishList deleted successfully', $infos, $this->emptyArray, JsonResponse::HTTP_OK);
