@@ -25,29 +25,29 @@ class ReviewController extends ApiController
             ->where('company_id', $companyId)
             ->where('status', false)
             ->with('user.personalInfo','likeStatus') 
-            ->get()->toArray();
+            ->get();
 
-        $ids = array_column($mainReviews, 'id'); 
-        $reviews = array_combine($ids, $mainReviews); 
+        // $ids = array_column($mainReviews, 'id'); 
+        // $reviews = array_combine($ids, $mainReviews); 
 
-        $mainReviews = [];
+        // $mainReviews = [];
 
-        foreach ($reviews as $review) {
-            if ($review['replies_to']) {
-            $reviews[$review['replies_to']]['reply'][] = $review;
-            } 
-        }
+        // foreach ($reviews as $review) {
+        //     if ($review['replies_to']) {
+        //     $reviews[$review['replies_to']]['reply'][] = $review;
+        //     } 
+        // }
 
-        $filteredData = [];
+        // $filteredData = [];
 
-        foreach ($reviews as $item) {
-            if (!isset($item['replies_to']) || $item['replies_to'] === null) {
-                $filteredData[] = $item;
-            }
-        }
+        // foreach ($reviews as $item) {
+        //     if (!isset($item['replies_to']) || $item['replies_to'] === null) {
+        //         $filteredData[] = $item;
+        //     }
+        // }
 
-        if(!empty($reviews)){
-            return $this->jsonResponse(false,$this->success, $reviews, $this->emptyArray,JsonResponse::HTTP_OK);
+        if(!empty($mainReviews)){
+            return $this->jsonResponse(false,$this->success, $mainReviews, $this->emptyArray,JsonResponse::HTTP_OK);
         }else{
             return $this->jsonResponse(true,$this->failed,$this->emptyArray, ['Review not found'], JsonResponse::HTTP_NOT_FOUND);
         }
