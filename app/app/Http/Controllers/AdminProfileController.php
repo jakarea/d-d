@@ -20,6 +20,7 @@ class AdminProfileController extends Controller
         $profile = User::find(Auth::id()); 
         return view('admin-profile/details',compact('profile'));
     }
+    
 
     public function edit()
     {
