@@ -26,17 +26,23 @@ class ProductProcess
     {
         $product = Product::find($productId);
  
-        if (isset($request->images) && count($request->images) > 0 && isset($product->images)) {
-            (new self())->deleteImage($product->images);
-        }
- 
-        if (isset($request->images) && count($request->images) > 0) {
-            $imageString = (new self())->saveImage($request);
-            $product->images = $imageString;
-            $product->save(); 
-        }
+        // if (isset($request->images) && count($request->images) > 0) {
+        //     $imageString = (new self())->saveImage($request);
+        //     $product->images = $imageString;
+        //     $product->save(); 
+        // }
 
-        return $product;
+        if (!empty($product)) {
+            if (isset($request->images) && count($request->images) > 0 && isset($product->images)) {
+                (new self())->deleteImage($product->images);
+            }
+    
+            $product = (new self())->saveProduct($request, $product);
+    
+            return $product;
+        } else { 
+            return null;
+        }
     }
 
 
