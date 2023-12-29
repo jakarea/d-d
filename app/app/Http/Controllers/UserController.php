@@ -83,7 +83,9 @@ class UserController extends API\ApiController {
                 'errors' => $e->getMessage(),
             ], 200);
         }
-        return $user;
+
+        // return $user;
+        return $this->jsonResponse(false, $this->success, $user, $this->emptyArray, JsonResponse::HTTP_CREATED);
     }
 
     protected function validationErrorResponse(ValidationException $e, $status, $message, $errorCode): JsonResponse

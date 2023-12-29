@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
-use App\models\User;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Crypt;

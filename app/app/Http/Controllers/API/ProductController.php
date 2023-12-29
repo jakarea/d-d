@@ -120,11 +120,9 @@ class ProductController extends ApiController
                 }
 
                 $product = Product::with(['productVariants'])->find($product->id);
+ 
 
-                //decode product image
-                $this->decodeProductImage($product);
-
-                return $this->jsonResponse(false, 'Product created successfully', $product, [], JsonResponse::HTTP_CREATED);
+                return $this->jsonResponse(false, 'Product created Successfully', $product, [], JsonResponse::HTTP_CREATED);
             } else {
                 return $this->jsonResponse(true, 'Unauthorized user', $request->all(), [], JsonResponse::HTTP_UNAUTHORIZED);
             }
@@ -144,9 +142,6 @@ class ProductController extends ApiController
 
         if (!empty($product)) {
 
-            //decode product image
-            $this->decodeProductImage($product);
-
             return $this->jsonResponse(false, $this->success, $product, $this->emptyArray, JsonResponse::HTTP_OK);
         } else {
 
@@ -161,13 +156,14 @@ class ProductController extends ApiController
      * @return JsonResponse
      */
     public function updateProduct(UpdateRequest $request, $id): JsonResponse
-    {
-
+    { 
         try {
             $product = Product::find($id);
+            
+
             if (!empty($product)) {
 
-                $product = ProductProcess::update($request, $id);
+                $product = ProductProcess::update($request, $id); 
 
                 $arrayofProductVariantId = ProductVariant::where('product_id', $id)->pluck('id')->toArray();
 
@@ -273,24 +269,24 @@ class ProductController extends ApiController
     public function destroy($id)
     {
 
-        $product = Product::where('user_id', Auth::id())->where('id', $id)->first();
+        $product = Product::where('user_id', Auth::id())->where('id', $id)->first(); 
 
         //delete product images
         if (isset($product->images)) {
-            $arrayofImages = json_decode($product->images);
-            $this->deleteFile("public", $arrayofImages);
+            $arrayOfImages = explode(',', $product->images);
+            $this->deleteFile("public", $arrayOfImages);
         }
 
         //delete product variant images
         if (isset($product->productVariants)) {
             foreach ($product->productVariants as $proVariant) {
-                $arrayofImages = json_decode($proVariant->images);
-                $this->deleteFile("public", $arrayofImages);
+                $arrayOfImages = explode(',', $proVariant->images);
+                $this->deleteFile("public", $arrayOfImages);
             }
-        }
+        }        
 
         if (!empty($product)) {
-
+            ProductVariant::whereIn('product_id', [$product->id])->delete();
             $product->delete();
 
             return $this->jsonResponse(false, 'Product deleted successfully', $product, $this->emptyArray, JsonResponse::HTTP_OK);
