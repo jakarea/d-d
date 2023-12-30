@@ -16,8 +16,13 @@ class UserProcess
 
     public static function update(Request $request, $user)
     {
+        
+
         $user = (new self())->saveUser($request, $user);
-        $personalInfo = (new self())->savePersonalInfo($request);
+        
+        $personalInfo = (new self())->savePersonalInfo($request);  
+        
+        // return response()->json(['data' => $personalInfo]);
         $address = (new self())->saveAddress($request);
 
         $userInfo = array_merge($user->toArray(), $personalInfo->toArray(), $address->toArray());
@@ -27,8 +32,8 @@ class UserProcess
 
     public function saveUser($request, $user)
     {
-        $user->name = $request->first_name . ' ' . $request->last_name;
-        $user->email = $request->email;
+        $user->name = $request->input('first_name') . ' ' . $request->input('last_name');
+        $user->email = $request->input('email');
         $user->save();
 
         return $user;
@@ -36,25 +41,17 @@ class UserProcess
 
     public function savePersonalInfo($request)
     {
+        $authUser = auth()->user(); 
 
-        $avatarPath = null;
-
-        $authUser = auth()->user();
-
-        if(isset($request->avatar)){
-            $avatarPath = $this->saveAvatar($request->avatar);
-            $avatarPath = asset('storage/avatar/' . $avatarPath);
+        if (isset($request->avatar) && isset($authUser->personalInfo->avatar)) {
+            (new self())->deleteImage($authUser->personalInfo->avatar);
         }
 
-        if(isset($request->avatar) && isset($authUser->personalInfo) && isset($authUser->personalInfo->avatar)){
+        $imageString = NULL;
 
-            $fileUrl = Config::get('app.file_url');
-            $image = str_replace($fileUrl, "", $authUser->personalInfo->avatar);
-
-            if (Storage::disk("public")->exists($image)) {
-                Storage::disk("public")->delete($image);
-            }
-        }
+        if (isset($request->avatar)) {
+            $imageString = $this->saveImage($request); 
+        } 
 
         $personalInfo = PersonalInfo::updateOrCreate(
             [
@@ -63,7 +60,7 @@ class UserProcess
             [
                 'user_id' => auth()->user()->id,
                 'name' => $request->get('first_name') . ' ' . $request->get('last_name'),
-                'avatar' => $avatarPath,
+                'avatar' => $imageString,
                 'gender' => $request->get("gender"),
                 'designation' => $request->get('designation'),
                 'maritual_status' => $request->get('maritual_status'),
@@ -73,6 +70,7 @@ class UserProcess
                 'email' => $request->get('email')
             ],
         );
+
 
         return $personalInfo;
     }
@@ -95,13 +93,30 @@ class UserProcess
         );
 
         return $address;
+    } 
+
+    public function saveImage($request)
+    {
+        $imageString = '';
+
+        if ($request->has('avatar')) {
+            $image = $request->avatar;
+            $filePath = $this->fileUpload($image, "avatar");
+            $imageUrl = asset(Storage::url("avatar/{$filePath}"));
+            $imageString = $imageUrl;
+        }
+
+        return $imageString;
     }
 
-    public function saveAvatar($avatar)
+    public function deleteImage($imageString)
     {
-        $filePath = $this->fileUpload($avatar, "avatar");
+        $fileUrl = Config::get('app.file_url');
+         
+        $image = $imageString;
 
-        return $filePath;
+        $image = str_replace($fileUrl, "", $image); 
+        Storage::disk('public')->delete($image);
     }
 
 }
