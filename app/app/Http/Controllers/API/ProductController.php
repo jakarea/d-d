@@ -66,19 +66,19 @@ class ProductController extends ApiController
             $query->whereHas('company', function ($q) use ($searchLocation) {
                 $q->where('location', 'LIKE', "%{$searchLocation}%");
             });
-        }
+        } 
 
         if (!is_null($sortBy) && !is_null($sortOrder)) {
             $sortBy = strip_tags(trim($sortBy));
-            $query->orderBy($sortBy, $sortOrder);
-        } else {
-            $query->orderByDesc('id');
-        }
-
-        if (!is_null($sortBy)) {
+        
             if ($sortBy == 'offer_product') {
-                $query->orderByDesc(DB::raw('price - sell_price'));
+                $orderByColumn = 'price - sell_price';
+                $query->orderBy(DB::raw($orderByColumn), $sortOrder);
+            } else {
+                $query->orderBy($sortBy, $sortOrder);
             }
+        } else {
+            $query->orderBy('id');
         }
         
         // wishlist flag
@@ -196,7 +196,7 @@ class ProductController extends ApiController
     {
 
         $query = Product::with(['productVariants', 'company', 'reviews' => function ($query) {
-            $query->with(['likes', 'dislikes']);
+            $query->with(['user','likes', 'dislikes']);
         }]);
 
         if (!is_null($request->company)) {

@@ -25,12 +25,6 @@ class ProductProcess
     public static function update($request, $productId)
     {
         $product = Product::find($productId);
- 
-        // if (isset($request->images) && count($request->images) > 0) {
-        //     $imageString = (new self())->saveImage($request);
-        //     $product->images = $imageString;
-        //     $product->save(); 
-        // }
 
         if (!empty($product)) {
             if (isset($request->images) && count($request->images) > 0 && isset($product->images)) {
@@ -75,8 +69,7 @@ class ProductProcess
     {
         $imageString = '';
         foreach ($request->images as $image) {
-            $filePath = $this->fileUpload($image, "product");
-            // $imageUrl = asset('storage/product/' . $filePath);
+            $filePath = $this->fileUpload($image, "product"); 
             $imageUrl = asset(Storage::url("product/{$filePath}"));
             $imageString .= $imageUrl . ',';
         }
