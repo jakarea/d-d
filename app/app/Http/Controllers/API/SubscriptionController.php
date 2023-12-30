@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\PricingPackage;
+use App\Models\User;
 use App\Models\Earning;
 use App\Models\Company;
 use Illuminate\Http\JsonResponse;
@@ -19,7 +20,7 @@ class SubscriptionController extends ApiController
 
     public function index()
     { 
-        $packages = PricingPackage::all(); 
+        $packages = PricingPackage::with('myPurchaseInfo')->get(); 
         
         foreach ($packages as $package) { 
             $package->features = json_decode($package->features, true);
@@ -40,14 +41,44 @@ class SubscriptionController extends ApiController
     {
         Stripe::setApiKey(env('STRIPE_SECRET'));
 
+        
         try {
             $package = PricingPackage::find($request->package_id);
-            $company = Company::find($request->user_id);
-            $price = ($request->package_type == 'Yearly') ? $package->yearly_price : $package->price;
+            
+            if (!$package) {
+                return $this->jsonResponse(true,$this->failed,$this->emptyArray, ['No Package Found!'], JsonResponse::HTTP_NOT_FOUND);
+            }
 
-            $checkout = Earning::where('user_id', $request->user_id)->where('pricing_packages_id',$request->package_id)->where('status','paid')->first();
+            $companyUser = User::find($request->user_id); 
+
+            if (!$companyUser || ($companyUser->id != auth()->user()->id)) {
+                return $this->jsonResponse(true,$this->failed,$this->emptyArray, ['No User Found!'], JsonResponse::HTTP_NOT_FOUND);
+            }
+
+            $company = Company::where('user_id',$request->user_id)->first();
+
+            if (!$company || $company == NULL) {
+                return $this->jsonResponse(true,$this->failed,$this->emptyArray, ['You do not have coumpany to subscribe!'], JsonResponse::HTTP_NOT_FOUND);
+            } 
+            
+            $price = $package->price;
+
+            if ($request->package_type == 'Yearly') {
+                if ($request->price != $package->yearly_price) {
+                    return $this->jsonResponse(true,$this->failed,$this->emptyArray, ['Yearly price did not matched!'], JsonResponse::HTTP_NOT_FOUND);
+                }
+                $price = $package->yearly_price;
+            }else{
+                if ($request->price != $package->price) {
+                    return $this->jsonResponse(true,$this->failed,$this->emptyArray, ['Monthly price did not matched!'], JsonResponse::HTTP_NOT_FOUND);
+                }
+                $price = $package->price;
+            }
+
+            $checkout = Earning::where('user_id', $request->user_id)->where('pricing_packages_id',$package->id)->where('status','paid')->first();
+
             if($checkout){
-                return $this->jsonResponse(true,$this->failed,$this->emptyArray, ['You have already purchased this Package!'], JsonResponse::HTTP_NOT_FOUND);
+                return $this->jsonResponse(true,$this->failed,$this->emptyArray, ['You have already purchased this package!'], JsonResponse::HTTP_NOT_FOUND);
             }
 
             $checkout2 = Earning::where('user_id', $request->user_id)->where('status','paid')->first();
@@ -57,7 +88,7 @@ class SubscriptionController extends ApiController
                  $checkout2->save();
             }
 
-            if ($price == ($package->price || $package->yearly_price)) {
+            if ($price) {
 
                 $earning = new Earning();
                 $earning->pricing_packages_id = $package->id;

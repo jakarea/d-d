@@ -137,7 +137,7 @@ class UserController extends API\ApiController {
 
         $package = NULL;
         if ($earning) {
-            $package = PricingPackage::where('id',$earning->pricing_packages_id)->first();
+            $package = PricingPackage::with('myPurchaseInfo')->first();
         }
         
         $userInfo = [
