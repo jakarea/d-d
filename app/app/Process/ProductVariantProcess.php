@@ -63,7 +63,7 @@ class ProductVariantProcess
 
         foreach ($request['images'] as $image) {
             $filePath = $this->fileUpload($image, "product-variants");
-            $imageString .= asset('storage/product-variants/' . $filePath) . ',';
+            $imageString .= asset('public/storage/product-variants/' . $filePath) . ',';
         }
 
         // Remove the trailing comma

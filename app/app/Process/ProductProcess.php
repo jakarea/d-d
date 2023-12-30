@@ -70,7 +70,8 @@ class ProductProcess
         $imageString = '';
         foreach ($request->images as $image) {
             $filePath = $this->fileUpload($image, "product"); 
-            $imageUrl = asset(Storage::url("product/{$filePath}"));
+            // $imageUrl = asset(Storage::url("product/{$filePath}"));
+            $imageUrl = asset("public/storage/product/{$filePath}");
             $imageString .= $imageUrl . ',';
         }
 
