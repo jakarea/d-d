@@ -15,7 +15,7 @@ class ClientController extends ApiController
 {
     public function profile():JsonResponse
     {
-       $user = User::with(['personalInfo','address','company'])->where('id', auth()->user()->id)->first();
+        $user = User::with(['personalInfo','address','company','payments.myPackage'])->where('id', auth()->user()->id)->first();
 
         return $this->jsonResponse(false, $this->success, $user, $this->emptyArray, JsonResponse::HTTP_OK);
     }
@@ -26,8 +26,7 @@ class ClientController extends ApiController
         try {
             $user = User::where('id', auth()->user()->id)->first();
 
-            $user = UserProcess::update($request, $user);
-            // return response()->json(['data' => $user]);
+            $user = UserProcess::update($request, $user); 
 
             return $this->jsonResponse(false, 'Profile updated successfully', $user, $this->emptyArray, JsonResponse::HTTP_CREATED);
         } catch (\Exception $e) {

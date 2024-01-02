@@ -7,6 +7,7 @@ use App\Models\Company;
 use App\Models\WishList;
 use App\Models\User;
 use App\Models\Product;
+use App\Models\Review;
 use App\Models\ProductVariant;
 use App\Process\ProductProcess;
 use App\Process\ProductVariantProcess;
@@ -16,6 +17,7 @@ use App\Http\Requests\ProductAddRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -77,6 +79,8 @@ class ProductController extends ApiController
             } else {
                 $query->orderBy($sortBy, $sortOrder);
             }
+        } else if((is_null($sortBy) && !is_null($sortOrder)) && $sortOrder == 'desc') {
+            $query->orderBy('id','desc');
         } else {
             $query->orderBy('id');
         }
@@ -92,6 +96,36 @@ class ProductController extends ApiController
         $products = $query->get();
 
         return $this->jsonResponse(false, $this->success, $products, $this->emptyArray, JsonResponse::HTTP_OK);
+
+    }
+
+
+    /**
+     * Suggest Company Location for product sort
+     * @param \Illuminate\Http\Request $request
+     * @return JsonResponse
+     */
+    public function locationList($name = NULL)
+    {
+        try {
+            $uniqueLocations = [];
+    
+            if ($name) {
+                $locationName = $name;
+    
+                $uniqueLocations = Cache::remember('unique_locations_' . $locationName, 3600, function () use ($locationName) {
+                    $companies = Company::where('location', 'like', '%' . $locationName . '%')
+                        ->select('location')
+                        ->get();
+    
+                    return $companies->pluck('location')->unique()->values()->all();
+                });
+            }
+    
+            return $this->jsonResponse(false, $this->success, $uniqueLocations, $this->emptyArray, JsonResponse::HTTP_OK);
+        } catch (\Throwable $th) {
+            return $this->jsonResponse(true, 'No location found!', $name, [$th->getMessage()], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+        }
 
     }
 
@@ -195,18 +229,43 @@ class ProductController extends ApiController
     public function productDetails(Request $request, $id): JsonResponse
     {
 
-        $query = Product::with(['productVariants', 'company', 'reviews' => function ($query) {
-            $query->with(['user','likes', 'dislikes']);
-        }]);
+        $query = Product::with(['productVariants', 'company']);
 
         if (!is_null($request->company)) {
             $query->where('company_id', $request->company);
         }
         $product = $query->find($id);
+        
+        // $mainReviews =  $product->reviews->toArray();
+        $mainReviews =  Review::with(['likes', 'dislikes'])
+        ->where('product_id', $product->id)
+        ->where('status', false)
+        ->with('user.personalInfo', 'likeStatus') 
+        ->get()
+        ->toArray();
+
+        $ids = array_column($mainReviews, 'id'); 
+        $reviews = array_combine($ids, $mainReviews); 
+        
+        $mainReviews = [];
+        
+        foreach ($reviews as $review) {
+            if ($review['replies_to']) {
+                $reviews[$review['replies_to']]['reply'][] = $review;
+            } 
+        }
+        
+        $filteredReview = [];
+        
+        foreach ($reviews as $item) {
+            if (!isset($item['replies_to']) || $item['replies_to'] === null) {
+                $filteredReview[] = $item;
+            }
+        }
 
         if (!empty($product)) {
 
-            return $this->jsonResponse(false, $this->success, $product, $this->emptyArray, JsonResponse::HTTP_OK);
+            return $this->jsonResponse(false, $this->success, ['product' => $product, 'reviews' => $filteredReview], $this->emptyArray, JsonResponse::HTTP_OK);
         } else {
 
             return $this->jsonResponse(true, $this->failed, $this->emptyArray, ['Product not found'], JsonResponse::HTTP_NOT_FOUND);

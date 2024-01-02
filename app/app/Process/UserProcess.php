@@ -102,7 +102,8 @@ class UserProcess
         if ($request->has('avatar')) {
             $image = $request->avatar;
             $filePath = $this->fileUpload($image, "avatar");
-            $imageUrl = asset(Storage::url("avatar/{$filePath}"));
+            // $imageUrl = asset(Storage::url("avatar/{$filePath}"));
+            $imageUrl = asset("public/storage/avatar/{$filePath}");
             $imageString = $imageUrl;
         }
 

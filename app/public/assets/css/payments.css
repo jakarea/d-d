@@ -1,0 +1,205 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap");
+
+/* *******************************************
+Project Name: D&D
+Project Version: 1.0.0
+Developer: Jakarea Parvez
+Agency: GIOPIO
+URL: https://www.giopio.com
+Theme Primary color: #ffffff; 
+Theme Secondary color: #0F172A;  
+Theme Primary Font Family: 'Manrope', sans-serif;
+******************************************** */
+/* *******************************************
+
+[Table of contents]
+
+A. Reset Styling
+  -- Styling
+
+B. Helpers
+  -- Common Header
+  -- Common Button
+  -- Common Paragraph
+
+C. Components
+    --- # Home page # ---
+  -- Header
+  -- Hero 
+
+D. Plugins Styles
+
+
+E. Utility Styles
+  -- Back to Top Button
+  -- Other 
+
+******************************************** */
+/* *******************************************
+A. Reset Styling Start
+******************************************** */
+* {
+    padding: 0;
+    margin: 0;
+    outline: none;
+    list-style-type: none;
+    text-decoration: none;
+    box-sizing: border-box;
+}
+
+ol,
+ul,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+a,
+p,
+i,
+button,
+strong,
+u,
+sub,
+sup,
+span,
+textarea,
+table tr td,
+select,
+input {
+    padding: 0;
+    margin: 0;
+}
+
+select:focus-within,
+textarea:focus-within,
+input:focus-within,
+.form-control:focus-within,
+button:focus-within {
+    box-shadow: none !important;
+}
+
+a,
+a:hover {
+    color: #000;
+    text-decoration: none;
+}
+
+ol,
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.media {
+    display: flex;
+    align-items: flex-start;
+}
+
+.media-body {
+    flex: 1;
+}
+
+hr {
+    border: none;
+    display: block;
+    width: 100%;
+    height: 1px;
+    background-color: #000000;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: #000000;
+}
+
+h1,
+h2 {
+    font-size: 3.5rem;
+    line-height: 130%;
+}
+
+h3,
+h4 {
+    font-size: 2.6rem;
+    line-height: 120%;
+}
+
+h5,
+h6 {
+    font-size: 2rem;
+    line-height: 120%;
+}
+
+p {
+    font-size: 1rem;
+    line-height: 120%;
+}
+
+body {
+    background-color: #ffffff;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
+    font-family: "Manrope", sans-serif;
+}
+
+.payments-message-box {
+    border-radius: 1rem;
+    background: var(--White, #FFF);
+    box-shadow: -20px 20px 40px -4px rgba(0, 0, 0, 0.24), 0px 0px 2px 0px rgba(0, 0, 0, 0.24);
+    padding: 2rem;
+    text-align: center;
+}
+
+.payments-message-box h4 {
+    color: var(--dmBlack-02, #202427);
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    margin-top: 1rem;
+}
+
+.payments-message-box a {
+    border-radius: 0.5rem;
+    background: #27AE60;
+    color: var(--White, #FFF);
+    font-size: 0.875rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 130%;
+    padding: 0.825rem 2.5rem;
+    display: inline-block;
+    margin-top: 1rem;
+}
+
+.payments-message-box p {
+    color: var(--Text-Secondary, #667085);
+    font-size: 0.875rem;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 167.188%;
+    margin-bottom: 1rem;
+}
+
+.wrap-outer {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.top-logo {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.cancel-box a { 
+    background: #F32E2E;
+}

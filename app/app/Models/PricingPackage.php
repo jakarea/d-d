@@ -22,6 +22,13 @@ class PricingPackage extends Model
     ];
 
     public function user() {
-        return $this->hasOne(User::class, 'id', 'created_by');
+        return $this->hasOne(User::class, 'created_by', 'id');
     }
+
+    public function myPurchaseInfo() {
+        return $this->hasOne(Earning::class, 'pricing_packages_id', 'id')
+            ->where('status', 'paid')
+            ->where('user_id', auth()->id());
+    }
+    
 }
