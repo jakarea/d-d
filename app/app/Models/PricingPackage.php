@@ -27,7 +27,8 @@ class PricingPackage extends Model
 
     public function myPurchaseInfo() {
         return $this->hasOne(Earning::class, 'pricing_packages_id', 'id')
-            ->where('status', 'paid');
+            ->where('status', 'paid')
+            ->where('user_id', auth()->id());
     }
     
 }

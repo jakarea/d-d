@@ -77,6 +77,8 @@ class ProductController extends ApiController
             } else {
                 $query->orderBy($sortBy, $sortOrder);
             }
+        } else if((is_null($sortBy) && !is_null($sortOrder)) && $sortOrder == 'desc') {
+            $query->orderBy('id','desc');
         } else {
             $query->orderBy('id');
         }

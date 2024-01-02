@@ -13,6 +13,7 @@ use App\Http\Controllers\AdvertisementController;
 use App\Http\Controllers\AdminProfileController;
 use App\Http\Controllers\API\ForgotPasswordController;
 use Illuminate\Support\Facades\Artisan;
+use App\Http\Controllers\API\SubscriptionController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -86,6 +87,9 @@ Route::group(['middleware' => ['web','guest']], function () {
     Route::get('api/reset-password/{token}', [ForgotPasswordController::class, 'showResetForm'])->name('password.reset');
     Route::get('api/reset-update', [ForgotPasswordController::class, 'showStatusPage'])->name('password.status');
     Route::post('reset-password', [ForgotPasswordController::class, 'resetPassword'])->name('password.update');
+
+    Route::get('api/purchase/success', [SubscriptionController::class, 'handleSuccess'])->name('purchase.success'); 
+    Route::post('api/purchase/cancel', [SubscriptionController::class, 'handleCancel'])->name('purchase.cancel'); 
 });
 
 // all cache clear route

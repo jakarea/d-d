@@ -17,4 +17,9 @@ class Earning extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function myPackage()
+    {
+        return $this->hasOne(PricingPackage::class, 'id', 'pricing_packages_id');
+    }
 }

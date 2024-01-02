@@ -34,8 +34,7 @@ class User extends Authenticatable {
         'password',
         'remember_token',
         'created_at',
-        'updated_at',
-        'email_verified_at',
+        'updated_at', 
     ];
 
     /**
@@ -71,7 +70,7 @@ class User extends Authenticatable {
 
     public function payments()
     {
-        return $this->hasMany(Earning::class);
+        return $this->hasOne(Earning::class)->where('status', 'paid');
     }
 
 

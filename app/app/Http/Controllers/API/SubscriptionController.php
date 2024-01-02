@@ -11,7 +11,10 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Stripe\Checkout\Session;
 use Illuminate\Support\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Mail;
 use Stripe\Stripe; 
+use stdClass;
 use Stripe\Price;
 use Stripe\Product; 
 
@@ -89,20 +92,23 @@ class SubscriptionController extends ApiController
             }
 
             if ($price) {
-
-                $earning = new Earning();
-                $earning->pricing_packages_id = $package->id;
-                $earning->company_id = $company->id;
-                $earning->user_id = $request->user_id;
-                $earning->package_name = $package->name;
-                $earning->payment_id = '';
-                $earning->amount = $price;
-                $earning->package_type = $request->package_type;
-                $earning->status = "Pending";
-                $earning->start_at = NULL;
-                $earning->end_at = NULL;
-                $earning->save();
-            }
+                $earning = Earning::updateOrCreate(
+                    [
+                        'pricing_packages_id' => $package->id,
+                        'company_id' => $company->id,
+                        'user_id' => $request->user_id,
+                    ],
+                    [
+                        'package_name' => $package->name,
+                        'payment_id' => '',
+                        'amount' => $price,
+                        'package_type' => $request->package_type,
+                        'status' => 'Pending', 
+                        'start_at' => null,
+                        'end_at' => null,
+                    ]
+                );
+            }      
 
             // Create a Product in Stripe
             $product = Product::create([
@@ -128,8 +134,8 @@ class SubscriptionController extends ApiController
                     ],
                 ],
                 'mode' => 'payment',
-                'success_url' => url('purchase/success') . '?session_id={CHECKOUT_SESSION_ID}&package_id=' . $package->id . '&purchase_id=' . $earning->id,
-                'cancel_url' => url('purchase/cancel'),
+                'success_url' => url('api/purchase/success') . '?session_id={CHECKOUT_SESSION_ID}&package_id=' . $package->id . '&purchase_id=' . $earning->id,
+                'cancel_url' => url('api/purchase/cancel'),
             ]);
 
             return $this->jsonResponse(false,$this->success, $session->url, $this->emptyArray,JsonResponse::HTTP_OK);
@@ -142,7 +148,7 @@ class SubscriptionController extends ApiController
 
     public function handleSuccess(Request $request)
     {
-
+ 
         try {
             
             Stripe::setApiKey(env('STRIPE_SECRET'));
@@ -157,6 +163,9 @@ class SubscriptionController extends ApiController
             $amountPaid = $session->amount_total / 100;    
             
             $earning = Earning::find($earningId);   
+            if (!$earning) {
+                return view('payments/package/cancel');
+            }
             $earning->payment_id = $paymentId;
             $earning->amount = $amountPaid; 
             $earning->status = $paymentStatus;
@@ -164,15 +173,32 @@ class SubscriptionController extends ApiController
             $earning->end_at =  $earning->package_type == 'Monthly' ? Carbon::now()->addDays(30) : Carbon::now()->addDays(365);
             $earning->save();
 
-            $data = [
-                'purchased_info' => $earning,
-                'current_package' => $package,
-            ];
+            $user = User::where('id',$earning->user_id)->first();
 
-            return $this->jsonResponse(false, $this->success, $data, $this->emptyArray, JsonResponse::HTTP_OK);
+            // $data = new stdClass(); 
+            // $data->purchased_info = $earning;
+            // $data->current_package = $package;
+            // $data->user = $user;
+
+        //     return $data;
+        //     // Generate and save the PDF file
+        //    return $pdf = PDF::loadView('payments.package.invoice', ['purchase' => $data]);
+        //     $pdfContent = $pdf->output();
+
+        //     // Send the email with the PDF attachment
+        //     $mailInfo = Mail::send('payments.package.invoice', ['purchase' => $data], function($message) use ($pdfContent, $data) {
+        //         $message->to(auth()->user()->email)
+        //                 ->subject('Invoice')
+        //                 ->attachData($pdfContent,  "Test".'.pdf', ['mime' => 'application/pdf']);
+        //     });
+
+            // return view('payments/package/success',compact('data'))->with('success','Package Purchase Successfuly Completed!');
+            return view('payments/package/success');
+
 
         } catch (\Exception $e) {
-            return $this->jsonResponse(true, $this->failed, $request->all(), [$e->getMessage()], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+            // return $this->jsonResponse(true, $this->failed, $request->all(), [$e->getMessage()], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+            return view('payments/package/cancel');
         }
     }
 
@@ -187,7 +213,9 @@ class SubscriptionController extends ApiController
         $earning->end_at = NULL;
         $earning->save(); 
 
-        return $this->jsonResponse(true, $this->failed, $request->all(), [$e->getMessage()], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+        return view('payments/package/cancel');
+
+        // return $this->jsonResponse(true, $this->failed, $request->all(), [$e->getMessage()], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
     }
     
 }
