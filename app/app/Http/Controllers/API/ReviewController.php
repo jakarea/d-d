@@ -21,36 +21,38 @@ class ReviewController extends ApiController
 
     public function reviewsOfCompany($companyId)
     { 
-         $mainReviews = Review::with(['likes','dislikes'])
-            ->where('company_id', $companyId)
-            ->where('status', false)
-            ->with('user.personalInfo','likeStatus') 
-            ->get();
-
-        // $ids = array_column($mainReviews, 'id'); 
-        // $reviews = array_combine($ids, $mainReviews); 
-
-        // $mainReviews = [];
-
-        // foreach ($reviews as $review) {
-        //     if ($review['replies_to']) {
-        //     $reviews[$review['replies_to']]['reply'][] = $review;
-        //     } 
-        // }
-
-        // $filteredData = [];
-
-        // foreach ($reviews as $item) {
-        //     if (!isset($item['replies_to']) || $item['replies_to'] === null) {
-        //         $filteredData[] = $item;
-        //     }
-        // }
-
-        if(!empty($mainReviews)){
-            return $this->jsonResponse(false,$this->success, $mainReviews, $this->emptyArray,JsonResponse::HTTP_OK);
-        }else{
-            return $this->jsonResponse(true,$this->failed,$this->emptyArray, ['Review not found'], JsonResponse::HTTP_NOT_FOUND);
+        $mainReviews = Review::with(['likes', 'dislikes'])
+        ->where('company_id', $companyId)
+        ->where('status', false)
+        ->with('user.personalInfo', 'likeStatus') 
+        ->get()
+        ->toArray();
+    
+        $ids = array_column($mainReviews, 'id'); 
+        $reviews = array_combine($ids, $mainReviews); 
+        
+        $mainReviews = [];
+        
+        foreach ($reviews as $review) {
+            if ($review['replies_to']) {
+                $reviews[$review['replies_to']]['reply'][] = $review;
+            } 
         }
+        
+        $filteredData = [];
+        
+        foreach ($reviews as $item) {
+            if (!isset($item['replies_to']) || $item['replies_to'] === null) {
+                $filteredData[] = $item;
+            }
+        }
+        
+        if (!empty($filteredData)) {
+            return $this->jsonResponse(false, $this->success, $filteredData, $this->emptyArray, JsonResponse::HTTP_OK);
+        } else {
+            return $this->jsonResponse(true, $this->failed, $this->emptyArray, ['Review not found'], JsonResponse::HTTP_NOT_FOUND);
+        }
+    
     }
 
     public function reviewAcceptReject(ReviewAcceptRequest $request)

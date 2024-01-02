@@ -173,7 +173,7 @@ class SubscriptionController extends ApiController
             $earning->end_at =  $earning->package_type == 'Monthly' ? Carbon::now()->addDays(30) : Carbon::now()->addDays(365);
             $earning->save();
 
-            $user = User::where('id',$earning->user_id)->first();
+            // $user = User::where('id',$earning->user_id)->first();
 
             // $data = new stdClass(); 
             // $data->purchased_info = $earning;

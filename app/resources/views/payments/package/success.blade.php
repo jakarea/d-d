@@ -40,7 +40,7 @@
                         <h4>We received your payment</h4>
                         <p>Thank you for Purchasing our product</p>
     
-                        <a href="#">DONE</a>
+                        <a href="#">Download Invoice</a>
                     </div>
                 </div>
             </div>

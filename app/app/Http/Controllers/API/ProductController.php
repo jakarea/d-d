@@ -7,6 +7,7 @@ use App\Models\Company;
 use App\Models\WishList;
 use App\Models\User;
 use App\Models\Product;
+use App\Models\Review;
 use App\Models\ProductVariant;
 use App\Process\ProductProcess;
 use App\Process\ProductVariantProcess;
@@ -228,18 +229,44 @@ class ProductController extends ApiController
     public function productDetails(Request $request, $id): JsonResponse
     {
 
-        $query = Product::with(['productVariants', 'company', 'reviews' => function ($query) {
-            $query->with(['user','likes', 'dislikes']);
-        }]);
+        $query = Product::with(['productVariants', 'company']);
 
         if (!is_null($request->company)) {
             $query->where('company_id', $request->company);
         }
         $product = $query->find($id);
+        
+        // $mainReviews =  $product->reviews->toArray();
+        $mainReviews =  Review::with(['likes', 'dislikes'])
+        ->where('product_id', $product->id)
+        ->where('status', false)
+        ->with('user.personalInfo', 'likeStatus') 
+        ->get()
+        ->toArray();
+
+
+        $ids = array_column($mainReviews, 'id'); 
+        $reviews = array_combine($ids, $mainReviews); 
+        
+        $mainReviews = [];
+        
+        foreach ($reviews as $review) {
+            if ($review['replies_to']) {
+                $reviews[$review['replies_to']]['reply'][] = $review;
+            } 
+        }
+        
+        $filteredReview = [];
+        
+        foreach ($reviews as $item) {
+            if (!isset($item['replies_to']) || $item['replies_to'] === null) {
+                $filteredReview[] = $item;
+            }
+        }
 
         if (!empty($product)) {
 
-            return $this->jsonResponse(false, $this->success, $product, $this->emptyArray, JsonResponse::HTTP_OK);
+            return $this->jsonResponse(false, $this->success, [$product,$filteredReview], $this->emptyArray, JsonResponse::HTTP_OK);
         } else {
 
             return $this->jsonResponse(true, $this->failed, $this->emptyArray, ['Product not found'], JsonResponse::HTTP_NOT_FOUND);
