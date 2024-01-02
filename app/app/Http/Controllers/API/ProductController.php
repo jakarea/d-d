@@ -244,7 +244,6 @@ class ProductController extends ApiController
         ->get()
         ->toArray();
 
-
         $ids = array_column($mainReviews, 'id'); 
         $reviews = array_combine($ids, $mainReviews); 
         
@@ -266,7 +265,7 @@ class ProductController extends ApiController
 
         if (!empty($product)) {
 
-            return $this->jsonResponse(false, $this->success, [$product,$filteredReview], $this->emptyArray, JsonResponse::HTTP_OK);
+            return $this->jsonResponse(false, $this->success, ['product' => $product, 'reviews' => $filteredReview], $this->emptyArray, JsonResponse::HTTP_OK);
         } else {
 
             return $this->jsonResponse(true, $this->failed, $this->emptyArray, ['Product not found'], JsonResponse::HTTP_NOT_FOUND);
