@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use App\Models\Company;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Mail;
@@ -24,7 +25,19 @@ class VerificationController extends ApiController
                     'status' => 1,
                 ]);
 
-                return $this->jsonResponse(0, 'Email verified successfully. You can now log in.', [], 200);
+                $roles = $user->roles->pluck('slug')->all();
+                $plainTextToken = $user->createToken('hydra-api-token', $roles)->plainTextToken;
+         
+                $company = Company::where('user_id',$user->id)->first();  
+                
+                $userInfo = [
+                    'token' => $plainTextToken,
+                    'user_info' => $user,
+                    'user_company' => $company,
+                    'current_package' => NULL
+                ];
+
+                return $this->jsonResponse(false, 'Verification Success!', $userInfo, $this->emptyArray, JsonResponse::HTTP_CREATED);
             }
 
             return $this->jsonResponse(1, 'Invalid verification code or user not found.', [], 422);
