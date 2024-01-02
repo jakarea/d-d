@@ -16,6 +16,7 @@ use App\Http\Requests\ProductAddRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -94,6 +95,36 @@ class ProductController extends ApiController
         $products = $query->get();
 
         return $this->jsonResponse(false, $this->success, $products, $this->emptyArray, JsonResponse::HTTP_OK);
+
+    }
+
+
+    /**
+     * Suggest Company Location for product sort
+     * @param \Illuminate\Http\Request $request
+     * @return JsonResponse
+     */
+    public function locationList($name = NULL)
+    {
+        try {
+            $uniqueLocations = [];
+    
+            if ($name) {
+                $locationName = $name;
+    
+                $uniqueLocations = Cache::remember('unique_locations_' . $locationName, 3600, function () use ($locationName) {
+                    $companies = Company::where('location', 'like', '%' . $locationName . '%')
+                        ->select('location')
+                        ->get();
+    
+                    return $companies->pluck('location')->unique()->values()->all();
+                });
+            }
+    
+            return $this->jsonResponse(false, $this->success, $uniqueLocations, $this->emptyArray, JsonResponse::HTTP_OK);
+        } catch (\Throwable $th) {
+            return $this->jsonResponse(true, 'No location found!', $name, [$th->getMessage()], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+        }
 
     }
 

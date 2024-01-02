@@ -51,13 +51,13 @@ Route::apiResource('users.roles', UserRoleController::class)->except(['create', 
 Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::prefix('client')->name('api.client.')->group(function () {
-
+        Route::get('location/{name?}', [ProductController::class, 'locationList']);
         Route::get('category', [CategoryController::class, 'index']);
 
         Route::get('product', [ProductController::class, 'index']);
         Route::get('product/{product}', [ProductController::class, 'productDetails']);
         Route::get('/{company}/products', [ProductController::class, 'getProductsOfCompany']);
-
+        
         Route::get('profile', [ClientController::class, 'profile']);
         Route::post('profile', [ClientController::class, 'profileUpdate']);
         Route::post('security/settings', [ClientController::class, 'securitySettings']);
@@ -79,7 +79,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::prefix('company')->name('api.company.')->group(function () {
-
+        Route::get('location/{name?}', [ProductController::class, 'locationList']);
         Route::get('category', [CategoryController::class, 'index']);
 
         Route::get('product', [ProductController::class, 'index'])->name('product.list');
