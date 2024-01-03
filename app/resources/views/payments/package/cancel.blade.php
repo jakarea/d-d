@@ -40,7 +40,7 @@
                         <h4>Unable to continue the process</h4>
                         <p>Please check your information then try again</p>
     
-                        <a href="#">Try Again</a>
+                        <a href="#">FAILED</a>
                     </div>
                 </div>
             </div>

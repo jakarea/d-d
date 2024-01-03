@@ -58,7 +58,7 @@
 
           <p>{{$product->description}}</p>
 
-          <h5 class="mt-2">€{{ $product->sell_price ? $product->sell_price : $product->price }}</h5>
+          <h5 class="mt-2">€ {{ $product->sell_price ? $product->sell_price : $product->price }}</h5>
 
         </div>
       </div>
@@ -72,10 +72,10 @@
           <h3>Reviews</h3>
 
           @php
-          $allReviewCount = count($product->reviews);
-          $allTotalStars = $allReviewCount > 0 ? $product->reviews->sum('rating') : 0;
-          $allAverageRating = $allReviewCount > 0 ? number_format($allTotalStars / $allReviewCount, 1) : 0;
-          $allRevText = $allReviewCount === 0 ? 'No Reviews' : ($allReviewCount === 1 ? '1 Review' : $allReviewCount . '
+            $allReviewCount = $product->reviews->where('replies_to',NULL)->count();
+            $allTotalStars = $allReviewCount > 0 ? $product->reviews->sum('rating') : 0;
+            $allAverageRating = $allReviewCount > 0 ? number_format($allTotalStars / $allReviewCount, 1) : 0;
+            $allRevText = $allReviewCount === 0 ? 'No Reviews' : ($allReviewCount === 1 ? '1 Review' : $allReviewCount . '
           Reviews');
           @endphp
 
@@ -85,7 +85,7 @@
               <p>{{ $allTotalStars }} Rating . {{ $allRevText }}</p>
 
               <ul>
-                @for ($i = 1; $i <= 5; $i++) @if ($i <=$allAverageRating) <li><i class="fas fa-star"></i></li>
+                @for ($i = 1; $i <= 5; $i++) @if ($i <= $allAverageRating) <li><i class="fas fa-star"></i></li>
                   @else
                   <li><i class="far fa-star"></i></li>
                   @endif
@@ -94,13 +94,19 @@
             </div>
             <div class="rev-item-list">
               @php
-              $ratings = [];
-              foreach ($product->reviews as $review) {
-              $ratings[] = $review->rating;
-              }
-              $ratingCounts = array_count_values($ratings);
-              $totalReviews = count($ratings);
-              @endphp
+                $ratings = [];
+                foreach ($product->reviews->where('replies_to',NULL) as $review) {
+                    $rating = $review->rating;
+ 
+                    if (is_int($rating) || is_string($rating)) {
+                        $ratings[] = $rating;
+                    }
+                }
+
+                $ratingCounts = array_count_values($ratings);
+                $totalReviews = count($ratings);
+            @endphp
+
 
               @for ($i = 5; $i >= 1; $i--)
               <div class="item">
@@ -123,19 +129,19 @@
 
           <!-- review list start -->
           <div class="review-list">
-            @foreach ($product->reviews->slice(0,5) as $review)
+            @foreach ($product->reviews->where('replies_to',NULL) as $review)
             <!-- review single item start -->
             <div class="review-single-item">
               <div class="header">
                 <div class="media">
-                  @if ($review->user->personalInfo && $review->user->personalInfo->avatar)
-                  <img src="{{ $review->user->personalInfo->avatar }}" alt="A" class="img-fluid">
+                  @if (optional($review->user)->personalInfo && optional($review->user)->personalInfo->avatar)
+                  <img src="{{ optional($review->user)->personalInfo->avatar }}" alt="A" class="img-fluid">
                   @else
                   <span class="no-avatar nva-sm">{!! strtoupper(auth()->user()->name[0]) !!}</span>
                   @endif
 
                   <div class="media-body">
-                    <h5>{{$review->user->personalInfo->name}}</h5>
+                    <h5><a href="{{ url('users',$review->user_id) }}">{{optional($review->user)->personalInfo->name}}</a></h5>
                     <span>{{$review->created_at->diffForHumans()}}</span>
                   </div>
                 </div>
@@ -152,6 +158,31 @@
               </div>
               <p>{{$review->review}}</p>
             </div>
+            {{-- review reply --}}
+            <div class="review-reply ms-5">
+              @foreach ($product->reviews->where('replies_to',$review->id) as $reply_item)
+              <div class="review-single-item mt-0">
+                <div class="header">
+                  <div class="media">
+                    @if (optional($reply_item->user)->personalInfo && optional($reply_item->user)->personalInfo->avatar)
+                    <img src="{{ optional($reply_item->user)->personalInfo->avatar }}" alt="A" class="img-fluid">
+                    @else
+                    <span class="no-avatar nva-sm">{!! strtoupper(auth()->user()->name[0]) !!}</span>
+                    @endif
+  
+                    <div class="media-body">
+                      <h5><a href="{{ url('users',$reply_item->user_id) }}">{{optional($reply_item->user)->personalInfo->name}}</a></h5>
+                      <span>{{$reply_item->created_at->diffForHumans()}}</span>
+                    </div>
+                  </div> 
+  
+                </div>
+                <p>{{$reply_item->review}}</p>
+              </div>
+              @endforeach
+            </div>
+            {{-- review reply --}}
+
             <!-- review single item end -->
             @endforeach
           </div>
@@ -208,13 +239,13 @@
                   <p>{{ Str::limit($v_product->description, $limit = 180, $end = '..') }}</p>
 
                   @if ($v_product->sell_price && $v_product->price)
-                  <h4>€{{ $v_product->sell_price }} <span>€{{ $v_product->price }}</span></h4>
+                  <h4>€ {{ $v_product->sell_price }} <span>€ {{ $v_product->price }}</span></h4>
                   @elseif(!$v_product->sell_price && $v_product->price)
-                  <h4>€{{ $v_product->price }}</h4>
+                  <h4>€ {{ $v_product->price }}</h4>
                   @elseif($v_product->sell_price && !$v_product->price)
-                  <h4>€{{ $v_product->sell_price }}</h4>
+                  <h4>€ {{ $v_product->sell_price }}</h4>
                   @else
-                  <h4>€{{ $v_product->price }}</h4>
+                  <h4>€ {{ $v_product->price }}</h4>
                   @endif
 
                   <div class="take-deal-bttn">

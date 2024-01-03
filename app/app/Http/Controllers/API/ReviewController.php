@@ -85,10 +85,12 @@ class ReviewController extends ApiController
 
             $review = Review::updateOrCreate(
                 ['user_id' => auth()->user()->id, 'product_id' => $request->product_id],
-                ['review' => $request->review,'company_id' => $request->company_id, 'rating' => $request->rating]
+                [
+                    'review' => $request->review,
+                    'company_id' => $request->company_id,
+                    'rating' => $request->rating
+                ]
             );
-
-            // $review = Review::updateOrCreate($request->except('_method', '_token'));
 
             return $this->jsonResponse(false, "Review submitted successfully", $review, $this->emptyArray, JsonResponse::HTTP_CREATED);
 

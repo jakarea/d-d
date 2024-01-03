@@ -11,10 +11,10 @@
     <div class="company-information">
       <div class="media align-items-start">
 
-        @if ($company->user->personalInfo && $company->user->personalInfo->avatar)
-        <img src="{{ $company->user->personalInfo->avatar }}" alt="A" class="img-fluid main-thumb">
+        @if (optional($company->user)->personalInfo && optional($company->user)->personalInfo->avatar)
+        <img src="{{ optional($company->user)->personalInfo->avatar }}" alt="A" class="img-fluid main-thumb">
         @else
-        <span class="no-avatar nva-lg me-4">{!! strtoupper($company->user->name[0]) !!}</span>
+        <span class="no-avatar nva-lg me-4">{!! strtoupper(optional($company->user)->name[0]) !!}</span>
         @endif
 
         <div class="media-body">
@@ -56,11 +56,15 @@
           <h3>Reviews</h3>
 
           @php
-          $allTotalStars = $company->products->pluck('reviews')->collapse()->sum('rating');
-          $allReviewCount = count($company->products->pluck('reviews')->collapse());
-          $allAverageRating = $allReviewCount > 0 ? number_format($allTotalStars / $allReviewCount, 1) : 0;
-          $allRevText = $allReviewCount === 0 ? 'No Reviews' : ($allReviewCount === 1 ? '1 Review' : $allReviewCount . '
-          Reviews');
+            $allTotalStars = $company->products->flatMap(function ($product) {
+                return $product->reviews->where('replies_to', null)->pluck('rating');
+            })->sum();
+            $allReviewCount = $company->products->flatMap(function ($product) {
+                return $product->reviews->where('replies_to', null);
+            })->count();
+            $allAverageRating = $allReviewCount > 0 ? number_format($allTotalStars / $allReviewCount, 1) : 0;
+            $allRevText = $allReviewCount === 0 ? 'No Reviews' : ($allReviewCount === 1 ? '1 Review' : $allReviewCount . ' Reviews');
+
           @endphp
 
           <div class="review-statics-box">
@@ -78,7 +82,7 @@
             </div>
             <div class="rev-item-list">
               @php
-              $ratingCounts = $company->products->pluck('reviews')->collapse()->groupBy('rating')->map->count();
+              $ratingCounts = $company->products->pluck('reviews')->where('replies_to',NULL)->collapse()->groupBy('rating')->map->count();
               $totalReviews = $ratingCounts->sum();
               @endphp
 
@@ -102,22 +106,28 @@
 
           </div>
 
+
+          @php
+            $filteredReviews = $company->products->pluck('reviews')->where('replies_to', null)->collapse();
+        @endphp
+
           <!-- review list start -->
           <div class="review-list">
-            @foreach ($company->products->pluck('reviews')->collapse()->slice(0,5) as $review)
-            <!-- review single item start -->
+            @foreach ($filteredReviews as $review)
+            @if ($review->replies_to === NULL)
+                <!-- review single item start -->
             <div class="review-single-item">
               <div class="header">
                 <div class="media">
 
-                  @if ($review->user->personalInfo && $review->user->personalInfo->avatar)
-                  <img src="{{ $review->user->personalInfo->avatar }}" alt="A" class="img-fluid">  
+                  @if (optional($review->user)->personalInfo && optional($review->user)->personalInfo->avatar)
+                  <img src="{{ optional($review->user)->personalInfo->avatar }}" alt="A" class="img-fluid">  
                   @else 
                   <span class="no-avatar nva-sm">{!! strtoupper(auth()->user()->name[0]) !!}</span>
                   @endif 
 
                   <div class="media-body">
-                    <h5>{{$review->user->name}}</h5>
+                    <h5>{{optional($review->user)->name}}</h5>
                     <span>{{$review->created_at->diffForHumans()}}</span>
                   </div>
                 </div>
@@ -135,6 +145,7 @@
               <p>{{$review->review}}</p>
             </div>
             <!-- review single item end -->
+            @endif
             @endforeach
           </div>
           <!-- review list end -->
@@ -162,8 +173,8 @@
 
                   @php
                   $v_imageUrls = [];
-                  if (isset($product) && !empty($product->images)) {
-                  $v_imageUrls = json_decode($product->images);
+                    if (isset($product) && !empty($product->images)) {
+                    // $v_imageUrls = json_decode($product->images);
                   }
                   @endphp
 

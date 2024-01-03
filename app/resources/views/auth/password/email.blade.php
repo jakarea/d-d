@@ -25,10 +25,10 @@
                     <div class="auth-form-wrap">
                         <div class="title">
                             <img src="{{ asset('public/assets/images/auth/arrow-down.svg') }}" alt="Arrow" class="img-fluid arrow-icon d-none d-xl-block">
-                            <h1>Login first to your account</h1>
+                            <h1>{{ __('Reset Password') }}</h1>
                         </div>
 
-                        <form action="" class="auth-form" method="POST">
+                        <form action="{{ route('password.email') }}" class="auth-form" method="POST">
                             @csrf
                             <div class="form-group form-error">
                                 <label for="email">Email Address <span>*</span></label>
@@ -41,49 +41,10 @@
                                 </span>
                                 @enderror
 
-                            </div>
-                            <div class="form-group form-error">
-                                <label for="password">Password <span>*</span></label>
-                                <input type="password" placeholder="Input your password account" class="form-control  @error('password') is-invalid @enderror" name="password" value="{{ old('password')}}" id="password">
-
-                                <div class="fields-icons">
-                                    <a href="javascript:void(0)" id="togglePassword">
-                                        <i class="fa-regular fa-eye" id="eyeIcon"></i>
-                                    </a>
-                                </div>
-                                @error('password')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
-                            </div>
-                            <div class="remember-me-box d-flex">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{
-                                        old('remember') ? true : false }}>
-                                    <label class="form-check-label" for="remember">
-                                        Remember Me
-                                    </label>
-                                </div>
-                                @if (Route::has('password.request'))
-                                <a href="{{ route('password.request') }}">
-                                    Forgot Password?
-                                </a>
-                                @endif
-                            </div>
+                            </div> 
                             <div class="form-submit">
-                                <button class="btn btn-submit" type="submit">Login</button>
-                            </div>
-                            <div class="options">
-                                <hr>
-                                <p>Or login with</p>
-                            </div>
-                            <div class="login-with-social">
-                                <a href="#" class="bttn me-md-3 me-2"><img src="{{ asset('public/assets/images/auth/google.svg') }}"
-                                    alt="G" class="img-fluid"> Google</a>
-                            <a href="#" class="bttn ms-md-3 ms-2"><img src="{{ asset('public/assets/images/auth/apple.svg') }}"
-                                    alt="A" class="img-fluid"> Apple</a>
-                            </div>
+                                <button class="btn btn-submit" type="submit">{{ __('Send Password Reset Link') }}</button>
+                            </div>  
                             <div class="already-have">
                                 <p>You're new in here? <a href="{{ url('register')}}">Create Account</a></p>
                             </div>

@@ -162,3 +162,25 @@
   margin: 0 auto;
   border-radius: 0!important;
 }
+
+.avatar-wrap.company-avatar-wrap{
+  width: 100%;
+  height: 220px!important;
+  border-radius: 1rem!important;
+}
+
+.avatar-wrap.company-avatar-wrap .ol{
+  border-radius: 1rem!important;
+}
+
+.company-about-box .company-avatar-wrap img.main-avatar {
+  width: 100%;
+  height: 220px!important;
+  border-radius: 1rem!important;
+}
+.company-about-box .company-avatar-wrap .nva-lg {
+  width: 100%;
+  height: 100%!important;
+  border-radius: 1rem!important;
+  font-size: 8rem!important;
+}
