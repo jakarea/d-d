@@ -227,7 +227,7 @@ class UserController extends API\ApiController
 
                     $userInfoRegis = [
                         'token' => $plainTextToken2,
-                        'first_time' => 'password: 1234567890',
+                        'first_time' => 1,
                         'user_info' => $user
                     ];
 
