@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('designation')->nullable();
             $table->string('maritual_status')->nullable();
             $table->string('dob')->nullable();
-            $table->string('phone')->nullable();
+            $table->string('phone')->nullable(); 
             $table->string('nationality')->nullable();
             $table->string('email')->nullable();
             $table->timestamps();

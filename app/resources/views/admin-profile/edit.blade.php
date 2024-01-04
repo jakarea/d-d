@@ -105,7 +105,7 @@
             <div class="row">
               <div class="col-lg-6">
                 <div class="form-group form-error">
-                  <label for="dob">Date of Birtht<span>*</span></label>
+                  <label for="dob">Date of Birth<span>*</span></label>
                   <input type="date" class="form-control @error('dob') is-invalid @enderror" placeholder="Input here"
                     value="{{ optional($user->personalInfo)->dob }}" name="dob" id="dob">
   

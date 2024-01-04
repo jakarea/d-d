@@ -162,15 +162,20 @@ class CustomerController extends Controller
             $image = Image::make($file);
             $uniqueFileName = $slugg . '-' . uniqid() . '.webp';
             $image->save(public_path('uploads/users/' . $uniqueFileName));  // Save with the full path
-        
+         
             // Generate the full URL using the url helper
             $image_path = url('public/uploads/users/' . $uniqueFileName);
         
             $userInfos->avatar = $image_path;
             $userInfos->save(); // Save the user model to update the avatar path in the database
-        }        
+        }         
 
-        return redirect()->route('users.index')->with('success', 'User Information Updated Successfuly!');
+        if ($user->roles->contains('slug', 'company')){
+            return redirect()->route('company.index')->with('success', 'User Information Updated Successfuly!');
+        }else{
+            return redirect()->route('users.index')->with('success', 'User Information Updated Successfuly!');
+        }
+        
     }
 
     /**

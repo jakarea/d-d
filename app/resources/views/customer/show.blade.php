@@ -18,7 +18,7 @@
       <!-- customer about start -->
       <div class="company-about-box">
         @if ($user->personalInfo && $user->personalInfo->avatar)
-          <img src="{{ $user->personalInfo->avatar ? $user->personalInfo->avatar : '' }}" alt="A" class="img-fluid main-avatar">
+          <img src="{{ $user->personalInfo->avatar }}" alt="A" class="img-fluid main-avatar">
           @else 
           <span class="no-avatar nva-lg">{!! strtoupper($user->name[0]) !!}</span>
           @endif 
@@ -217,28 +217,29 @@
       <!-- customer info end -->
     </div>
     <div class="col-12">
+      
       <!-- reviews box -->
       @if (count($user->reviews) > 0)
       <div class="company-reviews customer-reviews-box">
         <h3>Reviews</h3>
         <!-- review list start -->
         <div class="review-list">
-          @foreach ($user->reviews as $review)
+          @foreach ($user->reviews->where('replies_to',NULL) as $review)
           <!-- review single item start -->
           <div class="review-single-item">
               <div class="header">
                   <div class="media">
-                    @php 
-                      $jsonString = $review->product->images;
-                      $imageLinks = json_decode($jsonString);
-                      $firstImageLink = "";
-                      if ($imageLinks !== null && is_array($imageLinks) && count($imageLinks) > 0) {
-                        $firstImageLink = $imageLinks[0];
-                      }
+                    @php
+                    $imageArray = optional($review->product)->images ? explode(',', $review->product->images) : [];
+                    $firstImageUrl = count($imageArray) > 0 ? $imageArray[0] : 'public/uploads/products/product-thumbnail-01.png';
                     @endphp
-                      <img src="{{ $firstImageLink }}" alt="Product Image" class="img-fluid">
+
+                    @if($firstImageUrl)
+                    <img src="{{ $firstImageUrl }}" alt="Product Thumbnail" class="img-fluid">
+                    @endif
+                      
                       <div class="media-body">
-                          <h5>{{ $review->product->title }}</h5>
+                          <h5><a href="{{ url('marketplace',optional($review->product)->slug) }}">{{ optional($review->product)->title }}</a></h5>
                           <span>{{ $review->created_at->diffForHumans() }} </span>
                       </div>
                   </div>

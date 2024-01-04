@@ -28,6 +28,8 @@ class ClientController extends ApiController
 
             $user = UserProcess::update($request, $user); 
 
+            // return response()->json(['data' => $user]);
+
             return $this->jsonResponse(false, 'Profile updated successfully', $user, $this->emptyArray, JsonResponse::HTTP_CREATED);
         } catch (\Exception $e) {
             return $this->jsonResponse(true, 'Failed to update profile', $request->all(), [$e->getMessage()], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);

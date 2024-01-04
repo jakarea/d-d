@@ -27,17 +27,17 @@
                 <div class="company-profile-box">
                     <!-- avatar -->
                     <div class="avatar">
-                        @if ($company->user->personalInfo && $company->user->personalInfo->avatar)
-                        <img src="{{ $company->user->personalInfo->avatar }}" alt="A" class="img-fluid">
+                        @if (optional($company->user)->personalInfo && optional($company->user)->personalInfo->avatar)
+                        <img src="{{ optional($company->user)->personalInfo->avatar }}" alt="A" class="img-fluid">
                         @else
-                        <span class="no-avatar nva-sm">{!! strtoupper($company->user->name[0]) !!}</span>
+                        <span class="no-avatar nva-sm">{!! strtoupper(optional($company->user)->name[0]) !!}</span>
                         @endif
                     </div>
                     <!-- avatar -->
 
                     <div class="txt">
-                        <h4>{{ $company->name }}</h4>
-                        <h6>{{ $company->tagline ? $company->tagline : '--' }}</h6>
+                        <h4><a href="{{ url('users',$company->user_id) }}">{{ $company->name }}</a></h4>
+                        <h6>{{  optional($company->user)->personalInfo->designation ?? 'N/A' }}</h6>
                         <hr>
                         <a href="mailto:{{ $company->email }}" class="mail"><i class="fa-regular fa-envelope me-2"></i> {{ $company->email }}</a>
 
@@ -52,8 +52,7 @@
             @endforeach
         @else
         {{-- no data found component --}}
-        {{-- <x-EmptyDataComponent :dynamicData="'No Company Found!'" />  --}}
-        <p>No Company Found!</p>
+        <x-EmptyDataComponent :dynamicData="'No Company Found!'" />  
         {{-- no data found component --}}
     @endif
     </div>

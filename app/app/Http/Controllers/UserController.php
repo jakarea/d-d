@@ -14,15 +14,17 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\VerificationMail;
-use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Str; 
 
-class UserController extends API\ApiController {
+class UserController extends API\ApiController
+{
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
+    public function index()
+    {
         return User::all();
     }
 
@@ -71,8 +73,8 @@ class UserController extends API\ApiController {
             $company->save();
         }
 
-         // Send verification email
-         try {
+        // Send verification email
+        try {
             $this->sendVerificationEmail($user, $verificationCode);
         } catch (\Exception  $e) {
             $user->roles()->detach();
@@ -100,7 +102,7 @@ class UserController extends API\ApiController {
     protected function sendVerificationEmail(User $user, $verificationCode)
     {
         // Use your email template and customize as needed
-        Mail::to($user->email)->send(new VerificationMail($user,$verificationCode));
+        Mail::to($user->email)->send(new VerificationMail($user, $verificationCode));
     }
 
     /**
@@ -109,7 +111,8 @@ class UserController extends API\ApiController {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function login(Request $request) {
+    public function login(Request $request)
+    {
 
         try {
             $creds = $request->validate([
@@ -120,8 +123,9 @@ class UserController extends API\ApiController {
         } catch (ValidationException $e) {
             return $this->validationErrorResponse($e, 422, 'Validation error', 1001);
         }
+
         $user = User::where('email', $creds['email'])->first();
-        if (! $user || ! Hash::check($request->password, $user->password)) {
+        if (!$user || !Hash::check($request->password, $user->password)) {
             return response(['error' => 1, 'message' => 'invalid credentials'], 401);
         }
 
@@ -131,24 +135,108 @@ class UserController extends API\ApiController {
 
         $roles = $user->roles->pluck('slug')->all();
         $plainTextToken = $user->createToken('hydra-api-token', $roles)->plainTextToken;
- 
-        $company = Company::where('user_id',$user->id)->first(); 
-        $earning = Earning::where('user_id',$user->id)->where('status','paid')->first(); 
+
+        $company = Company::where('user_id', $user->id)->first();
+        $earning = Earning::where('user_id', $user->id)->where('status', 'paid')->first();
 
         $package = NULL;
         if ($earning) {
             $package = PricingPackage::with('myPurchaseInfo')->first();
         }
-        
+
         $userInfo = [
             'token' => $plainTextToken,
             'user_info' => $user,
             'user_company' => $company,
             'current_package' => $package
-            
+
         ];
 
-        return $this->jsonResponse(false, $this->success, $userInfo, $this->emptyArray, JsonResponse::HTTP_CREATED); 
+        return $this->jsonResponse(false, 'Successfuly Loggedin!', $userInfo, $this->emptyArray, JsonResponse::HTTP_CREATED);
+    }
+
+    /**
+     * User Login with google API.
+     *
+     * @param  \App\Models\User  $user
+     * @return \App\Models\User  $user
+     */
+    public function loginWithGoogle(Request $request,$social_platform)
+    {
+        try {
+            $creds = $request->validate([
+                'email' => 'required|email',
+                // 'social_platform' => 'required|in:google,facebook,apple',
+                'avatar' => 'nullable|mimes:png,svg,webp,jpg,jpeg|max:5048',
+            ]);
+        } catch (ValidationException $e) {
+            return $this->validationErrorResponse($e, 422, 'Validation error', 1001);
+        }
+
+        try {
+            $user = User::where('email', $creds['email'])->first();
+
+            if ($social_platform === 'google') {
+
+                if ($user) {
+                    // email found now do login response for that user
+                    if (config('hydra.delete_previous_access_tokens_on_login', false)) {
+                        $user->tokens()->delete();
+                    }
+
+                    $roles = $user->roles->pluck('slug')->all();
+                    $plainTextToken = $user->createToken('hydra-api-token', $roles)->plainTextToken;
+
+                    $company = Company::where('user_id', $user->id)->first();
+                    $earning = Earning::where('user_id', $user->id)->where('status', 'paid')->first();
+
+                    $package = NULL;
+                    if ($earning) {
+                        $package = PricingPackage::with('myPurchaseInfo')->first();
+                    }
+
+                    $userInfo = [
+                        'token' => $plainTextToken,
+                        'user_info' => $user,
+                        'user_company' => $company,
+                        'current_package' => $package
+
+                    ];
+
+                    return $this->jsonResponse(false, 'Successfuly Loggedin!', $userInfo, $this->emptyArray, JsonResponse::HTTP_CREATED);
+                } else {
+                    // if email not found then do register
+                    $emailParts = explode('@', $creds['email']);
+                    $username = (count($emailParts) === 2) ? $emailParts[0] : "No Name"; 
+
+                    $user = User::create([
+                        'name' => $username,
+                        'email' => $creds['email'],
+                        'password' => Hash::make('1234567890'),
+                        'kvk_number' => null,
+                        'verification_code' => null,
+                        'email_verified_at' => now(),
+                        'status' => 1,
+                    ]);
+
+                    $role = Role::where('slug', 'client')->first();
+                    $user->roles()->attach($role);
+
+                    $roles = $user->roles->pluck('slug')->all();
+                    $plainTextToken2 = $user->createToken('hydra-api-token', $roles)->plainTextToken;
+
+                    $userInfoRegis = [
+                        'token' => $plainTextToken2,
+                        'first_time' => 1,
+                        'user_info' => $user
+                    ];
+
+                    return $this->jsonResponse(false, 'Success! Please visit the reset page to update your password.', $userInfoRegis, $this->emptyArray, JsonResponse::HTTP_CREATED);
+                }
+            }
+        } catch (\Exception $e) {
+            return $this->jsonResponse(true, 'Failed to get in', $request->all(), [$e->getMessage()], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -157,7 +245,8 @@ class UserController extends API\ApiController {
      * @param  \App\Models\User  $user
      * @return \App\Models\User  $user
      */
-    public function show(User $user) {
+    public function show(User $user)
+    {
         return $user;
     }
 
@@ -170,7 +259,8 @@ class UserController extends API\ApiController {
      *
      * @throws MissingAbilityException
      */
-    public function update(Request $request, User $user) {
+    public function update(Request $request, User $user)
+    {
         $user->name = $request->name ?? $user->name;
         $user->email = $request->email ?? $user->email;
         $user->password = $request->password ? Hash::make($request->password) : $user->password;
@@ -210,7 +300,6 @@ class UserController extends API\ApiController {
             ]);
 
             return $this->jsonResponse(0, 'Password updated successfully.');
-
         } catch (ValidationException $e) {
             return $this->validationErrorResponse($e, 422, 'Validation error', 1001);
         }
@@ -222,7 +311,8 @@ class UserController extends API\ApiController {
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user) {
+    public function destroy(User $user)
+    {
         $adminRole = Role::where('slug', 'admin')->first();
         $userRoles = $user->roles;
 
@@ -246,7 +336,8 @@ class UserController extends API\ApiController {
      * @param  Request  $request
      * @return mixed
      */
-    public function me(Request $request) {
+    public function me(Request $request)
+    {
         return $request->user();
     }
 }

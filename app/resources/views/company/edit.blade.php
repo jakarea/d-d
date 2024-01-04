@@ -16,7 +16,7 @@
         <div class="col-12 col-md-4 col-xl-3">
             <!-- compnay about start -->
             <div class="company-about-box">
-                <div class="avatar-wrap">
+                <div class="avatar-wrap company-avatar-wrap">
                     <div id="avatar-container">
                         @if ($company->user->personalInfo && $company->user->personalInfo->avatar)
                         <img src="{{ $company->user->personalInfo->avatar }}" alt="A" class="img-fluid main-avatar" id="avatar-preview">
@@ -27,8 +27,7 @@
 
                     <label for="avatar" class="avatar-label">
                         <div class="ol">
-                            <img src="{{ asset('public/assets/images/icons/photo.png') }}" alt="U"
-                                class="img-fluid logo-photo">
+                            <img src="{{ asset('public/assets/images/icons/photo.png') }}" alt="U" class="img-fluid logo-photo">
                             <span>Update Photo</span>
                         </div>
                     </label>

@@ -104,9 +104,9 @@ class CompanyController extends Controller
      */
     public function update(Request $request, $id)
     { 
-
+ 
         $company = Company::find($id);
-        $user = User::find($company->user_id); 
+         $user = User::find($company->user_id);  
 
         $request->validate([
             'name' => 'required',
@@ -137,7 +137,7 @@ class CompanyController extends Controller
             ]);
         }
 
-        $userInfos = PersonalInfo::updateOrCreate(
+         $userInfos = PersonalInfo::updateOrCreate(
             ['user_id' => $user->id],
             [
                 'name' => $request->input('name'),
@@ -157,17 +157,16 @@ class CompanyController extends Controller
                     unlink($oldFile);
                 }
             }
-        
+            
             $file = $request->file('avatar');
             $image = Image::make($file);
             $uniqueFileName = $slugg . '-' . uniqid() . '.webp';
             $image->save(public_path('uploads/users/' . $uniqueFileName));
-         
             $image_path = url('public/uploads/users/' . $uniqueFileName);
         
             $userInfos->avatar = $image_path;
             $userInfos->save();
-        }  
+        } 
         
 
         return redirect()->route('company.index')->with('success', 'Company Updated Successfuly!');

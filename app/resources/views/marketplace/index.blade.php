@@ -43,8 +43,8 @@
     <div class="row">
         @if (count($products) > 0)
         @foreach ($products as $product)
-        <!-- product item start -->
-        <div class="col-12 col-sm-6 col-lg-6 col-xl-4 col-xxl-3 mb-69">
+        <!-- product item start --> 
+        <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3  mb-69">
             <div class="product-item-box">
                 <!-- thumbnail start -->
                 <div class="product-thumbnail">
@@ -59,22 +59,17 @@
                     @endphp
 
                     <span>{{ number_format($percentageDiscount, 0) }}%</span>
-
                     @php
-                    $imageUrls = [];
-                    if (isset($product) && !empty($product->images)) {
-                    $imageUrls = explode(',', $product->images);
-                    }
+                        $imageArray = $product->images ? explode(',', $product->images) : [];
+                        $firstImageUrl = count($imageArray) > 0 ? $imageArray[0] : 'public/uploads/products/product-thumbnail-01.png';
                     @endphp
 
-                    @if(count($imageUrls) > 0)
-                    <img src="{{ $imageUrls[0] }}" alt="Product Thumbnail" class="img-fluid">
-                    @else
-                    <img src="{{ asset('public/uploads/products/product-thumbnail-01.png')}}" alt="Product Thumbnail"
-                        class="img-fluid">
+                    @if($firstImageUrl)
+                        <img src="{{ $firstImageUrl }}" alt="Product Thumbnail" class="img-fluid">
                     @endif
 
-                    <a href="#"><i class="fa-regular fa-heart"></i></a>
+
+                    {{-- <a href="#"><i class="fa-regular fa-heart"></i></a> --}}
                 </div>
                 <!-- thumbnail end -->
                 <!-- txt -->
@@ -83,7 +78,7 @@
                         <a href="{{ route('product.show', $product->slug) }}">{{ Str::limit($product->title, $limit =
                             40, $end = '..') }}</a>
                     </h5>
-                    <p>{{ Str::limit($product->company->name, $limit = 50, $end = '..') }}</p>
+                    <p>{{ Str::limit(optional($product->company)->name, $limit = 50, $end = '..') }}</p>
 
                     @php
                     $reviewCount = count($product->reviews);
@@ -98,7 +93,7 @@
                             <li><i class="far fa-star"></i></li>
                             @endif
                             @endfor
-                            <li><span class="avg-star">{{ $averageRating }}</span></li>
+                            <li class="ms-2"><span class="avg-star">{{ $averageRating }}</span></li>
                             <li><span class="total-rev">({{ $revText }})</span></li>
                     </ul>
 
@@ -123,8 +118,7 @@
         @endforeach
         @else
         {{-- no data found component --}}
-        {{-- <x-EmptyDataComponent :dynamicData="'No Products Found!'" /> --}}
-        <p>No Products Found!</p>
+        <x-EmptyDataComponent :dynamicData="'No Products Found!'" />
         {{-- no data found component --}}
         @endif
     </div>

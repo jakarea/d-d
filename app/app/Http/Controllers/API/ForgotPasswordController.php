@@ -35,17 +35,25 @@ class ForgotPasswordController extends ApiController
         }
     } 
 
-    public function showResetForm(Request $request, $token)
+    public function showResetForm(Request $request, $token = null)
     {
-        $email = $request->email; 
-        
-        return view('auth.password.reset-password', compact('email','token'));
+        $email = $request->email;  
+
+        if ($email) {
+            $user = User::where('email',$email)->first(); 
+        }
+
+        if ($user->roles->contains('slug', 'admin')) {
+            return view('auth.password.web-reset-password', compact('email','token'));
+        }else{
+            return view('auth.password.reset-password', compact('email','token'));
+        }
     }
 
 
     // set password
     public function resetPassword(Request $request)
-    { 
+    {
 
         $request->validate([
             'token' => 'required',
@@ -69,15 +77,36 @@ class ForgotPasswordController extends ApiController
             }
         );
 
-        if ($status == Password::PASSWORD_RESET) {
-            return redirect()->route('password.status')->with('success', 'DONE');
-        } else {
-            return redirect()->route('password.status')->with('error', 'FAILED');
+        $u_email = $request->email;
+        if ($u_email) {
+            $user = User::where('email',$u_email)->first();
         }
+
+        if ($status === Password::PASSWORD_RESET) {
+
+            if ($user->roles->contains('slug', 'admin')) {
+                return redirect()->route('admin.password.success')->with('success', trans($status));
+            }else{
+                return redirect()->route('password.success')->with('success', trans($status));
+            }
+            
+        } else {
+
+            if ($user->roles->contains('slug', 'admin')) {
+                return redirect()->route('admin.password.cancel')->with('error', trans($status));
+            }else{
+                return redirect()->route('password.cancel')->with('error', trans($status));
+            }
+        }
+    }    
+
+    public function showSuccessPage()
+    { 
+        return view('auth.password.status.success');
     }
 
-    public function showStatusPage()
+    public function showFailPage()
     { 
-        return view('auth.password.password-status');
+        return view('auth.password.status.cancel');
     }
 }

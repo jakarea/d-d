@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\UserRole;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegistrationRequest;
@@ -24,8 +25,15 @@ class AuthController extends Controller
             'name' => $request->input('name'),
             'email' => $request->input('email'),
             'password' => Hash::make($request->input('password')),
-            'role' => 'admin', // Set the user role as 'admin'
+            'role' => 'admin',
         ]);
+
+        if ($user) {
+            $role = new UserRole();
+            $role->user_id = $user->id;
+            $role->role_id = 1;
+            $role->save();
+        }
 
         return redirect()->route('login')->with('success', 'Registration successful. Please log in.');
     }

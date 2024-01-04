@@ -87,11 +87,11 @@
                     <th>Action</th>
                 </tr>
                 @if (count($earnings) > 0)
-                @foreach ($earnings as $earning)
+                @foreach ($earnings as $key => $earning)
                 <!-- payment single item start -->
                 <tr>
                     <td>
-                        1
+                       {{ $key + 1 }}
                     </td>
                     <td>
                         <div class="media">

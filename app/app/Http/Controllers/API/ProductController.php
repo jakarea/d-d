@@ -114,9 +114,11 @@ class ProductController extends ApiController
                 $locationName = $name;
     
                 $uniqueLocations = Cache::remember('unique_locations_' . $locationName, 3600, function () use ($locationName) {
-                    $companies = Company::where('location', 'like', '%' . $locationName . '%')
+                        $companies = Company::where('location', 'like', '%' . $locationName . '%')
                         ->select('location')
+                        ->whereRaw('LOWER(location) LIKE ?', ['%' . strtolower($locationName) . '%'])
                         ->get();
+
     
                     return $companies->pluck('location')->unique()->values()->all();
                 });
