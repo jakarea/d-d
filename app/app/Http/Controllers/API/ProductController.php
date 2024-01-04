@@ -18,8 +18,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB; 
+use Illuminate\Support\Facades\Route;
 
 class ProductController extends ApiController
 {
@@ -46,7 +46,7 @@ class ProductController extends ApiController
         }]);
 
         $company = Company::firstwhere('user_id', auth()->user()->id);
-        $routeName = \Route::currentRouteName();
+        $routeName = Route::currentRouteName();
 
         if ($routeName === "api.company.product.list") {
             $query->where('company_id', $company->id);
@@ -282,12 +282,24 @@ class ProductController extends ApiController
     public function getProductsOfCompany($companyId): JsonResponse
     {
 
-        $products = Company::with(['products' => function ($query) {
+        $products = Company::with(['user.personalInfo', 'products' => function ($query) {
             $query->with(['reviews' => function ($q) {
                 $q->with(['likes', 'dislikes']);
             }]);
-
-        }, 'reviews'])->where('id', $companyId)->first();
+        }, 'reviews'])
+            ->where('id', $companyId)
+            ->first();
+        
+        $user_id = auth()->user()->id;
+        
+        // Map through each product and add the is_wishlist attribute
+        $products->products->map(function ($product) use ($user_id) {
+            $isWishlist = WishList::where('product_id', $product->id)
+                ->where('user_id', $user_id)
+                ->exists();
+            $product->is_wishlist = $isWishlist;
+            return $product;
+        });        
 
         if (!empty($products)) {
 
