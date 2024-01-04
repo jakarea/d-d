@@ -20,12 +20,11 @@ class UserProcess
 
         $user = (new self())->saveUser($request, $user);
         
-        $personalInfo = (new self())->savePersonalInfo($request);  
-        
-        // return response()->json(['data' => $personalInfo]);
+        $personalInfo = (new self())->savePersonalInfo($request);   
         $address = (new self())->saveAddress($request);
 
         $userInfo = array_merge($user->toArray(), $personalInfo->toArray(), $address->toArray());
+ 
 
         return $userInfo;
     }
@@ -34,6 +33,7 @@ class UserProcess
     {
         $user->name = $request->input('first_name') . ' ' . $request->input('last_name');
         $user->email = $request->input('email');
+        $user->kvk_number = $request->input('kvk_number');
         $user->save();
 
         return $user;
@@ -101,8 +101,7 @@ class UserProcess
 
         if ($request->has('avatar')) {
             $image = $request->avatar;
-            $filePath = $this->fileUpload($image, "avatar");
-            // $imageUrl = asset(Storage::url("avatar/{$filePath}"));
+            $filePath = $this->fileUpload($image, "avatar"); 
             $imageUrl = asset("public/storage/avatar/{$filePath}");
             $imageString = $imageUrl;
         }

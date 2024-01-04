@@ -64,9 +64,7 @@
             })->count();
             $allAverageRating = $allReviewCount > 0 ? number_format($allTotalStars / $allReviewCount, 1) : 0;
             $allRevText = $allReviewCount === 0 ? 'No Reviews' : ($allReviewCount === 1 ? '1 Review' : $allReviewCount . ' Reviews');
-
           @endphp
-
           <div class="review-statics-box">
             <div>
               <h4>{{ $allAverageRating }}<span class="h5">/5</span></h4>
@@ -82,40 +80,44 @@
             </div>
             <div class="rev-item-list">
               @php
-              $ratingCounts = $company->products->pluck('reviews')->where('replies_to',NULL)->collapse()->groupBy('rating')->map->count();
-              $totalReviews = $ratingCounts->sum();
-              @endphp
+    $ratingCounts = $company->products->flatMap(function ($product) {
+        return $product->reviews->where('replies_to', null)->pluck('rating');
+    })->groupBy(function ($rating) {
+        return $rating;
+    })->map->count();
 
-              @for($i = 5; $i >= 1; $i--)
-              <div class="item">
-                <p>{{ $i }} star</p>
-                @if(isset($ratingCounts[$i]))
-                <div class="progress" role="progressbar" aria-label="Basic example"
-                  aria-valuenow="{{ $ratingCounts[$i] / $totalReviews * 100 }}" aria-valuemin="0" aria-valuemax="100">
-                  <div class="progress-bar" style="width: {{ $ratingCounts[$i] / $totalReviews * 100 }}%"></div>
-                </div>
-                @else
-                <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="0" aria-valuemin="0"
-                  aria-valuemax="100">
-                  <div class="progress-bar" style="width: 0%"></div>
-                </div>
-                @endif
-              </div>
-              @endfor
+    $totalReviews = $ratingCounts->sum();
+@endphp
+
+@for($i = 5; $i >= 1; $i--)
+    <div class="item">
+        <p>{{ $i }} star</p>
+        @if(isset($ratingCounts[$i]))
+            <div class="progress" role="progressbar" aria-label="Basic example"
+                aria-valuenow="{{ $ratingCounts[$i] / $totalReviews * 100 }}" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-bar" style="width: {{ $ratingCounts[$i] / $totalReviews * 100 }}%"></div>
+            </div>
+        @else
+            <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="0" aria-valuemin="0"
+                aria-valuemax="100">
+                <div class="progress-bar" style="width: 0%"></div>
+            </div>
+        @endif
+    </div>
+@endfor
+
             </div>
 
           </div>
-
-
           @php
-            $filteredReviews = $company->products->pluck('reviews')->where('replies_to', null)->collapse();
-        @endphp
+              $filteredReviews = $company->products->pluck('reviews')->where('replies_to', null)->collapse();
+          @endphp
 
           <!-- review list start -->
           <div class="review-list">
             @foreach ($filteredReviews as $review)
             @if ($review->replies_to === NULL)
-                <!-- review single item start -->
+            <!-- review single item start -->
             <div class="review-single-item">
               <div class="header">
                 <div class="media">

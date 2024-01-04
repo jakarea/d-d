@@ -12,17 +12,13 @@
       <div class="media align-items-start">
 
         @php
-        if (isset($product) && !empty($product->images)) {
-        $imageUrls = json_decode($product->images);
-        }
-        @endphp
+          $imageArray = $product->images ? explode(',', $product->images) : [];
+          $firstImageUrl = count($imageArray) > 0 ? $imageArray[0] : 'public/uploads/products/product-thumbnail-01.png';
+      @endphp
 
-        @if(is_array($imageUrls) && count($imageUrls) > 0)
-        <img src="{{ $imageUrls[0] }}" alt="Product Tumbnail" class="img-fluid main-thumb">
-        @else
-        <img src="{{ asset('public/uploads/products/product-thumbnail-01.png')}}" alt="Product Tumbnail"
-          class="img-fluid main-thumb">
-        @endif
+      @if($firstImageUrl)
+          <img src="{{ $firstImageUrl }}" alt="Product Thumbnail" class="img-fluid main-thumb">
+      @endif
 
         <div class="media-body">
           <div class="d-flex">
@@ -215,18 +211,13 @@
                   <span>{{ number_format($percentageDiscount, 0) }}%</span>
 
                   @php
-                  $v_imageUrls = [];
-                  if (isset($v_product) && !empty($v_product->images)) {
-                  $v_imageUrls = json_decode($v_product->images);
-                  }
-                  @endphp
+                    $v_imageArray = $v_product->images ? explode(',', $v_product->images) : [];
+                    $v_firstImageUrl = count($v_imageArray) > 0 ? $v_imageArray[0] : 'public/uploads/products/product-thumbnail-01.png';
+                @endphp
 
-                  @if(is_array($v_imageUrls) && count($v_imageUrls) > 0)
-                  <img src="{{ $v_imageUrls[0] }}" alt="Product Thumbnail" class="img-fluid">
-                  @else
-                  <img src="{{ asset('public/uploads/products/product-thumbnail-01.png')}}" alt="Product Thumbnail"
-                    class="img-fluid">
-                  @endif
+                @if($v_firstImageUrl)
+                    <img src="{{ $v_firstImageUrl }}" alt="Product Thumbnail" class="img-fluid">
+                @endif
 
                   <a href="#"><i class="fa-regular fa-heart"></i></a>
                 </div>

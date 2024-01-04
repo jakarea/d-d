@@ -59,7 +59,6 @@
                     @endphp
 
                     <span>{{ number_format($percentageDiscount, 0) }}%</span>
-
                     @php
                         $imageArray = $product->images ? explode(',', $product->images) : [];
                         $firstImageUrl = count($imageArray) > 0 ? $imageArray[0] : 'public/uploads/products/product-thumbnail-01.png';

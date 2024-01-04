@@ -37,21 +37,17 @@ class ForgotPasswordController extends ApiController
 
     public function showResetForm(Request $request, $token = null)
     {
-        $email = $request->email; 
-
-        $role = NULL;
+        $email = $request->email;  
 
         if ($email) {
-            $user = User::where('email',$email)->first();
-            $role = $user->roles[0]->slug;
+            $user = User::where('email',$email)->first(); 
         }
 
-        if ($role == 'admin') {
+        if ($user->roles->contains('slug', 'admin')) {
             return view('auth.password.web-reset-password', compact('email','token'));
         }else{
             return view('auth.password.reset-password', compact('email','token'));
         }
-         
     }
 
 
@@ -81,18 +77,14 @@ class ForgotPasswordController extends ApiController
             }
         );
 
-        $u_email = $request->email; 
-
-        $u_role = NULL;
-
+        $u_email = $request->email;
         if ($u_email) {
             $user = User::where('email',$u_email)->first();
-            $u_role = $user->roles[0]->slug;
         }
 
         if ($status === Password::PASSWORD_RESET) {
 
-            if ($u_role == 'admin') {
+            if ($user->roles->contains('slug', 'admin')) {
                 return redirect()->route('admin.password.success')->with('success', trans($status));
             }else{
                 return redirect()->route('password.success')->with('success', trans($status));
@@ -100,7 +92,7 @@ class ForgotPasswordController extends ApiController
             
         } else {
 
-            if ($u_role == 'admin') {
+            if ($user->roles->contains('slug', 'admin')) {
                 return redirect()->route('admin.password.cancel')->with('error', trans($status));
             }else{
                 return redirect()->route('password.cancel')->with('error', trans($status));

@@ -37,7 +37,7 @@
 
                     <div class="txt">
                         <h4><a href="{{ url('users',$company->user_id) }}">{{ $company->name }}</a></h4>
-                        <h6>{{ optional($company->user)->personalInfo ? optional($company->user)->personalInfo->designation : 'N/A' }}</h6>
+                        <h6>{{  optional($company->user)->personalInfo->designation ?? 'N/A' }}</h6>
                         <hr>
                         <a href="mailto:{{ $company->email }}" class="mail"><i class="fa-regular fa-envelope me-2"></i> {{ $company->email }}</a>
 

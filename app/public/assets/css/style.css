@@ -1722,7 +1722,7 @@ body {
   padding: 0;
   width: 100%;
   position: relative;
-  top: 0rem;
+  bottom: 4rem;
 }
 
 #legend ul {
@@ -2338,4 +2338,20 @@ body {
 #avatar-container{
   width: 100% !important;
   height: 100% !important;
+}
+
+.company-reviews .review-list .media span.nva-sm ,
+.payment-from-copany-user .user-payment-table table tr td .media span.nva-sm {
+  width: 2rem;
+  height: 2rem;
+  margin-right: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  color: #fff;
+}
+
+.down-arrw{
+  transform: rotate(180deg);
 }

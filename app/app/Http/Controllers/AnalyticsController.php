@@ -5,103 +5,132 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Company;
 use App\Models\User;
-use App\Models\PersonalInfo;
-use Intervention\Image\Facades\Image;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\VerificationMail;
-use App\Models\Role;
-use App\Models\Product;
-use App\Models\Category;
-use Illuminate\Support\Facades\Hash; 
+use App\Models\Earning;     
+use App\Models\Product; 
 use Carbon\Carbon;
 
 class AnalyticsController extends Controller
 {
-    public function analytics(){
+    public function analytics()
+    {
+
+        // total earnings
+        $totalEarnings = Earning::whereIn('status', ['paid', 'expired'])
+        ->pluck('amount')
+        ->sum();
+
+        // todays earning
+        $today = Carbon::today();
+        $todayEarnings = Earning::whereDate('start_at', $today)
+        ->whereIn('status', ['paid', 'expired'])
+        ->pluck('amount')
+        ->sum();
+
+        // total current payment
+        $totalCurrentPayment = Earning::where('status','paid')
+        ->pluck('amount')
+        ->sum();
+
+        // total due amount
+        $totalDueAmount = Earning::where('status','Pending')
+        ->pluck('amount')
+        ->sum();
+
+        // today due amount 
+        $todayDueAmount = Earning::whereDate('created_at', $today)
+        ->where('status', 'Pending')
+        ->pluck('amount')
+        ->sum();
+
+        // new company
+        $totalNewCompany = Company::whereDate('created_at', $today)
+        ->count();
+
+        // total expired amount
+        $totalFrozenAmount = Earning::where('status','expired')
+        ->pluck('amount')
+        ->sum();
+
+        // total frozen account
+        $filteredCompanies = Company::with('user')->get();
+        $totalFrozenAccount = $filteredCompanies->filter(function ($company) {
+            return $company->user->status != 1;
+        })->count();
+
+        // earning graph 
+        $totalEarningsGraph = Earning::whereIn('status', ['paid', 'expired'])
+        ->pluck('amount');
+        $timestamp = strtotime(Carbon::now()->startOfMonth());
+        $earningsGraphData = [];
+        foreach ($totalEarningsGraph as $earnings) {
+        $earningsGraphData[] = [$timestamp * 1000, (float) $earnings];
+        $timestamp += 86400; 
+        }
+        $eraningGraph = json_encode($earningsGraphData);
 
         // total users
         $totalUsersByMonths = [];
         $totalUsersByMonths = $this->getUserCountPerMonth(); 
 
-        // total and active draft products
-        $totalProducts = Product::count();
-        $activeProducts = 0;
-        $draftProducts = 0;
-        $products = Product::get();
-        if ($products) {
-            foreach ($products as $product) { 
-                if ($product->status == 0) {
-                    $draftProducts++;
-                } elseif ($product->status == 1) {
-                    $activeProducts++;
-                }
-            }
-        }
- 
-        // company users
-        $activeCompanyUsers = [];
-        $activeCompanyUsers = $this->getTopActiveCompanyUsers();
-        $activeInactiveCompanyUserCurrentMonth = [];
-        $activeInactiveCompanyUserCurrentMonth = $this->getActiveInactiveCompanyUserbyMonth(); 
+        // total products
+        $products = Product::all();
+        $totalProducts = $products->count();
+        $activeProducts = $products->where('status', 1)->count();
+        $draftProducts = $products->where('status', 0)->count();
 
-        return view('analytics/index',compact('totalUsersByMonths','totalProducts','activeProducts','draftProducts','activeCompanyUsers','activeInactiveCompanyUserCurrentMonth'));
+        // company user
+        $activeInactiveCompanyUserCurrentMonth = [0,4];
+        $inActiveCompanyUsers = [];
+        $activeCompanyUsers = [];
+        $inActiveCompanyUsers = $this->getInActiveCompanyUsers()->count();
+        $activeCompanyUsers = $this->getTopActiveCompanyUsers()->count();
+ 
+        // Top Active Company User
+        $topActiveCompanyUsers = [];
+        $topActiveCompanyUsers = $this->getTopActiveCompanyUsers();
+
+        return view('analytics/index',compact('totalUsersByMonths','totalProducts','activeProducts','draftProducts','topActiveCompanyUsers','inActiveCompanyUsers','activeCompanyUsers','totalEarnings','todayEarnings','totalDueAmount','totalNewCompany','totalFrozenAmount','totalCurrentPayment','todayDueAmount','totalFrozenAccount','eraningGraph'));
     }
 
     // top active user by company
     public function getTopActiveCompanyUsers()
     {
-        $usersWithCompanyRole = User::with('roles')
+        $toactiveUser = User::with('roles')
         ->whereHas('roles', function ($query) {
             $query->where('slug', 'company');
         })
         ->where('status',1)
         ->get();
 
-        return $usersWithCompanyRole;
+        return $toactiveUser;
     }
-
-    // total active inactive user by current month
-    public function getActiveInactiveCompanyUserbyMonth()
+    public function getInActiveCompanyUsers()
     {
-        $activeCountByDate = [];
-        $inactiveCountByDate = [];
+        $topInactiveUser = User::with('roles')
+        ->whereHas('roles', function ($query) {
+            $query->where('slug', 'company');
+        })
+        ->where('status', '!=',1)
+        ->get();
 
-        $currentMonth = Carbon::now()->month;
-
-        $activeCountByDate = User::where('status', '1')
-            ->whereHas('roles', function ($query) {
-                $query->where('slug', 'company');
-            })
-            ->whereMonth('created_at', $currentMonth)
-            ->count();
-
-        $inactiveCountByDate = User::where('status', NULL)
-            ->whereHas('roles', function ($query) {
-                $query->where('slug', 'company');
-            })
-            ->whereMonth('created_at', $currentMonth)
-            ->count();
-
-
-        return [$activeCountByDate, $inactiveCountByDate];
+        return $topInactiveUser;
     }
 
     // total user by months
     public function getUserCountPerMonth()
     {
-        $userCounts = []; 
-        $currentMonth = Carbon::now()->month; 
-        for ($i = 0; $i < 12; $i++) {
-            $month = ($currentMonth - $i) % 12;
-            $month = $month == 0 ? 12 : $month; 
+        $userCounts = [];
+        $currentYear = Carbon::now()->year;
+
+        for ($month = 1; $month <= 12; $month++) {
             $userCount = User::whereMonth('created_at', $month)
-                ->whereYear('created_at', Carbon::now()->year)
-                ->count(); 
+                ->whereYear('created_at', $currentYear)
+                ->count();
+
             $userCounts[] = $userCount;
         }
-        $userCounts = array_reverse($userCounts);
 
         return $userCounts;
-    } 
+    }
+
 }
