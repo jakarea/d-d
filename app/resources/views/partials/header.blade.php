@@ -1,13 +1,7 @@
 <!-- header part start -->
 <header class="header-area">
     <!-- search box start -->
-    <div class="header-search-box">
-        <img src="{{ asset('public/assets/images/icons/search.svg') }}" alt="S" class="img-fluid search">
-        <input type="text" class="form-control" placeholder="Search">
-        <a href="#" class="filter">
-            <img src="{{ asset('public/assets/images/icons/filter.svg') }}" alt="F" class="img-fluid">
-        </a>
-    </div>
+    @include('partials/search')
     <!-- search box end -->
 
     <!-- header icons start -->

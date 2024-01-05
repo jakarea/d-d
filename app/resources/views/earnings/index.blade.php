@@ -11,7 +11,8 @@
             <div class="analytics-card-box">
                 <div class="top">
                     <img src="{{ asset('public/assets/images/icons/anlytic-01.svg') }}" alt="I" class="img-fluid">
-                    <img src="{{ asset('public/assets/images/icons/arrow-up-01.svg') }}" alt="I" class="img-fluid {{ $totalEarnings < 1 ? 'down-arrw' : ''}}">
+                    <img src="{{ asset('public/assets/images/icons/arrow-up-01.svg') }}" alt="I"
+                        class="img-fluid {{ $totalEarnings < 1 ? 'down-arrw' : ''}}">
                 </div>
 
                 <h4>€{{ number_format($totalEarnings) }}</h4>
@@ -22,7 +23,8 @@
             <div class="analytics-card-box">
                 <div class="top">
                     <img src="{{ asset('public/assets/images/icons/anlytic-02.svg') }}" alt="I" class="img-fluid">
-                    <img src="{{ asset('public/assets/images/icons/arrow-up-02.svg') }}" alt="I" class="img-fluid {{ $todayEarnings < 1 ? 'down-arrw' : ''}}">
+                    <img src="{{ asset('public/assets/images/icons/arrow-up-02.svg') }}" alt="I"
+                        class="img-fluid {{ $todayEarnings < 1 ? 'down-arrw' : ''}}">
                 </div>
 
                 <h4>€{{ number_format($todayEarnings) }}</h4>
@@ -33,9 +35,10 @@
             <div class="analytics-card-box">
                 <div class="top">
                     <img src="{{ asset('public/assets/images/icons/anlytic-03.svg') }}" alt="I" class="img-fluid">
-                    <img src="{{ asset('public/assets/images/icons/arrow-up-03.svg') }}" alt="I" class="img-fluid {{ $totalCurrentPayment < 1 ? 'down-arrw' : ''}}">
+                    <img src="{{ asset('public/assets/images/icons/arrow-up-03.svg') }}" alt="I"
+                        class="img-fluid {{ $totalCurrentPayment < 1 ? 'down-arrw' : ''}}">
                 </div>
-                
+
                 <h4>€{{ number_format($totalCurrentPayment) }}</h4>
                 <p>Total Customer Payment</p>
             </div>
@@ -96,30 +99,32 @@
                 <!-- payment single item start -->
                 <tr>
                     <td>
-                       {{ $key + 1 }}
+                        {{ $key + 1 }}
                     </td>
                     <td>
                         <div class="media">
                             @if ($earning->user)
-                                @if ($earning->user->personalInfo)
-                                <img src="{{ $earning->user->personalInfo->avatar }}" alt="A" class="img-fluid">
-                                @else
-                                <span class="no-avatar nva-sm">{!! strtoupper($earning->user->name[0]) !!}</span>
-                                @endif
+                            @if ($earning->user->personalInfo)
+                            <img src="{{ $earning->user->personalInfo->avatar }}" alt="A" class="img-fluid">
+                            @else
+                            <span class="no-avatar nva-sm">{!! strtoupper($earning->user->name[0]) !!}</span>
                             @endif
-                            
-                            @php 
-                                $company = \App\Models\Company::where('user_id',$earning->user->id)->first();
+                            @endif
+
+                            @php
+                            $company = \App\Models\Company::where('user_id',$earning->user->id)->first();
                             @endphp
 
                             <div class="media-body">
                                 <h5>
                                     @if ($company)
-                                        <a href="{{ url('company',$company->id ) }}">{{ optional($earning->user)->name }}</a>  
-                                    @else 
-                                        <a href="{{ url('users', optional($earning->user)->id ) }}">{{ optional($earning->user)->name }}</a>      
+                                    <a href="{{ url('company',$company->id ) }}">{{ optional($earning->user)->name
+                                        }}</a>
+                                    @else
+                                    <a href="{{ url('users', optional($earning->user)->id ) }}">{{
+                                        optional($earning->user)->name }}</a>
                                     @endif
-                                   
+
                                 </h5>
                                 <span>{{ optional($earning->user)->email }}</span>
                             </div>
@@ -135,47 +140,52 @@
                     </td>
                     <td class="text-uppercase">
                         @if ($earning->status == 'paid')
-                            <span class="status paid">
-                                {{ $earning->status }}
-                            </span>
+                        <span class="status paid">
+                            {{ $earning->status }}
+                        </span>
                         @elseif ($earning->status == 'expired')
-                            <span class="status expired">
-                                {{ $earning->status }}
-                            </span>
+                        <span class="status expired">
+                            {{ $earning->status }}
+                        </span>
                         @else
-                            <span class="status">
-                                {{ $earning->status }}
-                            </span>
+                        <span class="status">
+                            {{ $earning->status }}
+                        </span>
                         @endif
-                        
+
                     </td>
                     <td>
                         <ul>
                             @if ($earning->status != 'Pending')
-                                <li>
-                                    <a href="{{ url('earning/generate-pdf',encrypt($earning->payment_id)) }}" class="btn-view btn-export">Export</a>
-                                </li>
-                                <li>
-                                    <a href="{{ url('earning',$earning->id) }}" class="btn-view">View</a>
-                                </li>
-                            @else 
-                                <li>
-                                    <a href="javascript:void(0)" class="btn-view btn-export" style="opacity: .5;cursor: not-allowed;">Export</a>
-                                </li>
-                                <li>
-                                    <a href="javascript:void(0)" class="btn-view" style="opacity: .5; cursor: not-allowed;">View</a>
-                                </li>
-                            @endif 
-                            <li> 
+                            <li>
+                                <a href="{{ url('earning/generate-pdf',encrypt($earning->payment_id)) }}"
+                                    class="btn-view btn-export">Export</a>
+                            </li>
+                            <li>
+                                <a href="{{ url('earning',$earning->id) }}" class="btn-view">View</a>
+                            </li>
+                            @else
+                            <li>
+                                <a href="javascript:void(0)" class="btn-view btn-export"
+                                    style="opacity: .5;cursor: not-allowed;">Export</a>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0)" class="btn-view"
+                                    style="opacity: .5; cursor: not-allowed;">View</a>
+                            </li>
+                            @endif
+                            <li>
                         </ul>
                     </td>
-                </tr> 
+                </tr>
 
                 @endforeach
                 @else
                 <tr>
                     <td colspan="6" class="text-center">
-                        No Payment history found!
+                        {{-- no data found component --}}
+                        <x-EmptyDataComponent :dynamicData="'No Payment history found!'" />
+                        {{-- no data found component --}}
                     </td>
                 </tr>
                 @endif

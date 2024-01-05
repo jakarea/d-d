@@ -2010,6 +2010,7 @@ body {
   display: inline-block;
   border-radius: 50%;
   margin-right: 0.75rem;
+  object-fit: cover;
 }
 
 .payment-from-copany-user .user-payment-table table tr td p {
@@ -2446,4 +2447,9 @@ body {
   font-weight: 400;
   line-height: normal;
   margin-top: 0.2rem;
+}
+
+.paggination-wrap .pagination .page-item.active .page-link{
+  background-color: #111827!important;
+  color: #fff!important;
 }

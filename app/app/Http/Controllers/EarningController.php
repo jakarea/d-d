@@ -14,6 +14,7 @@ class EarningController extends Controller
     {
 
         $status = isset($_GET['status']) ? $_GET['status'] : '';
+        $search = isset($_GET['search']) ? $_GET['search'] : '';
 
         // total earnings
         $totalEarnings = Earning::whereIn('status', ['paid', 'expired'])
@@ -34,7 +35,7 @@ class EarningController extends Controller
 
         $earnings = Earning::with('user')->whereIn('status',['paid','expired','Pending']);
 
-        if ($status) {
+        if (!empty($status)) {
             if ($status == 'asc') {
                 $earnings->orderBy('id', 'asc');
             }
@@ -46,26 +47,35 @@ class EarningController extends Controller
             $earnings->orderBy('id', 'desc');
         }
 
+        // Common search query
+        $searchText = '';
+        if (!empty($search)) {
+            $searchText = $search;
+            $earnings->where('package_name', 'like', '%' . $search . '%');
+        }
+
         $earnings = $earnings->paginate(12);
 
-        return view('earnings/index',compact('earnings','totalEarnings','todayEarnings','totalCurrentPayment'));
+        return view('earnings/index',compact('earnings','totalEarnings','todayEarnings','totalCurrentPayment','searchText'));
     }
 
     public function show($id)
     { 
-
-         $earning = Earning::find($id);
+        $earning = Earning::find($id);
         return view('earnings/show',compact('earning'));
     }
 
     // generate pdf
     public function generatePdf($payment_id){
+          
+        if (!$payment_id) {
+            return redirect()->back()->with('error','No payment information found!');
+        }
+
         $payment_id = Crypt::decrypt($payment_id);
         $payment = Earning::where('payment_id',$payment_id)->with('user')->first();
-        $data = array(
-            'payment' => $payment
-        );
-        $pdf = Pdf::loadView('payments.invoice.package',$data);
+
+        $pdf = Pdf::loadView('payments.invoice.package',['payment' => $payment]);
         return $pdf->download('invoice-'.$payment_id.'.pdf');
     }
 }

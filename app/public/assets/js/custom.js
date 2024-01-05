@@ -16,3 +16,14 @@ document.body.addEventListener('click', function (e) {
         sidebarWrap.classList.remove('show');
     }
 });
+
+// custm search for whole site
+document.addEventListener("DOMContentLoaded", function() {
+    let searchField = document.getElementById("search"); 
+    let mainSearchForm = document.getElementById("mainSearchForm");
+
+    searchField.addEventListener("change", function(e) {
+        e.preventDefault();
+        mainSearchForm.submit();
+    });
+});

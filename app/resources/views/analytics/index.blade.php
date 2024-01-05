@@ -336,46 +336,46 @@ chart.render();
 <script>
   var datas = [{{ $activeProducts }}, {{ $draftProducts }}];
 
-  var backgroundColor = ['#35B254', '#FFAB00'];
-  var ctx = document.getElementById('productStatus').getContext('2d');
-  var myDoughnutChart = new Chart(ctx, {
-    type: 'doughnut',
-    data: {
-      labels: ['Active Product', 'Inactive Product'],
-      datasets: [{
-        label: 'Product Status',
-        data: datas,
-        backgroundColor: backgroundColor,
-        hoverOffset: 4
-      }]
-    },
-    options: {
-      plugins: {
-        legend: {
-          display: false
-        }
-      },
-      title: {
-        display: true,
-        text: 'Chart Donut'
-      },
+var backgroundColor = ['#35B254', '#FFAB00'];
+var ctx = document.getElementById('productStatus').getContext('2d');
+var myDoughnutChart = new Chart(ctx, {
+  type: 'doughnut',
+  data: {
+    labels: ['Active Product', 'Inactive Product'],
+    datasets: [{
+      label: 'Product Status',
+      data: datas,
+      backgroundColor: backgroundColor,
+      hoverOffset: 4
+    }]
+  },
+  options: {
+    plugins: {
       legend: {
         display: false
-      },
-      cutout: '70%',
-      radius: 110
-    }
-  });
+      }
+    },
+    title: {
+      display: true,
+      text: 'Chart Donut'
+    },
+    legend: {
+      display: false
+    },
+    cutout: '70%',
+    radius: 110
+  }
+});
 
-  // Calculate percentages
-  var total = datas.reduce((a, b) => a + b, 0);
-  var percentages = datas.map((value) => {
-    if (value === 0 || total === 0) {
-      return "0%";
-    } else {
-      return ((value / total) * 100).toFixed(0) + "%";
-    }
-  });
+// Calculate percentages
+var total = datas.reduce((a, b) => a + b, 0);
+var percentages = datas.map((value) => {
+  if (value === 0 || total === 0) {
+    return "0%";
+  } else {
+    return ((value / total) * 100).toFixed(2) + "%";
+  }
+});
 
 // Generate and display the custom legend
 var legendHtml = "<ul>";
@@ -388,6 +388,7 @@ for (var i = 0; i < myDoughnutChart.data.labels.length; i++) {
 }
 legendHtml += "</ul>";
 document.getElementById("legend").innerHTML = legendHtml;
+
 </script>
 <!-- product status graph js end -->
 

@@ -25,14 +25,23 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $users = User::with('roles')
+
+        $search = isset($_GET['search']) ? $_GET['search'] : '';
+
+        $usersQuery = User::with('roles')
         ->whereHas('roles', function ($query) {
             $query->where('slug', 'client');
-        })
-        ->orderBy('id', 'desc')
-        ->paginate(16);
+        });
+
+        // Common search query
+        $searchText = '';
+        if (!empty($search)) {
+            $searchText = $search;
+            $usersQuery->where('name', 'like', '%' . $search . '%');
+        }
+        $users = $usersQuery->orderBy('id', 'desc')->paginate(16);         
  
-        return view('customer/index',compact('users'));
+        return view('customer/index',compact('users','searchText'));
     }
 
     /**

@@ -18,6 +18,7 @@ class MarketPlaceController extends Controller
     public function index()
     {   
         $category = isset($_GET['category']) ? $_GET['category'] : '';
+        $search = isset($_GET['search']) ? $_GET['search'] : '';
         $products = Product::with('reviews','company');
 
         $selectedCat = '';
@@ -26,10 +27,17 @@ class MarketPlaceController extends Controller
             $products->where('cats', 'like', '%' . $selectedCat->id . '%');
         }
 
+        // common search query
+        $searchText = '';
+        if (!empty($search)) {
+            $searchText = $search;
+            $products->where('title', 'like', '%' . $search . '%');
+        }
+
         $products = $products->orderBy('id', 'desc')->paginate(16);
         $categories = Category::all();
  
-        return view('marketplace/index',compact('products','categories','selectedCat'));
+        return view('marketplace/index',compact('products','categories','selectedCat','searchText'));
     }
 
     public function show($slug)

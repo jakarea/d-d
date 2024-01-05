@@ -99,14 +99,12 @@
                 <div class="product-txt">
                     <h5> 
                         <a href="{{ route('product.show', $product->slug) }}">{{ Str::limit($product->title, $limit =
-                            40, $end = '..') }}</a>
-                        
-                        
+                            40, $end = '..') }}</a>   
                     </h5>
                     <p>{{ Str::limit($product->company->name, $limit = 50, $end = '..') }}</p>
 
                     @php
-                    $reviewCount = count($product->reviews);
+                    $reviewCount = $product->reviews->where('replies_to',null)->count();
                     $averageRating = $reviewCount > 0 ? number_format($product->reviews->avg('rating'), 1) : 0;
                     $revText = $reviewCount === 0 ? 'No Reviews' : ($reviewCount === 1 ? '1 Review' : $reviewCount . '
                     Reviews');
