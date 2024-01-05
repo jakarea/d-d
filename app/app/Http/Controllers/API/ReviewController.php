@@ -8,7 +8,8 @@ use App\Http\Requests\User\LikeRequest;
 use App\Http\Requests\User\ReplyRequest;
 use App\Http\Requests\User\ReviewAcceptRequest;
 use App\Models\Dislike;
-use App\Models\Like; 
+use App\Models\Like;
+use App\Models\Notification;
 use App\Models\Review;
 use App\Models\Product;
 use Illuminate\Http\JsonResponse;
@@ -62,15 +63,43 @@ class ReviewController extends ApiController
                          ->where('company_id', $request->company_id)
                          ->with('user.personalInfo')
                          ->first();
-
+        $message = "";
         if(!empty($review)){
             if(isset($request->status) && $request->status == true){
                 $review->status = true;
                 $review->save();
-                $message = "Review accepted";
-            }elseif (isset($request->status) && $request->status == -1){
-                $review->delete();
-                $message = "Review rejected";
+                $message = "Review Accepted";
+
+                // notification create for accept review
+                $product = Product::find($review->product_id);
+                Notification::create([
+                    'creator_id' => auth()->user()->id,
+                    'receiver_id' => $review->user_id,
+                    'action_id' => $product->id,
+                    'type' => 'accept',
+                    'action_link' => "Product",
+                    'message' => $message,
+                    'status' => 1,
+                    'role' => 'admin'
+                ]);
+
+            }elseif (isset($request->status) && $request->status == false){
+                $message = "Review Rejected";
+
+                // notification create for accept review
+                $product = Product::find($review->product_id);
+                Notification::create([
+                    'creator_id' => auth()->user()->id,
+                    'receiver_id' => $review->user_id,
+                    'action_id' => $product->id,
+                    'type' => 'reject',
+                    'action_link' => "Product",
+                    'message' => $message,
+                    'status' => 1,
+                    'role' => 'admin'
+                ]);
+
+                // $review->delete();
             }
             return $this->jsonResponse(false, $message, $review, $this->emptyArray, JsonResponse::HTTP_OK);
         }else{
@@ -81,16 +110,28 @@ class ReviewController extends ApiController
     public function reviewOfProduct(AddReviewRequest $request): JsonResponse
     {
         try {
-            $request['user_id'] = auth()->user()->id;
-
+            
             $review = Review::updateOrCreate(
                 ['user_id' => auth()->user()->id, 'product_id' => $request->product_id],
                 [
                     'review' => $request->review,
                     'company_id' => $request->company_id,
                     'rating' => $request->rating
-                ]
+                ] 
             );
+
+            // notification create for new review
+            $product = Product::find($review->product_id);
+            Notification::create([
+                'creator_id' => auth()->user()->id,
+                'receiver_id' => $product->user_id,
+                'action_id' => $product->id,
+                'type' => 'create',
+                'action_link' => "Product",
+                'message' => "New Review Created",
+                'status' => 1,
+                'role' => 'admin'
+            ]);
 
             return $this->jsonResponse(false, "Review submitted successfully", $review, $this->emptyArray, JsonResponse::HTTP_CREATED);
 
@@ -115,6 +156,21 @@ class ReviewController extends ApiController
             }else{
                 $request['user_id'] = auth()->user()->id;
                 $like = Like::create($request->except('_method', '_token'));
+
+                // notification create for new review like
+                $review = Review::find($like->review_id);
+                $product = Product::find($review->product_id);
+                Notification::create([
+                    'creator_id' => auth()->user()->id,
+                    'receiver_id' => $product->user_id,
+                    'action_id' => $product->id,
+                    'type' => 'liked',
+                    'action_link' => "Product",
+                    'message' => "New Like on Review",
+                    'status' => 1,
+                    'role' => 'admin'
+                ]);
+
             }
 
             $infos = Review::with('product', 'likes')->find($like->review_id); 
@@ -145,6 +201,20 @@ class ReviewController extends ApiController
                 $request['user_id'] = auth()->user()->id;
                 $request['like'] = -1;
                 $dislike = Like::create($request->except('_method', '_token'));
+
+                // notification create for new review dislike
+                $review = Review::find($dislike->review_id);
+                $product = Product::find($review->product_id);
+                Notification::create([
+                    'creator_id' => auth()->user()->id,
+                    'receiver_id' => $product->user_id,
+                    'action_id' => $product->id,
+                    'type' => 'disliked',
+                    'action_link' => "Product",
+                    'message' => "New Dislike on Review",
+                    'status' => 1,
+                    'role' => 'admin'
+                ]);
             }
             $infos = Review::with('product', 'dislikes')->find($dislike->review_id); 
 
@@ -174,9 +244,23 @@ class ReviewController extends ApiController
                     'status'        => 0,
                 ]);  
             }
+
+            // notification create for new review reply 
+            $product = Product::find($mainReview->product_id);
+            Notification::create([
+                'creator_id' => auth()->user()->id,
+                'receiver_id' => $mainReview->user_id,
+                'action_id' => $product->id,
+                'type' => 'reply',
+                'action_link' => "Product",
+                'message' => "Reply on Review",
+                'status' => 1,
+                'role' => 'admin'
+            ]);
+
             $newReviewWithUser = $newReview->load('user.personalInfo', 'user.address');
 
-              return $this->jsonResponse(false, $this->success, $newReviewWithUser, $this->emptyArray, JsonResponse::HTTP_CREATED); 
+            return $this->jsonResponse(false, $this->success, $newReviewWithUser, $this->emptyArray, JsonResponse::HTTP_CREATED); 
 
         }catch (\Exception $e){
             return $this->jsonResponse(true, $this->failed, $request->all(), [$e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR]);

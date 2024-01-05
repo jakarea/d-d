@@ -16,23 +16,28 @@ class MarketPlaceController extends Controller
     use SlugTrait;
     //
     public function index()
-    {
+    {   
         $category = isset($_GET['category']) ? $_GET['category'] : '';
+        $search = isset($_GET['search']) ? $_GET['search'] : '';
         $products = Product::with('reviews','company');
 
         $selectedCat = '';
         if (!empty($category)) {
-            $selectedCat = Category::find($category);
+            $selectedCat = Category::where('slug',$category)->first();
+            $products->where('cats', 'like', '%' . $selectedCat->id . '%');
         }
 
-        if (!empty($category)) {
-            $products->where('cats', 'like', '%' . $category . '%');
+        // common search query
+        $searchText = '';
+        if (!empty($search)) {
+            $searchText = $search;
+            $products->where('title', 'like', '%' . $search . '%');
         }
 
         $products = $products->orderBy('id', 'desc')->paginate(16);
         $categories = Category::all();
  
-        return view('marketplace/index',compact('products','categories','selectedCat'));
+        return view('marketplace/index',compact('products','categories','selectedCat','searchText'));
     }
 
     public function show($slug)

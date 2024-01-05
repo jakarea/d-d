@@ -44,7 +44,7 @@
                         <li><a class="dropdown-item filterItem" href="#" data-value="">All Product</a></li>
                         @foreach ($categories as $category)
                         <li>
-                            <a class="dropdown-item filterItem" href="#" data-value="{{$category->id}}">
+                            <a class="dropdown-item filterItem" href="#" data-value="{{$category->slug}}">
                                 {{$category->name}}
                                 @if ($selectedCat && $selectedCat->slug == $category->slug)
                                 <i class="fas fa-check"></i>
@@ -83,32 +83,28 @@
                     <span>{{ number_format($percentageDiscount, 0) }}%</span>
 
                     @php
-                    $imageUrls = [];
-                    if (isset($product) && !empty($product->images)) {
-                    $imageUrls = explode(',', $product->images);
-                    }
+                        $imageArray = $product->images ? explode(',', $product->images) : [];
+                        $firstImageUrl = count($imageArray) > 0 ? $imageArray[0] : 'public/uploads/products/product-thumbnail-01.png';
                     @endphp
 
-                    @if(count($imageUrls) > 0)
-                    <img src="{{ $imageUrls[0] }}" alt="Product Thumbnail" class="img-fluid">
-                    @else
-                    <img src="{{ asset('public/uploads/products/product-thumbnail-01.png')}}" alt="Product Thumbnail"
-                        class="img-fluid">
+                    @if($firstImageUrl)
+                        <img src="{{ $firstImageUrl }}" alt="Product Thumbnail" class="img-fluid">
                     @endif
 
-                    <a href="#"><i class="fa-regular fa-heart"></i></a>
+                    <a href="{{ $product->product_url }}"><i class="fa-regular fa-heart"></i></a>
                 </div>
                 <!-- thumbnail end -->
+                
                 <!-- txt -->
                 <div class="product-txt">
-                    <h5>
+                    <h5> 
                         <a href="{{ route('product.show', $product->slug) }}">{{ Str::limit($product->title, $limit =
-                            40, $end = '..') }}</a>
+                            40, $end = '..') }}</a>   
                     </h5>
                     <p>{{ Str::limit($product->company->name, $limit = 50, $end = '..') }}</p>
 
                     @php
-                    $reviewCount = count($product->reviews);
+                    $reviewCount = $product->reviews->where('replies_to',null)->count();
                     $averageRating = $reviewCount > 0 ? number_format($product->reviews->avg('rating'), 1) : 0;
                     $revText = $reviewCount === 0 ? 'No Reviews' : ($reviewCount === 1 ? '1 Review' : $reviewCount . '
                     Reviews');
@@ -145,8 +141,7 @@
         @endforeach
         @else
         {{-- no data found component --}}
-        {{-- <x-EmptyDataComponent :dynamicData="'No Products Found!'" /> --}}
-        <p>No Products Found!</p>
+        <x-EmptyDataComponent :dynamicData="'No Products Found!'" />
         {{-- no data found component --}}
         @endif
     </div>

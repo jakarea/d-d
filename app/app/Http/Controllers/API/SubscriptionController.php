@@ -7,6 +7,7 @@ use App\Models\PricingPackage;
 use App\Models\User;
 use App\Models\Earning;
 use App\Models\Company;
+use App\Models\Notification;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Stripe\Checkout\Session;
@@ -154,7 +155,7 @@ class SubscriptionController extends ApiController
             Stripe::setApiKey(env('STRIPE_SECRET'));
             $sessionId = $request->input('session_id'); 
             $packageId = $request->input('package_id'); 
-            $earningId = $request->input('purchase_id'); 
+            $earningId = $request->input('purchase_id');
 
             $session = Session::retrieve($sessionId);
             $package = PricingPackage::find($packageId);
@@ -173,31 +174,23 @@ class SubscriptionController extends ApiController
             $earning->end_at =  $earning->package_type == 'Monthly' ? Carbon::now()->addDays(30) : Carbon::now()->addDays(365);
             $earning->save();
 
-            // $user = User::where('id',$earning->user_id)->first();
+            // notification create for new product create  
+            Notification::create([
+                'creator_id' => $earning->user_id,
+                'receiver_id' => $earning->company_id,
+                'action_id' => $earning->id,
+                'type' => 'purchase',
+                'action_link' => "Earning",
+                'message' => "New Subscription",
+                'status' => 1,
+                'role' => 'admin'
+            ]);
 
-            // $data = new stdClass(); 
-            // $data->purchased_info = $earning;
-            // $data->current_package = $package;
-            // $data->user = $user;
-
-        //     return $data;
-        //     // Generate and save the PDF file
-        //    return $pdf = PDF::loadView('payments.package.invoice', ['purchase' => $data]);
-        //     $pdfContent = $pdf->output();
-
-        //     // Send the email with the PDF attachment
-        //     $mailInfo = Mail::send('payments.package.invoice', ['purchase' => $data], function($message) use ($pdfContent, $data) {
-        //         $message->to(auth()->user()->email)
-        //                 ->subject('Invoice')
-        //                 ->attachData($pdfContent,  "Test".'.pdf', ['mime' => 'application/pdf']);
-        //     });
-
-            // return view('payments/package/success',compact('data'))->with('success','Package Purchase Successfuly Completed!');
+            // return $earning;
             return view('payments/package/success');
 
 
-        } catch (\Exception $e) {
-            // return $this->jsonResponse(true, $this->failed, $request->all(), [$e->getMessage()], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+        } catch (\Exception $e) { 
             return view('payments/package/cancel');
         }
     }
@@ -208,14 +201,12 @@ class SubscriptionController extends ApiController
         $earning = Earning::find($earningId);   
         $earning->payment_id = 'N/A';
         $earning->amount = '00.00'; 
-        $earning->status = 'Cancled';
+        $earning->status = 'Failed';
         $earning->start_at = NULL;
         $earning->end_at = NULL;
         $earning->save(); 
 
         return view('payments/package/cancel');
-
-        // return $this->jsonResponse(true, $this->failed, $request->all(), [$e->getMessage()], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
     }
     
 }

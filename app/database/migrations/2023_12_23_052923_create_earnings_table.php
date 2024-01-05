@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('payment_id');
             $table->decimal('amount', 8, 2);
             $table->string('package_type');
-            $table->enum('status', ['pending', 'completed', 'failed', 'paid', 'cancled', 'refunded','expired']);
+            $table->enum('status', ['Pending', 'completed', 'failed', 'paid', 'cancled', 'refunded','expired']);
             $table->date('start_at')->nullable();
             $table->date('end_at')->nullable();
             $table->timestamps();

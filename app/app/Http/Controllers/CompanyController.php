@@ -23,9 +23,19 @@ class CompanyController extends Controller
      */
     public function index()
     {  
-        $companies = Company::with('user')->orderBy('id', 'desc')->paginate(16); 
+        $search = isset($_GET['search']) ? $_GET['search'] : '';
+        $companiesQuery = Company::query();
+
+        // Common search query
+        $searchText = '';
+        if (!empty($search)) {
+            $searchText = $search;
+            $companiesQuery->where('name', 'like', '%' . $search . '%');
+        }
+
+        $companies = $companiesQuery->orderBy('id', 'desc')->paginate(16); 
  
-        return view('company/index',compact('companies'));
+        return view('company/index',compact('companies','searchText'));
     }
 
     /**

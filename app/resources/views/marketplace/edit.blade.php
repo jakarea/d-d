@@ -2,7 +2,6 @@
 
 @section('title',$product->title)
 
-
 @section('content')
 <!-- main page wrapper start -->
 <section class="main-page-wrapper marketplace-page-wrapper">
@@ -18,22 +17,18 @@
             <!-- compnay about start -->
             <div class="company-about-box">
                 @php
-                    $imageUrls = [];
-                    if (isset($product) && !empty($product->images)) {
-                        $imageUrls = json_decode($product->images);
-                    }
+                $imageArray = $product->images ? explode(',', $product->images) : [];
+                $firstImageUrl = count($imageArray) > 0 ? $imageArray[0] : 'public/uploads/products/product-thumbnail-01.png';
                 @endphp
-                
-                @if(is_array($imageUrls) && count($imageUrls) > 0)
-                    <img src="{{ $imageUrls[0] }}" alt="Product Thumbnail" class="img-fluid main-thumb">
-                @else
-                    <img src="{{ asset('public/uploads/products/product-thumbnail-01.png')}}" alt="Product Thumbnail" class="img-fluid main-thumb">
-                @endif 
+
+                @if($firstImageUrl)
+                    <img src="{{ $firstImageUrl }}" alt="Product Thumbnail" class="img-fluid main-thumb">
+                @endif
 
                 <div class="txt">
                     <h1>{{ $product->title }}</h1>
                     <p>{{ optional($product->company)->name }} </p>
-                    <p style="font-weight: 700; font-size:14px">Product Variant: {{ count($product->productVariants) }} </p>
+                    <p style="font-weight: 700; font-size:14px">Variant Products: {{ count($product->productVariants) }} </p>
                     <hr>
 
                     <ul> 

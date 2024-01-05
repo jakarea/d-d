@@ -180,11 +180,13 @@
           <!-- user one start -->
           <div class="media">
 
-            @if ($activeCompanyUser->personalInfo && $activeCompanyUser->personalInfo->avatar) 
-            <img src="{{ $activeCompanyUser->personalInfo->avatar }}" alt="A" class="img-fluid">
+            @if ($activeCompanyUser->personalInfo)
+              <img src="{{ optional($activeCompanyUser->personalInfo)->avatar }}" alt="A" class="img-fluid">
             @else 
-            <span class="no-avatar nva-sm me-3" style="width: 2.75rem; height: 2.75rem;">{!! strtoupper(auth()->user()->name[0]) !!}</span>
-            @endif 
+              <span class="no-avatar nva-sm me-3" style="width: 2.75rem; height: 2.75rem;">
+                {!! strtoupper($activeCompanyUser->name[0]) !!}</span>
+            @endif
+ 
 
             <div class="media-body">
               <h5><a href="{{ route('company.show', $activeCompanyUser->company) }}">{{ $activeCompanyUser->name }}</a></h5>
@@ -334,46 +336,46 @@ chart.render();
 <script>
   var datas = [{{ $activeProducts }}, {{ $draftProducts }}];
 
-  var backgroundColor = ['#35B254', '#FFAB00'];
-  var ctx = document.getElementById('productStatus').getContext('2d');
-  var myDoughnutChart = new Chart(ctx, {
-    type: 'doughnut',
-    data: {
-      labels: ['Active Product', 'Inactive Product'],
-      datasets: [{
-        label: 'Product Status',
-        data: datas,
-        backgroundColor: backgroundColor,
-        hoverOffset: 4
-      }]
-    },
-    options: {
-      plugins: {
-        legend: {
-          display: false
-        }
-      },
-      title: {
-        display: true,
-        text: 'Chart Donut'
-      },
+var backgroundColor = ['#35B254', '#FFAB00'];
+var ctx = document.getElementById('productStatus').getContext('2d');
+var myDoughnutChart = new Chart(ctx, {
+  type: 'doughnut',
+  data: {
+    labels: ['Active Product', 'Inactive Product'],
+    datasets: [{
+      label: 'Product Status',
+      data: datas,
+      backgroundColor: backgroundColor,
+      hoverOffset: 4
+    }]
+  },
+  options: {
+    plugins: {
       legend: {
         display: false
-      },
-      cutout: '70%',
-      radius: 110
-    }
-  });
+      }
+    },
+    title: {
+      display: true,
+      text: 'Chart Donut'
+    },
+    legend: {
+      display: false
+    },
+    cutout: '70%',
+    radius: 110
+  }
+});
 
-  // Calculate percentages
-  var total = datas.reduce((a, b) => a + b, 0);
-  var percentages = datas.map((value) => {
-    if (value === 0 || total === 0) {
-      return "0%";
-    } else {
-      return ((value / total) * 100).toFixed(0) + "%";
-    }
-  });
+// Calculate percentages
+var total = datas.reduce((a, b) => a + b, 0);
+var percentages = datas.map((value) => {
+  if (value === 0 || total === 0) {
+    return "0%";
+  } else {
+    return ((value / total) * 100).toFixed(2) + "%";
+  }
+});
 
 // Generate and display the custom legend
 var legendHtml = "<ul>";
@@ -386,22 +388,22 @@ for (var i = 0; i < myDoughnutChart.data.labels.length; i++) {
 }
 legendHtml += "</ul>";
 document.getElementById("legend").innerHTML = legendHtml;
+
 </script>
 <!-- product status graph js end -->
 
 <!-- company user graph js start -->
 <script>
  
- const activeCompanyUsers = @json($activeCompanyUsers); 
- const inActiveCompanyUsers = @json($inActiveCompanyUsers); 
+ const data = @json($getActiveInActiveUsers); 
 
   var options = {
   series: [{
     name: 'active',
-    data: [[0, activeCompanyUsers]]
+    data: data.active_users
   }, {
     name: 'inactive',
-    data: [[, inActiveCompanyUsers]]
+    data: data.inactive_users
   }],
   chart: {
     height: 350,

@@ -1,21 +1,20 @@
 <!-- header part start -->
 <header class="header-area">
     <!-- search box start -->
-    <div class="header-search-box">
-        <img src="{{ asset('public/assets/images/icons/search.svg') }}" alt="S" class="img-fluid search">
-        <input type="text" class="form-control" placeholder="Search">
-        <a href="#" class="filter">
-            <img src="{{ asset('public/assets/images/icons/filter.svg') }}" alt="F" class="img-fluid">
-        </a>
-    </div>
+    @include('partials/search')
     <!-- search box end -->
 
     <!-- header icons start -->
     <div class="header-icons-box">
         <ul class="main">
             <li>
-                <a href="#">
+                <a href="{{url('account/notifications')}}">
+                    @php 
+                         $notifyCounts = \App\Models\Notification::where('status',1)->count();
+                    @endphp 
+                    @if ($notifyCounts > 0)
                     <span class="dot"></span>
+                    @endif 
                     <img src="{{ asset('public/assets/images/icons/bell.svg') }}" alt="B" class="img-fluid">
                 </a>
             </li>
@@ -46,6 +45,20 @@
                                 @if (Request::is('account/edit-profile'))
                                 <i class="fas fa-check"></i>
                                 @endif
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item {{ Request::is('account/security-setting') ? 'active' : ''}}"
+                                href="{{url('account/security-setting')}}">
+                                Security Settings
+                                @if (Request::is('account/security-setting'))
+                                <i class="fas fa-check"></i>
+                                @endif
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{url('logout')}}">
+                                Logout
                             </a>
                         </li>
                     </ul>

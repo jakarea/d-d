@@ -158,7 +158,7 @@
                 </div>
                 <div class="form-group form-error">
                   <label for="primary_address">Primary Address<span>*</span></label>
-                  <input type="text" class="form-control @error('primary_address') is-invalid @enderror" placeholder="Pristia Candra Nelson" value="{{ optional($user->address)->primary_address }}" name="primary_address" id="primary_address">
+                  <input type="text" class="form-control @error('primary_address') is-invalid @enderror" placeholder="Primary Address" value="{{ optional($user->address)->primary_address }}" name="primary_address" id="primary_address">
       
                   <span class="invalid-feedback">
                     @error('primary_address'){{ $message }} @enderror

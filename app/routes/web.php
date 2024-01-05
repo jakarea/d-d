@@ -61,9 +61,9 @@ Route::group(['middleware' => ['web','guest']], function () {
 
 // initial redirection route
 Route::group(['middleware' => ['auth']], function () {
-    Route::get('/', function () { return redirect('/dashboard'); });
-    Route::get('/home', function () { return redirect('/dashboard'); }); 
-    Route::get('/dashboard', function () { return view('dashboard/index'); });
+    Route::get('/', function () { return redirect('/analytics'); });
+    Route::get('/home', function () { return redirect('/analytics'); }); 
+    Route::get('/dashboard', function () { redirect('/analytics'); });
 });
 
 Route::group(['middleware' => ['auth']], function () {
@@ -87,6 +87,8 @@ Route::group(['middleware' => ['auth']], function () {
     // earning route
     Route::get('/earning', [EarningController::class, 'index']);
     Route::get('/earning/{id}', [EarningController::class, 'show']);
+    Route::get('earning/generate-pdf/{id}', [EarningController::class,'generatePdf']);
+    
     // package subscription route
     Route::get('/packages', [PackageController::class, 'index'])->name('pricing.packages');
     Route::get('/packages-update', [PackageController::class, 'edit'])->name('pricing.package.edit');
@@ -97,10 +99,18 @@ Route::group(['middleware' => ['auth']], function () {
     Route::prefix('account')->controller(AdminProfileController::class)->group(function () { 
         Route::get('/my-profile', 'index')->name('admin.profile');
         Route::get('/edit-profile', 'edit')->name('admin.profile.edit');
+        Route::get('/security-setting', 'passwordSetting')->name('admin.security.setting');
+        Route::post('/security-setting', 'passwordUpdate')->name('admin.security.update');
         Route::post('/edit-profile', 'update')->name('admin.profile.update');
         Route::get('/edit-address', 'editAddress')->name('admin.profile.address.edit');
         Route::post('/edit-address', 'updateAddress')->name('admin.profile.address.update');
+        // notification routes
+        Route::get('/notifications', 'notifications')->name('admin.notification.system'); 
     });
+
+
+
+
     // logout route
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

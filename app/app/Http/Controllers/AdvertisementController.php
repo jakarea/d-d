@@ -14,12 +14,21 @@ class AdvertisementController extends Controller
     {
         $status = isset($_GET['status']) ? $_GET['status'] : '';
         $category = isset($_GET['category']) ? $_GET['category'] : '';
+        $search = isset($_GET['search']) ? $_GET['search'] : '';
+
         $products = Product::with('reviews', 'company');
 
         $selectedCat = '';
         if (!empty($category)) {
-            $selectedCat = Category::find($category);
-            $products->where('cats', 'like', '%' . $category . '%');
+            $selectedCat = Category::where('slug',$category)->first();
+            $products->where('cats', 'like', '%' . $selectedCat->id . '%');
+        }
+
+        // common search query
+        $searchText = '';
+        if (!empty($search)) {
+            $searchText = $search;
+            $products->where('title', 'like', '%' . $search . '%');
         }
 
         $selectedStatus = '';
@@ -36,7 +45,7 @@ class AdvertisementController extends Controller
         $products = $products->paginate(16);
         $categories = Category::all();
 
-        return view('advertisement/index', compact('products', 'categories', 'selectedCat', 'selectedStatus'));
+        return view('advertisement/index', compact('products', 'categories', 'selectedCat', 'selectedStatus','searchText'));
 
     }
 }

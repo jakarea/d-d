@@ -21,7 +21,7 @@
                         <li><a class="dropdown-item filterItem" href="#" data-value="">All Product</a></li>
                         @foreach ($categories as $category)
                         <li>
-                            <a class="dropdown-item filterItem" href="#" data-value="{{$category->id}}">
+                            <a class="dropdown-item filterItem" href="#" data-value="{{$category->slug}}">
                                 {{$category->name}}
 
                                 @if ($selectedCat && $selectedCat->slug == $category->slug)
@@ -68,7 +68,6 @@
                         <img src="{{ $firstImageUrl }}" alt="Product Thumbnail" class="img-fluid">
                     @endif
 
-
                     {{-- <a href="#"><i class="fa-regular fa-heart"></i></a> --}}
                 </div>
                 <!-- thumbnail end -->
@@ -81,7 +80,7 @@
                     <p>{{ Str::limit(optional($product->company)->name, $limit = 50, $end = '..') }}</p>
 
                     @php
-                    $reviewCount = count($product->reviews);
+                    $reviewCount = $product->reviews->where('replies_to',null)->count();
                     $averageRating = $reviewCount > 0 ? number_format($product->reviews->avg('rating'), 1) : 0;
                     $revText = $reviewCount === 0 ? 'No Reviews' : ($reviewCount === 1 ? '1 Review' : $reviewCount . '
                     Reviews');
@@ -108,7 +107,7 @@
                     @endif
 
                     <div class="take-deal-bttn">
-                        <button class="btn bttn" type="button">Take Deal</button>
+                        <a href="{{ $product->product_url }}" class="bttn">Take Deal</a> 
                     </div>
                 </div>
                 <!-- txt -->

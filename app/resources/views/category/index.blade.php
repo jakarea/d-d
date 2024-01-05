@@ -25,41 +25,40 @@
   <!-- category list start -->
   <div class="row">
     @if (count($categories) > 0)
-        @foreach($categories as $category)
-        <!-- company single box start -->
-        <div class="col-12 col-sm-6 col-lg-4 col-xl-3 mb-15">
-          <div class="company-profile-box">
-            <a href="{{ route('category.edit', $category) }}">
-              <i class="fa-regular fa-pen-to-square"></i>
-            </a>
-            <!-- avatar -->
-            <div class="avatar">
+    @foreach($categories as $category)
+    <!-- company single box start -->
+    <div class="col-12 col-sm-6 col-lg-4 col-xl-3 mb-15">
+      <div class="company-profile-box">
+        <a href="{{ route('category.edit', $category) }}">
+          <i class="fa-regular fa-pen-to-square"></i>
+        </a>
+        <!-- avatar -->
+        <div class="avatar">
 
-              @if ($category->icon)
-                <img src="{{ $category->icon }}" alt="ICON" class="img-fluid">
-                @else
-                <span class="no-avatar nva-lg">{!! strtoupper($category->name[0]) !!}</span>
-                @endif
-            </div>
-            <!-- avatar -->
-
-            <div class="txt">
-              <h4>{{ $category->name}}</h4>
-              <hr>
-              <div class="details-bttn">
-                <a href="{{ url('marketplace?category='.$category->id) }}" class="bttn">View Products</a>
-              </div>
-
-            </div>
-          </div>
+          @if ($category->icon)
+          <img src="{{ $category->icon }}" alt="ICON" class="img-fluid">
+          @else
+          <span class="no-avatar nva-lg">{!! strtoupper($category->name[0]) !!}</span>
+          @endif
         </div>
-        <!-- company single box end -->
-        @endforeach
+        <!-- avatar -->
+
+        <div class="txt">
+          <h4>{{ $category->name}}</h4>
+          <hr>
+          <div class="details-bttn">
+            <a href="{{ url('marketplace?category='.$category->slug) }}" class="bttn">View Products</a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!-- company single box end -->
+    @endforeach
     @else
-        {{-- no data found component --}}
-        {{-- <x-EmptyDataComponent :dynamicData="'No Category Found!'" />  --}}
-        <p>No Category Found!</p>
-        {{-- no data found component --}}
+    {{-- no data found component --}}
+    <x-EmptyDataComponent :dynamicData="'No Category Found!'" />
+    {{-- no data found component --}}
     @endif
   </div>
   <!-- category list end -->

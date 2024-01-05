@@ -2010,6 +2010,7 @@ body {
   display: inline-block;
   border-radius: 50%;
   margin-right: 0.75rem;
+  object-fit: cover;
 }
 
 .payment-from-copany-user .user-payment-table table tr td p {
@@ -2036,6 +2037,29 @@ body {
   font-weight: 500;
   line-height: 1.375rem;
   display: inline-block;
+}
+.payment-from-copany-user .user-payment-table table tr td span.status{
+  border-radius: 0.375rem;
+  background: rgba(224, 49, 55, 0.2);
+  padding: 0.1rem 0.5rem;
+  color: #E03137;
+  font-size: 0.65rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.375rem;
+  display: inline-block;
+  min-width: 60px;
+  text-align: center;
+}
+
+.payment-from-copany-user .user-payment-table table tr td span.status.paid{
+  background: rgba(3, 135, 111, 0.2);
+  color: #03876F;
+}
+
+.payment-from-copany-user .user-payment-table table tr td span.status.expired{
+  background: rgba(255, 159, 41, 0.2);
+  color: #ff9f29;
 }
 
 .payment-from-copany-user .user-payment-table table tr td ul li:first-child a {
@@ -2354,4 +2378,78 @@ body {
 
 .down-arrw{
   transform: rotate(180deg);
+}
+
+/* notification */
+ 
+.notification-box-wrapper {
+  border-radius: 0.5rem;
+  border: 1px solid var(--neutral-color-neutral-30, #E5ECF6);
+  background: #FFF;
+  box-shadow: 0px 1px 2px 0px rgba(145, 158, 171, 0.16);
+  padding: 1.5rem;
+}
+.notification-box-wrapper h5 {
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+.notification-box-wrapper .notify-item-box {
+  border-radius: 0.5rem;
+  border: 1px solid #EAEAEA;
+  background: #FFF;
+  padding: 1rem 0.8rem;
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.notification-box-wrapper .notify-item-box .media {
+  align-items: center;
+}
+.notification-box-wrapper .notify-item-box .media .icon {
+  width: 2.68963rem;
+  height: 2.68963rem;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background-color: #F4F2FF;
+  margin-right: 1.5rem;
+}
+.notification-box-wrapper .notify-item-box .media .icon i {
+  position: absolute;
+  right: -3px;
+  top: -3px;
+  background-color: #D1AFFD;
+  width: 1.12069rem;
+  height: 1.12069rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 10px;
+}
+.notification-box-wrapper .notify-item-box .media h5 {
+  color: #000;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.25rem;
+}
+.notification-box-wrapper .notify-item-box .media p {
+  color: #000;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-top: 0.2rem;
+}
+
+.paggination-wrap .pagination .page-item.active .page-link{
+  background-color: #111827!important;
+  color: #fff!important;
 }

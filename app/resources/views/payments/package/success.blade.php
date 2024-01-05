@@ -13,11 +13,11 @@
     <meta name="theme-color" content="#fff">
 
     <!-- Bootstrap CSS start -->
-    <link rel="stylesheet" href="{{ url('assets/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url('public/assets/css/bootstrap.min.css') }}">
     <!-- Bootstrap CSS end --> 
 
     <!-- custom CSS start -->
-    <link rel="stylesheet" href="{{ url('assets/css/payments.css') }}"> 
+    <link rel="stylesheet" href="{{ url('public/assets/css/payments.css') }}"> 
     <!-- custom CSS end -->
 
     <title>DnD || Payments</title>
@@ -31,11 +31,11 @@
                 <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5">
                     <div class="top-logo">
                         <a href="#">
-                            <img src="{{ asset('assets/images/logo.svg') }}" alt="logo" class="img-fluid">
+                            <img src="{{ asset('public/assets/images/logo.svg') }}" alt="logo" class="img-fluid">
                         </a>
                     </div>
                     <div class="payments-message-box">
-                        <img src="{{ asset('assets/images/icons/success.svg') }}" alt="success" class="img-fluid">
+                        <img src="{{ asset('public/assets/images/icons/success.svg') }}" alt="success" class="img-fluid">
     
                         <h4>We received your payment</h4>
                         <p>Thank you for Purchasing our product</p>

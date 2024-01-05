@@ -20,8 +20,20 @@ class CategoryController extends Controller
      */
     public function index()
     { 
-        $categories = Category::orderBy('id','asc')->paginate(16); 
-        return view('category/index',compact('categories'));
+        $search = isset($_GET['search']) ? $_GET['search'] : '';
+        $categoriesQuery = Category::query();
+
+        // Common search query
+        $searchText = '';
+        if (!empty($search)) {
+            $searchText = $search;
+            $categoriesQuery->where('name', 'like', '%' . $search . '%');
+        }
+
+        $categories = $categoriesQuery->orderBy('id', 'desc')->paginate(16);
+
+        return view('category/index', compact('categories', 'searchText'));
+
     }
 
     /**

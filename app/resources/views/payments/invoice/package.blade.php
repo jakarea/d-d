@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="images/favicon.png" rel="icon" />
-    <title>Payment - Package Purchase</title>
+    <title>Payment From Custmer - DnD</title>
 
     <style>
         * {
@@ -133,7 +133,7 @@
         <tr>
             <th class="border-0" style="text-align: left;">
                 <a href="#">
-                    <img src="{{asset('assets/images/logo.svg')}}" alt="DnD" class="img-fluid" style="max-width: 7rem;">
+                    <img src="{{ public_path('assets/images/logo.png')}}" alt="DnD" class="img-fluid" style="max-width: 7rem;">
                 </a>
             </th>
             <th class=" border-0" style="text-align: right;">
@@ -141,28 +141,27 @@
             </th>
         </tr>
         <tr>
-            <th colspan="2" class="" style="text-align: right;">
-                <p>Date: {{ $payment->purchased_info->created_at>diffForHumans() }}</p>
+            <th colspan="2" style="text-align: right">
+                <p>Date: {{ now()->format('d-M-Y') }}</p>
             </th>
         </tr>
+
         <tr>
             <td style="padding-top: 1rem;">
                 <address>
                     <strong>Payment By: </strong> <br>
-                    Name: {{ $payment->user->name }} <br />
-                    Email: {{ $payment->user->email }}  <br />
-                    Payment Status: {{ $payment->purchased_info->status }}  <br />
-                    Purchase Date: {{ $payment->purchased_info->start_at->diffForHumans() }} <br> 
-                    Expired Date : {{ $payment->purchased_info->end_at->diffForHumans() }} <br> 
+                    Name: {{ optional($payment->user)->name }} <br />
+                    Payment Date:  {{ \Carbon\Carbon::parse($payment->start_at)->format('d F Y') }} <br>
+                    Payment Type : {{ $payment->package_type }} <br>
+                    Payment Status : {{ ucfirst( $payment->status) }}
 
                 </address>
             </td>
             <td style="padding-top: 1rem; text-align: right;" class="" valign="top">
                 <address>
                     <strong>Billed To: </strong> <br>
-                    Name: DnD App<br /> 
-
-                    Email: dndadmin@yopmail.com
+                    Name: {{ Auth::user()->name }}<br /> 
+                    Email: {{ Auth::user()->email }}
                 </address>
             </td>
         </tr>
@@ -178,10 +177,10 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td class="br-0">{{ $payment->current_package->name }}</td>
-                            <td class="bl-0 br-0">{{ $payment->purchased_info->package_type }}</td>
-                            <td class="bl-0 " style="text-align: right;">€ {{ $payment->purchased_info->amount }}</td>
-                        </tr>
+                            <td class="br-0">{{ $payment->package_name }}</td>
+                            <td class="bl-0 br-0" style="text-transform: capitalize">{{ $payment->package_type }}</td>
+                            <td class="bl-0 " style="text-align: right;">€{{ $payment->amount }}</td>
+                        </tr> 
                         <tr class="" style="text-align: right;">
                             <td colspan="2" class="br-0">
                                 <strong>Tax:</strong>
@@ -189,13 +188,13 @@
                             <td class="bl-0">
                                 € 0
                             </td>
-                        </tr> 
+                        </tr>
                         <tr class="" style="text-align: right;">
                             <td colspan="2" class="br-0">
                                 <strong>Grand Total:</strong>
                             </td>
                             <td class="bl-0">
-                                € {{ $payment->purchased_info->amount }}
+                                €{{ $payment->amount }}
                             </td>
                         </tr>
                     </tbody>
