@@ -148,7 +148,33 @@ class AdminProfileController extends Controller
     public function notifications()
     {  
 
-       $notifications = Notification::with('product')->where('role', 'like', '%admin%')->where('status',1)->get();
-        return view('notifications/notification',compact('notifications'));
+        $status = isset($_GET['status']) ? $_GET['status'] : '';
+        $notificationsQuery = Notification::with('product')->where('role', 'like', '%admin%');
+
+        $selectedFilter = null;
+
+        if (!empty($status)) { 
+            if ($status === 'yesterday') {
+                $selectedFilter = "Yesterday";
+                $notificationsQuery->whereDate('created_at', now()->subDay());
+            } elseif ($status === 'last_7_days') {
+                $selectedFilter = "Last 7 days";
+                $notificationsQuery->where('created_at', '>=', now()->subDays(7));
+            } elseif ($status === 'last_30_days') {
+                $selectedFilter = "Last 30 days";
+                $notificationsQuery->where('created_at', '>=', now()->subDays(30));
+            } elseif ($status === 'last_365_days') {
+                $selectedFilter = "Last 1 year";
+                $notificationsQuery->where('created_at', '>=', now()->subDays(365));
+            }
+        }
+
+        // return $selectedFilter;
+
+        $notifications = $notificationsQuery->orderBy('id', 'desc')->where('status', 1)->paginate(16); 
+
+        return view('notifications.notification', compact('notifications','selectedFilter'));
+
+
     } 
 }

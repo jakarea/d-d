@@ -24,35 +24,35 @@
                             <div class="dropdown">
                                 <button class="btn" type="button" id="dropdownBttn" data-bs-toggle="dropdown"
                                     aria-expanded="false">
-                                    Filter
+                                    {{ $selectedFilter ?? 'Filter' }}
                                     <i class="fas fa-angle-down"></i>
                                 </button>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item filterItem" href="#" data-value="0">All Product</a></li>
+                                    <li><a class="dropdown-item filterItem" href="#" data-value="">All Notifications</a></li>
                                     <li>
-                                        <a class="dropdown-item filterItem" href="#" data-value="1">
-                                            Yesterday <i class="fas fa-check"></i>
+                                        <a class="dropdown-item filterItem" href="#" data-value="yesterday">
+                                            Yesterday {!! $selectedFilter == "Yesterday" ? '<i class="fas fa-check"></i>' : '' !!}
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item filterItem" href="#" data-value="7">
-                                            Last 7 days <i class="fas fa-check"></i>
+                                        <a class="dropdown-item filterItem" href="#" data-value="last_7_days">
+                                            Last 7 days {!! $selectedFilter == "Last 7 days" ? '<i class="fas fa-check"></i>' : '' !!} 
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item filterItem" href="#" data-value="30">
-                                            Last 30 days <i class="fas fa-check"></i>
+                                        <a class="dropdown-item filterItem" href="#" data-value="last_30_days">
+                                            Last 30 days {!! $selectedFilter == "Last 30 days" ? '<i class="fas fa-check"></i>' : '' !!} 
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item filterItem" href="#" data-value="365">
-                                            Last 1 Year <i class="fas fa-check"></i>
+                                        <a class="dropdown-item filterItem" href="#" data-value="last_365_days">
+                                            Last 1 year {!! $selectedFilter == "Last 1 year" ? '<i class="fas fa-check"></i>' : '' !!} 
                                         </a>
                                     </li>
                                 </ul>
                             </div>
                         </div>
-                        <input type="hidden" name="category" id="inputField">
+                        <input type="hidden" name="status" id="inputField">
                     </form>
                     <!-- filter -->
                 </div>
@@ -63,6 +63,7 @@
             <div class="col-lg-12">
                 <hr class="line">
                 <div class="notification-box-wrapper">
+                    <h5>{{ $selectedFilter ?? 'All Notifications' }}</h5>
                     @foreach ($notifications as $notification)
                     <div class="show-notification-item">
                         <div class="single"> 
@@ -122,7 +123,7 @@
             <div class="col-12">
                 {{-- pagginate --}}
                 <div class="paggination-wrap">
-                    {{-- {{ $lastOneYears->links('pagination::bootstrap-5') }} --}}
+                    {{ $notifications->links('pagination::bootstrap-5') }}
                 </div>
                 {{-- pagginate --}}
             </div>
@@ -131,6 +132,21 @@
 </main>
 @endsection
 
+{{-- script section start --}}
 @section('script')
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        let inputField = document.getElementById("inputField");
+        let dropdownItems = document.querySelectorAll(".filterItem");
+        let form = document.getElementById("myForm");
 
+        dropdownItems.forEach(item => {
+            item.addEventListener("click", function(e) {
+                e.preventDefault();
+                inputField.value = this.getAttribute("data-value");
+                form.submit();
+            });
+        });
+    });
+</script>
 @endsection

@@ -15,7 +15,12 @@
         <ul class="main">
             <li>
                 <a href="{{url('account/notifications')}}">
+                    @php 
+                         $notifyCounts = \App\Models\Notification::where('status',1)->count();
+                    @endphp 
+                    @if ($notifyCounts > 0)
                     <span class="dot"></span>
+                    @endif 
                     <img src="{{ asset('public/assets/images/icons/bell.svg') }}" alt="B" class="img-fluid">
                 </a>
             </li>
