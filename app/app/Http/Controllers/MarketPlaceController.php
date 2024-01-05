@@ -16,17 +16,14 @@ class MarketPlaceController extends Controller
     use SlugTrait;
     //
     public function index()
-    {
+    {   
         $category = isset($_GET['category']) ? $_GET['category'] : '';
         $products = Product::with('reviews','company');
 
         $selectedCat = '';
         if (!empty($category)) {
-            $selectedCat = Category::find($category);
-        }
-
-        if (!empty($category)) {
-            $products->where('cats', 'like', '%' . $category . '%');
+            $selectedCat = Category::where('slug',$category)->first();
+            $products->where('cats', 'like', '%' . $selectedCat->id . '%');
         }
 
         $products = $products->orderBy('id', 'desc')->paginate(16);

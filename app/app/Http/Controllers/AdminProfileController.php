@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Company;
-use App\Models\Customer;
+use Illuminate\Http\Request; 
 use App\Models\Address;
+use App\Models\Notification;
 use App\Models\User;
 use App\Models\PersonalInfo;
 use Intervention\Image\Facades\Image;
-use Illuminate\Support\Str; 
-use App\Models\Role;
-use Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;  
+use Illuminate\Support\Facades\Auth;
 
 class AdminProfileController extends Controller
 {
@@ -30,7 +29,6 @@ class AdminProfileController extends Controller
 
     public function update(Request $request)
     {
-        // return $request->all();
 
         $user = Auth::user(); 
 
@@ -64,7 +62,7 @@ class AdminProfileController extends Controller
                 'dob' => $request->input('dob'),
                 'gender' => $request->input('gender'),
                 'nationality' => $request->input('nationality'),
-                'maritual_status' => $request->input('maritual_status'), 
+                'maritual_status' => $request->input('maritual_status'),
             ]
         );
 
@@ -96,9 +94,29 @@ class AdminProfileController extends Controller
         return view('admin-profile/edit-address',compact('user'));
     }
 
+    public function passwordSetting()
+    {
+        $user = User::find(Auth::id()); 
+        return view('admin-profile/password-change',compact('user'));
+    }
+
+    public function passwordUpdate(Request $request)
+    {
+         //validate password and confirm password
+        $this->validate($request, [
+            'password' => 'required|confirmed|min:6|string',
+        ]);
+
+        $userId = auth()->user()->id;
+        $user = User::where('id', $userId)->first();
+        $user->password = Hash::make($request->password);
+
+        $user->save();
+        return redirect('account/my-profile')->with('success', 'Your password has been changed successfully!');
+    }
+
     public function updateAddress(Request $request)
     {
-        // return $request->all(); 
 
         $request->validate([
             'primary_address' => 'required',
@@ -126,4 +144,11 @@ class AdminProfileController extends Controller
 
         return redirect()->route('admin.profile')->with('success', 'Admin Address Updated Successfuly!');
     }
+
+    public function notifications()
+    {  
+
+       $notifications = Notification::with('product')->where('role', 'like', '%admin%')->where('status',1)->get();
+        return view('notifications/notification',compact('notifications'));
+    } 
 }

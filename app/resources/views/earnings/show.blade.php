@@ -16,24 +16,36 @@
         <div class="col-12 col-md-4 col-xl-3">
             <!-- customer about start -->
             <div class="company-about-box">
-                <img src="{{ asset('public/assets/images/user-bi.png') }}" alt="U" class="img-fluid main-avatar">
+                @if ($earning->user)
+                    @if ($earning->user->personalInfo)
+                    <img src="{{ $earning->user->personalInfo->avatar }}" alt="A" class="img-fluid main-avatar">
+                    @else
+                    <span class="no-avatar nva-lg">{!! strtoupper($earning->user->name[0]) !!}</span>
+                    @endif
+                @endif
                 <div class="txt">
-                    <h1>Lela Mraz</h1>
-                    <p>lincoln@unpixel.com</p>
-
+                    <h1><a href="{{ url('company',optional($earning->user)->id) }}">{{ optional($earning->user)->name }}</a></h1>
+                    <p>{{ optional($earning->user)->email }}</p>
                     <hr>
-
                     <ul>
                         <li>
                             <p><img src="{{ asset('public/assets/images/icons/envelope.svg') }}" alt="I"
-                                    class="img-fluid">zcassandre66@gmail.com</p>
+                                    class="img-fluid">{{ optional($earning->user)->email }}</p>
                         </li>
-                        <li>
-                            <p><img src="{{ asset('public/assets/images/icons/call.svg') }}" alt="I" class="img-fluid">911-415-0350</p>
-                        </li>
-                        <li>
-                            <p><img src="{{ asset('public/assets/images/icons/global.svg') }}" alt="I" class="img-fluid">Indonesia</p>
-                        </li>
+                        @if ($earning->user && $earning->user->personalInfo)
+                            <li>
+                                <p><img src="{{ asset('public/assets/images/icons/call.svg') }}" alt="I" class="img-fluid">
+                                    {{ optional($earning->user)->personalInfo->phone }}
+                                </p>
+                            </li>
+                        @endif
+                        @if ($earning->user && $earning->user->personalInfo)
+                            <li>
+                                <p><img src="{{ asset('public/assets/images/icons/global.svg') }}" alt="I" class="img-fluid">
+                                    {{ optional($earning->user)->personalInfo->nationality }}
+                                </p>
+                            </li>
+                        @endif 
                     </ul>
                 </div>
             </div>
@@ -56,7 +68,8 @@
                                     <p>Payment Date</p>
                                 </td>
                                 <td>
-                                    <h6>Apr 21, 2024</h6>
+                                    <h6>{{ \Carbon\Carbon::parse($earning->start_at)->format('d F Y') }}
+                                    </h6>
                                 </td>
                             </tr>
                             <tr>
@@ -64,7 +77,7 @@
                                     <p>Payment Amount</p>
                                 </td>
                                 <td>
-                                    <h6>€390</h6>
+                                    <h6>€{{ $earning->amount}}</h6>
                                 </td>
                             </tr>
                             <tr>
@@ -72,30 +85,39 @@
                                     <p>Subscription Package</p>
                                 </td>
                                 <td>
-                                    <h6>Standard</h6>
+                                    <h6>{{ $earning->package_type}}</h6>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <p>Last Payment</p>
+                                    <p>Subscription End Date</p>
                                 </td>
                                 <td>
-                                    <h6>25 days ago</h6>
+                                    <h6>{{ \Carbon\Carbon::parse($earning->end_at)->format('d F Y') }}
+                                    </h6>
                                 </td>
                             </tr>
+                            @php
+                                $startAt = \Carbon\Carbon::parse($earning->start_at);
+                                $endAt = \Carbon\Carbon::parse($earning->end_at);
+                                $totalDays = $startAt->diffInDays($endAt);
+                            @endphp 
+
                             <tr>
                                 <td>
                                     <p>Access Remaining</p>
                                 </td>
                                 <td>
-                                    <h6>5 days</h6>
+                                    <h6>{{ $totalDays }} {{ $totalDays > 1 ? 'Days' : 'Day' }}</h6>
                                 </td>
                             </tr>
                         </table>
                         <div class="form-submit">
-                            <button class="btn btn-download" type="submit">
+                            @if ($earning->status != 'Pending')
+                            <a class="btn btn-download" style="display: inline-flex!important" href="{{ url('earning/generate-pdf',encrypt($earning->payment_id)) }}">
                                 <img src="{{ asset('public/assets/images/download.png') }}" class="im-fluid" alt="I"> Download Invoice
-                            </button>
+                            </a>
+                            @endif
                         </div>
                     </div>
                     <!-- table end -->

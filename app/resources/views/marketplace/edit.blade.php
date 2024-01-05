@@ -2,7 +2,6 @@
 
 @section('title',$product->title)
 
-
 @section('content')
 <!-- main page wrapper start -->
 <section class="main-page-wrapper marketplace-page-wrapper">

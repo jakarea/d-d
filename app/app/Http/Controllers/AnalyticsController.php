@@ -26,7 +26,7 @@ class AnalyticsController extends Controller
         ->pluck('amount')
         ->sum();
 
-        // total current payment
+        // total customer payment
         $totalCurrentPayment = Earning::where('status','paid')
         ->pluck('amount')
         ->sum();
@@ -78,22 +78,20 @@ class AnalyticsController extends Controller
         $activeProducts = $products->where('status', 1)->count();
         $draftProducts = $products->where('status', 0)->count();
 
-        // company user
-        $activeInactiveCompanyUserCurrentMonth = [0,4];
-        $inActiveCompanyUsers = [];
-        $activeCompanyUsers = [];
-        $inActiveCompanyUsers = $this->getInActiveCompanyUsers()->count();
-        $activeCompanyUsers = $this->getTopActiveCompanyUsers()->count();
+        // company user 
+        $users = Company::with('user')->get();
+        $companyUusers = $users->pluck('user')->flatten();
+        $getActiveInActiveUsers = $this->getActiveInActiveUsers($companyUusers);
  
         // Top Active Company User
         $topActiveCompanyUsers = [];
         $topActiveCompanyUsers = $this->getTopActiveCompanyUsers();
 
-        return view('analytics/index',compact('totalUsersByMonths','totalProducts','activeProducts','draftProducts','topActiveCompanyUsers','inActiveCompanyUsers','activeCompanyUsers','totalEarnings','todayEarnings','totalDueAmount','totalNewCompany','totalFrozenAmount','totalCurrentPayment','todayDueAmount','totalFrozenAccount','eraningGraph'));
+        return view('analytics/index',compact('totalUsersByMonths','totalProducts','activeProducts','draftProducts','topActiveCompanyUsers','getActiveInActiveUsers','totalEarnings','todayEarnings','totalDueAmount','totalNewCompany','totalFrozenAmount','totalCurrentPayment','todayDueAmount','totalFrozenAccount','eraningGraph'));
     }
 
     // top active user by company
-    public function getTopActiveCompanyUsers()
+    private function getTopActiveCompanyUsers()
     {
         $toactiveUser = User::with('roles')
         ->whereHas('roles', function ($query) {
@@ -104,20 +102,97 @@ class AnalyticsController extends Controller
 
         return $toactiveUser;
     }
-    public function getInActiveCompanyUsers()
-    {
-        $topInactiveUser = User::with('roles')
-        ->whereHas('roles', function ($query) {
-            $query->where('slug', 'company');
-        })
-        ->where('status', '!=',1)
-        ->get();
 
-        return $topInactiveUser;
+    // total user year
+    // private function getActiveInActiveUsers($data)
+    // { 
+    //     $activeCountByDate = [];
+    //     $inactiveCountByDate = [];
+
+    //     $currentDate = Carbon::now();
+    //     $dates = [];
+    //     $active_users = [];
+    //     $inactive_users = [];
+
+    //     foreach ($data as $record) {
+    //         $createdAt = Carbon::parse($record['created_at']);
+
+    //         $endDate = Carbon::parse($record['end_date']);
+    //         if ($record->status == 1) {
+    //             $status = 'active';
+    //         } else {
+    //             $status = 'inactive';
+    //         }
+
+    //         $createdDate = $createdAt->format('Y-m-d');
+    //         $dates[] = $createdDate;
+    //         if (!isset($activeCountByDate[$createdDate])) {
+    //             $activeCountByDate[$createdDate] = 0;
+    //         }
+
+    //         if (!isset($inactiveCountByDate[$createdDate])) {
+    //             $inactiveCountByDate[$createdDate] = 0;
+    //         }
+
+    //         if ($status === 'active') {
+    //             $activeCountByDate[$createdDate]++;
+    //         } else {
+    //             $inactiveCountByDate[$createdDate]++;
+    //         }
+    //         $active_users[] = $activeCountByDate[$createdDate];
+    //         $inactive_users[] = $inactiveCountByDate[$createdDate];
+    //     }
+    //     return ['dates' => $dates, 'active_users' => $active_users, 'inactive_users' => $inactive_users];
+    // }
+
+    // user by months 
+    private function getActiveInActiveUsers($data)
+    {
+        $activeCountByDate = [];
+        $inactiveCountByDate = [];
+
+        $currentMonth = Carbon::now()->format('m');
+        $dates = [];
+        $active_users = [];
+        $inactive_users = [];
+
+        foreach ($data as $record) {
+            $createdAt = Carbon::parse($record['created_at']);
+
+            // Check if the record's creation month is the current month
+            if ($createdAt->format('m') !== $currentMonth) {
+                continue; // Skip if it's not the current month
+            }
+
+            $status = $record->status == 1 ? 'active' : 'inactive';
+
+            $createdDate = $createdAt->format('Y-m-d');
+            $dates[] = $createdDate;
+
+            if (!isset($activeCountByDate[$createdDate])) {
+                $activeCountByDate[$createdDate] = 0;
+            }
+
+            if (!isset($inactiveCountByDate[$createdDate])) {
+                $inactiveCountByDate[$createdDate] = 0;
+            }
+
+            if ($status === 'active') {
+                $activeCountByDate[$createdDate]++;
+            } else {
+                $inactiveCountByDate[$createdDate]++;
+            }
+
+            $active_users[] = $activeCountByDate[$createdDate];
+            $inactive_users[] = $inactiveCountByDate[$createdDate];
+        }
+
+        return ['dates' => $dates, 'active_users' => $active_users, 'inactive_users' => $inactive_users];
     }
 
+
     // total user by months
-    public function getUserCountPerMonth()
+    private function getUserCountPerMonth()
     {
         $userCounts = [];
         $currentYear = Carbon::now()->year;

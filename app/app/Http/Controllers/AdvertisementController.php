@@ -18,8 +18,8 @@ class AdvertisementController extends Controller
 
         $selectedCat = '';
         if (!empty($category)) {
-            $selectedCat = Category::find($category);
-            $products->where('cats', 'like', '%' . $category . '%');
+            $selectedCat = Category::where('slug',$category)->first();
+            $products->where('cats', 'like', '%' . $selectedCat->id . '%');
         }
 
         $selectedStatus = '';

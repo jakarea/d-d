@@ -14,7 +14,7 @@
     <div class="header-icons-box">
         <ul class="main">
             <li>
-                <a href="#">
+                <a href="{{url('account/notifications')}}">
                     <span class="dot"></span>
                     <img src="{{ asset('public/assets/images/icons/bell.svg') }}" alt="B" class="img-fluid">
                 </a>
@@ -46,6 +46,20 @@
                                 @if (Request::is('account/edit-profile'))
                                 <i class="fas fa-check"></i>
                                 @endif
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item {{ Request::is('account/security-setting') ? 'active' : ''}}"
+                                href="{{url('account/security-setting')}}">
+                                Security Settings
+                                @if (Request::is('account/security-setting'))
+                                <i class="fas fa-check"></i>
+                                @endif
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{url('logout')}}">
+                                Logout
                             </a>
                         </li>
                     </ul>

@@ -13,6 +13,7 @@ use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\VerificationController;
 use App\Http\Controllers\API\ForgotPasswordController;
 use App\Http\Controllers\API\ClientController;
+use App\Http\Controllers\API\NotificationController;
 use App\Http\Controllers\API\ReviewController;
 use App\Http\Controllers\API\WishlistController;
 use App\Http\Controllers\API\SubscriptionController;
@@ -73,6 +74,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('wishlist', [WishlistController::class, 'addtoWishList']);
         Route::get('wishlist/remove/{id}', [WishlistController::class, 'removeFromWishlist']);
 
+        Route::get('notifications', [NotificationController::class, 'clientNotifyList']);
+        Route::get('notifications/seen', [NotificationController::class, 'seen']);
+
     });
 });
 
@@ -108,6 +112,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
         Route::get('subscription-packages', [SubscriptionController::class, 'index']);  
         Route::post('purchase/request', [SubscriptionController::class, 'handlePaymentRequest']); 
+
+        Route::get('notifications', [NotificationController::class, 'companyNotifyList']);
+        Route::get('notifications/seen', [NotificationController::class, 'seen']);
 
     });
 });

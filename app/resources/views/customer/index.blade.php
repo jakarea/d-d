@@ -37,7 +37,7 @@
           <!-- avatar -->
 
           <div class="txt">
-            <h4>{{$user->name}}</h4>
+            <h4><a href="{{ route('users.show', $user) }}">{{$user->name}}</a></h4>
             @if ($user->roles)
                 @foreach ($user->roles as $role)
                   <h6>{{ $role->name ? $role->name : '--' }}</h6>

@@ -14,6 +14,7 @@ use App\Process\ProductVariantProcess;
 use App\Traits\FileTrait;
 use Illuminate\Http\Request;
 use App\Http\Requests\ProductAddRequest;
+use App\Models\Notification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
@@ -156,6 +157,18 @@ class ProductController extends ApiController
                 }
 
                 $product = Product::with(['productVariants'])->find($product->id);
+
+                // notification create for new product create  
+                Notification::create([
+                    'creator_id' => auth()->user()->id,
+                    'receiver_id' => $product->company_id,
+                    'action_id' => $product->id,
+                    'type' => 'create',
+                    'action_link' => "Product",
+                    'message' => "New Product Created",
+                    'status' => 1,
+                    'role' => 'admin,client'
+                ]);
  
 
                 return $this->jsonResponse(false, 'Product created Successfully', $product, [], JsonResponse::HTTP_CREATED);
@@ -210,6 +223,18 @@ class ProductController extends ApiController
                 if (isset($product->productVariants)) {
                     $product->productVariants;
                 }
+
+                // notification create for new product create  
+                Notification::create([
+                    'creator_id' => auth()->user()->id,
+                    'receiver_id' => $product->company_id,
+                    'action_id' => $product->id,
+                    'type' => 'updated',
+                    'action_link' => "Product",
+                    'message' => "Product Updated",
+                    'status' => 1,
+                    'role' => 'admin'
+                ]);
 
                 return $this->jsonResponse(false, "Product updated successfully", $product, $this->emptyArray, JsonResponse::HTTP_OK);
             } else {
@@ -360,6 +385,19 @@ class ProductController extends ApiController
 
         if (!empty($product)) {
             ProductVariant::whereIn('product_id', [$product->id])->delete();
+
+            // notification create for new product create  
+            Notification::create([
+                'creator_id' => auth()->user()->id,
+                'receiver_id' => $product->company_id,
+                'action_id' => "#",
+                'type' => 'deleted',
+                'action_link' => "Product",
+                'message' => "Product Deleted",
+                'status' => 1,
+                'role' => 'admin'
+            ]);
+
             $product->delete();
 
             return $this->jsonResponse(false, 'Product deleted successfully', $product, $this->emptyArray, JsonResponse::HTTP_OK);

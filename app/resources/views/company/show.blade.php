@@ -10,16 +10,17 @@
     <!-- top part -->
     <div class="company-information">
       <div class="media align-items-start">
-
-        @if (optional($company->user)->personalInfo && optional($company->user)->personalInfo->avatar)
-        <img src="{{ optional($company->user)->personalInfo->avatar }}" alt="A" class="img-fluid main-thumb">
-        @else
-        <span class="no-avatar nva-lg me-4">{!! strtoupper(optional($company->user)->name[0]) !!}</span>
-        @endif
+        @if ($company->user)
+          @if ($company->user->personalInfo)
+          <img src="{{ $company->user->personalInfo->avatar }}" alt="A" class="img-fluid main-thumb">
+          @else
+          <span class="no-avatar nva-lg me-4">{!! strtoupper($company->user->name[0]) !!}</span>
+          @endif
+      @endif
 
         <div class="media-body">
           <div class="d-flex">
-            <h5>{{ $company->name }}</h5>
+            <h5>{{ optional($company->user)->name }}</h5>
             <a href="{{ route('company.edit', $company) }}">
               <img src="{{ asset('public/assets/images/icons/pen.svg') }}" alt="I" class="img-fluid">
             </a>
@@ -80,31 +81,31 @@
             </div>
             <div class="rev-item-list">
               @php
-    $ratingCounts = $company->products->flatMap(function ($product) {
-        return $product->reviews->where('replies_to', null)->pluck('rating');
-    })->groupBy(function ($rating) {
-        return $rating;
-    })->map->count();
+            $ratingCounts = $company->products->flatMap(function ($product) {
+                return $product->reviews->where('replies_to', null)->pluck('rating');
+            })->groupBy(function ($rating) {
+                return $rating;
+            })->map->count();
 
-    $totalReviews = $ratingCounts->sum();
-@endphp
+            $totalReviews = $ratingCounts->sum();
+        @endphp
 
-@for($i = 5; $i >= 1; $i--)
-    <div class="item">
-        <p>{{ $i }} star</p>
-        @if(isset($ratingCounts[$i]))
-            <div class="progress" role="progressbar" aria-label="Basic example"
-                aria-valuenow="{{ $ratingCounts[$i] / $totalReviews * 100 }}" aria-valuemin="0" aria-valuemax="100">
-                <div class="progress-bar" style="width: {{ $ratingCounts[$i] / $totalReviews * 100 }}%"></div>
-            </div>
-        @else
-            <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="0" aria-valuemin="0"
-                aria-valuemax="100">
-                <div class="progress-bar" style="width: 0%"></div>
-            </div>
-        @endif
-    </div>
-@endfor
+              @for($i = 5; $i >= 1; $i--)
+                  <div class="item">
+                      <p>{{ $i }} star</p>
+                      @if(isset($ratingCounts[$i]))
+                          <div class="progress" role="progressbar" aria-label="Basic example"
+                              aria-valuenow="{{ $ratingCounts[$i] / $totalReviews * 100 }}" aria-valuemin="0" aria-valuemax="100">
+                              <div class="progress-bar" style="width: {{ $ratingCounts[$i] / $totalReviews * 100 }}%"></div>
+                          </div>
+                      @else
+                          <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="0" aria-valuemin="0"
+                              aria-valuemax="100">
+                              <div class="progress-bar" style="width: 0%"></div>
+                          </div>
+                      @endif
+                  </div>
+              @endfor
 
             </div>
 
@@ -159,48 +160,43 @@
           <h3>Advertisement Deals</h3>
 
           <div class="row">
-            @foreach ($company->products->slice(0,4) as $product)
+            @foreach ($company->products->slice(0,4) as $d_product)
             <!-- product item start -->
             <div class="col-12 col-xl-6 mb-3 mb-3">
               <div class="product-item-box">
                 <!-- thumbnail start -->
                 <div class="product-thumbnail">
                   @php
-                  $price = $product->price;
-                  $sellPrice = $product->sell_price;
+                  $price = $d_product->price;
+                  $sellPrice = $d_product->sell_price;
                   $percentageDiscount = $price != 0 ? ((($price - $sellPrice) / $price) * 100) : 0;
                   @endphp
 
                   <span>{{ number_format($percentageDiscount, 0) }}%</span>
 
                   @php
-                  $v_imageUrls = [];
-                    if (isset($product) && !empty($product->images)) {
-                    // $v_imageUrls = json_decode($product->images);
-                  }
-                  @endphp
+                        $imageArray = $d_product->images ? explode(',', $d_product->images) : [];
+                        $firstImageUrl = count($imageArray) > 0 ? $imageArray[0] : 'public/uploads/products/product-thumbnail-01.png';
+                    @endphp
 
-                  @if(is_array($v_imageUrls) && count($v_imageUrls) > 0)
-                  <img src="{{ $v_imageUrls[0] }}" alt="Product Thumbnail" class="img-fluid">
-                  @else
-                  <img src="{{ asset('public/uploads/products/product-thumbnail-01.png')}}" alt="Product Thumbnail"
-                    class="img-fluid">
-                  @endif
+                    @if($firstImageUrl)
+                        <img src="{{ $firstImageUrl }}" alt="Product Thumbnail" class="img-fluid">
+                    @endif
 
-                  <a href=""><i class="fa-regular fa-heart"></i></a>
+                  <a href="#"><i class="fa-regular fa-heart"></i></a>
                 </div>
                 <!-- thumbnail end -->
                 <!-- txt -->
                 <div class="product-txt">
                   <h5>
-                    <a href="{{ route('product.show', $product->slug) }}">{{ Str::limit($product->title, $limit = 40,
+                    <a href="{{ route('product.show', $d_product->slug) }}">{{ Str::limit($d_product->title, $limit = 40,
                       $end = '..') }}</a>
                   </h5>
-                  <p>{{ Str::limit($product->description, $limit = 50, $end = '..') }}</p>
+                  <p>{{ Str::limit($d_product->description, $limit = 50, $end = '..') }}</p>
 
                   @php
-                  $reviewCount = count($product->reviews);
-                  $averageRating = $reviewCount > 0 ? number_format($product->reviews->avg('rating'), 1) : 0;
+                  $reviewCount = count($d_product->reviews);
+                  $averageRating = $reviewCount > 0 ? number_format($d_product->reviews->avg('rating'), 1) : 0;
                   $revText = $reviewCount === 0 ? 'No Reviews' : ($reviewCount === 1 ? '1 Review' : $reviewCount . '
                   Reviews');
                   @endphp
@@ -215,7 +211,7 @@
                       <li><span class="total-rev">({{ $revText }})</span></li>
                   </ul>
 
-                  <h4>€{{ $product->sell_price }} <span>€{{ $product->price }}</span></h4>
+                  <h4>€{{ $d_product->sell_price }} <span>€{{ $d_product->price }}</span></h4>
 
                   <div class="take-deal-bttn">
                     <button class="btn bttn" type="button">Take Deal</button>

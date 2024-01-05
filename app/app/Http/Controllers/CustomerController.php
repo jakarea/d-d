@@ -168,13 +168,15 @@ class CustomerController extends Controller
         
             $userInfos->avatar = $image_path;
             $userInfos->save(); // Save the user model to update the avatar path in the database
-        }         
+        }      
+        
+        return redirect("/users/{$user->id}")->with('success', 'User Information Updated Successfuly!');
 
-        if ($user->roles->contains('slug', 'company')){
-            return redirect()->route('company.index')->with('success', 'User Information Updated Successfuly!');
-        }else{
-            return redirect()->route('users.index')->with('success', 'User Information Updated Successfuly!');
-        }
+        // if ($user->roles->contains('slug', 'company')){
+        //     // return redirect()->route('company.index')->with('success', 'User Information Updated Successfuly!'); 
+        // }else{
+        //     return redirect()->route('users.index')->with('success', 'User Information Updated Successfuly!');
+        // }
         
     }
 

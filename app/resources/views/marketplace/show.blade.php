@@ -130,14 +130,16 @@
             <div class="review-single-item">
               <div class="header">
                 <div class="media">
-                  @if (optional($review->user)->personalInfo && optional($review->user)->personalInfo->avatar)
-                  <img src="{{ optional($review->user)->personalInfo->avatar }}" alt="A" class="img-fluid">
-                  @else
-                  <span class="no-avatar nva-sm">{!! strtoupper(auth()->user()->name[0]) !!}</span>
+                  @if ($review->user)
+                        @if (optional($review->user)->personalInfo && optional($review->user)->personalInfo->avatar)
+                          <img src="{{ optional($review->user)->personalInfo->avatar }}" alt="A" class="img-fluid">
+                        @else 
+                          <span class="no-avatar nva-sm">{!! strtoupper(auth()->user()->name[0]) !!}</span>
+                        @endif
                   @endif
 
                   <div class="media-body">
-                    <h5><a href="{{ url('users',$review->user_id) }}">{{optional($review->user)->personalInfo->name}}</a></h5>
+                    <h5><a href="{{ url('users',$review->user_id) }}">{{optional($review->user)->name}}</a></h5>
                     <span>{{$review->created_at->diffForHumans()}}</span>
                   </div>
                 </div>
@@ -167,7 +169,9 @@
                     @endif
   
                     <div class="media-body">
-                      <h5><a href="{{ url('users',$reply_item->user_id) }}">{{optional($reply_item->user)->personalInfo->name}}</a></h5>
+                      <h5><a href="{{ url('users',$reply_item->user_id) }}">
+                        {{ $reply_item->user->name}}
+                      </a></h5>
                       <span>{{$reply_item->created_at->diffForHumans()}}</span>
                     </div>
                   </div> 

@@ -11,8 +11,14 @@
     <!-- navbar -->
     <div class="side-navbar-wrap">
         <ul>
-            <li>
+            {{-- <li>
                 <a href="{{url('/dashboard')}}" class="{{ Request::is('dashboard') ? 'active' : ''}}">
+                    <img src="{{ asset('public/assets/images/icons/dashboard.svg') }}" alt="I" class="img-fluid">
+                    Dashboard
+                </a>
+            </li> --}}
+            <li>
+                <a href="#">
                     <img src="{{ asset('public/assets/images/icons/dashboard.svg') }}" alt="I" class="img-fluid">
                     Dashboard
                 </a>

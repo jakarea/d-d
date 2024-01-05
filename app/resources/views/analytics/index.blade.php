@@ -180,11 +180,13 @@
           <!-- user one start -->
           <div class="media">
 
-            @if ($activeCompanyUser->personalInfo && $activeCompanyUser->personalInfo->avatar) 
-            <img src="{{ $activeCompanyUser->personalInfo->avatar }}" alt="A" class="img-fluid">
+            @if ($activeCompanyUser->personalInfo)
+              <img src="{{ optional($activeCompanyUser->personalInfo)->avatar }}" alt="A" class="img-fluid">
             @else 
-            <span class="no-avatar nva-sm me-3" style="width: 2.75rem; height: 2.75rem;">{!! strtoupper(auth()->user()->name[0]) !!}</span>
-            @endif 
+              <span class="no-avatar nva-sm me-3" style="width: 2.75rem; height: 2.75rem;">
+                {!! strtoupper($activeCompanyUser->name[0]) !!}</span>
+            @endif
+ 
 
             <div class="media-body">
               <h5><a href="{{ route('company.show', $activeCompanyUser->company) }}">{{ $activeCompanyUser->name }}</a></h5>
@@ -392,16 +394,15 @@ document.getElementById("legend").innerHTML = legendHtml;
 <!-- company user graph js start -->
 <script>
  
- const activeCompanyUsers = @json($activeCompanyUsers); 
- const inActiveCompanyUsers = @json($inActiveCompanyUsers); 
+ const data = @json($getActiveInActiveUsers); 
 
   var options = {
   series: [{
     name: 'active',
-    data: [[0, activeCompanyUsers]]
+    data: data.active_users
   }, {
     name: 'inactive',
-    data: [[, inActiveCompanyUsers]]
+    data: data.inactive_users
   }],
   chart: {
     height: 350,

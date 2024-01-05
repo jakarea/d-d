@@ -21,7 +21,7 @@
                         <li><a class="dropdown-item filterItem" href="#" data-value="">All Product</a></li>
                         @foreach ($categories as $category)
                         <li>
-                            <a class="dropdown-item filterItem" href="#" data-value="{{$category->id}}">
+                            <a class="dropdown-item filterItem" href="#" data-value="{{$category->slug}}">
                                 {{$category->name}}
 
                                 @if ($selectedCat && $selectedCat->slug == $category->slug)
@@ -68,7 +68,6 @@
                         <img src="{{ $firstImageUrl }}" alt="Product Thumbnail" class="img-fluid">
                     @endif
 
-
                     {{-- <a href="#"><i class="fa-regular fa-heart"></i></a> --}}
                 </div>
                 <!-- thumbnail end -->
@@ -108,7 +107,7 @@
                     @endif
 
                     <div class="take-deal-bttn">
-                        <button class="btn bttn" type="button">Take Deal</button>
+                        <a href="{{ $product->product_url }}" class="bttn">Take Deal</a> 
                     </div>
                 </div>
                 <!-- txt -->
