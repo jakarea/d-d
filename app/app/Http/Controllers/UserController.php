@@ -126,8 +126,14 @@ class UserController extends API\ApiController
 
         $user = User::where('email', $creds['email'])->first();
         if (!$user || !Hash::check($request->password, $user->password)) {
-            return response(['error' => 1, 'message' => 'invalid credentials'], 401);
+            return response(['error' => true, 'message' => 'invalid credentials'], 401);
         }
+
+        // Check if the user has the required role
+        $role = $creds['role'];
+        if (!$user->roles()->where('slug', $role)->exists()) {
+            return $this->jsonResponse(true, 'Failed to Login', $user, ['User does not have the required role'], 401); 
+        }      
 
         if (config('hydra.delete_previous_access_tokens_on_login', false)) {
             $user->tokens()->delete();
