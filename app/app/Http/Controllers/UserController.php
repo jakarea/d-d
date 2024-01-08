@@ -14,7 +14,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\VerificationMail;
-use Illuminate\Support\Str; 
+use Illuminate\Support\Str;
 
 class UserController extends API\ApiController
 {
@@ -167,7 +167,7 @@ class UserController extends API\ApiController
      * @param  \App\Models\User  $user
      * @return \App\Models\User  $user
      */
-    public function loginWithGoogle(Request $request,$social_platform)
+    public function loginWithGoogle(Request $request)
     {
         try {
             $creds = $request->validate([
@@ -181,8 +181,6 @@ class UserController extends API\ApiController
 
         try {
             $user = User::where('email', $creds['email'])->first();
-
-            if ($social_platform === 'google') {
 
                 if ($user) {
                     // email found now do login response for that user
@@ -213,7 +211,7 @@ class UserController extends API\ApiController
                 } else {
                     // if email not found then do register
                     $emailParts = explode('@', $creds['email']);
-                    $username = (count($emailParts) === 2) ? $emailParts[0] : "No Name"; 
+                    $username = (count($emailParts) === 2) ? $emailParts[0] : "No Name";
 
                     $user = User::create([
                         'name' => $username,
@@ -239,12 +237,106 @@ class UserController extends API\ApiController
 
                     return $this->jsonResponse(false, 'Success! Please visit the reset page to update your password.', $userInfoRegis, $this->emptyArray, JsonResponse::HTTP_CREATED);
                 }
+        } catch (\Exception $e) {
+            return $this->jsonResponse(true, 'Failed to get in', $request->all(), [$e->getMessage()], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+        /**
+     * User Login with google API.
+     *
+     * @param  \App\Models\User  $user
+     * @return \App\Models\User  $user
+     */
+    public function loginWithApple(Request $request)
+    {
+        try {
+            $creds = $request->validate([
+                'apple_id' => 'required'
+            ]);
+        } catch (ValidationException $e) {
+            return $this->validationErrorResponse($e, 422, 'Validation error', 1001);
+        }
+
+        try {
+
+                $user = User::where('apple_id', $creds['apple_id'])->first();
+                if ($user) {
+                    // email found now do login response for that user
+                    if (config('hydra.delete_previous_access_tokens_on_login', false)) {
+                        $user->tokens()->delete();
+                    }
+
+                    $roles = $user->roles->pluck('slug')->all();
+                    $plainTextToken = $user->createToken('hydra-api-token', $roles)->plainTextToken;
+
+                    $company = Company::where('user_id', $user->id)->first();
+                    $earning = Earning::where('user_id', $user->id)->where('status', 'paid')->first();
+
+                    $package = NULL;
+                    if ($earning) {
+                        $package = PricingPackage::with('myPurchaseInfo')->first();
+                    }
+
+                    $userInfo = [
+                        'token' => $plainTextToken,
+                        'user_info' => $user,
+                        'user_company' => $company,
+                        'current_package' => $package
+
+                    ];
+
+                    return $this->jsonResponse(false, 'Successfuly Loggedin!', $userInfo, $this->emptyArray, JsonResponse::HTTP_CREATED);
+                } else {
+
+                    $userInfoRegis = [
+                        'first_time' => 1,
+                        'apple' => 1
+                    ];
+
+                    return $this->jsonResponse(false, 'Success', $userInfoRegis, $this->emptyArray, JsonResponse::HTTP_CREATED);
             }
         } catch (\Exception $e) {
             return $this->jsonResponse(true, 'Failed to get in', $request->all(), [$e->getMessage()], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
+
+    public function forceProfileUpdate(Request $request){
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'kvk_number' => 'nullable|string|max:255',
+            'apple_id' => 'nullable|string|max:255',
+            // Add other validation rules for your fields as needed
+        ]);
+
+        $user = User::create([
+            'name' => $request->input('name'),
+            'email' =>$request->input('email'),
+            'apple_id' => $request->input('apple_id'),
+            'password' => $request->input('password') ? $request->input('password') : Hash::make('1234567890'),
+            'kvk_number' => $request->input('kvk_number'),
+            'verification_code' => null,
+            'email_verified_at' => now(),
+            'status' => 1,
+        ]);
+
+        $role = Role::where('slug', 'client')->first();
+        $user->roles()->attach($role);
+
+        $roles = $user->roles->pluck('slug')->all();
+        $plainTextToken2 = $user->createToken('hydra-api-token', $roles)->plainTextToken;
+
+        $userInfoRegis = [
+            'token' => $plainTextToken2,
+            'first_time' => 1,
+            'user_info' => $user
+        ];
+
+        return $this->jsonResponse(false, 'Success! Please visit the reset page to update your password.', $userInfoRegis, $this->emptyArray, JsonResponse::HTTP_CREATED);
+    }
     /**
      * Display the specified resource.
      *
