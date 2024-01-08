@@ -45,7 +45,9 @@ Route::put('users/update-password/{user}', [UserController::class, 'updatePasswo
 
 Route::get('me', [UserController::class, 'me'])->middleware(['auth:sanctum']);
 Route::post('login', [UserController::class, 'login']);
-Route::post('login/{social_platform}', [UserController::class, 'loginWithGoogle']);
+Route::post('login/goolge', [UserController::class, 'loginWithGoogle']);
+Route::post('login/apple', [UserController::class, 'loginWithApple']);
+Route::post('force-profile-update',[UserController::class,'forceProfileUpdate']);
 
 Route::apiResource('roles', RoleController::class)->except(['create', 'edit'])->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
 Route::apiResource('users.roles', UserRoleController::class)->except(['create', 'edit', 'show', 'update'])->middleware(['auth:sanctum', 'ability:admin,super-admin']);
@@ -59,7 +61,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('product', [ProductController::class, 'index']);
         Route::get('product/{product}', [ProductController::class, 'productDetails']);
         Route::get('/{company}/products', [ProductController::class, 'getProductsOfCompany']);
-        
+
         Route::get('profile', [ClientController::class, 'profile']);
         Route::post('profile', [ClientController::class, 'profileUpdate']);
         Route::post('security/settings', [ClientController::class, 'securitySettings']);
@@ -110,8 +112,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('wishlist', [WishlistController::class, 'addtoWishList']);
         Route::get('wishlist/remove/{id}', [WishlistController::class, 'removeFromWishlist']);
 
-        Route::get('subscription-packages', [SubscriptionController::class, 'index']);  
-        Route::post('purchase/request', [SubscriptionController::class, 'handlePaymentRequest']); 
+        Route::get('subscription-packages', [SubscriptionController::class, 'index']);
+        Route::post('purchase/request', [SubscriptionController::class, 'handlePaymentRequest']);
 
         Route::get('notifications', [NotificationController::class, 'companyNotifyList']);
         Route::get('notifications/seen', [NotificationController::class, 'seen']);

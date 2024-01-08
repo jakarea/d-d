@@ -25,6 +25,7 @@ class RegistrationRequest extends FormRequest
     {
         return [
             'email' => 'required|email|unique:users,email',
+            'apple_id' => 'nullable|string',
             'password' => 'required|min:6',
             'name' => 'required|string'
         ];

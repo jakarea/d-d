@@ -16,15 +16,15 @@ class UserProcess
 
     public static function update(Request $request, $user)
     {
-        
+
 
         $user = (new self())->saveUser($request, $user);
-        
-        $personalInfo = (new self())->savePersonalInfo($request);   
+
+        $personalInfo = (new self())->savePersonalInfo($request);
         $address = (new self())->saveAddress($request);
 
         $userInfo = array_merge($user->toArray(), $personalInfo->toArray(), $address->toArray());
- 
+
 
         return $userInfo;
     }
@@ -34,6 +34,7 @@ class UserProcess
         $user->name = $request->input('first_name') . ' ' . $request->input('last_name');
         $user->email = $request->input('email');
         $user->kvk_number = $request->input('kvk_number');
+        $user->apple_id = $request->input('apple_id');
         $user->save();
 
         return $user;
@@ -41,7 +42,7 @@ class UserProcess
 
     public function savePersonalInfo($request)
     {
-        $authUser = auth()->user(); 
+        $authUser = auth()->user();
 
         if (isset($request->avatar) && isset($authUser->personalInfo->avatar)) {
             (new self())->deleteImage($authUser->personalInfo->avatar);
@@ -50,8 +51,8 @@ class UserProcess
         $imageString = NULL;
 
         if (isset($request->avatar)) {
-            $imageString = $this->saveImage($request); 
-        } 
+            $imageString = $this->saveImage($request);
+        }
 
         $personalInfo = PersonalInfo::updateOrCreate(
             [
@@ -93,7 +94,7 @@ class UserProcess
         );
 
         return $address;
-    } 
+    }
 
     public function saveImage($request)
     {
@@ -101,7 +102,7 @@ class UserProcess
 
         if ($request->has('avatar')) {
             $image = $request->avatar;
-            $filePath = $this->fileUpload($image, "avatar"); 
+            $filePath = $this->fileUpload($image, "avatar");
             $imageUrl = asset("public/storage/avatar/{$filePath}");
             $imageString = $imageUrl;
         }
@@ -112,10 +113,10 @@ class UserProcess
     public function deleteImage($imageString)
     {
         $fileUrl = Config::get('app.file_url');
-         
+
         $image = $imageString;
 
-        $image = str_replace($fileUrl, "", $image); 
+        $image = str_replace($fileUrl, "", $image);
         Storage::disk('public')->delete($image);
     }
 
