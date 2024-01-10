@@ -81,7 +81,7 @@
 {{-- add custmer form start --}}
 @section('drawer')
 <div class="add-company-modal-from">
-  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+  <div class="offcanvas offcanvas-end @error('name') show @enderror @error('email') show @enderror" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
 
     <div class="offcanvas-body">
       <div class="add-new-company-from-wrap">

@@ -62,14 +62,11 @@ class CategoryController extends Controller
         $icon = $request->file('icon');
         // Resize and compress the image
         $resizedImage = Image::make($icon)
-            ->resize(100, 100) // Adjust dimensions as needed
-            ->encode('jpg', 80); // Adjust quality as needed
-
-        // Define the directory and file name
-        $directory = 'public/uploads/category'; // Add 'public/' before 'uploads/'
-        $filename = uniqid('icon_') . '.jpg'; // You can adjust the file extension
-
-        // Save the resized and compressed image to the desired location
+            ->resize(100, 100)
+            ->encode('jpg', 80);
+ 
+        $directory = 'public/uploads/category';
+        $filename = uniqid('icon_') . '.jpg';
         $resizedImage->save($directory . '/' . $filename);
 
         // Construct the full URL
