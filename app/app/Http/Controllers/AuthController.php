@@ -24,8 +24,7 @@ class AuthController extends Controller
         $user = User::create([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
-            'password' => Hash::make($request->input('password')),
-            'role' => 'admin',
+            'password' => Hash::make($request->input('password'))
         ]);
 
         if ($user) {
@@ -35,7 +34,7 @@ class AuthController extends Controller
             $role->save();
         }
 
-        return redirect()->route('login')->with('success', 'Registration successful. Please log in.');
+        return redirect()->route('/')->with('success', 'Registration successful done!.');
     }
 
     // Login
@@ -44,19 +43,29 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
-    public function login(LoginRequest $request)
+    // public function login(LoginRequest $request)
+    public function login(Request $request)
     {
 
-        $credentials = $request->only('email', 'password','remember');
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|min:6'
+        ]);
+
+        $user = User::where('email', $credentials['email'])->first();
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return redirect()->route('login')->with('error','Invalid Credentials');
+        }
+
+        $containsAdminRole = $user->roles->contains('slug', 'admin');
+        if (!$containsAdminRole) {
+            return redirect()->route('login')->with('error','Only Admin can login to web dashboard!');
+        }
 
         $remember = $request->boolean('remember');
         if (Auth::attempt($credentials, $remember)) {
-            return redirect()->intended('/dashboard');
+            return redirect()->intended('/analytics');
         }
-
-        return redirect()->route('login')
-            ->withInput($request->only('email', 'remember'))
-            ->withErrors(['error' => 'Invalid credentials.']);
     }
 
     public function logout()

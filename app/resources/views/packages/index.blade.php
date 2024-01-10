@@ -39,6 +39,7 @@
       <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab"
         tabindex="0">
         <div class="row justify-content-center">
+          @if (count($packages) > 0)
           @foreach ($packages as $package) 
           <!-- plan single monthly start -->
           <div class="col-xl-4 col-sm-10 col-md-6 mb-3">
@@ -76,12 +77,19 @@
           </div>
           <!-- plan single monthly end --> 
           @endforeach 
-
+          @else 
+            <div class="col-12">
+              {{-- no data found component --}}
+              <x-EmptyDataComponent :dynamicData="'Packages Loading... '" />  
+              {{-- no data found component --}}
+            </div>
+          @endif
         </div>
       </div>
 
       <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
         <div class="row justify-content-center">
+          @if (count($packages) > 0)
           @foreach ($packages as $package) 
           <!-- plan single monthly start -->
           @if ($package->yearly_price > 0)
@@ -121,6 +129,14 @@
           @endif
           <!-- plan single monthly end --> 
           @endforeach
+          @else 
+            <div class="col-12">
+              {{-- no data found component --}}
+              <x-EmptyDataComponent :dynamicData="'Packages Loading... '" />  
+              {{-- no data found component --}}
+            </div>
+          @endif
+
         </div>
       </div>
     </div>

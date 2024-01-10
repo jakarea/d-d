@@ -14,7 +14,7 @@ class PackageController extends Controller
 
     public function index(){
 
-        $packages = PricingPackage::get(); 
+        $packages = PricingPackage::where('status','active')->get(); 
 
         if (count($packages) <= 0) {  
             Artisan::call('db:seed', ['--class' => 'PricingPackageSeeder']);
@@ -25,7 +25,7 @@ class PackageController extends Controller
 
     public function edit(){
 
-        $packages = PricingPackage::get();
+        $packages = PricingPackage::where('status','active')->get(); 
 
         if (count($packages) <= 0) { 
             Artisan::call('db:seed', ['--class' => 'PricingPackageSeeder']);

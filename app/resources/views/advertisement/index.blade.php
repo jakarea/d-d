@@ -54,8 +54,8 @@
                         @endforeach
                     </ul>
                 </div>
-                <input type="hidden" name="category" id="inputField">
-                <input type="hidden" name="status" id="inputField2">
+                <input type="hidden" name="category" id="inputField" value="{{ $selectedCat->slug ?? '' }}">
+                <input type="hidden" name="status" id="inputField2" value="{{ $selectedStatus ?? '' }}">
             </div>
         </form>
     </div>
@@ -91,7 +91,7 @@
                         <img src="{{ $firstImageUrl }}" alt="Product Thumbnail" class="img-fluid">
                     @endif
 
-                    <a href="{{ $product->product_url }}"><i class="fa-regular fa-heart"></i></a>
+                    {{-- <a href="{{ $product->product_url }}"><i class="fa-regular fa-heart"></i></a> --}}
                 </div>
                 <!-- thumbnail end -->
                 

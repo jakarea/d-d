@@ -36,7 +36,7 @@
         <div class="avatar">
 
           @if ($category->icon)
-          <img src="{{ $category->icon }}" alt="ICON" class="img-fluid">
+          <img src="{{ $category->icon }}" alt="ICON" class="img-fluid rounded object-cover">
           @else
           <span class="no-avatar nva-lg">{!! strtoupper($category->name[0]) !!}</span>
           @endif
@@ -79,7 +79,7 @@
 
 <!-- add comapny modal form start -->
 <div class="add-company-modal-from">
-  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+  <div class="offcanvas offcanvas-end @error('name') show @enderror @error('icon') show @enderror" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
 
     <div class="offcanvas-body">
       <div class="add-new-company-from-wrap">
@@ -95,19 +95,27 @@
           <div class="form-group form-error">
             <label for="name">Name <span>*</span></label>
             <input type="text" class="form-control @error('name') is-invalid @enderror" placeholder="Name.." name="name"
-              id="name">
-            @error('name') <span>{{ $message }}</span> @enderror
+              id="name" value="{{ old('name') }}">
+              @error('name')
+              <span class="invalid-feedback" role="alert">
+                  <strong>{{ $message }}</strong>
+              </span>
+              @enderror
           </div>
 
           <div class="form-group form-error">
             <label for="icon">Icon<span>*</span></label>
             <input type="file" class="form-control @error('icon') is-invalid @enderror" placeholder="Enter icon"
               name="icon" id="icon">
-            @error('icon') <span>{{ $message }}</span> @enderror
+              @error('icon')
+              <span class="invalid-feedback" role="alert">
+                  <strong>{{ $message }}</strong>
+              </span>
+              @enderror
           </div>
 
           <div id="icon-container" class="mt-2">
-            <img src="" alt="" class="img-fluid rounded" id="icon-preview">
+            <img src="" alt="" class="img-fluid rounded d-block w-100" id="icon-preview" style="max-height: 320px; object-fit: cover;">
           </div>
 
           <div class="form-submit">
@@ -129,12 +137,13 @@
   document.addEventListener('DOMContentLoaded', function () {
 
       var avatarContainer = document.getElementById('icon-container');
-      var avatarPreview = document.getElementById('icon-preview');
-      var closeIcon = document.getElementById('close-icon');
-
+      
       document.getElementById('icon').addEventListener('change', function (e) {
           var input = e.target;
           var file = input.files[0];
+
+          var avatarPreview = document.getElementById('icon-preview');
+          var closeIcon = document.getElementById('close-icon');
 
           if (file) {
               if (!avatarPreview) {
@@ -148,7 +157,7 @@
               if (!closeIcon) {
                   closeIcon = document.createElement('i');
                   closeIcon.id = 'close-icon';
-                  closeIcon.className = 'fas fa-times close-icon';
+                  closeIcon.className = 'fas fa-times close-icon btn btn-primary mt-2';
                   closeIcon.style.cursor = 'pointer';
                   closeIcon.addEventListener('click', function () {
                       avatarPreview.src = '';
@@ -172,4 +181,5 @@
       });
   });
 </script>
+
 @endsection
