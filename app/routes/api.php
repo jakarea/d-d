@@ -90,33 +90,33 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('category', [CategoryController::class, 'index']);
 
         Route::get('product', [ProductController::class, 'index'])->name('product.list');
-        Route::post('product', [ProductController::class, 'store']);
-        Route::get('product/{product}/edit', [ProductController::class, 'editProduct']);
-        Route::post('product/{product}', [ProductController::class, 'updateProduct']);
-        Route::get('product/destroy/{id}', [ProductController::class, 'destroy']);
+        Route::post('product', [ProductController::class, 'store'])->middleware('checkSubscription');
+        Route::get('product/{product}/edit', [ProductController::class, 'editProduct'])->middleware('checkSubscription');
+        Route::post('product/{product}', [ProductController::class, 'updateProduct'])->middleware('checkSubscription');
+        Route::get('product/destroy/{id}', [ProductController::class, 'destroy'])->middleware('checkSubscription');
 
         Route::get('/{company}/products', [ProductController::class, 'getProductsOfCompany']);
         Route::get('product/{product}', [ProductController::class, 'productDetails']);
 
         Route::get('profile', [ClientController::class, 'profile']);
-        Route::post('profile', [ClientController::class, 'profileUpdate']);
-        Route::post('security/settings', [ClientController::class, 'securitySettings']);
+        Route::post('profile', [ClientController::class, 'profileUpdate'])->middleware('checkSubscription');
+        Route::post('security/settings', [ClientController::class, 'securitySettings'])->middleware('checkSubscription');
 
         Route::get('reviews/{company}', [ReviewController::class, 'reviewsOfCompany']);
         Route::get('review/accept', [ReviewController::class, 'reviewAcceptReject']);
-        Route::post('review/like', [ReviewController::class, 'likeOfReview']);
-        Route::post('review/dislike', [ReviewController::class, 'dislikeOfReview']);
-        Route::post('review/reply', [ReviewController::class, 'replyOfReview']);
+        Route::post('review/like', [ReviewController::class, 'likeOfReview'])->middleware('checkSubscription');
+        Route::post('review/dislike', [ReviewController::class, 'dislikeOfReview'])->middleware('checkSubscription');
+        Route::post('review/reply', [ReviewController::class, 'replyOfReview'])->middleware('checkSubscription');
 
         Route::get('wishlist', [WishlistController::class, 'wishList']);
-        Route::post('wishlist', [WishlistController::class, 'addtoWishList']);
+        Route::post('wishlist', [WishlistController::class, 'addtoWishList'])->middleware('checkSubscription');
         Route::get('wishlist/remove/{id}', [WishlistController::class, 'removeFromWishlist']);
 
         Route::get('subscription-packages', [SubscriptionController::class, 'index']);
         Route::post('purchase/request', [SubscriptionController::class, 'handlePaymentRequest']);
 
         Route::get('notifications', [NotificationController::class, 'companyNotifyList']);
-        Route::get('notifications/seen', [NotificationController::class, 'seen']);
+        Route::get('notifications/seen', [NotificationController::class, 'seen'])->middleware('checkSubscription');
 
     });
 });
@@ -124,3 +124,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
 Route::post('/verify-email/{user}/{code}', [VerificationController::class, 'verify'])->name('verify.email');
 Route::post('/resend-verification/{user}', [VerificationController::class, 'resend'])->name('verify.resend');
 Route::post('forgot-password', [ForgotPasswordController::class, 'forgotPassword'])->name('password.forgot');
+
+// subscription expired
+Route::get('subscription/expired', [SubscriptionController::class, 'expired'])->middleware(['auth:sanctum'])->name('subscription.expired');

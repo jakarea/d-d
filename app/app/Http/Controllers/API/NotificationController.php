@@ -22,7 +22,14 @@ class NotificationController extends ApiController
         ->orWhere('receiver_id',auth()->user()->id)
         ->get(); 
 
-        return $this->jsonResponse(false, $this->success, $notifications, $this->emptyArray, JsonResponse::HTTP_OK);
+        if (!empty($notifications)) {
+
+            return $this->jsonResponse(false, $this->success, $notifications, $this->emptyArray, JsonResponse::HTTP_OK);
+        } else {
+
+            return $this->jsonResponse(true, $this->failed, $this->emptyArray, ['Notification not found!'], JsonResponse::HTTP_NOT_FOUND);
+        }
+       
     }
     
     public function companyNotifyList():JsonResponse
@@ -33,7 +40,15 @@ class NotificationController extends ApiController
         ->orWhere('receiver_id',auth()->user()->id)
         ->get(); 
 
-        return $this->jsonResponse(false, $this->success, $notifications, $this->emptyArray, JsonResponse::HTTP_OK);
+        if (!empty($notifications)) {
+
+            return $this->jsonResponse(false, $this->success, $notifications, $this->emptyArray, JsonResponse::HTTP_OK);
+        } else {
+
+            return $this->jsonResponse(true, $this->failed, $this->emptyArray, ['Notification not found!'], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        
     }
     public function seen():JsonResponse
     {
@@ -44,7 +59,6 @@ class NotificationController extends ApiController
         $notifications->each(function ($notification) {
             $notification->update(['status' => 0]);
         });
-
 
         return $this->jsonResponse(false, "Notification Seen Success!", $notifications, $this->emptyArray, JsonResponse::HTTP_OK);
     }

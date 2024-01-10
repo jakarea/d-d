@@ -10,13 +10,9 @@
     
     <p>Thank you for registering. Please use the following verification code to verify your email:</p>
     
-    <h2>{{ $verificationCode }}</h2>
+    <h2>Verification Success!</h2>
     
-    <p>Alternatively, you can click the following link to verify your email:</p>
-    
-    <a href="{{ url('/verify-email', [$user_id, $verificationCode]) }}">Verify Email</a>
-    
-    <p>If you did not register, please ignore this email.</p>
+    <p>You have successfully verified your account in DnD, now you can login with your credintials</p>
     
     <p>Best regards,<br>DnD</p>
 </body>

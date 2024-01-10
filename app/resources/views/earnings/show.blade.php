@@ -113,9 +113,9 @@
                             </tr>
                         </table>
                         <div class="form-submit">
-                            @if ($earning->status != 'Pending')
+                            @if ($earning->status != 'pending')
                             <a class="btn btn-download" style="display: inline-flex!important" href="{{ url('earning/generate-pdf',encrypt($earning->payment_id)) }}">
-                                <img src="{{ asset('public/assets/images/download.png') }}" class="im-fluid" alt="I"> Download Invoice
+                                <img src="{{ asset('public/assets/images/download.png') }}" class="img-fluid" alt="I"> Download Invoice
                             </a>
                             @endif
                         </div>

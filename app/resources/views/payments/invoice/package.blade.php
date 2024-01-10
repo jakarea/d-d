@@ -150,18 +150,18 @@
             <td style="padding-top: 1rem;">
                 <address>
                     <strong>Payment By: </strong> <br>
-                    Name: {{ optional($payment->user)->name }} <br />
-                    Payment Date:  {{ \Carbon\Carbon::parse($payment->start_at)->format('d F Y') }} <br>
-                    Payment Type : {{ $payment->package_type }} <br>
-                    Payment Status : {{ ucfirst( $payment->status) }}
+                    Name: {{ optional($earning->user)->name }} <br />
+                    Payment Date:  {{ \Carbon\Carbon::parse($earning->start_at)->format('d F Y') }} <br>
+                    Payment Type : {{ $earning->package_type }} <br>
+                    Payment Status : {{ ucfirst( $earning->status) }}
 
                 </address>
             </td>
             <td style="padding-top: 1rem; text-align: right;" class="" valign="top">
                 <address>
                     <strong>Billed To: </strong> <br>
-                    Name: {{ Auth::user()->name }}<br /> 
-                    Email: {{ Auth::user()->email }}
+                    Name: DailyDiscount<br /> 
+                    Email: dailydaydiscount@gmail.com
                 </address>
             </td>
         </tr>
@@ -177,9 +177,9 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td class="br-0">{{ $payment->package_name }}</td>
-                            <td class="bl-0 br-0" style="text-transform: capitalize">{{ $payment->package_type }}</td>
-                            <td class="bl-0 " style="text-align: right;">€{{ $payment->amount }}</td>
+                            <td class="br-0">{{ $earning->package_name }}</td>
+                            <td class="bl-0 br-0" style="text-transform: capitalize">{{ $earning->package_type }}</td>
+                            <td class="bl-0 " style="text-align: right;">€{{ $earning->amount }}</td>
                         </tr> 
                         <tr class="" style="text-align: right;">
                             <td colspan="2" class="br-0">
@@ -194,7 +194,7 @@
                                 <strong>Grand Total:</strong>
                             </td>
                             <td class="bl-0">
-                                €{{ $payment->amount }}
+                                €{{ $earning->amount }}
                             </td>
                         </tr>
                     </tbody>

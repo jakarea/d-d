@@ -25,11 +25,11 @@ class PricingPackageSeeder extends Seeder
             'name' => 'Basic plan',
             'slug' => 'basic-plan',
             'price' => '10',
-            'yearly_price' => '0',
+            'yearly_price' => '100',
             'status' => 'active',
             'is_featured' => 1,
             'created_by' => $user ? $user->id : 1,
-            'package_type' => 'Monthly',
+            'package_type' => 'Yearly',
             'features' => json_encode([
                 'feat1' => 'Access to all basic features',
                 'feat2' => 'Basic reporting and analytics',
@@ -45,11 +45,11 @@ class PricingPackageSeeder extends Seeder
             'name' => 'Business plan',
             'slug' => 'business-plan',
             'price' => '20',
-            'yearly_price' => '0',
+            'yearly_price' => '180',
             'status' => 'active',
             'is_featured' => 0,
             'created_by' => $user ? $user->id : 1,
-            'package_type' => 'Monthly',
+            'package_type' => 'Yearly',
             'features' => json_encode([
                 'feat1' => '200+ integrations',
                 'feat2' => 'Advanced reporting and analytics',
@@ -65,17 +65,33 @@ class PricingPackageSeeder extends Seeder
             'name' => 'Enterprise plan',
             'slug' => 'enterprise-plan',
             'price' => '40',
-            'yearly_price' => '0',
+            'yearly_price' => '250',
             'status' => 'active',
             'is_featured' => 0,
             'created_by' => $user ? $user->id : 1,
-            'package_type' => 'Monthly',
+            'package_type' => 'Yearly',
             'features' => json_encode([
                 'feat1' => 'Advanced custom fields',
                 'feat2' => 'Audit log and data history',
                 'feat3' => 'Unlimited individual users',
                 'feat4' => 'Unlimited individual data',
                 'feat5' => 'Personalised+priority service',
+            ]),
+        ]);
+ 
+        PricingPackage::updateOrCreate([
+            'id' => '4',
+        ], [
+            'name' => 'Trail plan',
+            'slug' => 'trail-plan',
+            'price' => '00',
+            'yearly_price' => '00',
+            'status' => 'trail',
+            'is_featured' => 0,
+            'created_by' => $user ? $user->id : 1,
+            'package_type' => 'trail',
+            'features' => json_encode([
+                'feat1' => 'Trail has no features', 
             ]),
         ]);
     }

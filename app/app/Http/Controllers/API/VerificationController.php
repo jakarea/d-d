@@ -9,12 +9,13 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\VerificationMail;
+use App\Models\Earning;
+use Carbon\Carbon;
 
 class VerificationController extends ApiController
 {
     public function verify($user_id, $code)
-    {
-        //$user_id = Crypt::decrypt($user_id);
+    { 
         try {
             $user = User::where('id', $user_id)->first();
             if ($user->verification_code === $code && !$user->email_verified_at) {
@@ -29,13 +30,39 @@ class VerificationController extends ApiController
                 $plainTextToken = $user->createToken('hydra-api-token', $roles)->plainTextToken;
          
                 $company = Company::where('user_id',$user->id)->first();  
+
+                // if user is a company then start trail
+                if ($company) {
+                   $current_pack = Earning::create([
+                        'pricing_packages_id' => 4,
+                        'company_id' => $company->id,
+                        'user_id' => $company->user_id,
+                        'package_name' => "Trail Plan",
+                        'payment_id' => '',
+                        'amount' => 00.00,
+                        'package_type' => 'trail',
+                        'status' => 'trail',
+                        'start_at' => now(),
+                        'end_at' => Carbon::now()->addDays(15), // added 15 days of trail
+                    ]);
+                }
                 
                 $userInfo = [
                     'token' => $plainTextToken,
                     'user_info' => $user,
                     'user_company' => $company,
-                    'current_package' => NULL
+                    'current_package_info' => [
+                        'package' => $current_pack,
+                        'payment_info' => $user->payments
+                    ]
                 ];
+
+                // send mail afetr verify
+                Mail::send('emails.verify-success', ['user' => $user], function ($message) use ($user) {
+                    $message->to($user->email)
+                        ->subject('Verification Success!')
+                        ->text('Your account has been successfully verified. Thank you for choosing us! DnD');
+                });                
 
                 return $this->jsonResponse(false, 'Verification Success!', $userInfo, $this->emptyArray, JsonResponse::HTTP_CREATED);
             }

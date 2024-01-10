@@ -71,8 +71,12 @@ class User extends Authenticatable {
 
     public function payments()
     {
-        return $this->hasOne(Earning::class)->where('status', 'paid');
-    }
+        // return $this->hasOne(Earning::class)->where('status', 'paid');
 
+        return $this->hasOne(Earning::class)->where(function ($query) {
+            $query->where('status', 'paid')
+                  ->orWhere('status', 'trail');
+        });
+    }
 
 }

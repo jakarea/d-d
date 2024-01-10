@@ -36,20 +36,15 @@ class ForgotPasswordController extends ApiController
     } 
 
     public function showResetForm(Request $request, $token = null)
-    {
+    { 
         $email = $request->email;  
 
         if ($email) {
             $user = User::where('email',$email)->first(); 
         }
 
-        if ($user->roles->contains('slug', 'admin')) {
-            return view('auth.password.web-reset-password', compact('email','token'));
-        }else{
-            return view('auth.password.reset-password', compact('email','token'));
-        }
+        return view('auth.password.reset-password', compact('email','token'));
     }
-
 
     // set password
     public function resetPassword(Request $request)
@@ -75,38 +70,13 @@ class ForgotPasswordController extends ApiController
                     'password' => Hash::make($password),
                 ])->save();
             }
-        );
-
-        $u_email = $request->email;
-        if ($u_email) {
-            $user = User::where('email',$u_email)->first();
-        }
+        ); 
 
         if ($status === Password::PASSWORD_RESET) {
-
-            if ($user->roles->contains('slug', 'admin')) {
-                return redirect()->route('admin.password.success')->with('success', trans($status));
-            }else{
-                return redirect()->route('password.success')->with('success', trans($status));
-            }
+            return redirect()->route('password.success')->with('success', trans($status));
             
         } else {
-
-            if ($user->roles->contains('slug', 'admin')) {
-                return redirect()->route('admin.password.cancel')->with('error', trans($status));
-            }else{
-                return redirect()->route('password.cancel')->with('error', trans($status));
-            }
+            return redirect()->route('password.cancel')->with('error', trans($status));
         }
     }    
-
-    public function showSuccessPage()
-    { 
-        return view('auth.password.status.success');
-    }
-
-    public function showFailPage()
-    { 
-        return view('auth.password.status.cancel');
-    }
 }

@@ -35,17 +35,17 @@ class ResetPasswordController extends Controller
     {
         $email = $request->email; 
         
-        return view('auth.password.web-reset-password', compact('email','token'));
+        return view('auth.password.reset-password', compact('email','token'));
     }
 
     public function showSuccessPage()
     { 
-        return view('auth.password.status.web.success');
+        return view('auth.password.status.success');
     }
 
     public function showFailPage()
     { 
-        return view('auth.password.status.web.cancel');
+        return view('auth.password.status.cancel');
     }
 
     // forgot passowrd email page dashboard

@@ -32,13 +32,13 @@ class AnalyticsController extends Controller
             ->sum();
 
         // total due amount
-        $totalDueAmount = Earning::where('status', 'Pending')
+        $totalDueAmount = Earning::where('status', 'pending')
             ->pluck('amount')
             ->sum();
 
         // today due amount 
         $todayDueAmount = Earning::whereDate('created_at', $today)
-            ->where('status', 'Pending')
+            ->where('status', 'pending')
             ->pluck('amount')
             ->sum();
 
