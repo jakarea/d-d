@@ -156,7 +156,7 @@
                     </td>
                     <td>
                         <ul>
-                            @if ($earning->status != 'Pending')
+                            @if ($earning->status != 'pending')
                             <li>
                                 <a href="{{ url('earning/generate-pdf',encrypt($earning->payment_id)) }}"
                                     class="btn-view btn-export">Export</a>

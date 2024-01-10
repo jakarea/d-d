@@ -160,9 +160,9 @@
             <td style="padding-top: 1rem; text-align: right;" class="" valign="top">
                 <address>
                     <strong>Billed To: </strong> <br>
-                    Name: DnD App<br /> 
+                    Name: DailyDiscount<br /> 
 
-                    Email: dndadmin@yopmail.com
+                    Email: dailydaydiscount@gmail.com
                 </address>
             </td>
         </tr>

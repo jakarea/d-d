@@ -66,5 +66,6 @@ class Kernel extends HttpKernel {
         'ability' => \Laravel\Sanctum\Http\Middleware\CheckForAnyAbility::class,
         'hydra.log' => \App\Http\Middleware\HydraLog::class,
         'isAdmin' => \App\Http\Middleware\CheckUserRole::class,
+        'checkSubscription' => \App\Http\Middleware\CheckSubscription::class,
     ];
 }

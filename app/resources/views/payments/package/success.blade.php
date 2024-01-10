@@ -24,7 +24,7 @@
 </head>
 
 <body>
-     
+      
     <div class="wrap-outer">
         <div class="container">
             <div class="row justify-content-center">
@@ -36,17 +36,50 @@
                     </div>
                     <div class="payments-message-box">
                         <img src="{{ asset('public/assets/images/icons/success.svg') }}" alt="success" class="img-fluid">
-    
+
                         <h4>We received your payment</h4>
                         <p>Thank you for Purchasing our product</p>
-    
-                        <a href="#">Download Invoice</a>
+
+                        @php
+                            $sessionId = request('session_id');
+                        @endphp
+
+                        @if ($sessionId) 
+                        <!-- Add an ID to the download link for easy reference in JavaScript -->
+                        <a id="downloadInvoiceLink" href="#">Download Invoice</a>
+                        @endif
                     </div>
                 </div>
             </div>
         </div>
     </div>
   
+    <script>
+        // Create a hidden link
+        var link = document.createElement('a');
+        link.style.display = 'none';
+
+        // Set the href attribute to the PDF data
+        link.href = 'data:application/pdf;base64,{{ base64_encode($pdfContent) }}';
+
+        // Set the download attribute with the desired filename
+        link.download = 'invoice.pdf';
+
+        // Append the link to the body
+        document.body.appendChild(link);
+
+        // Get the download link element by ID
+        var downloadLink = document.getElementById('downloadInvoiceLink');
+
+        // Attach a click event to the link to trigger the download
+        downloadLink.addEventListener('click', function(event) {
+            // Prevent the default link behavior
+            event.preventDefault();
+
+            // Simulate a click on the hidden link to trigger the download
+            link.click();
+        });
+    </script>
 
 </body>
 

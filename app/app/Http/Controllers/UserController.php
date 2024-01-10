@@ -69,7 +69,6 @@ class UserController extends API\ApiController
                 'email' => $user->email,
                 'user_id' => $user->id
             ]);
-
             $company->save();
         }
 
@@ -142,20 +141,27 @@ class UserController extends API\ApiController
         $roles = $user->roles->pluck('slug')->all();
         $plainTextToken = $user->createToken('hydra-api-token', $roles)->plainTextToken;
 
-        $company = Company::where('user_id', $user->id)->first();
-        $earning = Earning::where('user_id', $user->id)->where('status', 'paid')->first();
+        $company = Company::where('user_id', $user->id)->first(); 
+        $earning = Earning::where('user_id', $user->id)
+        ->where(function ($query) {
+            $query->where('status', 'paid')
+                ->orWhere('status', 'trail');
+        })
+        ->first(); 
 
         $package = NULL;
         if ($earning) {
-            $package = PricingPackage::with('myPurchaseInfo')->first();
+            $package = PricingPackage::where('id',$earning->pricing_packages_id)->first();
         }
 
         $userInfo = [
             'token' => $plainTextToken,
             'user_info' => $user,
             'user_company' => $company,
-            'current_package' => $package
-
+            'current_package_info' => [
+                'package' => $package,
+                'payment_info' => $user->payments
+            ]
         ];
 
         return $this->jsonResponse(false, 'Successfuly Loggedin!', $userInfo, $this->emptyArray, JsonResponse::HTTP_CREATED);
@@ -191,18 +197,26 @@ class UserController extends API\ApiController
                     $plainTextToken = $user->createToken('hydra-api-token', $roles)->plainTextToken;
 
                     $company = Company::where('user_id', $user->id)->first();
-                    $earning = Earning::where('user_id', $user->id)->where('status', 'paid')->first();
+                    $earning = Earning::where('user_id', $user->id)
+                    ->where(function ($query) {
+                        $query->where('status', 'paid')
+                            ->orWhere('status', 'trail');
+                    })
+                    ->first();
 
                     $package = NULL;
                     if ($earning) {
-                        $package = PricingPackage::with('myPurchaseInfo')->first();
+                        $package = PricingPackage::where('id',$earning->pricing_packages_id)->first();
                     }
 
                     $userInfo = [
                         'token' => $plainTextToken,
                         'user_info' => $user,
-                        'user_company' => $company,
-                        'current_package' => $package
+                        'user_company' => $company, 
+                        'current_package_info' => [
+                            'package' => $package,
+                            'payment_info' => $user->payments
+                        ]
 
                     ];
 
@@ -270,11 +284,16 @@ class UserController extends API\ApiController
                     $plainTextToken = $user->createToken('hydra-api-token', $roles)->plainTextToken;
 
                     $company = Company::where('user_id', $user->id)->first();
-                    $earning = Earning::where('user_id', $user->id)->where('status', 'paid')->first();
+                    $earning = Earning::where('user_id', $user->id)
+                    ->where(function ($query) {
+                        $query->where('status', 'paid')
+                            ->orWhere('status', 'trail');
+                    })
+                    ->first(); 
 
                     $package = NULL;
                     if ($earning) {
-                        $package = PricingPackage::with('myPurchaseInfo')->first();
+                        $package = PricingPackage::where('id',$earning->pricing_packages_id)->first();
                     }
 
                     $userInfo = [
@@ -282,7 +301,10 @@ class UserController extends API\ApiController
                         'first_time' => 0,
                         'user_info' => $user,
                         'user_company' => $company,
-                        'current_package' => $package
+                        'current_package_info' => [
+                            'package' => $package,
+                            'payment_info' => $user->payments
+                        ]
 
                     ];
 
@@ -317,8 +339,7 @@ class UserController extends API\ApiController
         } catch (ValidationException $e) {
             return $this->validationErrorResponse($e, 422, 'Validation error', 1001);
         }
-        
-        // return $creds;
+         
 
         $user = User::create([
             'name' => $creds['name'],
