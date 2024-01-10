@@ -46,7 +46,9 @@ class AuthController extends Controller
 
     public function login(LoginRequest $request)
     {
+
         $credentials = $request->only('email', 'password','remember');
+
         $remember = $request->boolean('remember');
         if (Auth::attempt($credentials, $remember)) {
             return redirect()->intended('/dashboard');

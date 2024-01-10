@@ -60,13 +60,13 @@ Route::group(['middleware' => ['web','guest']], function () {
 });
 
 // initial redirection route
-Route::group(['middleware' => ['auth']], function () {
+Route::group(['middleware' => ['auth','isAdmin']], function () {
     Route::get('/', function () { return redirect('/analytics'); });
     Route::get('/home', function () { return redirect('/analytics'); }); 
     Route::get('/dashboard', function () { redirect('/analytics'); });
 });
 
-Route::group(['middleware' => ['auth']], function () {
+Route::group(['middleware' => ['auth','isAdmin']], function () {
     // category route
     Route::resource('/category', CategoryController::class);
     // marketplace route
@@ -107,9 +107,6 @@ Route::group(['middleware' => ['auth']], function () {
         // notification routes
         Route::get('/notifications', 'notifications')->name('admin.notification.system'); 
     });
-
-
-
 
     // logout route
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');

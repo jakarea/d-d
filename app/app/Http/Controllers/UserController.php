@@ -171,8 +171,7 @@ class UserController extends API\ApiController
     {
         try {
             $creds = $request->validate([
-                'email' => 'required|email',
-                // 'social_platform' => 'required|in:google,facebook,apple',
+                'email' => 'required|email', 
                 'avatar' => 'nullable|mimes:png,svg,webp,jpg,jpeg|max:5048',
             ]);
         } catch (ValidationException $e) {
@@ -280,6 +279,7 @@ class UserController extends API\ApiController
 
                     $userInfo = [
                         'token' => $plainTextToken,
+                        'first_time' => 0,
                         'user_info' => $user,
                         'user_company' => $company,
                         'current_package' => $package
@@ -302,22 +302,31 @@ class UserController extends API\ApiController
     }
 
 
-    public function forceProfileUpdate(Request $request){
+    public function forceProfileUpdate(Request $request)
+    {
 
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'kvk_number' => 'nullable|string|max:255',
-            'apple_id' => 'nullable|string|max:255',
-            // Add other validation rules for your fields as needed
-        ]);
+        try {
+            $creds = $request->validate([
+                'email' => 'required|email|unique:users,email', 
+                'name' => 'required|string', 
+                'password' => 'nullable|min:6',
+                'confirm_password' => 'nullable_with:password|same:password|min:6',
+                "kvk_number" => 'nullable',
+                'apple_id' => 'required|string|max:255'
+            ]);
+        } catch (ValidationException $e) {
+            return $this->validationErrorResponse($e, 422, 'Validation error', 1001);
+        }
+        
+        // return $creds;
 
         $user = User::create([
-            'name' => $request->input('name'),
-            'email' =>$request->input('email'),
-            'apple_id' => $request->input('apple_id'),
-            'password' => $request->input('password') ? $request->input('password') : Hash::make('1234567890'),
-            'kvk_number' => $request->input('kvk_number'),
+            'name' => $creds['name'],
+            'email' => $creds['email'],
+            'apple_id' => $creds['apple_id'],
+            // 'password' => $creds['password'] ? $creds['password'] : Hash::make('1234567890'),
+            'password' => Hash::make('1234567890'),
+            'kvk_number' => $creds['kvk_number'],
             'verification_code' => null,
             'email_verified_at' => now(),
             'status' => 1,
