@@ -38,21 +38,17 @@ Route::group(['middleware' => ['guest']], function () {
 // forgot password handle routes for mobile app user and dashboard
 Route::group(['middleware' => ['web','guest']], function () {
 
-    // send request form
+    // send request form - app
     Route::get('password/reset', [ResetPasswordController::class, 'showLinkRequestForm'])->name('password.request');
     Route::post('password/email', [ResetPasswordController::class, 'sendResetLinkEmail'])->name('password.email'); 
 
-    // password update form
+    // password update form - web, app
     Route::get('password/reset/{token}', [ForgotPasswordController::class, 'showResetForm'])->name('password.reset');
     Route::post('password/reset', [ForgotPasswordController::class, 'resetPassword'])->name('password.update');
 
     // admin pssword success cancel message
-    Route::get('admin/password/success', [ResetPasswordController::class, 'showSuccessPage'])->name('admin.password.success');
-    Route::get('admin/password/cancel', [ResetPasswordController::class, 'showFailPage'])->name('admin.password.cancel');
-
-    // mobile pssword success cancel message
-    Route::get('password/success', [ForgotPasswordController::class, 'showSuccessPage'])->name('password.success');
-    Route::get('password/cancel', [ForgotPasswordController::class, 'showFailPage'])->name('password.cancel');
+    Route::get('password/success', [ResetPasswordController::class, 'showSuccessPage'])->name('password.success');
+    Route::get('password/cancel', [ResetPasswordController::class, 'showFailPage'])->name('password.cancel');
     
     // purchase package payment status route view for mobile app users
     Route::get('api/purchase/success', [SubscriptionController::class, 'handleSuccess'])->name('purchase.success'); 
