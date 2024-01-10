@@ -147,7 +147,7 @@ class AdminProfileController extends Controller
 
     public function notifications()
     {  
-
+ 
         $status = isset($_GET['status']) ? $_GET['status'] : '';
         $notificationsQuery = Notification::with('product')->where('role', 'like', '%admin%');
 

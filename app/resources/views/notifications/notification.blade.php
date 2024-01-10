@@ -127,7 +127,7 @@
         <div class="row">
             <div class="col-12">
                 {{-- pagginate --}}
-                <div class="paggination-wrap">
+                <div class="paggination-wrap mt-3">
                     {{ $notifications->links('pagination::bootstrap-5') }}
                 </div>
                 {{-- pagginate --}}

@@ -13,8 +13,8 @@ use App\Models\Notification;
 use App\Models\Review;
 use App\Models\Product;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Auth;
+use Illuminate\Http\Request; 
+use Illuminate\Support\Facades\Auth;
 
 
 class ReviewController extends ApiController

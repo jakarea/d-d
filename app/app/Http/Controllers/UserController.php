@@ -86,7 +86,7 @@ class UserController extends API\ApiController
         }
 
         // return $user;
-        return $this->jsonResponse(false, $this->success, $user, $this->emptyArray, JsonResponse::HTTP_CREATED);
+        return $this->jsonResponse(false, 'Registration success, please verify your account to continue!', $user, $this->emptyArray, JsonResponse::HTTP_CREATED);
     }
 
     protected function validationErrorResponse(ValidationException $e, $status, $message, $errorCode): JsonResponse

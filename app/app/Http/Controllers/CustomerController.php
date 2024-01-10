@@ -141,6 +141,15 @@ class CustomerController extends Controller
                 'email' => $request->input('email'), 
             ]);
         } 
+
+        $company = Company::where('user_id',$user->id)->first();
+
+        if ($company) {
+            $company->update([
+                'name' => $request->input('name'),
+                'email' => $request->input('email')
+            ]);
+        }
  
         $userInfos = PersonalInfo::updateOrCreate(
             ['user_id' => $user->id],
@@ -180,12 +189,6 @@ class CustomerController extends Controller
         }      
         
         return redirect("/users/{$user->id}")->with('success', 'User Information Updated Successfuly!');
-
-        // if ($user->roles->contains('slug', 'company')){
-        //     // return redirect()->route('company.index')->with('success', 'User Information Updated Successfuly!'); 
-        // }else{
-        //     return redirect()->route('users.index')->with('success', 'User Information Updated Successfuly!');
-        // }
         
     }
 
@@ -205,9 +208,9 @@ class CustomerController extends Controller
         return view('customer/editAddress', compact('user'));
     }
     
-    public function updateAddress(Request $request,$id){
-        //  return $request->all();
-
+    public function updateAddress(Request $request,$id)
+    {
+         
         $request->validate([
             'primary_address' => 'required',
             'country' => 'required', 

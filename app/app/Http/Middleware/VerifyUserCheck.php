@@ -2,12 +2,11 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\Earning;
 use Closure;
-use Illuminate\Http\Request; 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
-class CheckSubscription
+class VerifyUserCheck
 {
     /**
      * Handle an incoming request.
@@ -18,17 +17,12 @@ class CheckSubscription
      */
     public function handle(Request $request, Closure $next)
     {
-        $user = auth()->user();
-
-        $subscription = Earning::where('user_id',$user->id)
-        ->whereIn('status', ['paid', 'trail'])
-        ->where('company_id',$user->company->id)
-        ->first();
-
-        if ($subscription && $subscription->end_at && $subscription->end_at < now()) { 
-            return redirect()->route('subscription.expired');
+        $user = Auth::user();
+ 
+        if (!$user || !$user->email_verified_at) {
+            return response()->json(['error'=> true, 'message' => "Not verified! please verify your account to continue.", 'data' => auth()->user(), 'errors' => ['Verification failed!']], 401);
         }
-
-        return $next($request); 
+ 
+        return $next($request);
     }
 }

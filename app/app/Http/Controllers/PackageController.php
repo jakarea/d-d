@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Traits\SlugTrait;
 use App\Models\PricingPackage;
-use Illuminate\Support\Facades\Artisan;
-use Auth;
+use Illuminate\Support\Facades\Artisan; 
+use Illuminate\Support\Facades\Auth;
 
 class PackageController extends Controller
 {
