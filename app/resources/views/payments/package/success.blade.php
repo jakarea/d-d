@@ -38,7 +38,7 @@
                         <img src="{{ asset('public/assets/images/icons/success.svg') }}" alt="success" class="img-fluid">
 
                         <h4>We received your payment</h4>
-                        <p>Thank you for Purchasing our product</p>
+                        <p>Thank you for the Subscription!</p>
 
                         @php
                             $sessionId = request('session_id');

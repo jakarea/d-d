@@ -45,7 +45,7 @@ Route::put('users/update-password/{user}', [UserController::class, 'updatePasswo
 
 Route::get('me', [UserController::class, 'me'])->middleware(['auth:sanctum']);
 Route::post('login', [UserController::class, 'login']);
-Route::post('login/goolge', [UserController::class, 'loginWithGoogle']);
+Route::post('login/google', [UserController::class, 'loginWithGoogle']);
 Route::post('login/apple', [UserController::class, 'loginWithApple']);
 Route::post('force-profile-update',[UserController::class,'forceProfileUpdate']);
 
@@ -81,7 +81,6 @@ Route::middleware(['auth:sanctum','verify.user'])->group(function () {
 
     });
 });
-
 
 Route::middleware(['auth:sanctum','verify.user'])->group(function () {
 

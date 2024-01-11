@@ -152,11 +152,12 @@
                             {{ $earning->status }}
                         </span>
                         @endif
-
+                        
                     </td>
                     <td>
-                        <ul>
-                            @if ($earning->status != 'pending' || $earning->status != 'trail')
+                        <ul> 
+
+                            @if ($earning->status != 'pending' && $earning->status != 'trail')
                             <li>
                                 <a href="{{ url('earning/generate-pdf',encrypt($earning->payment_id)) }}"
                                     class="btn-view btn-export">Export</a>
