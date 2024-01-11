@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\PricingPackage;
-use Auth;
+use Illuminate\Support\Facades\Auth; 
 
 class PricingPackageSeeder extends Seeder
 {

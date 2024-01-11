@@ -34,7 +34,7 @@ class AuthController extends Controller
             $role->save();
         }
 
-        return redirect()->route('/')->with('success', 'Registration successful done!.');
+        return redirect('/')->with('success', 'Registration successful done!.');
     }
 
     // Login

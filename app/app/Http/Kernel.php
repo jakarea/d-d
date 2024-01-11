@@ -67,5 +67,6 @@ class Kernel extends HttpKernel {
         'hydra.log' => \App\Http\Middleware\HydraLog::class,
         'isAdmin' => \App\Http\Middleware\CheckUserRole::class,
         'checkSubscription' => \App\Http\Middleware\CheckSubscription::class,
+        'verify.user' => \App\Http\Middleware\VerifyUserCheck::class,
     ];
 }

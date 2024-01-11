@@ -34,7 +34,7 @@ class NotificationController extends ApiController
     
     public function companyNotifyList():JsonResponse
     {
-        $notifications = Notification::with(['creator', 'receiver', 'product'])
+        $notifications = Notification::with(['creator.personalInfo', 'receiver.personalInfo', 'product'])
         ->where('status', 1)
         ->where('role', 'like', '%company%')
         ->orWhere('receiver_id',auth()->user()->id)

@@ -45,14 +45,14 @@ Route::put('users/update-password/{user}', [UserController::class, 'updatePasswo
 
 Route::get('me', [UserController::class, 'me'])->middleware(['auth:sanctum']);
 Route::post('login', [UserController::class, 'login']);
-Route::post('login/goolge', [UserController::class, 'loginWithGoogle']);
+Route::post('login/google', [UserController::class, 'loginWithGoogle']);
 Route::post('login/apple', [UserController::class, 'loginWithApple']);
 Route::post('force-profile-update',[UserController::class,'forceProfileUpdate']);
 
 Route::apiResource('roles', RoleController::class)->except(['create', 'edit'])->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
 Route::apiResource('users.roles', UserRoleController::class)->except(['create', 'edit', 'show', 'update'])->middleware(['auth:sanctum', 'ability:admin,super-admin']);
 
-Route::middleware(['auth:sanctum'])->group(function () {
+Route::middleware(['auth:sanctum','verify.user'])->group(function () {
 
     Route::prefix('client')->name('api.client.')->group(function () {
         Route::get('location/{name?}', [ProductController::class, 'locationList']);
@@ -82,8 +82,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 });
 
-
-Route::middleware(['auth:sanctum'])->group(function () {
+Route::middleware(['auth:sanctum','verify.user'])->group(function () {
 
     Route::prefix('company')->name('api.company.')->group(function () {
         Route::get('location/{name?}', [ProductController::class, 'locationList']);

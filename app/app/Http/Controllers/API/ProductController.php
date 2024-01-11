@@ -35,7 +35,7 @@ class ProductController extends ApiController
     {
 
         $company = $request->company;
-        $searchTerm = $request->keyword;
+        $searchTerm = $request->title;
         $searchLocation = $request->location;
 
         $sortBy = $request->sortby;

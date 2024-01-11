@@ -91,14 +91,20 @@ class SubscriptionController extends ApiController
                 return $this->jsonResponse(true, $this->failed, $this->emptyArray, ['You have already purchased this package!'], JsonResponse::HTTP_NOT_FOUND);
             }
 
-            if ($price) {
-                $earning = Earning::updateOrCreate(
+            if ($price) { 
+
+                $earning = Earning::where('company_id', $company->id)
+                ->where('user_id', $request->user_id)
+                ->whereIn('status', ['pending', 'trail'])->first();
+
+                if ($earning) {
+                    $earning->status = 'pending';
+                    $earning->save();
+                }else{
+                   $earning = Earning::create( 
                     [
                         'company_id' => $company->id,
                         'user_id' => $request->user_id,
-                        'status' => ['trail', 'pending']
-                    ],
-                    [
                         'package_name' => $package->name,
                         'pricing_packages_id' => $package->id,
                         'payment_id' => '',
@@ -108,7 +114,9 @@ class SubscriptionController extends ApiController
                         'start_at' => null,
                         'end_at' => null,
                     ]
-                );
+                ); 
+                }
+
             }
 
             // Create a Product in Stripe
