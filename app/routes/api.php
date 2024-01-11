@@ -100,8 +100,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('product/{product}', [ProductController::class, 'productDetails']);
 
         Route::get('profile', [ClientController::class, 'profile']);
-        Route::post('profile', [ClientController::class, 'profileUpdate'])->middleware('checkSubscription');
-        Route::post('security/settings', [ClientController::class, 'securitySettings'])->middleware('checkSubscription');
+        Route::post('profile', [ClientController::class, 'profileUpdate']);
+        Route::post('security/settings', [ClientController::class, 'securitySettings']);
 
         Route::get('reviews/{company}', [ReviewController::class, 'reviewsOfCompany']);
         Route::get('review/accept', [ReviewController::class, 'reviewAcceptReject']);
@@ -117,7 +117,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('purchase/request', [SubscriptionController::class, 'handlePaymentRequest']);
 
         Route::get('notifications', [NotificationController::class, 'companyNotifyList']);
-        Route::get('notifications/seen', [NotificationController::class, 'seen'])->middleware('checkSubscription');
+        Route::get('notifications/seen', [NotificationController::class, 'seen']);
 
     });
 });
