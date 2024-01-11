@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Earning;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Crypt; 
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -61,7 +62,12 @@ class EarningController extends Controller
 
     public function show($id)
     { 
+        
         $earning = Earning::find($id);
+
+        if (!$earning) {
+            return redirect()->back()->with('error','No payment details found!');    
+        }
         return view('earnings/show',compact('earning'));
     }
 
@@ -73,9 +79,10 @@ class EarningController extends Controller
         }
 
         $payment_id = Crypt::decrypt($payment_id);
-        $payment = Earning::where('payment_id',$payment_id)->with('user')->first();
+        $earning = Earning::where('payment_id',$payment_id)->with('user')->first();
+        $user = User::find($earning->user_id);
 
-        $pdf = Pdf::loadView('payments.invoice.package',['payment' => $payment]);
+        $pdf = Pdf::loadView('payments.invoice.package',['earning' => $earning, 'user' => $user]);
         return $pdf->download('invoice-'.$payment_id.'.pdf');
     }
 }

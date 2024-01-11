@@ -211,7 +211,7 @@ class SubscriptionController extends ApiController
 
         // Send the email with the PDF attachment
         $mailInfo = Mail::send('payments.invoice.package', ['earning' => $earning, 'user' => $user], function ($message) use ($pdfContent, $earning, $user) {
-            $message->to($user->email)
+        $message->to($user->email)
                 ->subject('Invoice')
                 ->attachData($pdfContent,  $earning->package_name . '.pdf', ['mime' => 'application/pdf']);
         });

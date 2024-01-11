@@ -42,6 +42,10 @@ class MarketPlaceController extends Controller
 
     public function show($slug)
     {
+        if (!$slug) {
+            return redirect()->back()->with('error','No product found!');   
+        }
+
         $product = Product::where('slug',$slug)->with('reviews','productVariants','company')->first();
 
         $productVariants = $product->productVariants;
@@ -52,6 +56,10 @@ class MarketPlaceController extends Controller
 
     public function edit($slug)
     {
+        if (!$slug) {
+            return redirect()->back()->with('error','No product found!');   
+        }
+        
        $product = Product::where('slug',$slug)->with('reviews','productVariants','company')->first();
         return view('marketplace/edit',compact('product'));
     }

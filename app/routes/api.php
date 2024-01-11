@@ -52,7 +52,7 @@ Route::post('force-profile-update',[UserController::class,'forceProfileUpdate'])
 Route::apiResource('roles', RoleController::class)->except(['create', 'edit'])->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
 Route::apiResource('users.roles', UserRoleController::class)->except(['create', 'edit', 'show', 'update'])->middleware(['auth:sanctum', 'ability:admin,super-admin']);
 
-Route::middleware(['auth:sanctum','verify.user'])->group(function () {
+Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::prefix('client')->name('api.client.')->group(function () {
         Route::get('location/{name?}', [ProductController::class, 'locationList']);
@@ -82,7 +82,9 @@ Route::middleware(['auth:sanctum','verify.user'])->group(function () {
     });
 });
 
-Route::middleware(['auth:sanctum','verify.user'])->group(function () {
+// 'verify.user' 
+
+Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::prefix('company')->name('api.company.')->group(function () {
         Route::get('location/{name?}', [ProductController::class, 'locationList']);
