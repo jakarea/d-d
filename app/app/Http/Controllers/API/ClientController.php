@@ -26,7 +26,7 @@ class ClientController extends ApiController
             'user_info' => $user, 
             // 'user_company' => $user->company,
             'current_package_info' => [
-                'is_expired' => $user->payments->end_at > now() ? 0 : 1,
+                'is_expired' => optional($user->payments)->end_at > now() ? 0 : 1,
                 'package' => $package,
                 'payment_info' => $user->payments
             ]

@@ -189,8 +189,10 @@ class ProductController extends ApiController
     public function editProduct($id): JsonResponse
     {
         $product = Product::with(['productVariants'])->where('id', $id)->first();
-        $categories = Category::all();
-        $product->categories = $categories;
+        // selected categories for product edit
+        $cats = json_decode($product->cats);
+        $categories = Category::whereIn('id',$cats)->get();
+        $product->selected_categories = $categories;
 
         if (!empty($product)) {
 
