@@ -14,6 +14,7 @@ use App\Process\ProductVariantProcess;
 use App\Traits\FileTrait;
 use Illuminate\Http\Request;
 use App\Http\Requests\ProductAddRequest;
+use App\Models\Category;
 use App\Models\Notification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\JsonResponse;
@@ -188,6 +189,8 @@ class ProductController extends ApiController
     public function editProduct($id): JsonResponse
     {
         $product = Product::with(['productVariants'])->where('id', $id)->first();
+        $categories = Category::all();
+        $product->categories = $categories;
 
         if (!empty($product)) {
 
