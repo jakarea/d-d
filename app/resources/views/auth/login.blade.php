@@ -72,18 +72,26 @@
                                 @endif
                             </div>
                             <div class="form-submit">
-                                <button class="btn btn-submit" type="submit">Login</button>
+                                <button class="btn btn-submit" type="submit" id="submitButton">Login</button>
                             </div>
                             <div class="options">
                                 <hr>
-                                <p>Or login with</p>
+                                <p>Download our app</p>
                             </div>
-                            <div class="login-with-social">
+                            <div class="download-app-box">
+                                <a href="#">
+                                    <img src="{{ asset('public/assets/images/auth/play.png') }}" alt="G" class="img-fluid"> 
+                                </a>
+                                <a href="#">
+                                    <img src="{{ asset('public/assets/images/auth/app.png') }}" alt="A" class="img-fluid"> 
+                                </a>
+                            </div>
+                            {{-- <div class="login-with-social">
                                 <a href="#" class="bttn me-md-3 me-2"><img src="{{ asset('public/assets/images/auth/google.svg') }}"
                                     alt="G" class="img-fluid"> Google</a>
                             <a href="#" class="bttn ms-md-3 ms-2"><img src="{{ asset('public/assets/images/auth/apple.svg') }}"
                                     alt="A" class="img-fluid"> Apple</a>
-                            </div>
+                            </div> --}}
                             <div class="already-have">
                                 <p>You're new in here? <a href="{{ url('register')}}">Create Account</a></p>
                             </div>
@@ -109,4 +117,26 @@
     </div>
 </main>
 <!-- login page wrapper end -->
+@endsection 
+
+@section('script')
+
+<script>
+    // Function to check if both email and password fields are filled
+    function checkFields() {
+        var emailValue = document.getElementById('email').value;
+        var passwordValue = document.getElementById('password').value;
+
+        if (emailValue !== '' && passwordValue !== '') {
+            document.getElementById('submitButton').classList.add('active');
+        } else {
+            document.getElementById('submitButton').classList.remove('active');
+        }
+    }
+
+    // Attach the checkFields function to the input fields' input events
+    document.getElementById('email').addEventListener('input', checkFields);
+    document.getElementById('password').addEventListener('input', checkFields);
+</script>
+
 @endsection 
