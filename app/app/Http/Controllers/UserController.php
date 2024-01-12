@@ -316,7 +316,8 @@ class UserController extends API\ApiController
 
                     $userInfoRegis = [
                         'first_time' => 1,
-                        'apple' => 1
+                        'apple' => 1,
+                        'user_info' => $user
                     ];
 
                     return $this->jsonResponse(false, 'Success', $userInfoRegis, $this->emptyArray, JsonResponse::HTTP_CREATED);

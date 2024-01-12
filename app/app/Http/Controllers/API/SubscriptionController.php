@@ -98,6 +98,10 @@ class SubscriptionController extends ApiController
                 ->whereIn('status', ['pending', 'trail'])->first();
 
                 if ($earning) {
+                    $earning->package_name = $package->name;
+                    $earning->pricing_packages_id = $package->id;
+                    $earning->amount = $price;
+                    $earning->package_type = $request->package_type;
                     $earning->status = 'pending';
                     $earning->save();
                 }else{

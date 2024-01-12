@@ -78,13 +78,15 @@ class ProductController extends ApiController
             if ($sortBy == 'offer_product') {
                 $orderByColumn = 'price - sell_price';
                 $query->orderBy(DB::raw($orderByColumn), $sortOrder);
-            } else {
+            } elseif ($sortBy == 'price') {
+                    $query->orderBy(DB::raw('COALESCE(sell_price, price)'), $sortOrder);
+                }else {
                 $query->orderBy($sortBy, $sortOrder);
             }
         } else if((is_null($sortBy) && !is_null($sortOrder)) && $sortOrder == 'desc') {
             $query->orderBy('id','desc');
         } else {
-            $query->orderBy('id');
+            $query->orderBy('id','desc');
         }
         
         // wishlist flag
