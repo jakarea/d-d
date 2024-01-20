@@ -22,8 +22,12 @@ document.addEventListener("DOMContentLoaded", function() {
     let searchField = document.getElementById("search"); 
     let mainSearchForm = document.getElementById("mainSearchForm");
 
-    searchField.addEventListener("change", function(e) {
-        e.preventDefault();
-        mainSearchForm.submit();
-    });
+    if(searchField){
+        searchField.addEventListener("change", function(e) {
+            e.preventDefault();
+            mainSearchForm.submit();
+        });
+    }
+
+    
 });

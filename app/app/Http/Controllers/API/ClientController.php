@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Requests\User\SecuritySettingRequest;
 use App\Http\Requests\User\UpdateRequest;
 use App\Models\PersonalInfo;
+use App\Models\PricingPackage;
 use App\Models\User;
 use App\Process\UserProcess;
 use Illuminate\Http\JsonResponse;
@@ -15,9 +16,23 @@ class ClientController extends ApiController
 {
     public function profile():JsonResponse
     {
-        $user = User::with(['personalInfo','address','company','payments.myPackage'])->where('id', auth()->user()->id)->first();
+        $user = User::with(['personalInfo','company','address'])->where('id', auth()->user()->id)->first();
+        $package = NULL;
+        if ($user->payments) {
+            $package = PricingPackage::where('id',$user->payments->pricing_packages_id)->first();
+        }
 
-        return $this->jsonResponse(false, $this->success, $user, $this->emptyArray, JsonResponse::HTTP_OK);
+        $userInfo = [
+            'user_info' => $user, 
+            // 'user_company' => $user->company,
+            'current_package_info' => [
+                'is_expired' => optional($user->payments)->end_at > now() ? 0 : 1,
+                'package' => $package,
+                'payment_info' => $user->payments
+            ]
+        ];
+
+        return $this->jsonResponse(false, $this->success, $userInfo, $this->emptyArray, JsonResponse::HTTP_OK);
     }
 
     public function profileUpdate(UpdateRequest $request):JsonResponse

@@ -150,7 +150,7 @@
             <td style="padding-top: 1rem;">
                 <address>
                     <strong>Payment By: </strong> <br>
-                    Name: {{ optional($earning->user)->name }} <br />
+                    Name: {{ $earning->user->name }} <br />
                     Payment Date:  {{ \Carbon\Carbon::parse($earning->start_at)->format('d F Y') }} <br>
                     Payment Type : {{ $earning->package_type }} <br>
                     Payment Status : {{ ucfirst( $earning->status) }}

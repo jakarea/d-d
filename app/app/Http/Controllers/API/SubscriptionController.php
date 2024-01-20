@@ -98,6 +98,10 @@ class SubscriptionController extends ApiController
                 ->whereIn('status', ['pending', 'trail'])->first();
 
                 if ($earning) {
+                    $earning->package_name = $package->name;
+                    $earning->pricing_packages_id = $package->id;
+                    $earning->amount = $price;
+                    $earning->package_type = $request->package_type;
                     $earning->status = 'pending';
                     $earning->save();
                 }else{
@@ -211,7 +215,7 @@ class SubscriptionController extends ApiController
 
         // Send the email with the PDF attachment
         $mailInfo = Mail::send('payments.invoice.package', ['earning' => $earning, 'user' => $user], function ($message) use ($pdfContent, $earning, $user) {
-            $message->to($user->email)
+        $message->to($user->email)
                 ->subject('Invoice')
                 ->attachData($pdfContent,  $earning->package_name . '.pdf', ['mime' => 'application/pdf']);
         });

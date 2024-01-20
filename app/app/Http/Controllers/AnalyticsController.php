@@ -54,7 +54,7 @@ class AnalyticsController extends Controller
         // total frozen account
         $filteredCompanies = Company::with('user')->get();
         $totalFrozenAccount = $filteredCompanies->filter(function ($company) {
-            return $company->user->status != 1;
+            return optional($company->user)->status != 1;
         })->count();
 
         // earning graph 
@@ -115,7 +115,12 @@ class AnalyticsController extends Controller
         $inactive_users = [];
 
         foreach ($data as $record) {
-            $createdAt = Carbon::parse($record['created_at']);
+
+            if (isset($record['created_at']) && $record['created_at'] !== null) {
+                $createdAt = Carbon::parse($record['created_at']); 
+            }
+
+            // $createdAt = Carbon::parse($record['created_at']);
 
             // Check if the record's creation month is the current month
             if ($createdAt->format('m') !== $currentMonth) {

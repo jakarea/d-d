@@ -159,6 +159,7 @@ class UserController extends API\ApiController
             'user_info' => $user,
             'user_company' => $company,
             'current_package_info' => [
+                'is_expired' => optional($user->payments)->end_at > now() ? 0 : 1,
                 'package' => $package,
                 'payment_info' => $user->payments
             ]
@@ -214,6 +215,7 @@ class UserController extends API\ApiController
                         'user_info' => $user,
                         'user_company' => $company, 
                         'current_package_info' => [
+                            'is_expired' => optional($user->payments)->end_at > now() ? 0 : 1,
                             'package' => $package,
                             'payment_info' => $user->payments
                         ]
@@ -302,6 +304,7 @@ class UserController extends API\ApiController
                         'user_info' => $user,
                         'user_company' => $company,
                         'current_package_info' => [
+                            'is_expired' => optional($user->payments)->end_at > now() ? 0 : 1,
                             'package' => $package,
                             'payment_info' => $user->payments
                         ]
@@ -313,7 +316,8 @@ class UserController extends API\ApiController
 
                     $userInfoRegis = [
                         'first_time' => 1,
-                        'apple' => 1
+                        'apple' => 1,
+                        'user_info' => $user
                     ];
 
                     return $this->jsonResponse(false, 'Success', $userInfoRegis, $this->emptyArray, JsonResponse::HTTP_CREATED);

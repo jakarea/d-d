@@ -52,7 +52,7 @@ Route::post('force-profile-update',[UserController::class,'forceProfileUpdate'])
 Route::apiResource('roles', RoleController::class)->except(['create', 'edit'])->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
 Route::apiResource('users.roles', UserRoleController::class)->except(['create', 'edit', 'show', 'update'])->middleware(['auth:sanctum', 'ability:admin,super-admin']);
 
-Route::middleware(['auth:sanctum','verify.user'])->group(function () {
+Route::middleware(['auth:sanctum','VerifyUserCheck'])->group(function () {
 
     Route::prefix('client')->name('api.client.')->group(function () {
         Route::get('location/{name?}', [ProductController::class, 'locationList']);
@@ -82,7 +82,7 @@ Route::middleware(['auth:sanctum','verify.user'])->group(function () {
     });
 });
 
-Route::middleware(['auth:sanctum','verify.user'])->group(function () {
+Route::middleware(['auth:sanctum','VerifyUserCheck'])->group(function () {
 
     Route::prefix('company')->name('api.company.')->group(function () {
         Route::get('location/{name?}', [ProductController::class, 'locationList']);
@@ -98,8 +98,8 @@ Route::middleware(['auth:sanctum','verify.user'])->group(function () {
         Route::get('product/{product}', [ProductController::class, 'productDetails']);
 
         Route::get('profile', [ClientController::class, 'profile']);
-        Route::post('profile', [ClientController::class, 'profileUpdate'])->middleware('checkSubscription');
-        Route::post('security/settings', [ClientController::class, 'securitySettings'])->middleware('checkSubscription');
+        Route::post('profile', [ClientController::class, 'profileUpdate']);
+        Route::post('security/settings', [ClientController::class, 'securitySettings']);
 
         Route::get('reviews/{company}', [ReviewController::class, 'reviewsOfCompany']);
         Route::get('review/accept', [ReviewController::class, 'reviewAcceptReject']);
@@ -115,7 +115,7 @@ Route::middleware(['auth:sanctum','verify.user'])->group(function () {
         Route::post('purchase/request', [SubscriptionController::class, 'handlePaymentRequest']);
 
         Route::get('notifications', [NotificationController::class, 'companyNotifyList']);
-        Route::get('notifications/seen', [NotificationController::class, 'seen'])->middleware('checkSubscription');
+        Route::get('notifications/seen', [NotificationController::class, 'seen']);
 
     });
 });

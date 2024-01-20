@@ -368,6 +368,7 @@ body {
   transition: ease-in-out 0.3s;
 }
 
+.auth-txt-box .auth-form-wrap .form-submit .btn-submit.active,
 .auth-txt-box .auth-form-wrap .form-submit .btn-submit:hover {
   background-color: #111827;
   color: #fff;
@@ -2452,4 +2453,22 @@ body {
 .paggination-wrap .pagination .page-item.active .page-link{
   background-color: #111827!important;
   color: #fff!important;
+}
+
+.download-app-box{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.download-app-box a{
+  display: block;
+  margin: 0 0.5rem;
+}
+
+.download-app-box a img{
+  max-width: 320px;
+  border-radius: 5px;
+  object-fit: cover;
+  max-height: 3.5rem;
 }

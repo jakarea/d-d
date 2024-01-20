@@ -16,13 +16,7 @@
                     <img src="{{ asset('public/assets/images/icons/dashboard.svg') }}" alt="I" class="img-fluid">
                     Dashboard
                 </a>
-            </li> --}}
-            <li>
-                <a href="#">
-                    <img src="{{ asset('public/assets/images/icons/dashboard.svg') }}" alt="I" class="img-fluid">
-                    Dashboard
-                </a>
-            </li>
+            </li> --}} 
             <li>
                 <a href="{{url('/category')}}" class="{{ Request::is('category*') ? 'active' : ''}}">
                     <img src="{{ asset('public/assets/images/icons/marketplace.svg') }}" alt="I" class="img-fluid">

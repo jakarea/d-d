@@ -52,6 +52,7 @@ class VerificationController extends ApiController
                     'user_info' => $user,
                     'user_company' => $company,
                     'current_package_info' => [
+                        'is_expired' => optional($user->payments)->end_at > now() ? 0 : 1,
                         'package' => $current_pack,
                         'payment_info' => $user->payments
                     ]

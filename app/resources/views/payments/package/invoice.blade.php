@@ -142,18 +142,18 @@
         </tr>
         <tr>
             <th colspan="2" class="" style="text-align: right;">
-                <p>Date: {{ $payment->purchased_info->created_at>diffForHumans() }}</p>
+                <p>Date: {{ $earning->purchased_info->created_at>diffForHumans() }}</p>
             </th>
         </tr>
         <tr>
             <td style="padding-top: 1rem;">
                 <address>
                     <strong>Payment By: </strong> <br>
-                    Name: {{ $payment->user->name }} <br />
-                    Email: {{ $payment->user->email }}  <br />
-                    Payment Status: {{ $payment->purchased_info->status }}  <br />
-                    Purchase Date: {{ $payment->purchased_info->start_at->diffForHumans() }} <br> 
-                    Expired Date : {{ $payment->purchased_info->end_at->diffForHumans() }} <br> 
+                    Name: {{ $earning->user->name }} <br />
+                    Email: {{ $earning->user->email }}  <br />
+                    Payment Status: {{ $earning->purchased_info->status }}  <br />
+                    Purchase Date: {{ $earning->purchased_info->start_at->diffForHumans() }} <br> 
+                    Expired Date : {{ $earning->purchased_info->end_at->diffForHumans() }} <br> 
 
                 </address>
             </td>
@@ -178,9 +178,9 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td class="br-0">{{ $payment->current_package->name }}</td>
-                            <td class="bl-0 br-0">{{ $payment->purchased_info->package_type }}</td>
-                            <td class="bl-0 " style="text-align: right;">€ {{ $payment->purchased_info->amount }}</td>
+                            <td class="br-0">{{ $earning->current_package->name }}</td>
+                            <td class="bl-0 br-0">{{ $earning->purchased_info->package_type }}</td>
+                            <td class="bl-0 " style="text-align: right;">€ {{ $earning->purchased_info->amount }}</td>
                         </tr>
                         <tr class="" style="text-align: right;">
                             <td colspan="2" class="br-0">
@@ -195,7 +195,7 @@
                                 <strong>Grand Total:</strong>
                             </td>
                             <td class="bl-0">
-                                € {{ $payment->purchased_info->amount }}
+                                € {{ $earning->purchased_info->amount }}
                             </td>
                         </tr>
                     </tbody>

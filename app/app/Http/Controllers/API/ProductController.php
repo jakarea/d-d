@@ -14,6 +14,7 @@ use App\Process\ProductVariantProcess;
 use App\Traits\FileTrait;
 use Illuminate\Http\Request;
 use App\Http\Requests\ProductAddRequest;
+use App\Models\Category;
 use App\Models\Notification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\JsonResponse;
@@ -77,13 +78,15 @@ class ProductController extends ApiController
             if ($sortBy == 'offer_product') {
                 $orderByColumn = 'price - sell_price';
                 $query->orderBy(DB::raw($orderByColumn), $sortOrder);
-            } else {
+            } elseif ($sortBy == 'price') {
+                    $query->orderBy(DB::raw('COALESCE(sell_price, price)'), $sortOrder);
+                }else {
                 $query->orderBy($sortBy, $sortOrder);
             }
         } else if((is_null($sortBy) && !is_null($sortOrder)) && $sortOrder == 'desc') {
             $query->orderBy('id','desc');
         } else {
-            $query->orderBy('id');
+            $query->orderBy('id','desc');
         }
         
         // wishlist flag
@@ -188,6 +191,10 @@ class ProductController extends ApiController
     public function editProduct($id): JsonResponse
     {
         $product = Product::with(['productVariants'])->where('id', $id)->first();
+        // selected categories for product edit
+        $cats = json_decode($product->cats);
+        $categories = Category::whereIn('id',$cats)->get();
+        $product->selected_categories = $categories;
 
         if (!empty($product)) {
 
