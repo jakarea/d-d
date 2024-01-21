@@ -20,7 +20,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB; 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 class ProductController extends ApiController
@@ -35,6 +35,7 @@ class ProductController extends ApiController
     public function index(Request $request):JsonResponse
     {
 
+        $user_id = $request->user_id ?? null;
         $company = $request->company;
         $searchTerm = $request->title;
         $searchLocation = $request->location;
@@ -42,12 +43,18 @@ class ProductController extends ApiController
         $sortBy = $request->sortby;
         $sortOrder = $request->sortorder;
         $category = $request->category;
+        // near my area
+        // expiring soon
+        // best deal
 
         $query = Product::with(['productVariants', 'company','wishlist', 'reviews' => function ($query) {
             $query->with(['likes', 'dislikes']);
         }]);
 
-        $company = Company::firstwhere('user_id', auth()->user()->id);
+        if($user_id){
+            $company = Company::firstwhere('user_id', $user_id);
+        }
+
         $routeName = Route::currentRouteName();
 
         if ($routeName === "api.company.product.list") {
@@ -70,11 +77,11 @@ class ProductController extends ApiController
             $query->whereHas('company', function ($q) use ($searchLocation) {
                 $q->where('location', 'LIKE', "%{$searchLocation}%");
             });
-        } 
+        }
 
         if (!is_null($sortBy) && !is_null($sortOrder)) {
             $sortBy = strip_tags(trim($sortBy));
-        
+
             if ($sortBy == 'offer_product') {
                 $orderByColumn = 'price - sell_price';
                 $query->orderBy(DB::raw($orderByColumn), $sortOrder);
@@ -88,17 +95,18 @@ class ProductController extends ApiController
         } else {
             $query->orderBy('id','desc');
         }
-        
-        // wishlist flag
-        $user_id = auth()->user()->id;
-        $query->addSelect(['is_wishlist' => WishList::selectRaw('1')
-            ->whereColumn('product_id', 'products.id')
-            ->where('user_id', $user_id)
-            ->limit(1)
-        ]);
 
-        $itemLimit = 2;
-        $products = $query->paginate($itemLimit);
+        // wishlist flag
+        if($user_id){
+            $query->addSelect(['is_wishlist' => WishList::selectRaw('1')
+                ->whereColumn('product_id', 'products.id')
+                ->where('user_id', $user_id)
+                ->limit(1)
+            ]);
+        }
+
+ 
+        $products = $query->paginate(5); 
 
         return $this->jsonResponse(false, $this->success, $products, $this->emptyArray, JsonResponse::HTTP_OK);
 
@@ -114,21 +122,21 @@ class ProductController extends ApiController
     {
         try {
             $uniqueLocations = [];
-    
+
             if ($name) {
                 $locationName = $name;
-    
+
                 $uniqueLocations = Cache::remember('unique_locations_' . $locationName, 3600, function () use ($locationName) {
                         $companies = Company::where('location', 'like', '%' . $locationName . '%')
                         ->select('location')
                         ->whereRaw('LOWER(location) LIKE ?', ['%' . strtolower($locationName) . '%'])
                         ->get();
 
-    
+
                     return $companies->pluck('location')->unique()->values()->all();
                 });
             }
-    
+
             return $this->jsonResponse(false, $this->success, $uniqueLocations, $this->emptyArray, JsonResponse::HTTP_OK);
         } catch (\Throwable $th) {
             return $this->jsonResponse(true, 'No location found!', $name, [$th->getMessage()], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
@@ -162,7 +170,7 @@ class ProductController extends ApiController
 
                 $product = Product::with(['productVariants'])->find($product->id);
 
-                // notification create for new product create  
+                // notification create for new product create
                 Notification::create([
                     'creator_id' => auth()->user()->id,
                     'receiver_id' => $product->company_id,
@@ -173,7 +181,7 @@ class ProductController extends ApiController
                     'status' => 1,
                     'role' => 'admin,client'
                 ]);
- 
+
 
                 return $this->jsonResponse(false, 'Product created Successfully', $product, [], JsonResponse::HTTP_CREATED);
             } else {
@@ -213,14 +221,14 @@ class ProductController extends ApiController
      * @return JsonResponse
      */
     public function updateProduct(UpdateRequest $request, $id): JsonResponse
-    { 
+    {
         try {
             $product = Product::find($id);
-            
+
 
             if (!empty($product)) {
 
-                $product = ProductProcess::update($request, $id); 
+                $product = ProductProcess::update($request, $id);
 
                 $arrayofProductVariantId = ProductVariant::where('product_id', $id)->pluck('id')->toArray();
 
@@ -232,7 +240,7 @@ class ProductController extends ApiController
                     $product->productVariants;
                 }
 
-                // notification create for new product create  
+                // notification create for new product create
                 Notification::create([
                     'creator_id' => auth()->user()->id,
                     'receiver_id' => $product->company_id,
@@ -270,28 +278,28 @@ class ProductController extends ApiController
             $query->where('company_id', $request->company);
         }
         $product = $query->find($id);
-        
+
         // $mainReviews =  $product->reviews->toArray();
         $mainReviews =  Review::with(['likes', 'dislikes'])
         ->where('product_id', $product->id)
         ->where('status', false)
-        ->with('user.personalInfo', 'likeStatus') 
+        ->with('user.personalInfo', 'likeStatus')
         ->get()
         ->toArray();
 
-        $ids = array_column($mainReviews, 'id'); 
-        $reviews = array_combine($ids, $mainReviews); 
-        
+        $ids = array_column($mainReviews, 'id');
+        $reviews = array_combine($ids, $mainReviews);
+
         $mainReviews = [];
-        
+
         foreach ($reviews as $review) {
             if ($review['replies_to']) {
                 $reviews[$review['replies_to']]['reply'][] = $review;
-            } 
+            }
         }
-        
+
         $filteredReview = [];
-        
+
         foreach ($reviews as $item) {
             if (!isset($item['replies_to']) || $item['replies_to'] === null) {
                 $filteredReview[] = $item;
@@ -322,9 +330,9 @@ class ProductController extends ApiController
         }, 'reviews'])
             ->where('id', $companyId)
             ->first();
-        
+
         $user_id = auth()->user()->id;
-        
+
         // Map through each product and add the is_wishlist attribute
         $products->products->map(function ($product) use ($user_id) {
             $isWishlist = WishList::where('product_id', $product->id)
@@ -332,7 +340,7 @@ class ProductController extends ApiController
                 ->exists();
             $product->is_wishlist = $isWishlist;
             return $product;
-        });        
+        });
 
         if (!empty($products)) {
 
@@ -375,7 +383,7 @@ class ProductController extends ApiController
     public function destroy($id)
     {
 
-        $product = Product::where('user_id', Auth::id())->where('id', $id)->first(); 
+        $product = Product::where('user_id', Auth::id())->where('id', $id)->first();
 
         //delete product images
         if (isset($product->images)) {
@@ -389,12 +397,12 @@ class ProductController extends ApiController
                 $arrayOfImages = explode(',', $proVariant->images);
                 $this->deleteFile("public", $arrayOfImages);
             }
-        }        
+        }
 
         if (!empty($product)) {
             ProductVariant::whereIn('product_id', [$product->id])->delete();
 
-            // notification create for new product create  
+            // notification create for new product create
             Notification::create([
                 'creator_id' => auth()->user()->id,
                 'receiver_id' => $product->company_id,

@@ -52,13 +52,17 @@ Route::post('force-profile-update',[UserController::class,'forceProfileUpdate'])
 Route::apiResource('roles', RoleController::class)->except(['create', 'edit'])->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
 Route::apiResource('users.roles', UserRoleController::class)->except(['create', 'edit', 'show', 'update'])->middleware(['auth:sanctum', 'ability:admin,super-admin']);
 
+Route::get('client/product', [ProductController::class, 'index']);
+Route::get('client/category', [CategoryController::class, 'index']);
+
+
 Route::middleware(['auth:sanctum','VerifyUserCheck'])->group(function () {
 
     Route::prefix('client')->name('api.client.')->group(function () {
         Route::get('location/{name?}', [ProductController::class, 'locationList']);
-        Route::get('category', [CategoryController::class, 'index']);
+        // Route::get('category', [CategoryController::class, 'index']);
 
-        Route::get('product', [ProductController::class, 'index']);
+        // Route::get('product', [ProductController::class, 'index']);
         Route::get('product/{product}', [ProductController::class, 'productDetails']);
         Route::get('/{company}/products', [ProductController::class, 'getProductsOfCompany']);
 
