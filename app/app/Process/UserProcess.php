@@ -3,6 +3,7 @@
 namespace App\Process;
 
 use App\Models\Address;
+use App\Models\Company;
 use App\Models\PersonalInfo;
 use App\Models\User;
 use App\Traits\FileTrait;
@@ -48,7 +49,7 @@ class UserProcess
             (new self())->deleteImage($authUser->personalInfo->avatar);
         }
 
-        $imageString = NULL;
+        $imageString = $authUser->personalInfo ? $authUser->personalInfo->avatar : null;
 
         if (isset($request->avatar)) {
             $imageString = $this->saveImage($request);
@@ -72,6 +73,24 @@ class UserProcess
             ],
         );
 
+        // if user is company then do update company also
+        $role = auth()->user()->roles->pluck('slug')->first();
+
+        if ($role && $role == 'company') {
+            $user_id = auth()->user()->id;
+        
+            $company = Company::updateOrCreate(
+                [
+                    'user_id' => $user_id
+                ],
+                [
+                    'name' => $personalInfo->name,
+                    'email' => $personalInfo->email,
+                    'phone' => $personalInfo->phone
+                ]
+            ); 
+        }
+        
 
         return $personalInfo;
     }

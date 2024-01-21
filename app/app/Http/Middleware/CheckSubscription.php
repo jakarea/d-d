@@ -21,7 +21,7 @@ class CheckSubscription
         $user = auth()->user();
 
         $subscription = Earning::where('user_id',$user->id)
-        ->whereIn('status', ['paid', 'trail'])
+        ->whereIn('status', ['paid', 'trail','expired'])
         ->where('company_id',$user->company->id)
         ->first();
 

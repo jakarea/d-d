@@ -105,7 +105,8 @@ class ProductController extends ApiController
             ]);
         }
 
-        $products = $query->paginate(5);
+ 
+        $products = $query->paginate(5); 
 
         return $this->jsonResponse(false, $this->success, $products, $this->emptyArray, JsonResponse::HTTP_OK);
 
