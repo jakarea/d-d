@@ -32,6 +32,7 @@ class VerificationController extends ApiController
                 $company = Company::where('user_id',$user->id)->first();  
 
                 // if user is a company then start trail
+                $current_pack = null;
                 if ($company) {
                    $current_pack = Earning::create([
                         'pricing_packages_id' => 4,
@@ -53,7 +54,7 @@ class VerificationController extends ApiController
                     'user_company' => $company,
                     'current_package_info' => [
                         'is_expired' => optional($user->payments)->end_at > now() ? 0 : 1,
-                        'package' => $current_pack,
+                        'package' => $current_pack ? $current_pack : null,
                         'payment_info' => $user->payments
                     ]
                 ];

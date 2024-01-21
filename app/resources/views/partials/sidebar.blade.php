@@ -17,6 +17,12 @@
                     Dashboard
                 </a>
             </li> --}} 
+             <li>
+                <a href="{{url('/analytics')}}" class="{{ Request::is('analytics*') ? 'active' : ''}}">
+                    <img src="{{ asset('public/assets/images/icons/analytics.svg') }}" alt="I" class="img-fluid">
+                    Analytics
+                </a>
+            </li>
             <li>
                 <a href="{{url('/category')}}" class="{{ Request::is('category*') ? 'active' : ''}}">
                     <img src="{{ asset('public/assets/images/icons/marketplace.svg') }}" alt="I" class="img-fluid">
@@ -41,12 +47,7 @@
                     Customer
                 </a>
             </li>
-            <li>
-                <a href="{{url('/analytics')}}" class="{{ Request::is('analytics*') ? 'active' : ''}}">
-                    <img src="{{ asset('public/assets/images/icons/analytics.svg') }}" alt="I" class="img-fluid">
-                    Analytics
-                </a>
-            </li>
+           
             <li>
                 <a href="{{url('/earning')}}" class="{{ Request::is('earning*') ? 'active' : ''}}">
                     <img src="{{ asset('public/assets/images/icons/earnings.svg') }}" alt="I" class="img-fluid">

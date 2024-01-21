@@ -180,15 +180,22 @@ class UserController extends API\ApiController
             $creds = $request->validate([
                 'email' => 'required|email', 
                 'avatar' => 'nullable|mimes:png,svg,webp,jpg,jpeg|max:5048',
+                'role' => 'required|exists:roles,slug',
             ]);
         } catch (ValidationException $e) {
             return $this->validationErrorResponse($e, 422, 'Validation error', 1001);
         }
 
         try {
-            $user = User::where('email', $creds['email'])->first();
+            $user = User::where('email', $creds['email'])->first(); 
 
                 if ($user) {
+
+                    $role = $creds['role'];
+                    if (!$user->roles()->where('slug', $role)->exists()) {
+                        return $this->jsonResponse(true, 'Failed to Login', $user, ['User does not have the required role'], 401); 
+                    }
+
                     // email found now do login response for that user
                     if (config('hydra.delete_previous_access_tokens_on_login', false)) {
                         $user->tokens()->delete();
@@ -213,7 +220,7 @@ class UserController extends API\ApiController
                     $userInfo = [
                         'token' => $plainTextToken,
                         'user_info' => $user,
-                        'user_company' => $company, 
+                        'user_company' => $company ? $company : null, 
                         'current_package_info' => [
                             'is_expired' => optional($user->payments)->end_at > now() ? 0 : 1,
                             'package' => $package,
@@ -238,8 +245,19 @@ class UserController extends API\ApiController
                         'status' => 1,
                     ]);
 
-                    $role = Role::where('slug', 'client')->first();
+                    $role = Role::where('slug', $creds['role'])->first();
                     $user->roles()->attach($role);
+
+                    $company = null;
+
+                    if ($role->slug == 'company') {
+                        $company = Company::create([
+                            'name' => $user->name,
+                            'email' => $user->email,
+                            'user_id' => $user->id
+                        ]);
+                        $company->save();
+                    }
 
                     $roles = $user->roles->pluck('slug')->all();
                     $plainTextToken2 = $user->createToken('hydra-api-token', $roles)->plainTextToken;
@@ -247,7 +265,8 @@ class UserController extends API\ApiController
                     $userInfoRegis = [
                         'token' => $plainTextToken2,
                         'first_time' => 1,
-                        'user_info' => $user
+                        'user_info' => $user, 
+                        'user_company' => $company ? $company : null, 
                     ];
 
                     return $this->jsonResponse(false, 'Success! Please visit the reset page to update your password.', $userInfoRegis, $this->emptyArray, JsonResponse::HTTP_CREATED);
@@ -267,7 +286,8 @@ class UserController extends API\ApiController
     {
         try {
             $creds = $request->validate([
-                'apple_id' => 'required'
+                'apple_id' => 'required',
+                'role' => 'required|exists:roles,slug',
             ]);
         } catch (ValidationException $e) {
             return $this->validationErrorResponse($e, 422, 'Validation error', 1001);
@@ -335,6 +355,7 @@ class UserController extends API\ApiController
             $creds = $request->validate([
                 'email' => 'required|email|unique:users,email', 
                 'name' => 'required|string', 
+                'role' => 'required|exists:roles,slug',
                 'password' => 'nullable|min:6',
                 'confirm_password' => 'nullable_with:password|same:password|min:6',
                 "kvk_number" => 'nullable',
@@ -351,22 +372,40 @@ class UserController extends API\ApiController
             'apple_id' => $creds['apple_id'],
             // 'password' => $creds['password'] ? $creds['password'] : Hash::make('1234567890'),
             'password' => Hash::make('1234567890'),
-            'kvk_number' => $creds['kvk_number'],
+            'kvk_number' => $creds['kvk_number'] ?? null,
             'verification_code' => null,
             'email_verified_at' => now(),
             'status' => 1,
         ]);
 
-        $role = Role::where('slug', 'client')->first();
+        $role = Role::where('slug', $creds['role'])->first();
         $user->roles()->attach($role);
 
         $roles = $user->roles->pluck('slug')->all();
         $plainTextToken2 = $user->createToken('hydra-api-token', $roles)->plainTextToken;
 
+          // if user is company then do update company also
+       $role = auth()->user()->roles->pluck('slug')->first();
+       $company = null;
+
+       if ($role && $role == 'company') {
+        $company = Company::updateOrCreate(
+            [
+                'user_id' => $user->id
+            ],
+            [
+            'name' => $user->name,
+            'email' => $user->email,
+            'phone' => $user->phone
+        ]);
+        $company->save(); 
+       }
+
         $userInfoRegis = [
             'token' => $plainTextToken2,
             'first_time' => 1,
-            'user_info' => $user
+            'user_info' => $user,
+            'user_company' => $company
         ];
 
         return $this->jsonResponse(false, 'Success! Please visit the reset page to update your password.', $userInfoRegis, $this->emptyArray, JsonResponse::HTTP_CREATED);

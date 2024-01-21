@@ -97,7 +97,8 @@ class ProductController extends ApiController
             ->limit(1)
         ]);
 
-        $products = $query->get();
+        $itemLimit = 2;
+        $products = $query->paginate($itemLimit);
 
         return $this->jsonResponse(false, $this->success, $products, $this->emptyArray, JsonResponse::HTTP_OK);
 

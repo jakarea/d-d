@@ -17,7 +17,7 @@ class VerifyUserCheck
      */
     public function handle(Request $request, Closure $next)
     {
-        $user = Auth::user();
+        $user = auth()->user();
  
         if (!$user || !$user->email_verified_at) {
             return response()->json(['error'=> true, 'message' => "Not verified! please verify your account to continue.", 'data' => auth()->user(), 'errors' => ['Verification failed!']], 401);

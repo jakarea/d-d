@@ -449,5 +449,4 @@ var chart = new ApexCharts(document.querySelector("#companyUser"), options);
 chart.render();
 </script>
 <!-- company user graph js end -->
-
 @endsection
