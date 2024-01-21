@@ -10,17 +10,17 @@
 
     <!-- navbar -->
     <div class="side-navbar-wrap">
-        <ul>
-            {{-- <li>
-                <a href="{{url('/dashboard')}}" class="{{ Request::is('dashboard') ? 'active' : ''}}">
-                    <img src="{{ asset('public/assets/images/icons/dashboard.svg') }}" alt="I" class="img-fluid">
-                    Dashboard
-                </a>
-            </li> --}} 
+        <ul> 
              <li>
                 <a href="{{url('/analytics')}}" class="{{ Request::is('analytics*') ? 'active' : ''}}">
                     <img src="{{ asset('public/assets/images/icons/analytics.svg') }}" alt="I" class="img-fluid">
                     Analytics
+                </a>
+            </li>
+            <li>
+                <a href="{{url('/banner/list')}}" class="{{ Request::is('banner/list*') ? 'active' : ''}}">
+                    <img src="{{ asset('public/assets/images/icons/marketplace.svg') }}" alt="I" class="img-fluid">
+                    App Banner
                 </a>
             </li>
             <li>

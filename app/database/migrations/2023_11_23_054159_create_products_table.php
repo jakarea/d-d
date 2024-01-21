@@ -25,6 +25,15 @@ return new class extends Migration
             $table->decimal('sell_price', 10, 2)->nullable();
             $table->string('cupon', 20)->nullable();
             $table->text('description')->nullable();
+
+            $table->string('deal_type')->default('all_time');
+            $table->datetime('deal_expired_at')->nullable();
+            $table->boolean('is_deal_expired')->nullable()->default(0);
+
+            $table->string('location');
+            $table->decimal('location_latitude', 10, 7);
+            $table->decimal('location_longitude', 10, 7);
+
             $table->unsignedTinyInteger('status')->nullable();
             $table->text('images')->nullable();
             $table->timestamps();

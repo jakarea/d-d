@@ -15,6 +15,8 @@ use App\Http\Controllers\API\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController; 
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\API\SubscriptionController;
+use App\Http\Controllers\AppBannerController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -63,6 +65,13 @@ Route::group(['middleware' => ['auth','isAdmin']], function () {
 });
 
 Route::group(['middleware' => ['auth','isAdmin']], function () {
+
+    // app banner
+    Route::prefix('banner')->controller(AppBannerController::class)->group(function () {
+        Route::get('/list', 'index')->name('banner.list');  
+        Route::post('/store', 'store')->name('banner.store');  
+    });
+
     // category route
     Route::resource('/category', CategoryController::class);
     // marketplace route

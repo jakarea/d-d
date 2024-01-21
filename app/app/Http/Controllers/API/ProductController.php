@@ -14,6 +14,7 @@ use App\Process\ProductVariantProcess;
 use App\Traits\FileTrait;
 use Illuminate\Http\Request;
 use App\Http\Requests\ProductAddRequest;
+use App\Models\AppBanner;
 use App\Models\Category;
 use App\Models\Notification;
 use Illuminate\Http\RedirectResponse;
@@ -32,10 +33,10 @@ class ProductController extends ApiController
      * @param \Illuminate\Http\Request $request
      * @return JsonResponse
      */
-    public function index(Request $request):JsonResponse
+    public function index(Request $request): JsonResponse
     {
 
-        $user_id = $request->user_id ?? null;
+        $user_id = $request->user_id ?? auth()->user()->id;
         $company = $request->company;
         $searchTerm = $request->title;
         $searchLocation = $request->location;
@@ -44,14 +45,16 @@ class ProductController extends ApiController
         $sortOrder = $request->sortorder;
         $category = $request->category;
         // near my area
-        // expiring soon
+
+
         // best deal
 
-        $query = Product::with(['productVariants', 'company','wishlist', 'reviews' => function ($query) {
+        $query = Product::with(['productVariants', 'company', 'wishlist', 'reviews' => function ($query) {
             $query->with(['likes', 'dislikes']);
         }]);
 
-        if($user_id){
+
+        if ($user_id) {
             $company = Company::firstwhere('user_id', $user_id);
         }
 
@@ -67,6 +70,20 @@ class ProductController extends ApiController
             });
         }
 
+        // expiring soon
+        if (!is_null($sortBy) && $sortBy === 'expiring_soon') {
+
+            $query->where('deal_expired_at', '>', now())
+                ->orderBy('deal_expired_at');
+        }
+
+        // best deal
+        if (!is_null($sortBy) && $sortBy === 'expiring_soon') {
+
+            $orderByColumn = 'price - sell_price';
+            $query->orderBy(DB::raw($orderByColumn), 'desc');
+        }
+
         if (!is_null($searchTerm)) {
             $searchTerm = strip_tags(trim($searchTerm));
             $query->where('title', 'LIKE', "%{$searchTerm}%");
@@ -74,42 +91,37 @@ class ProductController extends ApiController
 
         if (!is_null($searchLocation)) {
             $searchLocation = strip_tags(trim($searchLocation));
-            $query->whereHas('company', function ($q) use ($searchLocation) {
-                $q->where('location', 'LIKE', "%{$searchLocation}%");
-            });
+
+            $query->where('location', 'LIKE', "%{$searchLocation}%");
         }
 
         if (!is_null($sortBy) && !is_null($sortOrder)) {
             $sortBy = strip_tags(trim($sortBy));
 
-            if ($sortBy == 'offer_product') {
-                $orderByColumn = 'price - sell_price';
-                $query->orderBy(DB::raw($orderByColumn), $sortOrder);
-            } elseif ($sortBy == 'price') {
-                    $query->orderBy(DB::raw('COALESCE(sell_price, price)'), $sortOrder);
-                }else {
+            if ($sortBy == 'price') {
+                $query->orderBy(DB::raw('COALESCE(sell_price, price)'), $sortOrder);
+            } else {
                 $query->orderBy($sortBy, $sortOrder);
             }
-        } else if((is_null($sortBy) && !is_null($sortOrder)) && $sortOrder == 'desc') {
-            $query->orderBy('id','desc');
+        } else if ((is_null($sortBy) && !is_null($sortOrder)) && $sortOrder == 'desc') {
+            $query->orderBy('id', 'desc');
         } else {
-            $query->orderBy('id','desc');
+            $query->orderBy('id', 'desc');
         }
 
+
         // wishlist flag
-        if($user_id){
-            $query->addSelect(['is_wishlist' => WishList::selectRaw('1')
-                ->whereColumn('product_id', 'products.id')
-                ->where('user_id', $user_id)
-                ->limit(1)
+        if ($user_id) {
+            $query->addSelect([
+                'is_wishlist' => WishList::selectRaw('1')
+                    ->whereColumn('product_id', 'products.id')
+                    ->where('user_id', $user_id)
+                    ->limit(1)
             ]);
         }
 
- 
-        $products = $query->paginate(5); 
-
+        $products = $query->paginate(5);
         return $this->jsonResponse(false, $this->success, $products, $this->emptyArray, JsonResponse::HTTP_OK);
-
     }
 
 
@@ -127,7 +139,7 @@ class ProductController extends ApiController
                 $locationName = $name;
 
                 $uniqueLocations = Cache::remember('unique_locations_' . $locationName, 3600, function () use ($locationName) {
-                        $companies = Company::where('location', 'like', '%' . $locationName . '%')
+                    $companies = Company::where('location', 'like', '%' . $locationName . '%')
                         ->select('location')
                         ->whereRaw('LOWER(location) LIKE ?', ['%' . strtolower($locationName) . '%'])
                         ->get();
@@ -141,7 +153,6 @@ class ProductController extends ApiController
         } catch (\Throwable $th) {
             return $this->jsonResponse(true, 'No location found!', $name, [$th->getMessage()], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
-
     }
 
     /**
@@ -202,7 +213,7 @@ class ProductController extends ApiController
         $product = Product::with(['productVariants'])->where('id', $id)->first();
         // selected categories for product edit
         $cats = json_decode($product->cats);
-        $categories = Category::whereIn('id',$cats)->get();
+        $categories = Category::whereIn('id', $cats)->get();
         $product->selected_categories = $categories;
 
         if (!empty($product)) {
@@ -260,7 +271,6 @@ class ProductController extends ApiController
 
             return $this->jsonResponse(true, 'Failed to update product', $request->all(), [$e->getMessage()], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
-
     }
 
     /**
@@ -279,13 +289,12 @@ class ProductController extends ApiController
         }
         $product = $query->find($id);
 
-        // $mainReviews =  $product->reviews->toArray();
         $mainReviews =  Review::with(['likes', 'dislikes'])
-        ->where('product_id', $product->id)
-        ->where('status', false)
-        ->with('user.personalInfo', 'likeStatus')
-        ->get()
-        ->toArray();
+            ->where('product_id', $product->id)
+            ->where('status', false)
+            ->with('user.personalInfo', 'likeStatus')
+            ->get()
+            ->toArray();
 
         $ids = array_column($mainReviews, 'id');
         $reviews = array_combine($ids, $mainReviews);
@@ -371,7 +380,6 @@ class ProductController extends ApiController
 
             return $this->jsonResponse(true, $this->failed, $this->emptyArray, ['Product not found'], JsonResponse::HTTP_NOT_FOUND);
         }
-
     }
 
     /**
@@ -472,5 +480,33 @@ class ProductController extends ApiController
         }
     }
 
+    // banner for client
+    public function homeBanner(Request $request)
+    {
 
+        $userId = $request->user_id;
+        $banner = '';
+
+        if (!$userId) {
+            $banner = AppBanner::where('banner_type', 'guest')->first();
+        } else {
+            $LoggedUser = User::find($userId);
+
+            if ($LoggedUser->roles->contains('slug', 'client')) {
+                $banner = AppBanner::where('banner_type', 'client')->first();
+            } elseif ($LoggedUser->roles->contains('slug', 'company')) {
+                $banner = AppBanner::where('banner_type', 'company')->first();
+            } else {
+                $banner = AppBanner::where('banner_type', 'guest')->first();
+            }
+        }
+
+        if (!empty($banner)) {
+
+            return $this->jsonResponse(false, $this->success, $banner, $this->emptyArray, JsonResponse::HTTP_OK);
+        } else {
+
+            return $this->jsonResponse(true, $this->failed, $this->emptyArray, ['Banner not found'], JsonResponse::HTTP_NOT_FOUND);
+        }
+    }
 }
