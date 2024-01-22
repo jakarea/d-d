@@ -35,12 +35,16 @@ class AppBannerController extends Controller
 
         // Process banner
         $banner = $request->file('banner');
+
         $resizedImage = Image::make($banner)
             ->resize(335, 152)
             ->encode('jpg', 80);
-        $directory = 'uploads/banner';
-        $filename = uniqid('banner_') . '.jpg';
-        $resizedImage->save(public_path($directory . '/' . $filename));
+
+        $directory = 'public/uploads/banner';
+        $filename = uniqid('icon_') . '.jpg';
+        $resizedImage->save($directory . '/' . $filename);
+
+        // Construct the full URL
         $url = asset($directory . '/' . $filename);
 
         AppBanner::updateOrCreate(

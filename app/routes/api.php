@@ -53,8 +53,12 @@ Route::post('force-profile-update', [UserController::class, 'forceProfileUpdate'
 Route::apiResource('roles', RoleController::class)->except(['create', 'edit'])->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
 Route::apiResource('users.roles', UserRoleController::class)->except(['create', 'edit', 'show', 'update'])->middleware(['auth:sanctum', 'ability:admin,super-admin']);
 
-Route::get('client/product', [ProductController::class, 'index']);
+// products route for client and guest user
 Route::get('client/category', [CategoryController::class, 'index']);
+Route::get('client/product', [ProductController::class, 'index']);
+Route::get('client/product/{product}', [ProductController::class, 'productDetails']);
+Route::get('client/{company}/products', [ProductController::class, 'getProductsOfCompany']);
+Route::get('client/reviews/{company}', [ReviewController::class, 'reviewsOfCompany']);
 Route::get('guest/banner', [ProductController::class, 'homeBanner']);
 
 
@@ -65,15 +69,15 @@ Route::middleware(['auth:sanctum', 'VerifyUserCheck'])->group(function () {
         // Route::get('category', [CategoryController::class, 'index']);
 
         // Route::get('product', [ProductController::class, 'index']);
-        Route::get('product/{product}', [ProductController::class, 'productDetails']);
+        // Route::get('product/{product}', [ProductController::class, 'productDetails']);
         Route::get('banner', [ProductController::class, 'homeBanner']);
-        Route::get('/{company}/products', [ProductController::class, 'getProductsOfCompany']);
+        // Route::get('/{company}/products', [ProductController::class, 'getProductsOfCompany']);
 
         Route::get('profile', [ClientController::class, 'profile']);
         Route::post('profile', [ClientController::class, 'profileUpdate']);
         Route::post('security/settings', [ClientController::class, 'securitySettings']);
 
-        Route::get('reviews/{company}', [ReviewController::class, 'reviewsOfCompany']);
+        // Route::get('reviews/{company}', [ReviewController::class, 'reviewsOfCompany']);
         Route::post('review', [ReviewController::class, 'reviewOfProduct']);
         Route::post('review/like', [ReviewController::class, 'likeOfReview']);
         Route::post('review/dislike', [ReviewController::class, 'dislikeOfReview']);

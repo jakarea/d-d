@@ -19,33 +19,34 @@ class Review extends Model
         'rating'
     ];
 
-    protected $hidden = [ 
+    protected $hidden = [
         // 'created_at',
         'updated_at'
     ];
 
 
-    public function likes():HasMany
+    public function likes(): HasMany
     {
         return $this->hasMany(Like::class)->where('like', true);
     }
 
-    public function user() {
+    public function user()
+    {
         return $this->hasOne(User::class, 'id', 'user_id');
     }
 
-    public function product() 
+    public function product()
     {
         return $this->hasOne(Product::class, 'id', 'product_id');
     }
 
     public function likeStatus()
     {
-        return $this->hasOne(Like::class)->where('user_id', auth()->user()->id);
+        return $this->hasOne(Like::class)->where('user_id', auth()->user() ? auth()->user()->id : null);
     }
 
-    public function dislikes():HasMany
+    public function dislikes(): HasMany
     {
         return $this->hasMany(Like::class)->where('like', false);
-    } 
+    }
 }

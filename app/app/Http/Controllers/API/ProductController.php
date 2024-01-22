@@ -36,7 +36,8 @@ class ProductController extends ApiController
     public function index(Request $request): JsonResponse
     {
 
-        $user_id = $request->user_id ?? auth()->user()->id;
+        // $user_id = $request->user_id ?? auth()->user()->id;
+        $user_id = $request->user_id ?? null;
         $company = $request->company;
         $searchTerm = $request->title;
         $searchLocation = $request->location;
@@ -78,7 +79,7 @@ class ProductController extends ApiController
         }
 
         // best deal
-        if (!is_null($sortBy) && $sortBy === 'expiring_soon') {
+        if (!is_null($sortBy) && $sortBy === 'best_deal') {
 
             $orderByColumn = 'price - sell_price';
             $query->orderBy(DB::raw($orderByColumn), 'desc');
@@ -340,16 +341,18 @@ class ProductController extends ApiController
             ->where('id', $companyId)
             ->first();
 
-        $user_id = auth()->user()->id;
+        $user_id = auth()->user() ? auth()->user()->id : null;
 
-        // Map through each product and add the is_wishlist attribute
-        $products->products->map(function ($product) use ($user_id) {
-            $isWishlist = WishList::where('product_id', $product->id)
-                ->where('user_id', $user_id)
-                ->exists();
-            $product->is_wishlist = $isWishlist;
-            return $product;
-        });
+        if ($user_id) {
+            // Map through each product and add the is_wishlist attribute
+            $products->products->map(function ($product) use ($user_id) {
+                $isWishlist = WishList::where('product_id', $product->id)
+                    ->where('user_id', $user_id)
+                    ->exists();
+                $product->is_wishlist = $isWishlist;
+                return $product;
+            });
+        }
 
         if (!empty($products)) {
 
