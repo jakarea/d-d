@@ -250,12 +250,14 @@ body {
 .auth-txt-box .title {
     position: relative;
 }
+
 .auth-txt-box .title img.arrow-icon {
     position: absolute;
     left: -3rem;
     top: -6rem;
     z-index: 99;
 }
+
 .auth-txt-box .title h1 {
     color: var(--greyscale-900, #111827);
     text-align: center;
@@ -555,8 +557,7 @@ body {
 }
 
 .root-main-wrapper .side-navbar-wrap ul li a:hover img {
-    filter: invert(0%) sepia(100%) saturate(3%) hue-rotate(168deg)
-        brightness(93%) contrast(100%);
+    filter: invert(0%) sepia(100%) saturate(3%) hue-rotate(168deg) brightness(93%) contrast(100%);
 }
 
 .root-main-wrapper .side-navbar-wrap ul li a.active {
@@ -566,8 +567,7 @@ body {
 }
 
 .root-main-wrapper .side-navbar-wrap ul li a.active img {
-    filter: invert(0%) sepia(100%) saturate(3%) hue-rotate(168deg)
-        brightness(93%) contrast(100%);
+    filter: invert(0%) sepia(100%) saturate(3%) hue-rotate(168deg) brightness(93%) contrast(100%);
 }
 
 .header-area {
@@ -803,10 +803,7 @@ body {
     background: var(--gray-200, #e4e7ec);
 }
 
-.page-title
-    .page-filter
-    .dropdown
-    .dropdown-menu::-webkit-scrollbar-thumb:hover {
+.page-title .page-filter .dropdown .dropdown-menu::-webkit-scrollbar-thumb:hover {
     background: #e4e7ec;
 }
 
@@ -1231,12 +1228,7 @@ body {
     border-radius: 2px;
 }
 
-.company-reviews
-    .review-statics-box
-    .rev-item-list
-    .item
-    .progress
-    .progress-bar {
+.company-reviews .review-statics-box .rev-item-list .item .progress .progress-bar {
     background-color: #ff9f29;
 }
 
@@ -1388,8 +1380,7 @@ body {
 
 .company-about-box ul li p img {
     margin-right: 0.7rem;
-    filter: invert(75%) sepia(12%) saturate(430%) hue-rotate(174deg)
-        brightness(92%) contrast(86%);
+    filter: invert(75%) sepia(12%) saturate(430%) hue-rotate(174deg) brightness(92%) contrast(86%);
     width: 1.25rem;
 }
 
@@ -2051,6 +2042,7 @@ body {
     line-height: 1.375rem;
     display: inline-block;
 }
+
 .payment-from-copany-user .user-payment-table table tr td span.status {
     border-radius: 0.375rem;
     background: rgba(224, 49, 55, 0.2);
@@ -2400,6 +2392,7 @@ body {
     box-shadow: 0px 1px 2px 0px rgba(145, 158, 171, 0.16);
     padding: 1.5rem;
 }
+
 .notification-box-wrapper h5 {
     color: rgba(0, 0, 0, 0.5);
     font-size: 1rem;
@@ -2407,6 +2400,7 @@ body {
     font-weight: 500;
     line-height: normal;
 }
+
 .notification-box-wrapper .notify-item-box {
     border-radius: 0.5rem;
     border: 1px solid #eaeaea;
@@ -2417,9 +2411,11 @@ body {
     align-items: center;
     justify-content: space-between;
 }
+
 .notification-box-wrapper .notify-item-box .media {
     align-items: center;
 }
+
 .notification-box-wrapper .notify-item-box .media .icon {
     width: 2.68963rem;
     height: 2.68963rem;
@@ -2438,6 +2434,7 @@ body {
     object-fit: cover !important;
     border-radius: 5px;
 }
+
 .notification-box-wrapper .notify-item-box .media .icon i {
     position: absolute;
     right: -3px;
@@ -2451,6 +2448,7 @@ body {
     border-radius: 50%;
     font-size: 10px;
 }
+
 .notification-box-wrapper .notify-item-box .media h5 {
     color: #000;
     font-size: 0.875rem;
@@ -2458,6 +2456,7 @@ body {
     font-weight: 500;
     line-height: 1.25rem;
 }
+
 .notification-box-wrapper .notify-item-box .media p {
     color: #000;
     font-size: 0.875rem;
@@ -2488,4 +2487,30 @@ body {
     border-radius: 5px;
     object-fit: cover;
     max-height: 3.5rem;
+}
+
+.custom-bttn-group {
+    display: flex;
+    align-items: center;
+}
+
+.custom-bttn-group .btn-outline-primary {
+    border-color: #000 !important;
+}
+
+.custom-bttn-group .btn-check:checked+.btn {
+    background-color: #000 !important;
+}
+
+.banner-image {
+    width: 100%;
+    display: block;
+    border-radius: 1rem;
+    object-fit: cover;
+    max-height: 220px;
+}
+
+.close-icon {
+    font-size: 12px !important;
+    padding: 5px 10px !important;
 }

@@ -30,34 +30,39 @@ class ProductProcess
             if (isset($request->images) && count($request->images) > 0 && isset($product->images)) {
                 (new self())->deleteImage($product->images);
             }
-    
+
             $product = (new self())->saveProduct($request, $product);
-    
+
             return $product;
-        } else { 
+        } else {
             return null;
         }
     }
 
 
     public function saveProduct($request, $product)
-    { 
+    {
 
         $product->user_id = auth()->user()->id;
         $product->company_id = $request->company_id;
         $product->title = $request->title;
-        $product->slug = $this->makeUniqueSlug($request->title,'Product');
+        $product->slug = $this->makeUniqueSlug($request->title, 'Product');
         $product->cats = json_encode($request->cats);
         $product->product_url = $request->product_url;
         $product->price = $request->price;
         $product->sell_price = $request->sell_price;
         $product->cupon = $request->cupon;
         $product->description = $request->description;
+        $product->deal_type = $request->deal_type;
+        $product->deal_expired_at = $request->deal_expired_at;
+        $product->location = $request->location;
+        $product->location_latitude = $request->location_latitude;
+        $product->location_longitude = $request->location_longitude;
 
         if (isset($request->images) && count($request->images) > 0) {
             $imageString = $this->saveImage($request);
             $product->images = $imageString;
-            $product->save(); 
+            $product->save();
         }
 
         $product->save();
@@ -69,7 +74,7 @@ class ProductProcess
     {
         $imageString = '';
         foreach ($request->images as $image) {
-            $filePath = $this->fileUpload($image, "product"); 
+            $filePath = $this->fileUpload($image, "product");
             // $imageUrl = asset(Storage::url("product/{$filePath}"));
             $imageUrl = asset("public/storage/product/{$filePath}");
             $imageString .= $imageUrl . ',';
@@ -83,14 +88,12 @@ class ProductProcess
     public function deleteImage($imageString)
     {
         $fileUrl = Config::get('app.file_url');
-         
+
         $arrayofImages = explode(',', $imageString);
 
-        foreach ($arrayofImages as $image) { 
-            $image = str_replace($fileUrl, "", $image); 
+        foreach ($arrayofImages as $image) {
+            $image = str_replace($fileUrl, "", $image);
             Storage::disk('public')->delete($image);
         }
     }
-
-
 }

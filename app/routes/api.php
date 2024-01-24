@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -47,30 +48,36 @@ Route::get('me', [UserController::class, 'me'])->middleware(['auth:sanctum']);
 Route::post('login', [UserController::class, 'login']);
 Route::post('login/google', [UserController::class, 'loginWithGoogle']);
 Route::post('login/apple', [UserController::class, 'loginWithApple']);
-Route::post('force-profile-update',[UserController::class,'forceProfileUpdate']);
+Route::post('force-profile-update', [UserController::class, 'forceProfileUpdate']);
 
 Route::apiResource('roles', RoleController::class)->except(['create', 'edit'])->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
 Route::apiResource('users.roles', UserRoleController::class)->except(['create', 'edit', 'show', 'update'])->middleware(['auth:sanctum', 'ability:admin,super-admin']);
 
-Route::get('client/product', [ProductController::class, 'index']);
+// products route for client and guest user
 Route::get('client/category', [CategoryController::class, 'index']);
+Route::get('client/product', [ProductController::class, 'index']);
+Route::get('client/product/{product}', [ProductController::class, 'productDetails']);
+Route::get('client/{company}/products', [ProductController::class, 'getProductsOfCompany']);
+Route::get('client/reviews/{company}', [ReviewController::class, 'reviewsOfCompany']);
+Route::get('guest/banner', [ProductController::class, 'homeBanner']);
 
 
-Route::middleware(['auth:sanctum','VerifyUserCheck'])->group(function () {
+Route::middleware(['auth:sanctum', 'VerifyUserCheck'])->group(function () {
 
     Route::prefix('client')->name('api.client.')->group(function () {
         Route::get('location/{name?}', [ProductController::class, 'locationList']);
         // Route::get('category', [CategoryController::class, 'index']);
 
         // Route::get('product', [ProductController::class, 'index']);
-        Route::get('product/{product}', [ProductController::class, 'productDetails']);
-        Route::get('/{company}/products', [ProductController::class, 'getProductsOfCompany']);
+        // Route::get('product/{product}', [ProductController::class, 'productDetails']);
+        Route::get('banner', [ProductController::class, 'homeBanner']);
+        // Route::get('/{company}/products', [ProductController::class, 'getProductsOfCompany']);
 
         Route::get('profile', [ClientController::class, 'profile']);
         Route::post('profile', [ClientController::class, 'profileUpdate']);
         Route::post('security/settings', [ClientController::class, 'securitySettings']);
 
-        Route::get('reviews/{company}', [ReviewController::class, 'reviewsOfCompany']);
+        // Route::get('reviews/{company}', [ReviewController::class, 'reviewsOfCompany']);
         Route::post('review', [ReviewController::class, 'reviewOfProduct']);
         Route::post('review/like', [ReviewController::class, 'likeOfReview']);
         Route::post('review/dislike', [ReviewController::class, 'dislikeOfReview']);
@@ -82,16 +89,16 @@ Route::middleware(['auth:sanctum','VerifyUserCheck'])->group(function () {
 
         Route::get('notifications', [NotificationController::class, 'clientNotifyList']);
         Route::get('notifications/seen', [NotificationController::class, 'seen']);
-
     });
 });
 
-Route::middleware(['auth:sanctum','VerifyUserCheck'])->group(function () {
+Route::middleware(['auth:sanctum', 'VerifyUserCheck'])->group(function () {
 
     Route::prefix('company')->name('api.company.')->group(function () {
         Route::get('location/{name?}', [ProductController::class, 'locationList']);
         Route::get('category', [CategoryController::class, 'index']);
 
+        Route::get('banner', [ProductController::class, 'homeBanner']);
         Route::get('product', [ProductController::class, 'index'])->name('product.list');
         Route::post('product', [ProductController::class, 'store'])->middleware('checkSubscription');
         Route::get('product/{product}/edit', [ProductController::class, 'editProduct'])->middleware('checkSubscription');
@@ -120,7 +127,6 @@ Route::middleware(['auth:sanctum','VerifyUserCheck'])->group(function () {
 
         Route::get('notifications', [NotificationController::class, 'companyNotifyList']);
         Route::get('notifications/seen', [NotificationController::class, 'seen']);
-
     });
 });
 
