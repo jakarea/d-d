@@ -2,27 +2,30 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Requests\Product\UpdateRequest;
-use App\Models\Company;
-use App\Models\WishList;
 use App\Models\User;
-use App\Models\Product;
 use App\Models\Review;
+use App\Models\Company;
+use App\Models\Product;
+use App\Models\Category;
+use App\Models\WishList;
+use App\Models\AppBanner;
+use App\Traits\FileTrait;
+use App\Models\Notification;
+use Illuminate\Http\Request;
 use App\Models\ProductVariant;
 use App\Process\ProductProcess;
-use App\Process\ProductVariantProcess;
-use App\Traits\FileTrait;
-use Illuminate\Http\Request;
-use App\Http\Requests\ProductAddRequest;
-use App\Models\AppBanner;
-use App\Models\Category;
-use App\Models\Notification;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
+
+use Spatie\Geocoder\Facades\Geocoder;
+
+use App\Process\ProductVariantProcess;
+use App\Http\Requests\ProductAddRequest;
+use App\Http\Requests\Product\UpdateRequest;
 
 class ProductController extends ApiController
 {
@@ -35,6 +38,10 @@ class ProductController extends ApiController
      */
     public function index(Request $request): JsonResponse
     {
+
+        $distance = $request->input('distance') ?? 5;
+        $latitude = $request->input('location_latitude');
+        $longitude = $request->input('location_longitude');
 
         // $user_id = $request->user_id ?? auth()->user()->id;
         $user_id = $request->user_id ?? null;
@@ -53,6 +60,14 @@ class ProductController extends ApiController
         $query = Product::with(['productVariants', 'company', 'wishlist', 'reviews' => function ($query) {
             $query->with(['likes', 'dislikes']);
         }]);
+
+        if ($latitude && $longitude) {
+            $query->select('*')
+                ->selectRaw('( 6371 * acos( cos( radians(?) ) * cos( radians( location_latitude ) )
+                    * cos( radians( location_longitude ) - radians(?) ) + sin( radians(?) )
+                    * sin( radians( location_latitude ) ) ) ) AS distance', [$latitude, $longitude, $latitude])
+                ->having('distance', '<=', $distance);
+        }
 
 
         if ($user_id) {
@@ -106,6 +121,8 @@ class ProductController extends ApiController
             }
         } else if ((is_null($sortBy) && !is_null($sortOrder)) && $sortOrder == 'desc') {
             $query->orderBy('id', 'desc');
+        }else if($latitude && $longitude){
+            $query->orderBy('distance', 'asc');
         } else {
             $query->orderBy('id', 'desc');
         }
