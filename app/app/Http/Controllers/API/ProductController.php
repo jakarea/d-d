@@ -39,11 +39,9 @@ class ProductController extends ApiController
     public function index(Request $request)
     {
 
-
-        $distance = $request->input('distance');
+        $distance = $request->input('distance') ?? 5;
         $latitude = $request->input('location_latitude');
         $longitude = $request->input('location_longitude');
-
 
         // $user_id = $request->user_id ?? auth()->user()->id;
         $user_id = $request->user_id ?? null;
@@ -63,13 +61,12 @@ class ProductController extends ApiController
             $query->with(['likes', 'dislikes']);
         }]);
 
-        if ($distance && $latitude && $longitude) {
+        if ($latitude && $longitude) {
             $query->select('*')
                 ->selectRaw('( 6371 * acos( cos( radians(?) ) * cos( radians( location_latitude ) )
                     * cos( radians( location_longitude ) - radians(?) ) + sin( radians(?) )
                     * sin( radians( location_latitude ) ) ) ) AS distance', [$latitude, $longitude, $latitude])
-                ->having('distance', '<=', $distance)
-                ->orderBy('distance', 'asc');
+                ->having('distance', '<=', $distance);
         }
 
 
@@ -124,6 +121,8 @@ class ProductController extends ApiController
             }
         } else if ((is_null($sortBy) && !is_null($sortOrder)) && $sortOrder == 'desc') {
             $query->orderBy('id', 'desc');
+        }else if($latitude && $longitude){
+            $query->orderBy('distance', 'asc');
         } else {
             $query->orderBy('id', 'desc');
         }
