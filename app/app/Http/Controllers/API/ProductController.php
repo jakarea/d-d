@@ -36,8 +36,7 @@ class ProductController extends ApiController
     public function index(Request $request): JsonResponse
     {
 
-        // $user_id = $request->user_id ?? auth()->user()->id;
-        $user_id = $request->user_id ?? null;
+        $user_id = auth()->user()->id ?? null;
         $company = $request->company;
         $searchTerm = $request->title;
         $searchLocation = $request->location;
@@ -45,10 +44,6 @@ class ProductController extends ApiController
         $sortBy = $request->sortby;
         $sortOrder = $request->sortorder;
         $category = $request->category;
-        // near my area
-
-
-        // best deal
 
         $query = Product::with(['productVariants', 'company', 'wishlist', 'reviews' => function ($query) {
             $query->with(['likes', 'dislikes']);
@@ -61,7 +56,7 @@ class ProductController extends ApiController
 
         $routeName = Route::currentRouteName();
 
-        if ($routeName === "api.company.product.list") {
+        if ($routeName === "api.company.product.list" && isset($company)) {
             $query->where('company_id', $company->id);
         }
 
@@ -73,16 +68,14 @@ class ProductController extends ApiController
 
         // expiring soon
         if (!is_null($sortBy) && $sortBy === 'expiring_soon') {
-
             $query->where('deal_expired_at', '>', now())
                 ->orderBy('deal_expired_at');
         }
 
         // best deal
         if (!is_null($sortBy) && $sortBy === 'best_deal') {
-
-            $orderByColumn = 'price - sell_price';
-            $query->orderBy(DB::raw($orderByColumn), 'desc');
+            $query->orderByRaw('CASE WHEN sell_price IS NOT NULL THEN price - sell_price ELSE 0 END DESC');
+            $query->orderByRaw('CASE WHEN sell_price IS NULL THEN price END ASC');
         }
 
         if (!is_null($searchTerm)) {
@@ -290,10 +283,10 @@ class ProductController extends ApiController
         }
         $product = $query->find($id);
 
-        $mainReviews =  Review::with(['likes', 'dislikes'])
+        $mainReviews =  Review::with(['likes', 'dislikes', 'like_status'])
             ->where('product_id', $product->id)
             ->where('status', false)
-            ->with('user.personalInfo', 'likeStatus')
+            ->with('user.personalInfo')
             ->get()
             ->toArray();
 

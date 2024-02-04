@@ -43,7 +43,7 @@
     <div class="row">
         @if (count($products) > 0)
         @foreach ($products as $product)
-        <!-- product item start --> 
+        <!-- product item start -->
         <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3  mb-69">
             <div class="product-item-box">
                 <!-- thumbnail start -->
@@ -60,12 +60,13 @@
 
                     <span>{{ number_format($percentageDiscount, 0) }}%</span>
                     @php
-                        $imageArray = $product->images ? explode(',', $product->images) : [];
-                        $firstImageUrl = count($imageArray) > 0 ? $imageArray[0] : 'public/uploads/products/product-thumbnail-01.png';
+                    $imageArray = $product->images ? explode(',', $product->images) : [];
+                    $firstImageUrl = count($imageArray) > 0 ? $imageArray[0] :
+                    'public/uploads/products/product-thumbnail-01.png';
                     @endphp
 
                     @if($firstImageUrl)
-                        <img src="{{ $firstImageUrl }}" alt="Product Thumbnail" class="img-fluid">
+                    <img src="{{ $firstImageUrl }}" alt="Product Thumbnail" class="img-fluid">
                     @endif
 
                     {{-- <a href="#"><i class="fa-regular fa-heart"></i></a> --}}
@@ -107,7 +108,7 @@
                     @endif
 
                     <div class="take-deal-bttn">
-                        <a href="{{ $product->product_url }}" class="bttn">Take Deal</a> 
+                        <a href="{{ $product->product_url }}" class="bttn">Take Deal</a>
                     </div>
                 </div>
                 <!-- txt -->
@@ -117,7 +118,7 @@
         @endforeach
         @else
         {{-- no data found component --}}
-        <x-EmptyDataComponent :dynamicData="'No Products Found!'" />
+        <x-EmptyDataComponent :dynamicData="'No Product Found!'" />
         {{-- no data found component --}}
         @endif
     </div>

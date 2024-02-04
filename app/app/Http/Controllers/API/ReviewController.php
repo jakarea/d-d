@@ -110,14 +110,16 @@ class ReviewController extends ApiController
     public function reviewOfProduct(AddReviewRequest $request): JsonResponse
     {
         try {
-            
+
             $review = Review::updateOrCreate(
                 ['user_id' => auth()->user()->id, 'product_id' => $request->product_id],
                 [
                     'review' => $request->review,
                     'company_id' => $request->company_id,
-                    'rating' => $request->rating
-                ] 
+                    'rating' => $request->rating,
+                    'replies_to' => null,
+                    'status' => 0
+                ]
             );
 
             // notification create for new review
@@ -186,7 +188,7 @@ class ReviewController extends ApiController
     public function dislikeOfReview(LikeRequest $request):JsonResponse
     {
 
-        $dislike = Like::where('user_id', auth()->user()->id)->where('review_id', $request->review_id)->first();
+        // $dislike = Like::where('user_id', auth()->user()->id)->where('review_id', $request->review_id)->first();
 
         try {
 

@@ -59,13 +59,14 @@ Route::get('client/product', [ProductController::class, 'index']);
 Route::get('client/product/{product}', [ProductController::class, 'productDetails']);
 Route::get('client/{company}/products', [ProductController::class, 'getProductsOfCompany']);
 Route::get('client/reviews/{company}', [ReviewController::class, 'reviewsOfCompany']);
+Route::get('client/location/{name?}', [ProductController::class, 'locationList']);
 Route::get('guest/banner', [ProductController::class, 'homeBanner']);
 
 
 Route::middleware(['auth:sanctum', 'VerifyUserCheck'])->group(function () {
 
     Route::prefix('client')->name('api.client.')->group(function () {
-        Route::get('location/{name?}', [ProductController::class, 'locationList']);
+        // Route::get('location/{name?}', [ProductController::class, 'locationList']);
         // Route::get('category', [CategoryController::class, 'index']);
 
         // Route::get('product', [ProductController::class, 'index']);

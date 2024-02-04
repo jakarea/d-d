@@ -16,7 +16,8 @@ class Review extends Model
         'user_id',
         'replies_to',
         'review',
-        'rating'
+        'rating',
+        'status'
     ];
 
     protected $hidden = [
@@ -40,9 +41,11 @@ class Review extends Model
         return $this->hasOne(Product::class, 'id', 'product_id');
     }
 
-    public function likeStatus()
+    public function like_status()
     {
-        return $this->hasOne(Like::class)->where('user_id', auth()->user() ? auth()->user()->id : null);
+        $userId = auth()->id();
+        return $this->hasOne(Like::class)->where('user_id', $userId); 
+
     }
 
     public function dislikes(): HasMany

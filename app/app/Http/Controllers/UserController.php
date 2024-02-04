@@ -43,10 +43,27 @@ class UserController extends API\ApiController
                 'confirm_password' => 'required_with:password|same:password|min:6',
                 'name' => 'required|string',
                 'role' => 'required|exists:roles,slug',
-                "kvk_number" => 'nullable'
+                "kvk_number" => 'nullable|string'
             ]);
         } catch (ValidationException $e) {
-            return $this->validationErrorResponse($e, 422, 'Validation error', 1001);
+
+            $errors = $e->validator->errors();
+
+            $firstError = 'Validation error';
+
+            if ($errors->has('role')) {
+                $firstError = $errors->first('role');
+            }
+
+            if ($errors->has('kvk_number')) {
+                $firstError = $errors->first('kvk_number');
+            }
+
+            if ($errors->has('email')) {
+                $firstError = $errors->first('email');
+            }
+
+            return $this->validationErrorResponse($e, 422, $firstError, 1001);
         }
 
         $verificationCode = str_pad(mt_rand(0, 99999), 5, '0', STR_PAD_LEFT);
@@ -120,7 +137,23 @@ class UserController extends API\ApiController
                 'role' => 'required|exists:roles,slug',
             ]);
         } catch (ValidationException $e) {
-            return $this->validationErrorResponse($e, 422, 'Validation error', 1001);
+
+            $errors = $e->validator->errors();
+            $firstError = 'Validation error';
+
+            if ($errors->has('password')) {
+                $firstError = $errors->first('password');
+            }
+
+            if ($errors->has('role')) {
+                $firstError = $errors->first('role');
+            }
+
+            if ($errors->has('email')) {
+                $firstError = $errors->first('email');
+            }
+
+            return $this->validationErrorResponse($e, 422, $firstError, 1001);
         }
 
         $user = User::where('email', $creds['email'])->first();
@@ -183,7 +216,14 @@ class UserController extends API\ApiController
                 'role' => 'required|exists:roles,slug',
             ]);
         } catch (ValidationException $e) {
-            return $this->validationErrorResponse($e, 422, 'Validation error', 1001);
+            $errors = $e->validator->errors();
+            $firstError = 'Validation error';
+
+            if ($errors->has('avatar')) {
+                $firstError = $errors->first('avatar');
+            } 
+
+            return $this->validationErrorResponse($e, 422, $firstError, 1001);  
         }
 
         try {
@@ -362,7 +402,19 @@ class UserController extends API\ApiController
                 'apple_id' => 'required|string|max:255'
             ]);
         } catch (ValidationException $e) {
-            return $this->validationErrorResponse($e, 422, 'Validation error', 1001);
+
+            $errors = $e->validator->errors();
+            $firstError = 'Validation error';
+
+            if ($errors->has('kvk_number')) {
+                $firstError = $errors->first('kvk_number');
+            }
+
+            if ($errors->has('email')) {
+                $firstError = $errors->first('email');
+            }
+
+            return $this->validationErrorResponse($e, 422, $firstError, 1001); 
         }
          
 
