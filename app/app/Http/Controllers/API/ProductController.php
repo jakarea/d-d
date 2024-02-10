@@ -36,7 +36,12 @@ class ProductController extends ApiController
     public function index(Request $request): JsonResponse
     {
 
-        $user_id = auth()->user()->id ?? null;
+        $distance = $request->input('distance') ?? 5;
+        $latitude = $request->input('location_latitude');
+        $longitude = $request->input('location_longitude');
+
+        // $user_id = auth()->user()->id ?? null;
+        $user_id = $request->user_id ?? null;
         $company = $request->company;
         $searchTerm = $request->title;
         $searchLocation = $request->location;
@@ -48,6 +53,14 @@ class ProductController extends ApiController
         $query = Product::with(['productVariants', 'company', 'wishlist', 'reviews' => function ($query) {
             $query->with(['likes', 'dislikes']);
         }]);
+
+        if ($latitude && $longitude) {
+            $query->select('*')
+                ->selectRaw('( 6371 * acos( cos( radians(?) ) * cos( radians( location_latitude ) )
+                    * cos( radians( location_longitude ) - radians(?) ) + sin( radians(?) )
+                    * sin( radians( location_latitude ) ) ) ) AS distance', [$latitude, $longitude, $latitude])
+                ->having('distance', '<=', $distance);
+        }
 
 
         if ($user_id) {
@@ -99,10 +112,11 @@ class ProductController extends ApiController
             }
         } else if ((is_null($sortBy) && !is_null($sortOrder)) && $sortOrder == 'desc') {
             $query->orderBy('id', 'desc');
+        }else if($latitude && $longitude){
+            $query->orderBy('distance', 'asc');
         } else {
             $query->orderBy('id', 'desc');
         }
-
 
         // wishlist flag
         if ($user_id) {
@@ -326,7 +340,7 @@ class ProductController extends ApiController
     public function getProductsOfCompany($companyId): JsonResponse
     {
 
-        $products = Company::with(['user.personalInfo', 'products' => function ($query) {
+        $products = Company::with(['user.personalInfo','user.address', 'products' => function ($query) {
             $query->with(['reviews' => function ($q) {
                 $q->with(['likes', 'dislikes']);
             }]);
@@ -489,7 +503,8 @@ class ProductController extends ApiController
             $LoggedUser = User::find($userId);
 
             if ($LoggedUser->roles->contains('slug', 'client')) {
-                $banner = AppBanner::where('banner_type', 'client')->first();
+                $banner = AppBanner::where('banner_type', 'client')->first(); 
+
             } elseif ($LoggedUser->roles->contains('slug', 'company')) {
                 $banner = AppBanner::where('banner_type', 'company')->first();
             } else {

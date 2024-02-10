@@ -41,7 +41,7 @@ class Review extends Model
         return $this->hasOne(Product::class, 'id', 'product_id');
     }
 
-    public function like_status()
+    public function likeStatus()
     {
         $userId = auth()->id();
         return $this->hasOne(Like::class)->where('user_id', $userId); 

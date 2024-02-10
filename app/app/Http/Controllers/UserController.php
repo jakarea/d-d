@@ -198,7 +198,7 @@ class UserController extends API\ApiController
             ]
         ];
 
-        return $this->jsonResponse(false, 'Successfuly Loggedin!', $userInfo, $this->emptyArray, JsonResponse::HTTP_CREATED);
+        return $this->jsonResponse(false, 'Logged in Successfully', $userInfo, $this->emptyArray, JsonResponse::HTTP_CREATED);
     }
 
     /**
@@ -394,11 +394,12 @@ class UserController extends API\ApiController
         try {
             $creds = $request->validate([
                 'email' => 'required|email|unique:users,email', 
-                'name' => 'required|string', 
+                'first_name' => 'required|string', 
+                'last_name' => 'required|string', 
                 'role' => 'required|exists:roles,slug',
                 'password' => 'nullable|min:6',
                 'confirm_password' => 'nullable_with:password|same:password|min:6',
-                "kvk_number" => 'nullable',
+                "kvk_number" => 'nullable|string',
                 'apple_id' => 'required|string|max:255'
             ]);
         } catch (ValidationException $e) {
@@ -419,7 +420,7 @@ class UserController extends API\ApiController
          
 
         $user = User::create([
-            'name' => $creds['name'],
+            'name' => $creds['first_name'] . $creds['last_name'],
             'email' => $creds['email'],
             'apple_id' => $creds['apple_id'],
             // 'password' => $creds['password'] ? $creds['password'] : Hash::make('1234567890'),
@@ -433,14 +434,17 @@ class UserController extends API\ApiController
         $role = Role::where('slug', $creds['role'])->first();
         $user->roles()->attach($role);
 
+       
+
         $roles = $user->roles->pluck('slug')->all();
         $plainTextToken2 = $user->createToken('hydra-api-token', $roles)->plainTextToken;
 
-          // if user is company then do update company also
-       $role = auth()->user()->roles->pluck('slug')->first();
-       $company = null;
+        // if user is company then do update company also 
+        //    $role = auth()->user()->roles->pluck('slug')->first();
+        $selectedRole= $role->pluck('slug');
+        $company = null;
 
-       if ($role && $role == 'company') {
+       if ($selectedRole && $selectedRole == 'company') {
         $company = Company::updateOrCreate(
             [
                 'user_id' => $user->id

@@ -60,7 +60,7 @@ Route::get('client/product/{product}', [ProductController::class, 'productDetail
 Route::get('client/{company}/products', [ProductController::class, 'getProductsOfCompany']);
 Route::get('client/reviews/{company}', [ReviewController::class, 'reviewsOfCompany']);
 Route::get('client/location/{name?}', [ProductController::class, 'locationList']);
-Route::get('guest/banner', [ProductController::class, 'homeBanner']);
+Route::get('client/banner', [ProductController::class, 'homeBanner']);
 
 
 Route::middleware(['auth:sanctum', 'VerifyUserCheck'])->group(function () {
@@ -71,12 +71,13 @@ Route::middleware(['auth:sanctum', 'VerifyUserCheck'])->group(function () {
 
         // Route::get('product', [ProductController::class, 'index']);
         // Route::get('product/{product}', [ProductController::class, 'productDetails']);
-        Route::get('banner', [ProductController::class, 'homeBanner']);
+        // Route::get('banner', [ProductController::class, 'homeBanner']);
         // Route::get('/{company}/products', [ProductController::class, 'getProductsOfCompany']);
 
         Route::get('profile', [ClientController::class, 'profile']);
         Route::post('profile', [ClientController::class, 'profileUpdate']);
         Route::post('security/settings', [ClientController::class, 'securitySettings']);
+        Route::get('profile/delete/{user_id}', [ClientController::class, 'deleteAccount']);
 
         // Route::get('reviews/{company}', [ReviewController::class, 'reviewsOfCompany']);
         Route::post('review', [ReviewController::class, 'reviewOfProduct']);
@@ -112,6 +113,7 @@ Route::middleware(['auth:sanctum', 'VerifyUserCheck'])->group(function () {
         Route::get('profile', [ClientController::class, 'profile']);
         Route::post('profile', [ClientController::class, 'profileUpdate']);
         Route::post('security/settings', [ClientController::class, 'securitySettings']);
+        Route::get('profile/delete/{user_id}', [ClientController::class, 'deleteAccount']);
 
         Route::get('reviews/{company}', [ReviewController::class, 'reviewsOfCompany']);
         Route::get('review/accept', [ReviewController::class, 'reviewAcceptReject']);
