@@ -62,7 +62,7 @@ Route::get('client/reviews/{company}', [ReviewController::class, 'reviewsOfCompa
 Route::get('client/location/{name?}', [ProductController::class, 'locationList']);
 Route::get('client/banner', [ProductController::class, 'homeBanner']);
 
-
+Route::get('/banner', [ProductController::class, 'bannerForAll']);
 Route::middleware(['auth:sanctum', 'VerifyUserCheck'])->group(function () {
 
     Route::prefix('client')->name('api.client.')->group(function () {
