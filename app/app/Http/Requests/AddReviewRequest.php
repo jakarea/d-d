@@ -35,13 +35,13 @@ class AddReviewRequest extends BaseFormRequest
                 'exists:products,id',
             ],
             'review'=>[
-                'required',
+                'required_without:rating',
                 'string',
                 'min:2',
                 'max:255'
             ],
             'rating'=>[
-                'required',
+                'required_without:review',
                 'integer',
                 'between:1,5',
             ]
