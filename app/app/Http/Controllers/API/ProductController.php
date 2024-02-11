@@ -2,27 +2,30 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Requests\Product\UpdateRequest;
-use App\Models\Company;
-use App\Models\WishList;
 use App\Models\User;
-use App\Models\Product;
 use App\Models\Review;
+use App\Models\Company;
+use App\Models\Product;
+use App\Models\Category;
+use App\Models\WishList;
+use App\Models\AppBanner;
+use App\Traits\FileTrait;
+use App\Models\Notification;
+use Illuminate\Http\Request;
 use App\Models\ProductVariant;
 use App\Process\ProductProcess;
-use App\Process\ProductVariantProcess;
-use App\Traits\FileTrait;
-use Illuminate\Http\Request;
-use App\Http\Requests\ProductAddRequest;
-use App\Models\AppBanner;
-use App\Models\Category;
-use App\Models\Notification;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
+
+use Spatie\Geocoder\Facades\Geocoder;
+
+use App\Process\ProductVariantProcess;
+use App\Http\Requests\ProductAddRequest;
+use App\Http\Requests\Product\UpdateRequest;
 
 class ProductController extends ApiController
 {
@@ -40,7 +43,6 @@ class ProductController extends ApiController
         $latitude = $request->input('location_latitude');
         $longitude = $request->input('location_longitude');
 
-        // $user_id = auth()->user()->id ?? null;
         $user_id = $request->user_id ?? null;
         $company = $request->company;
         $searchTerm = $request->title;
