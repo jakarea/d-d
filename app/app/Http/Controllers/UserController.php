@@ -43,10 +43,27 @@ class UserController extends API\ApiController
                 'confirm_password' => 'required_with:password|same:password|min:6',
                 'name' => 'required|string',
                 'role' => 'required|exists:roles,slug',
-                "kvk_number" => 'nullable'
+                "kvk_number" => 'nullable|string'
             ]);
         } catch (ValidationException $e) {
-            return $this->validationErrorResponse($e, 422, 'Validation error', 1001);
+
+            $errors = $e->validator->errors();
+
+            $firstError = 'Validation error';
+
+            if ($errors->has('role')) {
+                $firstError = $errors->first('role');
+            }
+
+            if ($errors->has('kvk_number')) {
+                $firstError = $errors->first('kvk_number');
+            }
+
+            if ($errors->has('email')) {
+                $firstError = $errors->first('email');
+            }
+
+            return $this->validationErrorResponse($e, 422, $firstError, 1001);
         }
 
         $verificationCode = str_pad(mt_rand(0, 99999), 5, '0', STR_PAD_LEFT);
@@ -120,7 +137,23 @@ class UserController extends API\ApiController
                 'role' => 'required|exists:roles,slug',
             ]);
         } catch (ValidationException $e) {
-            return $this->validationErrorResponse($e, 422, 'Validation error', 1001);
+
+            $errors = $e->validator->errors();
+            $firstError = 'Validation error';
+
+            if ($errors->has('password')) {
+                $firstError = $errors->first('password');
+            }
+
+            if ($errors->has('role')) {
+                $firstError = $errors->first('role');
+            }
+
+            if ($errors->has('email')) {
+                $firstError = $errors->first('email');
+            }
+
+            return $this->validationErrorResponse($e, 422, $firstError, 1001);
         }
 
         $user = User::where('email', $creds['email'])->first();
@@ -165,7 +198,7 @@ class UserController extends API\ApiController
             ]
         ];
 
-        return $this->jsonResponse(false, 'Successfuly Loggedin!', $userInfo, $this->emptyArray, JsonResponse::HTTP_CREATED);
+        return $this->jsonResponse(false, 'Logged in Successfully', $userInfo, $this->emptyArray, JsonResponse::HTTP_CREATED);
     }
 
     /**
@@ -183,7 +216,14 @@ class UserController extends API\ApiController
                 'role' => 'required|exists:roles,slug',
             ]);
         } catch (ValidationException $e) {
-            return $this->validationErrorResponse($e, 422, 'Validation error', 1001);
+            $errors = $e->validator->errors();
+            $firstError = 'Validation error';
+
+            if ($errors->has('avatar')) {
+                $firstError = $errors->first('avatar');
+            } 
+
+            return $this->validationErrorResponse($e, 422, $firstError, 1001);  
         }
 
         try {
@@ -354,20 +394,33 @@ class UserController extends API\ApiController
         try {
             $creds = $request->validate([
                 'email' => 'required|email|unique:users,email', 
-                'name' => 'required|string', 
+                'first_name' => 'required|string', 
+                'last_name' => 'required|string', 
                 'role' => 'required|exists:roles,slug',
                 'password' => 'nullable|min:6',
                 'confirm_password' => 'nullable_with:password|same:password|min:6',
-                "kvk_number" => 'nullable',
+                "kvk_number" => 'nullable|string',
                 'apple_id' => 'required|string|max:255'
             ]);
         } catch (ValidationException $e) {
-            return $this->validationErrorResponse($e, 422, 'Validation error', 1001);
+
+            $errors = $e->validator->errors();
+            $firstError = 'Validation error';
+
+            if ($errors->has('kvk_number')) {
+                $firstError = $errors->first('kvk_number');
+            }
+
+            if ($errors->has('email')) {
+                $firstError = $errors->first('email');
+            }
+
+            return $this->validationErrorResponse($e, 422, $firstError, 1001); 
         }
          
 
         $user = User::create([
-            'name' => $creds['name'],
+            'name' => $creds['first_name'] . $creds['last_name'],
             'email' => $creds['email'],
             'apple_id' => $creds['apple_id'],
             // 'password' => $creds['password'] ? $creds['password'] : Hash::make('1234567890'),
@@ -381,14 +434,17 @@ class UserController extends API\ApiController
         $role = Role::where('slug', $creds['role'])->first();
         $user->roles()->attach($role);
 
+       
+
         $roles = $user->roles->pluck('slug')->all();
         $plainTextToken2 = $user->createToken('hydra-api-token', $roles)->plainTextToken;
 
-          // if user is company then do update company also
-       $role = auth()->user()->roles->pluck('slug')->first();
-       $company = null;
+        // if user is company then do update company also 
+        //    $role = auth()->user()->roles->pluck('slug')->first();
+        $selectedRole= $role->pluck('slug');
+        $company = null;
 
-       if ($role && $role == 'company') {
+       if ($selectedRole && $selectedRole == 'company') {
         $company = Company::updateOrCreate(
             [
                 'user_id' => $user->id

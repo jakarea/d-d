@@ -3,7 +3,10 @@
 namespace App\Http\Requests\User;
 
 use App\Http\Requests\BaseFormRequest;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\ValidationException;
+ 
 
 class UpdateRequest extends BaseFormRequest
 {
@@ -68,4 +71,5 @@ class UpdateRequest extends BaseFormRequest
             ],
         ];
     }
+
 }

@@ -8,6 +8,7 @@ use App\Models\PersonalInfo;
 use App\Models\PricingPackage;
 use App\Models\User;
 use App\Process\UserProcess;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -36,25 +37,52 @@ class ClientController extends ApiController
         return $this->jsonResponse(false, $this->success, $userInfo, $this->emptyArray, JsonResponse::HTTP_OK);
     }
 
-    public function profileUpdate(UpdateRequest $request):JsonResponse
-    {
-
+    public function profileUpdate(Request $request):JsonResponse
+    { 
         try { 
+
+            $creds = $request->validate([
+                'first_name' => 'required|min:2|max:100',
+                'last_name' => 'required|min:2|max:155',
+                'date_of_birth' => 'required|date_format:Y-m-d',
+                'email' => [
+                    'required',
+                    'email',
+                    'regex:/(.+)@(.+)\.(.+)/i',
+                    'unique:users,email,' . auth()->user()->id,
+                    'max:255'
+                ],
+                'phone' => 'required|numeric',
+                'address' => 'required|min:5',
+                'postcode' => 'required|numeric|digits:4',
+                'country' => 'required',
+                'avatar' => 'nullable|string',
+            ]);
+            
             $user = User::where('id', auth()->user()->id)->first();
 
-            $user = UserProcess::update($request, $user);  
+            $user = UserProcess::update($request, $user, $creds);  
 
             return $this->jsonResponse(false, 'Profile updated successfully', $user, $this->emptyArray, JsonResponse::HTTP_CREATED);
         } catch (\Exception $e) {
-            return $this->jsonResponse(true, 'Failed to update profile', $request->all(), [$e->getMessage()], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+
+            $errors = $e->getMessage();
+
+            return $this->jsonResponse(true, 'Failed to update profile', $request->all(), [$errors], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
     public function securitySettings(SecuritySettingRequest $request):JsonResponse
     {
 
+        // return response()->json(1234567);
+
         try {
-            $user = User::where('id', auth()->user()->id)->first();
+            $user = User::where('email', $request->email)->first();
+
+            if(!$user){
+                return $this->jsonResponse(true, 'Email does not match to our record', $request->all(), ['email' => ['Email not found!']], 404);
+            }
 
             $request->validate([
                 'password' => [
@@ -67,16 +95,18 @@ class ClientController extends ApiController
             ]);
 
             if ($user->email === $request->email) {
-                $user->password = Hash::make($request->password);
+                
+                $user->password = Hash::make($request->password); 
                 $user->save();
 
                 $personalInfo = PersonalInfo::updateOrCreate(
                     [
-                        'user_id' => auth()->user()->id,
+                        'user_id' => $user->id,
                     ],
                     [
-                        'name' =>  auth()->user()->name,
+                        'name' =>  $user->name,
                         'phone' => $request->get('phone'),
+                        'email' => $user->email
                     ],
                 );
 
@@ -90,5 +120,18 @@ class ClientController extends ApiController
         } catch (\Exception $e) {
             return $this->jsonResponse(true, $this->failed, $request->all(), [$e->getMessage()], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
+    }
+
+    public function deleteAccount($user_id)
+    {
+        if (!$user_id) {
+            return $this->jsonResponse(true, 'User not found!', $user_id, $this->emptyArray, JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
+        $user = User::find($user_id);
+        $user->status = null;
+        $user->save();
+
+        return $this->jsonResponse(false, 'Profile deleted successfully', $user, $this->emptyArray, JsonResponse::HTTP_CREATED);
     }
 }
