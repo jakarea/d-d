@@ -24,7 +24,7 @@ class ClientController extends ApiController
         }
 
         $userInfo = [
-            'user_info' => $user, 
+            'user_info' => $user,
             // 'user_company' => $user->company,
             'current_package_info' => [
                 'is_expired' => optional($user->payments)->end_at > now() ? 0 : 1,
@@ -38,8 +38,8 @@ class ClientController extends ApiController
     }
 
     public function profileUpdate(Request $request):JsonResponse
-    { 
-        try { 
+    {
+        try {
 
             $creds = $request->validate([
                 'first_name' => 'required|min:2|max:100',
@@ -58,69 +58,80 @@ class ClientController extends ApiController
                 'country' => 'required',
                 'avatar' => 'nullable|string',
             ]);
-            
+
             $user = User::where('id', auth()->user()->id)->first();
 
-            $user = UserProcess::update($request, $user, $creds);  
+            $user = UserProcess::update($request, $user, $creds);
 
             return $this->jsonResponse(false, 'Profile updated successfully', $user, $this->emptyArray, JsonResponse::HTTP_CREATED);
-        } catch (\Exception $e) {
+        } catch (ValidationException $e) {
+            // This will catch validation exceptions specifically
+            $errorMessage = $e->errors(); // This gets an array of validation errors
+            $firstError = array_values($errorMessage)[0][0]; // This gets the first error message
 
+            return $this->jsonResponse(true, $firstError, $request->all(), [$firstError], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
+        } catch (\Exception $e) {
+            // This will catch all other exceptions
             $errors = $e->getMessage();
 
             return $this->jsonResponse(true, 'Failed to update profile', $request->all(), [$errors], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
-    public function securitySettings(SecuritySettingRequest $request):JsonResponse
+    public function securitySettings(SecuritySettingRequest $request): JsonResponse
     {
-
-        // return response()->json(1234567);
-
         try {
-            $user = User::where('email', $request->email)->first();
-
-            if(!$user){
-                return $this->jsonResponse(true, 'Email does not match to our record', $request->all(), ['email' => ['Email not found!']], 404);
-            }
-
-            $request->validate([
+            // Validate email and phone upfront
+            $validatedData = $request->validate([
+                'email' => 'required|email|max:255',
+                'phone' => 'required|numeric',
                 'password' => [
-                    'required',
+                    'nullable', // Makes the password optional
                     'min:8',
-                    'regex:/^(?=.*[a-zA-Z])(?=.*\d)/',
+                    'regex:/^(?=.*[a-zA-Z])(?=.*\d).+$/',
                 ],
             ], [
                 'password.regex' => 'Ensure that the password contains at least one letter and one number.',
             ]);
 
-            if ($user->email === $request->email) {
-                
-                $user->password = Hash::make($request->password); 
-                $user->save();
+            // Find the user by email
+            $user = User::where('email', $validatedData['email'])->first();
 
-                $personalInfo = PersonalInfo::updateOrCreate(
-                    [
-                        'user_id' => $user->id,
-                    ],
-                    [
-                        'name' =>  $user->name,
-                        'phone' => $request->get('phone'),
-                        'email' => $user->email
-                    ],
-                );
-
-                $userInfo = array_merge($user->toArray(), $personalInfo->toArray());
-
-                return $this->jsonResponse(false, $this->success, $userInfo, $this->emptyArray, JsonResponse::HTTP_CREATED);
-            }else{
-                return $this->jsonResponse(true, 'Email does not match to our record', $request->all(), ['email' => ['Email not found!']], 404);
+            if (!$user) {
+                return $this->jsonResponse(true, 'Email does not match our records', [], ['email' => ['Email not found!']], 404);
             }
 
+            // Update the password if provided
+            if (!empty($validatedData['password'])) {
+                $user->password = Hash::make($validatedData['password']);
+                $user->save(); // Save only if there's a new password to update
+            }
+
+            // Update or create personal info with the validated phone and possibly other data
+            $personalInfo = PersonalInfo::updateOrCreate(
+                ['user_id' => $user->id],
+                [
+                    'name' =>  $user->name, // Assuming you want to use the name from the User model
+                    'phone' => $validatedData['phone'],
+                    'email' => $user->email, // This uses the user's email, ensuring it matches the one validated
+                ]
+            );
+
+            // Prepare the response data
+            $userInfo = array_merge($user->toArray(), $personalInfo->toArray());
+
+            return $this->jsonResponse(false, 'Profile updated successfully', $userInfo, [], JsonResponse::HTTP_OK);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Extract and return the first validation error message
+            $errors = $e->errors();
+            $firstError = reset($errors)[0]; // Get the first error of the first field that failed validation
+            return $this->jsonResponse(true, $firstError, [], [$firstError], $e->status);
         } catch (\Exception $e) {
-            return $this->jsonResponse(true, $this->failed, $request->all(), [$e->getMessage()], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+            // Handle other exceptions
+            return $this->jsonResponse(true, 'An unexpected error occurred', [], [$e->getMessage()], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
 
     public function deleteAccount($user_id)
     {

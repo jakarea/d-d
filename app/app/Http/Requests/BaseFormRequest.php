@@ -39,20 +39,21 @@ class BaseFormRequest extends FormRequest
      */
 
 
-    protected function failedValidation(Validator $validator)
-    {
-        $errors = $validator->errors();
+     protected function failedValidation(Validator $validator)
+     {
+         $errors = $validator->errors();
+         $firstErrorMessage = $errors->all()[0]; // Get the first error message
 
-        throw new HttpResponseException(
-            $this->jsonResponse(
-                true,
-                'The given data was invalid.',
-                [],
-                $errors,
-                JsonResponse::HTTP_UNPROCESSABLE_ENTITY
-            )
-        );
-    }
+         throw new HttpResponseException(
+             response()->json([
+                 'success' => false,
+                 'message' => $firstErrorMessage, // Use the first error message here
+                 'data' => [],
+                 'errors' => $errors->messages(), // Optionally, you can still pass all the errors
+             ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY)
+         );
+     }
+
 
     protected function jsonResponse($errorCode, $message, $data, $errors, $status = 200)
     {

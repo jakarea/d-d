@@ -36,11 +36,14 @@ class SecuritySettingRequest extends BaseFormRequest
                 'required',
                 'numeric',
             ],
-            'password'=>[
-                'required',
-                'min:6',
-                'max:255'
+            'password' => [
+                'nullable', // Makes the password optional
+                'min:8',
+                'regex:/^(?=.*[a-zA-Z])(?=.*\d).+$/',
             ],
+        [
+            'password.regex' => 'Ensure that the password contains at least one letter and one number.',
+        ]
         ];
     }
 }
