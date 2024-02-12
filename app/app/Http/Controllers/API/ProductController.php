@@ -39,11 +39,25 @@ class ProductController extends ApiController
     public function index(Request $request): JsonResponse
     {
 
+        $requestData = $request->all();
+
+        // Get the current URL
+        $currentUrl = $request->url();
+        $dataToSave = [
+            'data' => $requestData,
+            'url' => $currentUrl,
+        ];
+        $jsonContent = json_encode($dataToSave, JSON_PRETTY_PRINT);
+        $filePath = storage_path('app/requestData.json');
+        file_put_contents($filePath, $jsonContent);
+
+
         $distance = $request->input('distance') ?? 5;
         $latitude = $request->input('location_latitude');
         $longitude = $request->input('location_longitude');
 
         $user_id = $request->user_id ?? null;
+        $type = $request->type ?? null;
         $company = $request->company;
         $searchTerm = $request->title;
         $searchLocation = $request->location;
@@ -55,6 +69,18 @@ class ProductController extends ApiController
         $query = Product::with(['productVariants', 'company', 'wishlist', 'reviews' => function ($query) {
             $query->with(['likes', 'dislikes']);
         }]);
+
+       // Exclude expired deals for all cases except when type is 'flash' and it's a temporary deal
+        if ($request->input('type') === 'flash') {
+            // For 'flash' type, only include temporary deals that haven't expired
+            $query->where('deal_type', '=', 'temporary')->where('deal_expired_at', '>', now());
+        } else {
+            // For all other types, exclude expired deals
+            $query->where(function($q) {
+                $q->whereNull('deal_expired_at')
+                ->orWhere('deal_expired_at', '>', now());
+            });
+        }
 
         if ($latitude && $longitude) {
             $query->select('*')
@@ -88,9 +114,15 @@ class ProductController extends ApiController
         }
 
         // best deal
+        // if (!is_null($sortBy) && $sortBy === 'best_deal') {
+        //     $query->orderByRaw('CASE WHEN sell_price IS NOT NULL THEN price - sell_price ELSE 0 END DESC');
+        //     $query->orderByRaw('CASE WHEN sell_price IS NULL THEN price END ASC');
+        // }
+
+        // best deal - sorting by maximum discount percentage
         if (!is_null($sortBy) && $sortBy === 'best_deal') {
-            $query->orderByRaw('CASE WHEN sell_price IS NOT NULL THEN price - sell_price ELSE 0 END DESC');
-            $query->orderByRaw('CASE WHEN sell_price IS NULL THEN price END ASC');
+            $query->selectRaw('*, CASE WHEN sell_price > 0 THEN ((price - sell_price) / price) * 100 ELSE 0 END AS discount_percentage')
+                ->orderByDesc('discount_percentage');
         }
 
         if (!is_null($searchTerm)) {
@@ -130,7 +162,7 @@ class ProductController extends ApiController
             ]);
         }
 
-        $products = $query->paginate(5);
+        $products = $query->paginate(20);
         return $this->jsonResponse(false, $this->success, $products, $this->emptyArray, JsonResponse::HTTP_OK);
     }
 
@@ -505,7 +537,7 @@ class ProductController extends ApiController
             $LoggedUser = User::find($userId);
 
             if ($LoggedUser->roles->contains('slug', 'client')) {
-                $banner = AppBanner::where('banner_type', 'client')->first(); 
+                $banner = AppBanner::where('banner_type', 'client')->first();
 
             } elseif ($LoggedUser->roles->contains('slug', 'company')) {
                 $banner = AppBanner::where('banner_type', 'company')->first();

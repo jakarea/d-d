@@ -15,3 +15,4 @@
 /app/database.sqlite
 /app/.DS_Store
 /app/composer.lock
+.DS_Store

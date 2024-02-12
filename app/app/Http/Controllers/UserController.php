@@ -164,8 +164,8 @@ class UserController extends API\ApiController
         // Check if the user has the required role
         $role = $creds['role'];
         if (!$user->roles()->where('slug', $role)->exists()) {
-            return $this->jsonResponse(true, 'Failed to Login', $user, ['User does not have the required role'], 401); 
-        }      
+            return $this->jsonResponse(true, 'Failed to Login', $user, ['User does not have the required role'], 401);
+        }
 
         if (config('hydra.delete_previous_access_tokens_on_login', false)) {
             $user->tokens()->delete();
@@ -174,13 +174,13 @@ class UserController extends API\ApiController
         $roles = $user->roles->pluck('slug')->all();
         $plainTextToken = $user->createToken('hydra-api-token', $roles)->plainTextToken;
 
-        $company = Company::where('user_id', $user->id)->first(); 
+        $company = Company::where('user_id', $user->id)->first();
         $earning = Earning::where('user_id', $user->id)
         ->where(function ($query) {
             $query->where('status', 'paid')
                 ->orWhere('status', 'trail');
         })
-        ->first(); 
+        ->first();
 
         $package = NULL;
         if ($earning) {
@@ -211,7 +211,7 @@ class UserController extends API\ApiController
     {
         try {
             $creds = $request->validate([
-                'email' => 'required|email', 
+                'email' => 'required|email',
                 'avatar' => 'nullable|mimes:png,svg,webp,jpg,jpeg|max:5048',
                 'role' => 'required|exists:roles,slug',
             ]);
@@ -221,19 +221,19 @@ class UserController extends API\ApiController
 
             if ($errors->has('avatar')) {
                 $firstError = $errors->first('avatar');
-            } 
+            }
 
-            return $this->validationErrorResponse($e, 422, $firstError, 1001);  
+            return $this->validationErrorResponse($e, 422, $firstError, 1001);
         }
 
         try {
-            $user = User::where('email', $creds['email'])->first(); 
+            $user = User::where('email', $creds['email'])->first();
 
                 if ($user) {
 
                     $role = $creds['role'];
                     if (!$user->roles()->where('slug', $role)->exists()) {
-                        return $this->jsonResponse(true, 'Failed to Login', $user, ['User does not have the required role'], 401); 
+                        return $this->jsonResponse(true, 'Failed to Login', $user, ['User does not have the required role'], 401);
                     }
 
                     // email found now do login response for that user
@@ -260,7 +260,7 @@ class UserController extends API\ApiController
                     $userInfo = [
                         'token' => $plainTextToken,
                         'user_info' => $user,
-                        'user_company' => $company ? $company : null, 
+                        'user_company' => $company ? $company : null,
                         'current_package_info' => [
                             'is_expired' => optional($user->payments)->end_at > now() ? 0 : 1,
                             'package' => $package,
@@ -305,8 +305,8 @@ class UserController extends API\ApiController
                     $userInfoRegis = [
                         'token' => $plainTextToken2,
                         'first_time' => 1,
-                        'user_info' => $user, 
-                        'user_company' => $company ? $company : null, 
+                        'user_info' => $user,
+                        'user_company' => $company ? $company : null,
                     ];
 
                     return $this->jsonResponse(false, 'Success! Please visit the reset page to update your password.', $userInfoRegis, $this->emptyArray, JsonResponse::HTTP_CREATED);
@@ -351,7 +351,7 @@ class UserController extends API\ApiController
                         $query->where('status', 'paid')
                             ->orWhere('status', 'trail');
                     })
-                    ->first(); 
+                    ->first();
 
                     $package = NULL;
                     if ($earning) {
@@ -393,9 +393,9 @@ class UserController extends API\ApiController
 
         try {
             $creds = $request->validate([
-                'email' => 'required|email|unique:users,email', 
-                'first_name' => 'required|string', 
-                'last_name' => 'required|string', 
+                'email' => 'required|email|unique:users,email',
+                'first_name' => 'required|string',
+                'last_name' => 'required|string',
                 'role' => 'required|exists:roles,slug',
                 'password' => 'nullable|min:6',
                 'confirm_password' => 'nullable_with:password|same:password|min:6',
@@ -415,9 +415,9 @@ class UserController extends API\ApiController
                 $firstError = $errors->first('email');
             }
 
-            return $this->validationErrorResponse($e, 422, $firstError, 1001); 
+            return $this->validationErrorResponse($e, 422, $firstError, 1001);
         }
-         
+
 
         $user = User::create([
             'name' => $creds['first_name'] . $creds['last_name'],
@@ -434,12 +434,12 @@ class UserController extends API\ApiController
         $role = Role::where('slug', $creds['role'])->first();
         $user->roles()->attach($role);
 
-       
+
 
         $roles = $user->roles->pluck('slug')->all();
         $plainTextToken2 = $user->createToken('hydra-api-token', $roles)->plainTextToken;
 
-        // if user is company then do update company also 
+        // if user is company then do update company also
         //    $role = auth()->user()->roles->pluck('slug')->first();
         $selectedRole= $role->pluck('slug');
         $company = null;
@@ -454,7 +454,7 @@ class UserController extends API\ApiController
             'email' => $user->email,
             'phone' => $user->phone
         ]);
-        $company->save(); 
+        $company->save();
        }
 
         $userInfoRegis = [
