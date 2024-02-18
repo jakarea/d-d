@@ -12,6 +12,7 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class ClientController extends ApiController
 {
@@ -39,6 +40,22 @@ class ClientController extends ApiController
 
     public function profileUpdate(Request $request):JsonResponse
     {
+        $requestData = $request->all();
+        $currentUrl = $request->fullUrl();
+        $data = [
+            'url' => $currentUrl,
+            'body' => $requestData,
+        ];
+        
+        $content = json_encode($data, JSON_PRETTY_PRINT);
+
+        // The file path relative to the storage/app directory
+        $filePath = 'profile.json'; // Adjust the path as needed
+        $message = 'profile-error.json'; // Adjust the path as needed
+
+        // Write the content to the file
+        Storage::disk('public')->put($filePath, $content);
+
         try {
 
             $creds = $request->validate([
@@ -65,9 +82,11 @@ class ClientController extends ApiController
 
             return $this->jsonResponse(false, 'Profile updated successfully', $user, $this->emptyArray, JsonResponse::HTTP_CREATED);
         } catch (ValidationException $e) {
-            // This will catch validation exceptions specifically
             $errorMessage = $e->errors(); // This gets an array of validation errors
             $firstError = array_values($errorMessage)[0][0]; // This gets the first error message
+            
+            // Write the first validation error message to the file
+            Storage::disk('public')->put($message, $this->jsonResponse(true, $firstError, $request->all(), [$firstError], JsonResponse::HTTP_UNPROCESSABLE_ENTITY));
 
             return $this->jsonResponse(true, $firstError, $request->all(), [$firstError], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
         } catch (\Exception $e) {

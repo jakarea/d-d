@@ -40,7 +40,7 @@ class ProductAddRequest extends BaseFormRequest
                 'array'
             ],
             'product_url' => [
-                'nullable',
+                'required',
                 'url'
             ],
             'price' => [
@@ -99,6 +99,10 @@ class ProductAddRequest extends BaseFormRequest
                 'string',
                 'min:2',
                 'max:255'
+            ],
+            'product_variants.*.product_url' => [
+                'required',
+                'url'
             ],
             'product_variants.*.price' => [
                 'required',

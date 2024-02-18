@@ -28,7 +28,7 @@ class Review extends Model
 
     public function likes(): HasMany
     {
-        return $this->hasMany(Like::class)->where('like', true);
+        return $this->hasMany(Like::class)->where('like', 1);
     }
 
     public function user()
@@ -43,13 +43,12 @@ class Review extends Model
 
     public function likeStatus()
     {
-        $userId = auth()->id();
-        return $this->hasOne(Like::class)->where('user_id', $userId); 
+        return $this->hasOne(Like::class); 
 
     }
 
     public function dislikes(): HasMany
     {
-        return $this->hasMany(Like::class)->where('like', false);
+        return $this->hasMany(Like::class)->where('like', -1);
     }
 }

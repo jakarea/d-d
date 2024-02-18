@@ -7,6 +7,7 @@ use App\Http\Requests\ProductAddRequest;
 use App\Models\ProductVariant;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductVariantController extends ApiController
 {
@@ -28,10 +29,24 @@ class ProductVariantController extends ApiController
      */
     public function store(ProductAddRequest $request)
     {
+        $requestData = $request->all();
+        // Get the current URL
+        $currentUrl = $request->url();
+        $dataToSave = [
+            'data' => $requestData,
+            'url' => $currentUrl,
+        ];
+        $jsonContent = json_encode($dataToSave, JSON_PRETTY_PRINT);
+        $filePath = storage_path('app/requestData.json');
+        file_put_contents($filePath, $jsonContent);
+        
         try {
             $validatedData = $request->validated();
             $validatedData['user_id'] = auth()->user()->id;
 
+        $jsonContent = json_encode($validatedData, JSON_PRETTY_PRINT);
+        $filePath = storage_path('app/requestData2.json');
+        file_put_contents($filePath, $jsonContent);
             $ProductVariant = ProductVariant::create($validatedData);
 
             return $this->jsonResponse(false, 'Product-variant created successfully', $ProductVariant, [], JsonResponse::HTTP_CREATED);

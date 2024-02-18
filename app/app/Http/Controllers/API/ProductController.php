@@ -39,19 +39,6 @@ class ProductController extends ApiController
     public function index(Request $request): JsonResponse
     {
 
-        $requestData = $request->all();
-
-        // Get the current URL
-        $currentUrl = $request->url();
-        $dataToSave = [
-            'data' => $requestData,
-            'url' => $currentUrl,
-        ];
-        $jsonContent = json_encode($dataToSave, JSON_PRETTY_PRINT);
-        $filePath = storage_path('app/requestData.json');
-        file_put_contents($filePath, $jsonContent);
-
-
         $distance = $request->input('distance') ?? 5;
         $latitude = $request->input('location_latitude');
         $longitude = $request->input('location_longitude');
@@ -69,11 +56,12 @@ class ProductController extends ApiController
         $query = Product::with(['productVariants', 'company', 'wishlist', 'reviews' => function ($query) {
             $query->with(['likes', 'dislikes']);
         }]);
-
+       
        // Exclude expired deals for all cases except when type is 'flash' and it's a temporary deal
         if ($request->input('type') === 'flash') {
             // For 'flash' type, only include temporary deals that haven't expired
             $query->where('deal_type', '=', 'temporary')->where('deal_expired_at', '>', now());
+             $query->where('status', 'active');
         } else {
             // For all other types, exclude expired deals
             $query->where(function($q) {
@@ -204,6 +192,7 @@ class ProductController extends ApiController
      */
     public function store(ProductAddRequest $request): JsonResponse
     {
+        
         try {
 
             $company = Company::find($request->company_id);
@@ -315,23 +304,56 @@ class ProductController extends ApiController
         }
     }
 
+ /**
+     * Update product & product variants
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function updateProductStatus(Request $request): JsonResponse
+    {
+        $productId = $request->product_id;
+        $companyId = $request->company_id;
+        $userId = $request->user_id;
+        $status = $request->status;
+
+       if ($productId !== null && $companyId !== null && $userId !== null) {
+            $product = Product::find($productId);
+            $product->status = $status;
+            $product->save();
+            $message = '';
+            if($status == "Active"){
+                $message = "Product activated!";
+            }else{
+                 $message = "Product deactivated!";
+            }
+            return $this->jsonResponse(false, $message, $product, $this->emptyArray, JsonResponse::HTTP_OK);
+        }
+        return $this->jsonResponse(true, $this->failed, $this->emptyArray, ['Something went wrong!'], JsonResponse::HTTP_NOT_FOUND);
+    }
+
     /**
      * Display the specified product
      * @param \Illuminate\Http\Request $request
      * @param int $id
      * @return JsonResponse
      */
-    public function productDetails(Request $request, $id): JsonResponse
+    public function productDetails(Request $request, $id)
     {
-
+        $userId = $request->user_id?? '';
         $query = Product::with(['productVariants', 'company']);
 
         if (!is_null($request->company)) {
             $query->where('company_id', $request->company);
         }
         $product = $query->find($id);
-
-        $mainReviews =  Review::with(['likes', 'dislikes', 'like_status'])
+        $with = ['likes', 'dislikes']; 
+        if($userId){
+            $with = ['likes', 'dislikes', 'likeStatus' => function ($query) use ($userId) {
+                $query->where('user_id', $userId);
+            }]; 
+        }
+        $mainReviews =  Review::with($with)
             ->where('product_id', $product->id)
             ->where('status', false)
             ->with('user.personalInfo')
