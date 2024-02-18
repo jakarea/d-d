@@ -42,6 +42,7 @@ class ProductVariantProcess
         $productVariant->product_id = $request['product_id'] ?? null;
         $productVariant->title = $request['title'] ?? null; 
         $productVariant->price = $request['price'] ?? null;
+        $productVariant->product_url = $request['product_url'] ?? null;
         $productVariant->sell_price = $request['sell_price'] ?? null;
         $productVariant->cupon = $request['cupon'] ?? null;
         $productVariant->description = $request['description'] ?? null;

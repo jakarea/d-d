@@ -11,7 +11,7 @@ class ProductVariant extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id','company_id', 'product_id','title', 'price', 'sell_price', 'cupon', 'description', 'images',
+        'user_id','company_id', 'product_id', 'product_url','title', 'price', 'sell_price', 'cupon', 'description', 'images',
     ];
 
     public function product():BelongsTo

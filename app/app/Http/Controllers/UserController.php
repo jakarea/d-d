@@ -164,7 +164,7 @@ class UserController extends API\ApiController
         // Check if the user has the required role
         $role = $creds['role'];
         if (!$user->roles()->where('slug', $role)->exists()) {
-            return $this->jsonResponse(true, 'Failed to Login', $user, ['User does not have the required role'], 401);
+            return $this->jsonResponse(true, 'User does not have the required role', $user, ['User does not have the required role'], 401);
         }
 
         if (config('hydra.delete_previous_access_tokens_on_login', false)) {
@@ -222,6 +222,12 @@ class UserController extends API\ApiController
             if ($errors->has('avatar')) {
                 $firstError = $errors->first('avatar');
             }
+            if ($errors->has('role')) {
+                $firstError = $errors->first('role');
+            }
+            if ($errors->has('email')) {
+                $firstError = $errors->first('email');
+            }
 
             return $this->validationErrorResponse($e, 422, $firstError, 1001);
         }
@@ -233,7 +239,7 @@ class UserController extends API\ApiController
 
                     $role = $creds['role'];
                     if (!$user->roles()->where('slug', $role)->exists()) {
-                        return $this->jsonResponse(true, 'Failed to Login', $user, ['User does not have the required role'], 401);
+                        return $this->jsonResponse(true, 'User does not have the required role', $user, ['User does not have the required role'], 401);
                     }
 
                     // email found now do login response for that user
@@ -394,8 +400,7 @@ class UserController extends API\ApiController
         try {
             $creds = $request->validate([
                 'email' => 'required|email|unique:users,email',
-                'first_name' => 'required|string',
-                'last_name' => 'required|string',
+                'name' => 'required|string',
                 'role' => 'required|exists:roles,slug',
                 'password' => 'nullable|min:6',
                 'confirm_password' => 'nullable_with:password|same:password|min:6',
@@ -407,6 +412,9 @@ class UserController extends API\ApiController
             $errors = $e->validator->errors();
             $firstError = 'Validation error';
 
+            if ($errors->has('name')) {
+                $firstError = $errors->first('name');
+            }
             if ($errors->has('kvk_number')) {
                 $firstError = $errors->first('kvk_number');
             }
@@ -420,7 +428,7 @@ class UserController extends API\ApiController
 
 
         $user = User::create([
-            'name' => $creds['first_name'] . $creds['last_name'],
+            'name' => $creds['name'],
             'email' => $creds['email'],
             'apple_id' => $creds['apple_id'],
             // 'password' => $creds['password'] ? $creds['password'] : Hash::make('1234567890'),

@@ -60,9 +60,9 @@ Route::get('client/product/{product}', [ProductController::class, 'productDetail
 Route::get('client/{company}/products', [ProductController::class, 'getProductsOfCompany']);
 Route::get('client/reviews/{company}', [ReviewController::class, 'reviewsOfCompany']);
 Route::get('client/location/{name?}', [ProductController::class, 'locationList']);
-Route::get('client/banner', [ProductController::class, 'homeBanner']);
+Route::get('/banner', [ProductController::class, 'homeBanner']);
+Route::get('/company/product', [ProductController::class, 'index']);
 
-Route::get('/banner', [ProductController::class, 'bannerForAll']);
 Route::middleware(['auth:sanctum', 'VerifyUserCheck'])->group(function () {
 
     Route::prefix('client')->name('api.client.')->group(function () {
@@ -101,10 +101,11 @@ Route::middleware(['auth:sanctum', 'VerifyUserCheck'])->group(function () {
         Route::get('category', [CategoryController::class, 'index']);
 
         Route::get('banner', [ProductController::class, 'homeBanner']);
-        Route::get('product', [ProductController::class, 'index'])->name('product.list');
+       // Route::get('product', [ProductController::class, 'index'])->name('product.list');
         Route::post('product', [ProductController::class, 'store'])->middleware('checkSubscription');
         Route::get('product/{product}/edit', [ProductController::class, 'editProduct'])->middleware('checkSubscription');
         Route::post('product/{product}', [ProductController::class, 'updateProduct'])->middleware('checkSubscription');
+        Route::post('product/change/status', [ProductController::class, 'updateProductStatus'])->middleware('checkSubscription');
         Route::get('product/destroy/{id}', [ProductController::class, 'destroy'])->middleware('checkSubscription');
 
         Route::get('/{company}/products', [ProductController::class, 'getProductsOfCompany']);

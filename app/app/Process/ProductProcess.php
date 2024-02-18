@@ -55,9 +55,18 @@ class ProductProcess
         $product->description = $request->description;
         $product->deal_type = $request->deal_type;
         $product->deal_expired_at = $request->deal_expired_at;
-        $product->location = $request->location;
         $product->location_latitude = $request->location_latitude;
         $product->location_longitude = $request->location_longitude;
+
+        // Check if status is present in the request and update it
+        if (isset($request->status)) {
+            $product->status = $request->status; // Update status if present
+        }
+
+        // Check if location is present in the request and update it
+        if (isset($request->location)) {
+            $product->location = $request->location; // Update location if present
+        }
 
         if (isset($request->images) && count($request->images) > 0) {
             $imageString = $this->saveImage($request);
