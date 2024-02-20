@@ -128,6 +128,7 @@ Route::middleware(['auth:sanctum', 'VerifyUserCheck'])->group(function () {
 
         Route::get('subscription-packages', [SubscriptionController::class, 'index']);
         Route::post('purchase/request', [SubscriptionController::class, 'handlePaymentRequest']);
+        Route::get('subscription/cancel', [SubscriptionController::class, 'cancel']);
 
         Route::get('notifications', [NotificationController::class, 'companyNotifyList']);
         Route::get('notifications/seen', [NotificationController::class, 'seen']);

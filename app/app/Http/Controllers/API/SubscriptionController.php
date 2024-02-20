@@ -255,4 +255,22 @@ class SubscriptionController extends ApiController
             return $this->jsonResponse(true, 'Your subscription period has expired, choose a plan to continue.', 'No Package Found!', $this->emptyArray, JsonResponse::HTTP_OK);
         }
     }
+
+    public function cancel()
+    {
+        $earning = Earning::where('user_id', auth()->user()->id)
+        ->where('company_id', auth()->user()->company->id)
+        ->first();
+
+        if ($earning) {
+
+            $earning->status = 'expired';
+            $earning->save();
+ 
+            return $this->jsonResponse(true, 'Subscription cancled success! .', $earning, $this->emptyArray, JsonResponse::HTTP_OK); 
+            
+        } else {
+            return $this->jsonResponse(true, 'No Subscription Package found!.', 'No Package Found!', $this->emptyArray, JsonResponse::HTTP_OK);
+        }
+    }
 }
