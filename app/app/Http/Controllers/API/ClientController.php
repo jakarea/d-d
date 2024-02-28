@@ -26,7 +26,7 @@ class ClientController extends ApiController
 
         $userInfo = [
             'user_info' => $user,
-            // 'user_company' => $user->company,
+            'company' => $user->company ? $user->company : null,
             'current_package_info' => [
                 'is_expired' => optional($user->payments)->end_at > now() ? 0 : 1,
                 'package' => $package,
@@ -48,10 +48,9 @@ class ClientController extends ApiController
         ];
         
         $content = json_encode($data, JSON_PRETTY_PRINT);
-
-        // The file path relative to the storage/app directory
-        $filePath = 'profile.json'; // Adjust the path as needed
-        $message = 'profile-error.json'; // Adjust the path as needed
+ 
+        $filePath = 'profile.json'; 
+        $message = 'profile-error.json'; 
 
         // Write the content to the file
         Storage::disk('public')->put($filePath, $content);
@@ -76,7 +75,7 @@ class ClientController extends ApiController
                 'avatar' => 'nullable|string',
             ]);
 
-            $user = User::where('id', auth()->user()->id)->first();
+            $user = User::where('id', auth()->user()->id)->with('company')->first();
 
             $user = UserProcess::update($request, $user, $creds);
 

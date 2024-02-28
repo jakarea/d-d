@@ -28,6 +28,7 @@ document.addEventListener("DOMContentLoaded", function() {
             mainSearchForm.submit();
         });
     }
-
     
 });
+
+ 

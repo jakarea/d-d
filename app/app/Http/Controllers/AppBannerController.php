@@ -30,7 +30,7 @@ class AppBannerController extends Controller
 
         // Check for validation errors
         if ($validator->fails()) {
-            return redirect()->back()->with('error', 'Failed to uploaded banner!');
+            return redirect()->back()->with('error', 'Failed to upload App Banner!');
         }
 
         // Process banner

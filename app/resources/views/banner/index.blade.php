@@ -16,7 +16,7 @@
         <!-- bttn -->
         <div class="page-bttn">
             <a href="#" class="bttn" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
-                aria-controls="offcanvasRight"><i class="fas fa-plus"></i> Update Banner</a>
+                aria-controls="offcanvasRight"><i class="fas fa-plus"></i> Update Banners</a>
         </div>
         <!-- bttn -->
     </div>
@@ -36,16 +36,10 @@
                 <div class="product-txt">
                     <h5 class="text-capitalize">
                         {{ $banner->banner_type }} Banner
-                    </h5>
-                    <p>Action button:</p>
-                    <div class="take-deal-bttn">
-                        @if ($banner->banner_type === 'guest')
-                        <a href="#" class="bttn">Sign up</a>
-                        @elseif ($banner->banner_type === 'client')
-                        <a href="#" class="bttn">View All Deals</a>
-                        @elseif ($banner->banner_type === 'company')
-                        <a href="#" class="bttn">Make New Deal</a>
-                        @endif
+                    </h5> 
+                    <div class="take-deal-bttn"> 
+                        <a href="#" data-type="{{ $banner->banner_type }}" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
+                        aria-controls="offcanvasRight" class="bttn select-banner-type">Update Banner</a> 
                     </div>
                 </div>
                 <!-- txt -->
@@ -82,20 +76,12 @@
                     <div class="form-group form-error">
                         <label for="" class="block">Banner Type<span class="text-danger">*</span></label> <br>
 
-                        <div class="btn-group flex custom-bttn-group" role="group"
-                            aria-label="Banner type toggle button">
-                            <input type="radio" class="btn-check" name="banner_type" id="guest" value="guest"
-                                autocomplete="off" checked>
-                            <label class="btn btn-outline-primary" for="guest">Guest</label>
-
-                            <input type="radio" class="btn-check" name="banner_type" id="client" value="client"
-                                autocomplete="off">
-                            <label class="btn btn-outline-primary" for="client">Client</label>
-
-                            <input type="radio" class="btn-check" name="banner_type" id="company" value="company"
-                                autocomplete="off">
-                            <label class="btn btn-outline-primary" for="company">Company</label>
+                        <div class="btn-group flex custom-bttn-group">
+                            <button type="button" class="btn btn-outline-dark select-banner-type bg-dark text-white guest-1" data-type="guest">Guest</button>
+                            <button type="button" class="btn btn-outline-dark select-banner-type client-1" data-type="client">Client</button>
+                            <button type="button" class="btn btn-outline-dark select-banner-type company-1" data-type="company">Company</button>
                         </div>
+                        <input type="hidden" class="btn-check" name="banner_type" id="banner_type" value="guest">
 
                     </div>
 
@@ -111,10 +97,16 @@
                         <span class="mt-2 d-block text-primary" style="font-size: 12px">Recomended Banner size 335px by
                             152px</span>
                     </div>
-
+                    
+                    <div class="mt-2" id="existBannerImage"> 
+                        @foreach ($banners as $banner)
+                            <img src="{{ $banner->banner }}" alt="banner" class="img-fluid {{ $banner->banner_type }}" style="max-height: 180px; width: 100%; object-fit: cover;">
+                        @endforeach
+                    </div>
+ 
                     <!-- Image container -->
                     <div id="icon-container" class="mt-2">
-                        <img src="" alt="" id="banner-preview">
+                        <img src="" alt="" id="banner-preview" class="img-fluid" style="max-height: 180px; width: 100%; object-fit: cover;">
                     </div>
 
 
@@ -134,6 +126,71 @@
 @section('script')
 
 <script>
+     document.addEventListener('DOMContentLoaded', function () {
+        let bannerTypeBtns = document.querySelectorAll('.select-banner-type');
+        let guest = document.querySelector('.guest');
+        let client = document.querySelector('.client');
+        let company = document.querySelector('.company');
+
+        client.classList.add('d-none');
+        company.classList.add('d-none');
+
+        bannerTypeBtns.forEach(bannerTypeBtn => {
+            bannerTypeBtn.addEventListener('click', function(){
+                bannerTypeBtns.forEach(btn => {
+                    if (btn.classList.contains('bg-dark')) {
+                        btn.classList.remove('bg-dark');
+                    }
+                    if (btn.classList.contains('text-white')) {
+                        btn.classList.remove('text-white');
+                    }
+                });
+
+                // Add 'bg-dark' class to the clicked element
+                this.classList.add('bg-dark', 'text-white');
+                // document.querySelector('#banner_type').value = this.getAttribute('data-type');
+
+                if (this.getAttribute('data-type') == 'client') { 
+
+                    guest.classList.add('d-none');
+                    client.classList.remove('d-none');
+                    company.classList.add('d-none');
+
+                    document.querySelector('#banner_type').value = 'client';
+
+                    document.querySelector('.guest-1').classList.remove('bg-dark', 'text-white');
+                    document.querySelector('.company-1').classList.remove('bg-dark', 'text-white');
+                    document.querySelector('.client-1').classList.add('bg-dark', 'text-white');
+
+                }else if(this.getAttribute('data-type') == 'company'){
+
+                    guest.classList.add('d-none');
+                    client.classList.add('d-none');
+                    company.classList.remove('d-none');
+
+                    document.querySelector('#banner_type').value = 'company';
+
+                    document.querySelector('.guest-1').classList.remove('bg-dark', 'text-white');
+                    document.querySelector('.company-1').classList.add('bg-dark', 'text-white');
+                    document.querySelector('.client-1').classList.remove('bg-dark', 'text-white');
+
+                }else{
+                    guest.classList.remove('d-none');
+                    client.classList.add('d-none');
+                    company.classList.add('d-none');
+
+                    document.querySelector('#banner_type').value = 'guest';
+
+                    document.querySelector('.guest-1').classList.add('bg-dark', 'text-white');
+                    document.querySelector('.company-1').classList.remove('bg-dark', 'text-white');
+                    document.querySelector('.client-1').classList.remove('bg-dark', 'text-white');
+                }
+            });
+        });
+});
+</script>
+
+<script>
     document.addEventListener('DOMContentLoaded', function () {
   
         var avatarContainer = document.getElementById('icon-container');
@@ -146,6 +203,7 @@
             var closeIcon = document.getElementById('close-icon');
   
             if (file) {
+
                 if (!avatarPreview) {
                     avatarPreview = document.createElement('img');
                     avatarPreview.id = 'banner-preview';
@@ -164,6 +222,7 @@
                         avatarPreview.src = '';
                         avatarContainer.removeChild(closeIcon);
                         document.getElementById('banner').value = '';
+                        document.getElementById('existBannerImage').classList.remove('d-none');
                     });
                     avatarContainer.appendChild(closeIcon);
                 }
@@ -171,6 +230,7 @@
                 var reader = new FileReader();
                 reader.onload = function (e) {
                     avatarPreview.src = e.target.result;
+                    document.getElementById('existBannerImage').classList.add('d-none');
                 };
                 reader.readAsDataURL(file);
             } else {
