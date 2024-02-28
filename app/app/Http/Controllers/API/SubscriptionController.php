@@ -129,24 +129,33 @@ class SubscriptionController extends ApiController
                 'description' => $request->package_type == 'Yearly' ? 'Package Type: Yearly' : 'Package Type: Monthly',
                 'images' => [asset('assets/images/logo.svg')],
             ]);
-
-            // Create a Price in Stripe
-            $stripePrice = Price::create([
+            
+            // Create a Price in Stripe (Recurring with Trial)
+            $stripePrice = \Stripe\Price::create([
                 'product' => $product->id,
-                'unit_amount' => $price * 100,
+                'unit_amount' => $price * 100, // The amount should be in the smallest currency unit (e.g., cents)
                 'currency' => 'eur',
+                'recurring' => [
+                    'interval' => 'month', // You can set 'day', 'week', 'month', or 'year'
+                    'interval_count' => 1, // Number of intervals between each subscription billing
+                ],
             ]);
 
+            $priceId = $stripePrice->id;
+
             // Create a Checkout Session
-            $session = Session::create([
-                'payment_method_types' => ['card'],
+            $session = \Stripe\Checkout\Session::create([
+                'payment_method_types' => ['card', 'ideal'],
                 'line_items' => [
                     [
-                        'price' => $stripePrice->id,
+                        'price' => $priceId,
                         'quantity' => 1,
                     ],
                 ],
-                'mode' => 'payment',
+                'mode' => 'subscription',
+                'subscription_data' => [
+                    'trial_period_days' => 1,
+                ],
                 'success_url' => url('api/purchase/success') . '?session_id={CHECKOUT_SESSION_ID}&package_id=' . $package->id . '&purchase_id=' . $earning->id,
                 'cancel_url' => url('api/purchase/cancel'),
             ]);
@@ -161,16 +170,22 @@ class SubscriptionController extends ApiController
     public function handleSuccess(Request $request)
     {
 
+        // return response()->json($request->input('session_id'));
+
         Stripe::setApiKey(env('STRIPE_SECRET'));
         $sessionId = $request->input('session_id');
         $packageId = $request->input('package_id');
         $earningId = $request->input('purchase_id');
 
         $session = Session::retrieve($sessionId);
+        // return response()->json($session);
+
         $package = PricingPackage::find($packageId);
-        $paymentId = $session->payment_intent;
+        $paymentId = $session->invoice;
         $paymentStatus = $session->payment_status;
         $amountPaid = $session->amount_total / 100;
+
+ 
 
         $earning = Earning::find($earningId);
         if (!$earning) {
@@ -187,10 +202,10 @@ class SubscriptionController extends ApiController
             $oldPack->save();
         }
 
-        $earning->payment_id = $paymentId;
+        $earning->payment_id = $paymentId; 
         $earning->amount = $amountPaid;
         $earning->status = $paymentStatus;
-        $earning->start_at = Carbon::now();
+        $earning->start_at = Carbon::now(); 
         $earning->end_at =  $earning->package_type == 'Monthly' ? Carbon::now()->addDays(30) : Carbon::now()->addDays(365);
         $earning->save();
         
