@@ -84,9 +84,8 @@ class UserProcess
                     'user_id' => $user_id
                 ],
                 [
-                    'name' => $personalInfo->name,
-                    'email' => $personalInfo->email,
-                    'phone' => $personalInfo->phone
+                    'name' => $request->company_name,
+                    'about' => $request->company_description
                 ]
             ); 
         }

@@ -55,15 +55,14 @@ class CategoryController extends Controller
     public function store(CategoryAddRequest $request)
     {
 
-        $name = $request->input('name');
-        // Ensure the slug is unique
+        $name = $request->input('name'); 
         $slug = $this->makeUniqueSlug($name,'Category');
 
         $icon = $request->file('icon');
         // Resize and compress the image
         $resizedImage = Image::make($icon)
-            ->resize(100, 100)
-            ->encode('jpg', 80);
+            // ->resize(100, 100)
+            ->encode('png', 100);
  
         $directory = 'public/uploads/category';
         $filename = uniqid('icon_') . '.jpg';
@@ -149,8 +148,8 @@ class CategoryController extends Controller
     protected function updateIcon($icon, $category)
     {
         $resizedImage = Image::make($icon)
-            ->resize(100, 100)
-            ->encode('jpg', 80);
+            // ->resize(200, 200)
+            ->encode('png', 100);
 
         $directory = 'public/uploads/category';
         $filename = uniqid('icon_') . '.jpg';

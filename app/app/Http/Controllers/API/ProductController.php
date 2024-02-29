@@ -55,6 +55,124 @@ class ProductController extends ApiController
 
         $query = Product::with(['productVariants', 'company', 'wishlist', 'reviews' => function ($query) {
             $query->with(['likes', 'dislikes']);
+        }])->where('status', 'Active');
+       
+       // Exclude expired deals for all cases except when type is 'flash' and it's a temporary deal
+        if ($request->input('type') === 'flash') {
+            // For 'flash' type, only include temporary deals that haven't expired
+            $query->where('deal_type', '=', 'temporary')->where('deal_expired_at', '>', now());
+            $query->where('status', 'Active');
+        } else {
+            // For all other types, exclude expired deals
+            $query->where(function($q) {
+                $q->whereNull('deal_expired_at')
+                ->orWhere('deal_expired_at', '>', now());
+            });
+        }
+
+        if ($latitude && $longitude) {
+            $query->select('*')
+                ->selectRaw('( 6371 * acos( cos( radians(?) ) * cos( radians( location_latitude ) )
+                    * cos( radians( location_longitude ) - radians(?) ) + sin( radians(?) )
+                    * sin( radians( location_latitude ) ) ) ) AS distance', [$latitude, $longitude, $latitude])
+                ->having('distance', '<=', $distance);
+        }
+
+
+        if ($user_id) {
+            $company = Company::firstwhere('user_id', $user_id);
+        }
+
+        $routeName = Route::currentRouteName();
+
+        if ($routeName === "api.company.product.list" && isset($company)) {
+            $query->where('company_id', $company->id);
+        }
+
+        if (!is_null($category)) {
+            $query->where(function ($q) use ($category) {
+                $q->where('cats', 'LIKE', '%' . $category . '%');
+            });
+        }
+
+        // expiring soon
+        if (!is_null($sortBy) && $sortBy === 'expiring_soon') {
+            $query->where('deal_expired_at', '>', now())
+                ->orderBy('deal_expired_at');
+        }
+
+        // best deal
+        // if (!is_null($sortBy) && $sortBy === 'best_deal') {
+        //     $query->orderByRaw('CASE WHEN sell_price IS NOT NULL THEN price - sell_price ELSE 0 END DESC');
+        //     $query->orderByRaw('CASE WHEN sell_price IS NULL THEN price END ASC');
+        // }
+
+        // best deal - sorting by maximum discount percentage
+        if (!is_null($sortBy) && $sortBy === 'best_deal') {
+            $query->selectRaw('*, CASE WHEN sell_price > 0 THEN ((price - sell_price) / price) * 100 ELSE 0 END AS discount_percentage')
+                ->orderByDesc('discount_percentage');
+        }
+
+        if (!is_null($searchTerm)) {
+            $searchTerm = strip_tags(trim($searchTerm));
+            $query->where('title', 'LIKE', "%{$searchTerm}%");
+        }
+
+        if (!is_null($searchLocation)) {
+            $searchLocation = strip_tags(trim($searchLocation));
+
+            $query->where('location', 'LIKE', "%{$searchLocation}%");
+        }
+
+        if (!is_null($sortBy) && !is_null($sortOrder)) {
+            $sortBy = strip_tags(trim($sortBy));
+
+            if ($sortBy == 'price') {
+                $query->orderBy(DB::raw('COALESCE(sell_price, price)'), $sortOrder);
+            } else {
+                $query->orderBy($sortBy, $sortOrder);
+            }
+        } else if ((is_null($sortBy) && !is_null($sortOrder)) && $sortOrder == 'desc') {
+            $query->orderBy('id', 'desc');
+        }else if($latitude && $longitude){
+            $query->orderBy('distance', 'asc');
+        } else {
+            $query->orderBy('id', 'desc');
+        }
+
+        // wishlist flag
+        if ($user_id) {
+            $query->addSelect([
+                'is_wishlist' => WishList::selectRaw('1')
+                    ->whereColumn('product_id', 'products.id')
+                    ->where('user_id', $user_id)
+                    ->limit(1)
+            ]);
+        }
+
+        $products = $query->paginate(20);
+        return $this->jsonResponse(false, $this->success, $products, $this->emptyArray, JsonResponse::HTTP_OK);
+    }
+
+    public function companyProductindex(Request $request): JsonResponse
+    {
+
+        $distance = $request->input('distance') ?? 5;
+        $latitude = $request->input('location_latitude');
+        $longitude = $request->input('location_longitude');
+
+        $user_id = auth()->user()->id;
+        $type = $request->type ?? null;
+        $company = $request->company;
+        $searchTerm = $request->title;
+        $searchLocation = $request->location;
+
+        $sortBy = $request->sortby;
+        $sortOrder = $request->sortorder;
+        $category = $request->category;
+
+        $query = Product::with(['productVariants', 'company', 'wishlist', 'reviews' => function ($query) {
+            $query->with(['likes', 'dislikes']);
         }]);
        
        // Exclude expired deals for all cases except when type is 'flash' and it's a temporary deal
