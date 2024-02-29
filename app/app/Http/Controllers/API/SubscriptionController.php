@@ -91,7 +91,7 @@ class SubscriptionController extends ApiController
                 return $this->jsonResponse(true, $this->failed, $this->emptyArray, ['You have already purchased this package!'], JsonResponse::HTTP_NOT_FOUND);
             }
 
-            if ($price) { 
+            if ($price) {
 
                 $earning = Earning::where('company_id', $company->id)
                 ->where('user_id', $request->user_id)
@@ -105,7 +105,7 @@ class SubscriptionController extends ApiController
                     $earning->status = 'pending';
                     $earning->save();
                 }else{
-                   $earning = Earning::create( 
+                   $earning = Earning::create(
                     [
                         'company_id' => $company->id,
                         'user_id' => $request->user_id,
@@ -118,7 +118,7 @@ class SubscriptionController extends ApiController
                         'start_at' => null,
                         'end_at' => null,
                     ]
-                ); 
+                );
                 }
 
             }
@@ -129,7 +129,7 @@ class SubscriptionController extends ApiController
                 'description' => $request->package_type == 'Yearly' ? 'Package Type: Yearly' : 'Package Type: Monthly',
                 'images' => [asset('assets/images/logo.svg')],
             ]);
-            
+
             // Create a Price in Stripe (Recurring with Trial)
             $stripePrice = \Stripe\Price::create([
                 'product' => $product->id,
@@ -144,7 +144,7 @@ class SubscriptionController extends ApiController
             $priceId = $stripePrice->id;
 
             // Create a Checkout Session
-            $session = \Stripe\Checkout\Session::create([
+            $session = Session::create([
                 'payment_method_types' => ['card', 'ideal'],
                 'line_items' => [
                     [
@@ -156,9 +156,10 @@ class SubscriptionController extends ApiController
                 'subscription_data' => [
                     'trial_period_days' => 1,
                 ],
-                'success_url' => url('api/purchase/success') . '?session_id={CHECKOUT_SESSION_ID}&package_id=' . $package->id . '&purchase_id=' . $earning->id,
+                'success_url' => url('api/purchase/success?session_id={CHECKOUT_SESSION_ID}') . '&package_id=' . $package->id . '&purchase_id=' . $earning->id,
                 'cancel_url' => url('api/purchase/cancel'),
             ]);
+
 
             return $this->jsonResponse(false, $this->success, $session->url, $this->emptyArray, JsonResponse::HTTP_OK);
         } catch (\Exception $e) {
@@ -170,7 +171,7 @@ class SubscriptionController extends ApiController
     public function handleSuccess(Request $request)
     {
 
-        // return response()->json($request->input('session_id'));
+        return response()->json($request->all());
 
         Stripe::setApiKey(env('STRIPE_SECRET'));
         $sessionId = $request->input('session_id');
@@ -185,7 +186,7 @@ class SubscriptionController extends ApiController
         $paymentStatus = $session->payment_status;
         $amountPaid = $session->amount_total / 100;
 
- 
+
 
         $earning = Earning::find($earningId);
         if (!$earning) {
@@ -202,15 +203,15 @@ class SubscriptionController extends ApiController
             $oldPack->save();
         }
 
-        $earning->payment_id = $paymentId; 
+        $earning->payment_id = $paymentId;
         $earning->amount = $amountPaid;
         $earning->status = $paymentStatus;
-        $earning->start_at = Carbon::now(); 
+        $earning->start_at = Carbon::now();
         $earning->end_at =  $earning->package_type == 'Monthly' ? Carbon::now()->addDays(30) : Carbon::now()->addDays(365);
         $earning->save();
-        
 
-        // notification create for new product create  
+
+        // notification create for new product create
         Notification::create([
             'creator_id' => $earning->user_id,
             'receiver_id' => $earning->company_id,
@@ -265,7 +266,7 @@ class SubscriptionController extends ApiController
             }else{
                 return $this->jsonResponse(true, 'Your subscription period has expired, choose a plan to continue again!', ['subscription_end_date' => $earning->end_at], $this->emptyArray, JsonResponse::HTTP_OK);
             }
-            
+
         } else {
             return $this->jsonResponse(true, 'Your subscription period has expired, choose a plan to continue.', 'No Package Found!', $this->emptyArray, JsonResponse::HTTP_OK);
         }
@@ -281,9 +282,9 @@ class SubscriptionController extends ApiController
 
             $earning->status = 'expired';
             $earning->save();
- 
-            return $this->jsonResponse(true, 'Subscription cancled success! .', $earning, $this->emptyArray, JsonResponse::HTTP_OK); 
-            
+
+            return $this->jsonResponse(true, 'Subscription cancled success! .', $earning, $this->emptyArray, JsonResponse::HTTP_OK);
+
         } else {
             return $this->jsonResponse(true, 'No Subscription Package found!.', 'No Package Found!', $this->emptyArray, JsonResponse::HTTP_OK);
         }

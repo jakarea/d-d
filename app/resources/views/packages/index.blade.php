@@ -3,7 +3,7 @@
 @section('title','Pricing plans')
 
 @section('style')
-<link rel="stylesheet" href="{{ url('public/assets/css/pricing.css') }}">
+<link rel="stylesheet" href="{{ url('assets/css/pricing.css') }}">
 @endsection
 @section('content')
 <!-- pricing page wrapper start -->
@@ -40,7 +40,7 @@
         tabindex="0">
         <div class="row justify-content-center">
           @if (count($packages) > 0)
-          @foreach ($packages as $package) 
+          @foreach ($packages as $package)
           <!-- plan single monthly start -->
           <div class="col-xl-4 col-sm-10 col-md-6 mb-3">
             <div class="pricing-box">
@@ -53,15 +53,15 @@
                   @elseif($package->name == 'Enterprise plan')
                   <img src="{{ asset('/public/assets/images/icons/enterprise-plan.svg') }}" alt="Enterprise" class="img-fluid">
                   @endif
-                  
+
                 </div>
                 <div class="txt">
                   <h5>{{ $package->name }}</h5>
                   <h3> €{{ $package->price }}/mth </h3>
                   <h6>Billed Monthly</h6>
- 
+
                   <ul>
-                    @foreach (json_decode($package->features) as $feature) 
+                    @foreach (json_decode($package->features) as $feature)
                     <li>
                       <img src="{{ asset('/public/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
                       <span>{{ $feature }}</span>
@@ -75,12 +75,12 @@
               </div>
             </div>
           </div>
-          <!-- plan single monthly end --> 
-          @endforeach 
-          @else 
+          <!-- plan single monthly end -->
+          @endforeach
+          @else
             <div class="col-12">
               {{-- no data found component --}}
-              <x-EmptyDataComponent :dynamicData="'Packages Loading... '" />  
+              <x-EmptyDataComponent :dynamicData="'Packages Loading... '" />
               {{-- no data found component --}}
             </div>
           @endif
@@ -90,7 +90,7 @@
       <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
         <div class="row justify-content-center">
           @if (count($packages) > 0)
-          @foreach ($packages as $package) 
+          @foreach ($packages as $package)
           <!-- plan single monthly start -->
           @if ($package->yearly_price > 0)
           <div class="col-xl-4 col-sm-10 col-md-6 mb-3">
@@ -104,15 +104,15 @@
                   @elseif($package->name == 'Enterprise plan')
                   <img src="{{ asset('/public/assets/images/icons/enterprise-plan.svg') }}" alt="Enterprise" class="img-fluid">
                   @endif
-                  
+
                 </div>
                 <div class="txt">
                   <h5>{{ $package->name }}</h5>
                   <h3> €{{ $package->yearly_price }}/year </h3>
                   <h6>Billed Yearly</h6>
- 
+
                   <ul>
-                    @foreach (json_decode($package->features) as $feature) 
+                    @foreach (json_decode($package->features) as $feature)
                     <li>
                       <img src="{{ asset('/public/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
                       <span>{{ $feature }}</span>
@@ -125,14 +125,14 @@
                 <a href="{{ route('pricing.package.edit') }}" class="will-subscribe">Edit Plan</a>
               </div>
             </div>
-          </div>  
+          </div>
           @endif
-          <!-- plan single monthly end --> 
+          <!-- plan single monthly end -->
           @endforeach
-          @else 
+          @else
             <div class="col-12">
               {{-- no data found component --}}
-              <x-EmptyDataComponent :dynamicData="'Packages Loading... '" />  
+              <x-EmptyDataComponent :dynamicData="'Packages Loading... '" />
               {{-- no data found component --}}
             </div>
           @endif
