@@ -18,7 +18,8 @@ use Stripe\Stripe;
 use stdClass;
 use Stripe\Price;
 use Stripe\Product;
-
+use Stripe\Subscription;
+use Stripe\Webhook;
 class SubscriptionController extends ApiController
 {
 
@@ -144,7 +145,7 @@ class SubscriptionController extends ApiController
             $priceId = $stripePrice->id;
 
             // Create a Checkout Session
-            $session = Session::create([
+            $session = \Stripe\Checkout\Session::create([
                 'payment_method_types' => ['card', 'ideal'],
                 'line_items' => [
                     [
@@ -154,12 +155,11 @@ class SubscriptionController extends ApiController
                 ],
                 'mode' => 'subscription',
                 'subscription_data' => [
-                    'trial_period_days' => 1,
+                    'trial_period_days' => 4,
                 ],
-                'success_url' => url('api/purchase/success?session_id={CHECKOUT_SESSION_ID}') . '&package_id=' . $package->id . '&purchase_id=' . $earning->id,
+                'success_url' => url('api/purchase/success') . '?session_id={CHECKOUT_SESSION_ID}&package_id=' . $package->id . '&purchase_id=' . $earning->id,
                 'cancel_url' => url('api/purchase/cancel'),
             ]);
-
 
             return $this->jsonResponse(false, $this->success, $session->url, $this->emptyArray, JsonResponse::HTTP_OK);
         } catch (\Exception $e) {
@@ -171,7 +171,7 @@ class SubscriptionController extends ApiController
     public function handleSuccess(Request $request)
     {
 
-        return response()->json($request->all());
+        // return response()->json('123');
 
         Stripe::setApiKey(env('STRIPE_SECRET'));
         $sessionId = $request->input('session_id');
@@ -179,13 +179,17 @@ class SubscriptionController extends ApiController
         $earningId = $request->input('purchase_id');
 
         $session = Session::retrieve($sessionId);
-        // return response()->json($session);
+
+        $subscription = Subscription::retrieve($session->subscription);
+
+        $trialEndsAtTimestamp = isset($subscription->trial_end) ? $subscription->trial_end : null;
+        $trialEndsAt = $trialEndsAtTimestamp ? date('Y-m-d', $trialEndsAtTimestamp) : null;
+        // return response()->json($trialEndsAt);
 
         $package = PricingPackage::find($packageId);
         $paymentId = $session->invoice;
         $paymentStatus = $session->payment_status;
         $amountPaid = $session->amount_total / 100;
-
 
 
         $earning = Earning::find($earningId);
@@ -203,12 +207,16 @@ class SubscriptionController extends ApiController
             $oldPack->save();
         }
 
+        $earning->subscription_id = $subscription->id ?? null;
         $earning->payment_id = $paymentId;
         $earning->amount = $amountPaid;
         $earning->status = $paymentStatus;
         $earning->start_at = Carbon::now();
-        $earning->end_at =  $earning->package_type == 'Monthly' ? Carbon::now()->addDays(30) : Carbon::now()->addDays(365);
+        $earning->end_at = $trialEndsAt;
         $earning->save();
+
+
+        // $earning->package_type == 'Monthly' ? Carbon::now()->addDays(30) : Carbon::now()->addDays(365);
 
 
         // notification create for new product create
@@ -289,4 +297,41 @@ class SubscriptionController extends ApiController
             return $this->jsonResponse(true, 'No Subscription Package found!.', 'No Package Found!', $this->emptyArray, JsonResponse::HTTP_OK);
         }
     }
+
+
+    public function handleWebhook(Request $request)
+    {
+        $payload = $request->getContent();
+        $sig_header = $request->header('Stripe-Signature');
+
+        $event = Webhook::constructEvent(
+            $payload, $sig_header, env('STRIPE_WEBHOOK_SECRET')
+        );
+
+        switch ($event->type) {
+            case 'customer.subscription.updated':
+
+                $subscriptionData = $event->data->object;
+
+                $trialEndsAtTimestamp = isset($subscriptionData->trial_end) ? $subscriptionData->trial_end : null;
+
+                $trialEndsAt = $trialEndsAtTimestamp ? date('Y-m-d', $trialEndsAtTimestamp) : null;
+
+                $subscription = Earning::where('subscription_id', $subscriptionData->id)->first();
+
+                $subscription->update([
+                    'end_at' => $trialEndsAt,
+                ]);
+            break;
+
+            default:
+
+                break;
+        }
+        return response()->json(['success' => true]);
+    }
+
+
+
+
 }

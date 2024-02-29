@@ -132,3 +132,4 @@ Route::get('/clear-cache', function () {
     Artisan::call('storage:link');
     return redirect('/');
 });
+
