@@ -18,6 +18,7 @@ use Stripe\Stripe;
 use stdClass;
 use Stripe\Price;
 use Stripe\Product;
+use Stripe\Subscription;
 
 class SubscriptionController extends ApiController
 {
@@ -133,7 +134,7 @@ class SubscriptionController extends ApiController
             // Create a Price in Stripe (Recurring with Trial)
             $stripePrice = \Stripe\Price::create([
                 'product' => $product->id,
-                'unit_amount' => $price * 100, // The amount should be in the smallest currency unit (e.g., cents)
+                'unit_amount' => $price * 100,
                 'currency' => 'eur',
                 'recurring' => [
                     'interval' => 'month', // You can set 'day', 'week', 'month', or 'year'
@@ -154,7 +155,7 @@ class SubscriptionController extends ApiController
                 ],
                 'mode' => 'subscription',
                 'subscription_data' => [
-                    'trial_period_days' => 1,
+                    'trial_period_days' => 4,
                 ],
                 'success_url' => url('api/purchase/success') . '?session_id={CHECKOUT_SESSION_ID}&package_id=' . $package->id . '&purchase_id=' . $earning->id,
                 'cancel_url' => url('api/purchase/cancel'),
@@ -170,7 +171,7 @@ class SubscriptionController extends ApiController
     public function handleSuccess(Request $request)
     {
 
-        // return response()->json($request->input('session_id'));
+        // return response()->json($request->all());
 
         Stripe::setApiKey(env('STRIPE_SECRET'));
         $sessionId = $request->input('session_id');
@@ -178,14 +179,18 @@ class SubscriptionController extends ApiController
         $earningId = $request->input('purchase_id');
 
         $session = Session::retrieve($sessionId);
-        // return response()->json($session);
+
+        $subscription = Subscription::retrieve($session->subscription);
+
+        $trialEndsAtTimestamp = isset($subscription->trial_end) ? $subscription->trial_end : null;
+
+        return response()->json($subscription);
 
         $package = PricingPackage::find($packageId);
         $paymentId = $session->invoice;
         $paymentStatus = $session->payment_status;
         $amountPaid = $session->amount_total / 100;
 
- 
 
         $earning = Earning::find($earningId);
         if (!$earning) {
