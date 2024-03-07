@@ -111,6 +111,7 @@
                             @endif
                             @endif
 
+                            @if ($earning->user)
                             @php
                             $company = \App\Models\Company::where('user_id',$earning->user->id)->first();
                             @endphp
@@ -128,6 +129,13 @@
                                 </h5>
                                 <span>{{ optional($earning->user)->email }}</span>
                             </div>
+                            @else 
+                            <div class="media-body">
+                                <h5>
+                                    <a href="#">User not found!</a> 
+                                </h5> 
+                            </div>
+                            @endif
                         </div>
                     </td>
                     <td>
@@ -157,7 +165,8 @@
                     <td>
                         <ul> 
 
-                            @if ($earning->status != 'pending' && $earning->status != 'trail')
+                            @if ($earning->status != 'pending')
+                            @if ($earning->user)
                             <li>
                                 <a href="{{ url('earning/generate-pdf',encrypt($earning->payment_id)) }}"
                                     class="btn-view btn-export">Export</a>
@@ -165,6 +174,7 @@
                             <li>
                                 <a href="{{ url('earning',$earning->id) }}" class="btn-view">View</a>
                             </li>
+                            @endif
                             @else
                             <li>
                                 <a href="javascript:void(0)" class="btn-view btn-export"
