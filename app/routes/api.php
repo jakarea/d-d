@@ -143,4 +143,4 @@ Route::post('forgot-password', [ForgotPasswordController::class, 'forgotPassword
 Route::get('subscription/expired', [SubscriptionController::class, 'expired'])->middleware(['auth:sanctum'])->name('subscription.expired');
 
 
-Route::post('/api/webhook/stripe', [SubscriptionController::class, 'handleWebhook'])->name('stripe.webhook');
+Route::post('/webhook/stripe', [SubscriptionController::class, 'handleWebhook'])->name('stripe.webhook');
