@@ -2,24 +2,26 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\Controller;
-use App\Models\PricingPackage;
-use App\Models\User;
-use App\Models\Earning;
-use App\Models\Company;
-use App\Models\Notification;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Stripe\Checkout\Session;
-use Illuminate\Support\Carbon;
-use Barryvdh\DomPDF\Facade\Pdf;
-use Illuminate\Support\Facades\Mail;
-use Stripe\Stripe;
 use stdClass;
 use Stripe\Price;
+use Stripe\Stripe;
 use Stripe\Product;
-use Stripe\Subscription;
 use Stripe\Webhook;
+use App\Models\User;
+use App\Models\Company;
+use App\Models\Earning;
+use Stripe\Subscription;
+use App\Models\Notification;
+use Illuminate\Http\Request;
+use Stripe\Checkout\Session;
+use App\Models\PricingPackage;
+use Illuminate\Support\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
+
 class SubscriptionController extends ApiController
 {
 
@@ -155,7 +157,7 @@ class SubscriptionController extends ApiController
                 ],
                 'mode' => 'subscription',
                 'subscription_data' => [
-                    'trial_period_days' => 4,
+                    'trial_period_days' => 6,
                 ],
                 'success_url' => url('api/purchase/success') . '?session_id={CHECKOUT_SESSION_ID}&package_id=' . $package->id . '&purchase_id=' . $earning->id,
                 'cancel_url' => url('api/purchase/cancel'),
@@ -181,9 +183,10 @@ class SubscriptionController extends ApiController
         $session = Session::retrieve($sessionId);
 
         $subscription = Subscription::retrieve($session->subscription);
+        // return response()->json($subscription);
 
-        $trialEndsAtTimestamp = isset($subscription->trial_end) ? $subscription->trial_end : null;
-        $trialEndsAt = $trialEndsAtTimestamp ? date('Y-m-d', $trialEndsAtTimestamp) : null;
+        $timePeriodAtTimestamp = isset($subscription->billing_cycle_anchor) ? $subscription->billing_cycle_anchor : null;
+        $timePeriodAt = $timePeriodAtTimestamp ? date('Y-m-d', $timePeriodAtTimestamp) : null;
         // return response()->json($trialEndsAt);
 
         $package = PricingPackage::find($packageId);
@@ -212,7 +215,7 @@ class SubscriptionController extends ApiController
         $earning->amount = $amountPaid;
         $earning->status = $paymentStatus;
         $earning->start_at = Carbon::now();
-        $earning->end_at = $trialEndsAt;
+        $earning->end_at = $timePeriodAt;
         $earning->save();
 
 
@@ -238,11 +241,11 @@ class SubscriptionController extends ApiController
         $pdfContent = $pdf->output();
 
         // Send the email with the PDF attachment
-        $mailInfo = Mail::send('payments.invoice.package', ['earning' => $earning, 'user' => $user], function ($message) use ($pdfContent, $earning, $user) {
-        $message->to($user->email)
-                ->subject('Invoice')
-                ->attachData($pdfContent,  $earning->package_name . '.pdf', ['mime' => 'application/pdf']);
-        });
+        // $mailInfo = Mail::send('payments.invoice.package', ['earning' => $earning, 'user' => $user], function ($message) use ($pdfContent, $earning, $user) {
+        // $message->to($user->email)
+        //         ->subject('Invoice')
+        //         ->attachData($pdfContent,  $earning->package_name . '.pdf', ['mime' => 'application/pdf']);
+        // });
 
         return view('payments/package/success', compact('pdfContent'));
     }
@@ -308,20 +311,27 @@ class SubscriptionController extends ApiController
             $payload, $sig_header, env('STRIPE_WEBHOOK_SECRET')
         );
 
+        Log::info('Event: ', ['event' => $event->type]);
+
         switch ($event->type) {
             case 'customer.subscription.updated':
 
                 $subscriptionData = $event->data->object;
+                $timePeriodAtTimestamp = isset($subscriptionData->current_period_end) ? $subscriptionData->current_period_end : null;
+                $timePeriodAt = $timePeriodAtTimestamp ? date('Y-m-d', $timePeriodAtTimestamp) : null;
 
-                $trialEndsAtTimestamp = isset($subscriptionData->trial_end) ? $subscriptionData->trial_end : null;
 
-                $trialEndsAt = $trialEndsAtTimestamp ? date('Y-m-d', $trialEndsAtTimestamp) : null;
+                Log::info('Time period: ', ['timePeriodAt' => $timePeriodAt]);
 
                 $subscription = Earning::where('subscription_id', $subscriptionData->id)->first();
 
+                Log::info('Subscription: ', ['subscription' => $subscription]);
+
                 $subscription->update([
-                    'end_at' => $trialEndsAt,
+                    'end_at' => $timePeriodAt,
                 ]);
+
+                Log::info('Subscription Update: ', ['subscriptionupdate' => $subscription]);
             break;
 
             default:
