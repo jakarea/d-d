@@ -177,6 +177,7 @@
         <h4>Top Active Company User</h4>
         <div class="user-list">
           @foreach ($topActiveCompanyUsers->slice(0,5) as $index => $activeCompanyUser)
+          @if ($activeCompanyUser->personalInfo)
           <!-- user one start -->
           <div class="media">
 
@@ -188,10 +189,12 @@
             @endif
  
 
+            @if ($activeCompanyUser->personalInfo)
             <div class="media-body">
               <h5><a href="{{ route('company.show', $activeCompanyUser->company) }}">{{ $activeCompanyUser->name }}</a></h5>
               <p>{{ $activeCompanyUser->email }}</p>
             </div> 
+            @endif 
 
             @if ($index == 0)
             <img src="{{ asset('/public/assets/images/icons/trophy-01.svg') }}" alt="T" class="img-fluid">
@@ -202,6 +205,7 @@
             @endif 
           </div>
           <!-- user one end --> 
+          @endif
           @endforeach
         </div>
       </div>

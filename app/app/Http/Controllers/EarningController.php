@@ -34,7 +34,7 @@ class EarningController extends Controller
         ->pluck('amount')
         ->sum();
 
-        $earnings = Earning::with('user')->whereIn('status',['paid','expired','pending']);
+        $earnings = Earning::with('user')->whereIn('status',['paid','expired','cancled']);
 
         if (!empty($status)) {
             if ($status == 'asc') {

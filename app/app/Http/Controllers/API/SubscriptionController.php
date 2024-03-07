@@ -294,7 +294,7 @@ class SubscriptionController extends ApiController
 
         if ($earning) {
 
-            $earning->status = 'expired';
+            $earning->status = 'cancled';
             $earning->save();
 
             return $this->jsonResponse(true, 'Subscription cancled success! .', $earning, $this->emptyArray, JsonResponse::HTTP_OK);
@@ -314,7 +314,7 @@ class SubscriptionController extends ApiController
             $payload, $sig_header, env('STRIPE_WEBHOOK_SECRET')
         );
 
-        Log::info('Event: ', ['event' => $event->type]);
+        
 
         switch ($event->type) {
             case 'customer.subscription.updated':
@@ -323,18 +323,25 @@ class SubscriptionController extends ApiController
                 $timePeriodAtTimestamp = isset($subscriptionData->current_period_end) ? $subscriptionData->current_period_end : null;
                 $timePeriodAt = $timePeriodAtTimestamp ? date('Y-m-d', $timePeriodAtTimestamp) : null;
 
-
-                Log::info('Time period: ', ['timePeriodAt' => $timePeriodAt]);
+                Log::info('SubscriptionID: ', ['subs_id' => $subscriptionData->id]);
 
                 $subscription = Earning::where('subscription_id', $subscriptionData->id)->first();
 
-                Log::info('Subscription: ', ['subscription' => $subscription]);
+                Log::info('Previous: ', ['subscription' => $subscription]);
 
                 $subscription->update([
-                    'end_at' => $timePeriodAt,
+                    'status' => 'expired',
                 ]);
 
-                Log::info('Subscription Update: ', ['subscriptionupdate' => $subscription]);
+                Log::info('Updated: ', ['subscription' => $subscription]);
+
+                // new data insert
+                $clonedEarningData = $subscription->replicate();
+                $clonedEarningData->status = 'paid';
+                $clonedEarningData->end_at = $timePeriodAt;
+                $clonedEarningData->save();
+
+                Log::info('New: ', ['newsubscription' => $clonedEarningData]);
             break;
 
             default:

@@ -89,12 +89,14 @@
                                                 <img src="{{ $firstImageUrl }}" alt="T" class="img-fluid">
                                                 @endif
                                             @elseif($notification->action_link == 'Earning')
+                                               @if ($user)
                                                 @if($user->personalInfo && $user->personalInfo->avatar)
                                                 <img src="{{ optional($user->personalInfo)->avatar }}" alt="A" class="img-fluid">
                                                 @else 
                                                 <span class="no-avatar nva-sm" style="width: 2.5rem; height: 2.5rem;">
                                                     {!! strtoupper($user->name[0]) !!}</span>
                                                 @endif
+                                               @endif
                                             @endif 
     
                                         </div>
