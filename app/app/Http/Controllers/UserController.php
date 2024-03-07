@@ -386,6 +386,7 @@ class UserController extends API\ApiController
                         'user_info' => $user
                     ];
 
+
                     return $this->jsonResponse(false, 'Success', $userInfoRegis, $this->emptyArray, JsonResponse::HTTP_CREATED);
             }
         } catch (\Exception $e) {
@@ -418,6 +419,9 @@ class UserController extends API\ApiController
             if ($errors->has('kvk_number')) {
                 $firstError = $errors->first('kvk_number');
             }
+            if ($errors->has('role')) {
+                $firstError = $errors->first('role');
+            }
 
             if ($errors->has('email')) {
                 $firstError = $errors->first('email');
@@ -442,14 +446,23 @@ class UserController extends API\ApiController
         $role = Role::where('slug', $creds['role'])->first();
         $user->roles()->attach($role);
 
-
-
         $roles = $user->roles->pluck('slug')->all();
         $plainTextToken2 = $user->createToken('hydra-api-token', $roles)->plainTextToken;
 
         // if user is company then do update company also
-        //    $role = auth()->user()->roles->pluck('slug')->first();
-        $selectedRole= $role->pluck('slug');
+        // $role = auth()->user()->roles->pluck('slug')->first();
+
+        $selectedRole = null;
+
+        if (isset($user['roles']) && !empty($user['roles'])) {
+
+            $roles = $user['roles'];
+            $selectedRole = $roles[0]['slug'];
+
+        } 
+
+        // return response()->json($selectedRole);
+
         $company = null;
 
        if ($selectedRole && $selectedRole == 'company') {

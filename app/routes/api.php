@@ -101,7 +101,7 @@ Route::middleware(['auth:sanctum', 'VerifyUserCheck'])->group(function () {
         Route::get('category', [CategoryController::class, 'index']);
 
         Route::get('banner', [ProductController::class, 'homeBanner']);
-       Route::get('product', [ProductController::class, 'companyProductindex'])->name('product.list');
+        Route::get('product', [ProductController::class, 'companyProductindex'])->name('product.list');
         Route::post('product', [ProductController::class, 'store'])->middleware('checkSubscription');
         Route::get('product/{product}/edit', [ProductController::class, 'editProduct'])->middleware('checkSubscription');
         Route::post('product/{product}', [ProductController::class, 'updateProduct'])->middleware('checkSubscription');
@@ -141,3 +141,6 @@ Route::post('forgot-password', [ForgotPasswordController::class, 'forgotPassword
 
 // subscription expired
 Route::get('subscription/expired', [SubscriptionController::class, 'expired'])->middleware(['auth:sanctum'])->name('subscription.expired');
+
+
+Route::post('/api/webhook/stripe', [SubscriptionController::class, 'handleWebhook'])->name('stripe.webhook');

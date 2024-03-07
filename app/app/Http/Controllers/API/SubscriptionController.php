@@ -19,7 +19,7 @@ use stdClass;
 use Stripe\Price;
 use Stripe\Product;
 use Stripe\Subscription;
-
+use Stripe\Webhook;
 class SubscriptionController extends ApiController
 {
 
@@ -92,7 +92,7 @@ class SubscriptionController extends ApiController
                 return $this->jsonResponse(true, $this->failed, $this->emptyArray, ['You have already purchased this package!'], JsonResponse::HTTP_NOT_FOUND);
             }
 
-            if ($price) { 
+            if ($price) {
 
                 $earning = Earning::where('company_id', $company->id)
                 ->where('user_id', $request->user_id)
@@ -106,7 +106,7 @@ class SubscriptionController extends ApiController
                     $earning->status = 'pending';
                     $earning->save();
                 }else{
-                   $earning = Earning::create( 
+                   $earning = Earning::create(
                     [
                         'company_id' => $company->id,
                         'user_id' => $request->user_id,
@@ -119,7 +119,7 @@ class SubscriptionController extends ApiController
                         'start_at' => null,
                         'end_at' => null,
                     ]
-                ); 
+                );
                 }
 
             }
@@ -130,11 +130,11 @@ class SubscriptionController extends ApiController
                 'description' => $request->package_type == 'Yearly' ? 'Package Type: Yearly' : 'Package Type: Monthly',
                 'images' => [asset('assets/images/logo.svg')],
             ]);
-            
+
             // Create a Price in Stripe (Recurring with Trial)
             $stripePrice = \Stripe\Price::create([
                 'product' => $product->id,
-                'unit_amount' => $price * 100,
+                'unit_amount' => $price * 100, // The amount should be in the smallest currency unit (e.g., cents)
                 'currency' => 'eur',
                 'recurring' => [
                     'interval' => 'month', // You can set 'day', 'week', 'month', or 'year'
@@ -171,7 +171,7 @@ class SubscriptionController extends ApiController
     public function handleSuccess(Request $request)
     {
 
-        // return response()->json($request->all());
+        // return response()->json('123');
 
         Stripe::setApiKey(env('STRIPE_SECRET'));
         $sessionId = $request->input('session_id');
@@ -183,8 +183,8 @@ class SubscriptionController extends ApiController
         $subscription = Subscription::retrieve($session->subscription);
 
         $trialEndsAtTimestamp = isset($subscription->trial_end) ? $subscription->trial_end : null;
-
-        return response()->json($subscription);
+        $trialEndsAt = $trialEndsAtTimestamp ? date('Y-m-d', $trialEndsAtTimestamp) : null;
+        // return response()->json($trialEndsAt);
 
         $package = PricingPackage::find($packageId);
         $paymentId = $session->invoice;
@@ -207,15 +207,19 @@ class SubscriptionController extends ApiController
             $oldPack->save();
         }
 
-        $earning->payment_id = $paymentId; 
+        $earning->subscription_id = $subscription->id ?? null;
+        $earning->payment_id = $paymentId;
         $earning->amount = $amountPaid;
         $earning->status = $paymentStatus;
-        $earning->start_at = Carbon::now(); 
-        $earning->end_at =  $earning->package_type == 'Monthly' ? Carbon::now()->addDays(30) : Carbon::now()->addDays(365);
+        $earning->start_at = Carbon::now();
+        $earning->end_at = $trialEndsAt;
         $earning->save();
-        
 
-        // notification create for new product create  
+
+        // $earning->package_type == 'Monthly' ? Carbon::now()->addDays(30) : Carbon::now()->addDays(365);
+
+
+        // notification create for new product create
         Notification::create([
             'creator_id' => $earning->user_id,
             'receiver_id' => $earning->company_id,
@@ -270,7 +274,7 @@ class SubscriptionController extends ApiController
             }else{
                 return $this->jsonResponse(true, 'Your subscription period has expired, choose a plan to continue again!', ['subscription_end_date' => $earning->end_at], $this->emptyArray, JsonResponse::HTTP_OK);
             }
-            
+
         } else {
             return $this->jsonResponse(true, 'Your subscription period has expired, choose a plan to continue.', 'No Package Found!', $this->emptyArray, JsonResponse::HTTP_OK);
         }
@@ -286,11 +290,48 @@ class SubscriptionController extends ApiController
 
             $earning->status = 'expired';
             $earning->save();
- 
-            return $this->jsonResponse(true, 'Subscription cancled success! .', $earning, $this->emptyArray, JsonResponse::HTTP_OK); 
-            
+
+            return $this->jsonResponse(true, 'Subscription cancled success! .', $earning, $this->emptyArray, JsonResponse::HTTP_OK);
+
         } else {
             return $this->jsonResponse(true, 'No Subscription Package found!.', 'No Package Found!', $this->emptyArray, JsonResponse::HTTP_OK);
         }
     }
+
+
+    public function handleWebhook(Request $request)
+    {
+        $payload = $request->getContent();
+        $sig_header = $request->header('Stripe-Signature');
+
+        $event = Webhook::constructEvent(
+            $payload, $sig_header, env('STRIPE_WEBHOOK_SECRET')
+        );
+
+        switch ($event->type) {
+            case 'customer.subscription.updated':
+
+                $subscriptionData = $event->data->object;
+
+                $trialEndsAtTimestamp = isset($subscriptionData->trial_end) ? $subscriptionData->trial_end : null;
+
+                $trialEndsAt = $trialEndsAtTimestamp ? date('Y-m-d', $trialEndsAtTimestamp) : null;
+
+                $subscription = Earning::where('subscription_id', $subscriptionData->id)->first();
+
+                $subscription->update([
+                    'end_at' => $trialEndsAt,
+                ]);
+            break;
+
+            default:
+
+                break;
+        }
+        return response()->json(['success' => true]);
+    }
+
+
+
+
 }
