@@ -32,31 +32,31 @@ class VerificationController extends ApiController
                 $company = Company::where('user_id',$user->id)->first();  
 
                 // if user is a company then start trail
-                $current_pack = null;
-                if ($company) {
-                   $current_pack = Earning::create([
-                        'pricing_packages_id' => 4,
-                        'company_id' => $company->id,
-                        'user_id' => $company->user_id,
-                        'package_name' => "Trail Plan",
-                        'payment_id' => '',
-                        'amount' => 00.00,
-                        'package_type' => 'trail',
-                        'status' => 'trail',
-                        'start_at' => now(),
-                        'end_at' => Carbon::now()->addDays(15), // added 15 days of trail
-                    ]);
-                }
+                // $current_pack = null;
+                // if ($company) {
+                //    $current_pack = Earning::create([
+                //         'pricing_packages_id' => 4,
+                //         'company_id' => $company->id,
+                //         'user_id' => $company->user_id,
+                //         'package_name' => "Trail Plan",
+                //         'payment_id' => '',
+                //         'amount' => 00.00,
+                //         'package_type' => 'trail',
+                //         'status' => 'trail',
+                //         'start_at' => now(),
+                //         'end_at' => Carbon::now()->addDays(15), // added 15 days of trail
+                //     ]);
+                // }
                 
                 $userInfo = [
                     'token' => $plainTextToken,
                     'user_info' => $user,
-                    'user_company' => $company,
-                    'current_package_info' => [
-                        'is_expired' => optional($user->payments)->end_at > now() ? 0 : 1,
-                        'package' => $current_pack ? $current_pack : null,
-                        'payment_info' => $user->payments
-                    ]
+                    'user_company' => $company
+                    // 'current_package_info' => [
+                    //     'is_expired' => optional($user->payments)->end_at > now() ? 0 : 1,
+                    //     'package' => $current_pack ? $current_pack : null,
+                    //     'payment_info' => $user->payments
+                    // ]
                 ];
 
                 // send mail afetr verify
@@ -66,7 +66,7 @@ class VerificationController extends ApiController
                         ->text('Your account has been successfully verified. Thank you for choosing us! DnD');
                 });                
 
-                return $this->jsonResponse(false, 'Verification Success!', $userInfo, $this->emptyArray, JsonResponse::HTTP_CREATED);
+                return $this->jsonResponse(false, 'Verification Success! please purchase a package to continue!', $userInfo, $this->emptyArray, JsonResponse::HTTP_CREATED);
             }
 
             return $this->jsonResponse(1, 'Invalid verification code or user not found.', [], 422);
