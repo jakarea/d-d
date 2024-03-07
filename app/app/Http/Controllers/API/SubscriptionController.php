@@ -99,6 +99,7 @@ class SubscriptionController extends ApiController
                 ->whereIn('status', ['pending', 'trail'])->first();
 
                 if ($earning) {
+                  
                     $earning->package_name = $package->name;
                     $earning->pricing_packages_id = $package->id;
                     $earning->amount = $price;
@@ -106,6 +107,9 @@ class SubscriptionController extends ApiController
                     $earning->status = 'pending';
                     $earning->save();
                 }else{
+
+                    // return response()->json('Not found');
+                    
                    $earning = Earning::create(
                     [
                         'company_id' => $company->id,
@@ -123,6 +127,8 @@ class SubscriptionController extends ApiController
                 }
 
             }
+
+            // return response()->json($earning);
 
             // Create a Product in Stripe
             $product = Product::create([
@@ -203,7 +209,7 @@ class SubscriptionController extends ApiController
         ->first();
 
         if ($oldPack) {
-            $oldPack->status = 'expired';
+            $oldPack->status = 'cancled';
             $oldPack->save();
         }
 

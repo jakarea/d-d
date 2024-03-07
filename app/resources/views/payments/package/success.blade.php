@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="en">
 
 <head>
     <!-- Required meta tags -->
@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="{{ url('public/assets/css/payments.css') }}"> 
     <!-- custom CSS end -->
 
-    <title>DnD || Payments</title>
+    <title>DnD || Payment Success</title>
 </head>
 
 <body>
@@ -30,56 +30,23 @@
             <div class="row justify-content-center">
                 <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5">
                     <div class="top-logo">
-                        <a href="#">
+                        <a href="#" style="display: block; max-width: 70%; margin: 0 auto;">
                             <img src="{{ asset('public/assets/images/logo.png') }}" alt="logo" class="img-fluid">
                         </a>
                     </div>
                     <div class="payments-message-box">
                         <img src="{{ asset('public/assets/images/icons/success.svg') }}" alt="success" class="img-fluid">
 
-                        <h4>We received your payment</h4>
+                        <h4>We have received your payment</h4>
                         <p>Thank you for the Subscription!</p>
 
-                        @php
-                            $sessionId = request('session_id');
-                        @endphp
-
-                        @if ($sessionId) 
-                        <!-- Add an ID to the download link for easy reference in JavaScript -->
-                        <a id="downloadInvoiceLink" href="#">Download Invoice</a>
-                        @endif
+                        <a href="#">Go BACK TO APP</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
   
-    <script>
-        // Create a hidden link
-        var link = document.createElement('a');
-        link.style.display = 'none';
-
-        // Set the href attribute to the PDF data
-        link.href = 'data:application/pdf;base64,{{ base64_encode($pdfContent) }}';
-
-        // Set the download attribute with the desired filename
-        link.download = 'invoice.pdf';
-
-        // Append the link to the body
-        document.body.appendChild(link);
-
-        // Get the download link element by ID
-        var downloadLink = document.getElementById('downloadInvoiceLink');
-
-        // Attach a click event to the link to trigger the download
-        downloadLink.addEventListener('click', function(event) {
-            // Prevent the default link behavior
-            event.preventDefault();
-
-            // Simulate a click on the hidden link to trigger the download
-            link.click();
-        });
-    </script>
 
 </body>
 
