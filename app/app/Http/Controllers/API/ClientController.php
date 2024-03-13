@@ -4,9 +4,11 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Requests\User\SecuritySettingRequest;
 use App\Http\Requests\User\UpdateRequest;
+use App\Models\Company;
 use App\Models\PersonalInfo;
 use App\Models\PricingPackage;
 use App\Models\User;
+use App\Models\UserRole;
 use App\Process\UserProcess;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\JsonResponse;
@@ -157,9 +159,33 @@ class ClientController extends ApiController
             return $this->jsonResponse(true, 'User not found!', $user_id, $this->emptyArray, JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
 
-        $user = User::find($user_id);
-        $user->status = null;
-        $user->save();
+        if ($user_id != auth()->user()->id) {
+            return $this->jsonResponse(true, 'You do not have permission to delete this user!', $user_id, $this->emptyArray, JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
+        
+        $user = User::find($user_id); 
+        $company = Company::where('user_id', $user_id)->first();
+        
+        if ($company) {
+            $company->delete();
+        }
+        
+        $userInfo = PersonalInfo::where('user_id', $user_id)->first();
+        $userRole = UserRole::where('user_id', $user_id)->first();
+        
+        if ($userInfo) {
+            $userInfo->delete();
+        }
+        
+        if ($userRole) {
+            $userRole->delete();
+        }
+        
+        if ($user) {
+            $user->delete();
+        }
+        
 
         return $this->jsonResponse(false, 'Profile deleted successfully', $user, $this->emptyArray, JsonResponse::HTTP_CREATED);
     }

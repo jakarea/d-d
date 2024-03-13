@@ -29,6 +29,9 @@ use App\Http\Controllers\PrivacyController;
 |
 */
 
+Route::get('/', function () { return view('home/index'); });
+Route::get('/home', function () { return view('home/index'); });
+
 Route::get('privacy-policy', [PrivacyController::class, 'index']);
 
 Route::group(['middleware' => ['guest']], function () {
@@ -62,10 +65,9 @@ Route::group(['middleware' => ['web','guest']], function () {
 
 // initial redirection route
 
-Route::get('/home', function () { return view('home/index'); });
 
 Route::group(['middleware' => ['auth','isAdmin']], function () {
-    Route::get('/', function () { return redirect('/analytics'); });
+    // Route::get('/', function () { return redirect('home/index'); });
     Route::get('/dashboard', function () { redirect('/analytics'); });
 });
 

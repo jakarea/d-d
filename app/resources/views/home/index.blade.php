@@ -26,7 +26,7 @@
 
     @yield('style')
 
-    <title>DnD | Landing Page</title>
+    <title>DnD | Home Page</title>
 </head>
 
 <body>
@@ -34,7 +34,7 @@
      <!-- landing page start -->
   <nav class="navbar navbar-expand-md landing-header">
     <div class="container">
-      <a class="navbar-brand" href="#">
+      <a class="navbar-brand" href="{{ url('/') }}">
         <img src="{{ asset('public/assets/images/landing/logo.svg') }}" alt="logo">
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -44,16 +44,16 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
           <li class="nav-item">
-            <a class="nav-link" href="#">How it Works</a>
+            <a class="nav-link" href="javascript:void(0)" onclick="scrollToSection('#work-sec')">How it Works</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Start Saving</a>
+            <a class="nav-link" href="javascript:void(0)" onclick="scrollToSection('#start-save')">Start Saving</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">For Companies</a>
+            <a class="nav-link" href="javascript:void(0)" onclick="scrollToSection('#for-com')">For Companies</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Feedback</a>
+            <a class="nav-link" href="javascript:void(0)" onclick="scrollToSection('#feedback-sec')">Feedback</a>
           </li>
         </ul>
       </div>
@@ -91,7 +91,7 @@
     <!-- hero section end -->
 
     <!-- how it workes start -->
-    <section class="how-work-sec font-poppins">
+    <section class="how-work-sec font-poppins" id="work-sec">
       <div class="container">
         <div class="row">
           <div class="col-12">
@@ -189,7 +189,7 @@
   <!-- insperation section end -->
 
   <!-- discover local section start -->
-  <section class="discover-sec">
+  <section class="discover-sec" id="for-com">
     <div class="container">
       <div class="row">
         <div class="col-12">
@@ -510,7 +510,7 @@
   <!-- discover local section end -->
 
   <!-- insperation section start -->
-  <section class="insperation-section savings-section">
+  <section class="insperation-section savings-section" id="start-save">
     <div class="container">
       <div class="row align-items-center">
 
@@ -707,9 +707,9 @@
 
         </div>
       </div>
-      <div class="row">
+      <div class="row align-items-center">
         <div class="col-lg-4 col-sm-6 order-sm-2 order-lg-1">
-          <div class="nutshleel-txt text-end mt-100">
+          <div class="nutshleel-txt text-end mt-60">
             <h5>All deals at your fingertips</h5>
             <p>Get access to the best deals in your area</p>
           </div>
@@ -725,7 +725,7 @@
           </div>
         </div>
         <div class="col-lg-4 col-sm-6 order-sm-2">
-          <div class="nutshleel-txt mt-100">
+          <div class="nutshleel-txt mt-60">
             <h5>Spontaneous Eating Out</h5>
             <p>Get access to the best deals in your area</p>
           </div>
@@ -741,7 +741,7 @@
   <!-- nut shell end -->
 
   <!-- clients feedback start -->
-  <section class="clients-feedback">
+  <section class="clients-feedback" id="feedback-sec">
     <div class="container">
       <div class="row">
         <div class="col-12">
@@ -833,6 +833,18 @@
     <!-- Bootstrap Bundle with Popper JS start -->
     <script src="{{ url('public/assets/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ url('public/assets/js/custom.js') }}"></script>
+
+    <script>
+      // Function to handle smooth scrolling to sections
+      function scrollToSection(sectionId) {
+          const section = document.querySelector(sectionId);
+          if (section) {
+              section.scrollIntoView({
+                  behavior: 'smooth'
+              });
+          }
+      }
+  </script>
     <!-- Bootstrap Bundle with Popper JS end --> 
 
 </body>
