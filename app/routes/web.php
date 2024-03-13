@@ -61,9 +61,11 @@ Route::group(['middleware' => ['web','guest']], function () {
 });
 
 // initial redirection route
+
+Route::get('/home', function () { return view('home/index'); });
+
 Route::group(['middleware' => ['auth','isAdmin']], function () {
     Route::get('/', function () { return redirect('/analytics'); });
-    Route::get('/home', function () { return redirect('/analytics'); });
     Route::get('/dashboard', function () { redirect('/analytics'); });
 });
 

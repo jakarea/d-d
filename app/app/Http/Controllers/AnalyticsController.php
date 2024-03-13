@@ -15,14 +15,14 @@ class AnalyticsController extends Controller
     {
 
         // total earnings
-        $totalEarnings = Earning::whereIn('status', ['paid', 'expired'])
+        $totalEarnings = Earning::whereIn('status', ['paid', 'expired','cancled'])
             ->pluck('amount')
             ->sum();
 
         // todays earning
         $today = Carbon::today();
         $todayEarnings = Earning::whereDate('start_at', $today)
-            ->whereIn('status', ['paid', 'expired'])
+            ->whereIn('status', ['paid', 'expired','cancled'])
             ->pluck('amount')
             ->sum();
 
@@ -58,7 +58,7 @@ class AnalyticsController extends Controller
         })->count();
 
         // earning graph 
-        $totalEarningsGraph = Earning::whereIn('status', ['paid', 'expired'])
+        $totalEarningsGraph = Earning::whereIn('status', ['paid', 'expired','cancled'])
             ->pluck('amount');
         $timestamp = strtotime(Carbon::now()->startOfMonth());
         $earningsGraphData = [];
@@ -75,8 +75,9 @@ class AnalyticsController extends Controller
         // total products
         $products = Product::all();
         $totalProducts = $products->count();
-        $activeProducts = $products->where('status', 1)->count();
-        $draftProducts = $products->where('status', 0)->count();
+
+        $activeProducts = $products->where('status', 'Active')->count();
+        $draftProducts = $products->where('status', 'inactive')->count();
 
         // company user 
         $users = Company::with('user')->get();

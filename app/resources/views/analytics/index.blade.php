@@ -340,6 +340,8 @@ chart.render();
 <script>
   var datas = [{{ $activeProducts }}, {{ $draftProducts }}];
 
+  // console.log(datas);
+
 var backgroundColor = ['#35B254', '#FFAB00'];
 var ctx = document.getElementById('productStatus').getContext('2d');
 var myDoughnutChart = new Chart(ctx, {

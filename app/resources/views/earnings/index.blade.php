@@ -147,19 +147,24 @@
                         <p>€{{ $earning->amount}}</p>
                     </td>
                     <td class="text-uppercase">
-                        @if ($earning->status == 'paid')
-                        <span class="status paid">
-                            {{ $earning->status }}
-                        </span>
+                        @if ($earning->status == 'paid' && $earning->amount == 0)
+                            <span class="status trail">
+                                Trail
+                            </span>
+                        @elseif ($earning->status == 'paid')
+                            <span class="status paid">
+                                {{ $earning->status }}
+                            </span>
                         @elseif ($earning->status == 'expired')
-                        <span class="status expired">
-                            {{ $earning->status }}
-                        </span>
+                            <span class="status expired">
+                                {{ $earning->status }}
+                            </span> 
                         @else
-                        <span class="status">
-                            {{ $earning->status }}
-                        </span>
+                            <span class="status">
+                                {{ $earning->status }}
+                            </span>
                         @endif
+
                         
                     </td>
                     <td>

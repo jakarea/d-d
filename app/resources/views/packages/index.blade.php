@@ -3,7 +3,7 @@
 @section('title','Pricing plans')
 
 @section('style')
-<link rel="stylesheet" href="{{ url('assets/css/pricing.css') }}">
+<link rel="stylesheet" href="{{ url('public/assets/css/pricing.css') }}">
 @endsection
 @section('content')
 <!-- pricing page wrapper start -->

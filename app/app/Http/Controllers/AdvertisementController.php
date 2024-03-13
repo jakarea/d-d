@@ -35,9 +35,9 @@ class AdvertisementController extends Controller
         if (!empty($status)) {
             $selectedStatus = $status;
             if ($status == 'Active') {
-                $products->where('status', 1);
+                $products->where('status', 'Active');
             } elseif ($status == 'Inactive') {
-                $products->where('status', 0)->orWhereNull('status');
+                $products->where('status', 'inactive')->orWhereNull('status');
             }
         }
 
