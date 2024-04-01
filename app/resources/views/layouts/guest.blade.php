@@ -13,8 +13,8 @@
     <meta name="theme-color" content="#fff">
 
     <!-- Bootstrap CSS start -->
-    <link rel="shortcut icon" href="{{ url('assets/images/favicon.png') }}" type="image/x-icon">
-    <link rel="stylesheet" href="{{ url('assets/css/bootstrap.min.css') }}">
+    <link rel="shortcut icon" href="{{ url('public/assets/images/favicon.png') }}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ url('public/assets/css/bootstrap.min.css') }}">
     <!-- Bootstrap CSS end -->
 
     <!-- plugin CSS start -->
@@ -24,8 +24,8 @@
     <!-- plugin CSS end -->
 
     <!-- custom CSS start -->
-    <link rel="stylesheet" href="{{ url('assets/css/style.css') }}">
-    <link rel="stylesheet" href="{{ url('assets/css/responsive.css') }}">
+    <link rel="stylesheet" href="{{ url('public/assets/css/style.css') }}">
+    <link rel="stylesheet" href="{{ url('public/assets/css/responsive.css') }}">
     @yield('style')
     <!-- custom CSS end -->
 
@@ -36,8 +36,8 @@
     @yield('content')
 
     <!-- Bootstrap Bundle with Popper JS start -->
-    <script src="{{ url('public/assets/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ url('public/assets/js/custom.js') }}"></script>
+    <script src="{{ url('public/public/assets/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url('public/public/assets/js/custom.js') }}"></script>
 
     <script>
         var togglePassword = document.getElementById('togglePassword');

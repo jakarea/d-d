@@ -13,8 +13,8 @@
         <meta name="theme-color" content="#fff">
 
         {{-- bootstrap css --}}
-        <link rel="shortcut icon" href="{{ url('assets/images/favicon.png') }}" type="image/x-icon">
-        <link rel="stylesheet" href="{{ url('assets/css/bootstrap.min.css') }}">
+        <link rel="shortcut icon" href="{{ url('public/assets/images/favicon.png') }}" type="image/x-icon">
+        <link rel="stylesheet" href="{{ url('public/assets/css/bootstrap.min.css') }}">
 
         <!-- plugin CSS start -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
@@ -23,7 +23,9 @@
         <!-- plugin CSS end -->
 
         <!-- custom CSS start -->
-        <link rel="stylesheet" href="{{ url('assets/css/landing.css') }}">
+        <link rel="stylesheet" href="{{ url('public/assets/css/landing.css') }}">
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
         @yield('style')
 
@@ -36,7 +38,7 @@
         <nav class="navbar navbar-expand-md landing-header">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    <img src="{{ asset('assets/images/logo.png') }}" alt="logo" style="max-width: 10rem">
+                    <img src="{{ asset('public/assets/images/logo.png') }}" alt="logo" style="max-width: 10rem">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -79,16 +81,16 @@
                                     Store and Google Play to start saving money today!
                                 </p>
                                 <div class="hero_btn">
-                                    <a href="#"><img src="{{ asset('assets/images/landing/app-store.svg') }}"
+                                    <a href="#"><img src="{{ asset('public/assets/images/landing/app-store.svg') }}"
                                             alt="app" class="img-fluid"></a>
-                                    <a href="#"><img src="{{ asset('assets/images/landing/paly-stroe.svg') }}"
+                                    <a href="#"><img src="{{ asset('public/assets/images/landing/paly-stroe.svg') }}"
                                             alt="app" class="img-fluid"></a>
                                 </div>
                             </div>
                         </div>
                         <div class="col-12 col-sm-12 col-md-6 col-lg-6 order-1 order-lg-2">
                             <div class="text-center hero-img">
-                                <img src="{{ asset('assets/images/landing/hero.png') }}" alt="app"
+                                <img src="{{ asset('public/assets/images/landing/hero.png') }}" alt="app"
                                     class="img-fluid">
                             </div>
                         </div>
@@ -112,7 +114,7 @@
                     <div class="row align-items-center">
                         <div class="col-12 col-sm-6 col-lg-4">
                             <div class="work-box">
-                                <img src="{{ asset('assets/images/landing/work-01.svg') }}" alt="work"
+                                <img src="{{ asset('public/assets/images/landing/work-01.svg') }}" alt="work"
                                     class="img-fluid">
                                 <h5>Search for Deals</h5>
                                 <p>Discover an abundance of incredible deals
@@ -124,7 +126,7 @@
                         </div>
                         <div class="col-12 col-sm-6 col-lg-4">
                             <div class="work-box">
-                                <img src="{{ asset('assets/images/landing/work-02.svg') }}" alt="work"
+                                <img src="{{ asset('public/assets/images/landing/work-02.svg') }}" alt="work"
                                     class="img-fluid">
                                 <h5>Save Favorites</h5>
                                 <p>Never let a great deal slip away! Save your
@@ -135,7 +137,7 @@
                         </div>
                         <div class="col-12 col-sm-6 col-lg-4">
                             <div class="work-box">
-                                <img src="{{ asset('assets/images/landing/work-03.svg') }}" alt="work"
+                                <img src="{{ asset('public/assets/images/landing/work-03.svg') }}" alt="work"
                                     class="img-fluid">
                                 <h5>Promote Your Deals</h5>
                                 <p>Attention businesses! Showcase your
@@ -187,7 +189,7 @@
                 <div class="row align-items-center">
                     <div class="col-12 col-sm-5 col-md-6 col-lg-5">
                         <div class="text-center ins-img">
-                            <img src="{{ asset('assets/images/landing/saving.png') }}" alt="app"
+                            <img src="{{ asset('public/assets/images/landing/saving.png') }}" alt="app"
                                 class="img-fluid">
                         </div>
                     </div>
@@ -198,7 +200,7 @@
 
                             <div class="deals-box">
                                 <div class="media">
-                                    <img src="{{ asset('assets/images/landing/ins-icon-01.svg') }}" alt="a"
+                                    <img src="{{ asset('public/assets/images/landing/ins-icon-01.svg') }}" alt="a"
                                         class="ig-fluid">
                                     <div class="media-body">
                                         <h5>Local Discoveries</h5>
@@ -206,7 +208,7 @@
                                     </div>
                                 </div>
                                 <div class="media">
-                                    <img src="{{ asset('assets/images/landing/ins-icon-02.svg') }}" alt="a"
+                                    <img src="{{ asset('public/assets/images/landing/ins-icon-02.svg') }}" alt="a"
                                         class="ig-fluid">
                                     <div class="media-body">
                                         <h5>Easy to Use</h5>
@@ -244,35 +246,35 @@
                             <button class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill"
                                 data-bs-target="#v-pills-home" type="button" role="tab"
                                 aria-controls="v-pills-home" aria-selected="true">
-                                <span><img src="{{ asset('assets/images/landing/t-01.svg') }}" alt="a"
+                                <span><img src="{{ asset('public/assets/images/landing/t-01.svg') }}" alt="a"
                                         class="img-fluid"></span>
                                 Workshops
                             </button>
                             <button class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill"
                                 data-bs-target="#v-pills-profile" type="button" role="tab"
                                 aria-controls="v-pills-profile" aria-selected="false">
-                                <span><img src="{{ asset('assets/images/landing/t-02.svg') }}" alt="a"
+                                <span><img src="{{ asset('public/assets/images/landing/t-02.svg') }}" alt="a"
                                         class="img-fluid"></span>
                                 Course
                             </button>
                             <button class="nav-link" id="v-pills-messages-tab" data-bs-toggle="pill"
                                 data-bs-target="#v-pills-messages" type="button" role="tab"
                                 aria-controls="v-pills-messages" aria-selected="false">
-                                <span><img src="{{ asset('assets/images/landing/t-03.svg') }}" alt="a"
+                                <span><img src="{{ asset('public/assets/images/landing/t-03.svg') }}" alt="a"
                                         class="img-fluid"></span>
                                 Sauna & Beauty
                             </button>
                             <button class="nav-link" id="v-pills-settings-tab" data-bs-toggle="pill"
                                 data-bs-target="#v-pills-settings" type="button" role="tab"
                                 aria-controls="v-pills-settings" aria-selected="false">
-                                <span><img src="{{ asset('assets/images/landing/t-04.svg') }}" alt="a"
+                                <span><img src="{{ asset('public/assets/images/landing/t-04.svg') }}" alt="a"
                                         class="img-fluid"></span>
                                 Food & Drinks
                             </button>
                             <button class="nav-link" id="v-pills-settings2-tab" data-bs-toggle="pill"
                                 data-bs-target="#v-pills-settings2" type="button" role="tab"
                                 aria-controls="v-pills-settings2" aria-selected="false">
-                                <span><img src="{{ asset('assets/images/landing/t-05.svg') }}" alt="a"
+                                <span><img src="{{ asset('public/assets/images/landing/t-05.svg') }}" alt="a"
                                         class="img-fluid"></span>
                                 Presents
                             </button>
@@ -280,21 +282,21 @@
                             <button class="nav-link" id="v-pills-messages2-tab" data-bs-toggle="pill"
                                 data-bs-target="#v-pills-messages2" type="button" role="tab"
                                 aria-controls="v-pills-messages2" aria-selected="false">
-                                <span><img src="{{ asset('assets/images/landing/t-03.svg') }}" alt="a"
+                                <span><img src="{{ asset('public/assets/images/landing/t-03.svg') }}" alt="a"
                                         class="img-fluid"></span>
                                 Sauna & Beauty
                             </button>
                             <button class="nav-link" id="v-pills-settings3-tab" data-bs-toggle="pill"
                                 data-bs-target="#v-pills-settings3" type="button" role="tab"
                                 aria-controls="v-pills-settings3" aria-selected="false">
-                                <span><img src="{{ asset('assets/images/landing/t-04.svg') }}" alt="a"
+                                <span><img src="{{ asset('public/assets/images/landing/t-04.svg') }}" alt="a"
                                         class="img-fluid"></span>
                                 Food & Drinks
                             </button>
                             <button class="nav-link" id="v-pills-settings4-tab" data-bs-toggle="pill"
                                 data-bs-target="#v-pills-settings4" type="button" role="tab"
                                 aria-controls="v-pills-settings4" aria-selected="false">
-                                <span><img src="{{ asset('assets/images/landing/t-05.svg') }}" alt="a"
+                                <span><img src="{{ asset('public/assets/images/landing/t-05.svg') }}" alt="a"
                                         class="img-fluid"></span>
                                 Presents
                             </button>
@@ -310,7 +312,7 @@
                                 <div class="row ms-lg-4">
                                     <div class="col-sm-6 col-lg-6">
                                         <div class="discover-box">
-                                            <img src="{{ asset('assets/images/landing/discover-img.png') }}"
+                                            <img src="{{ asset('public/assets/images/landing/discover-img.png') }}"
                                                 alt="a" class="img-fluid">
 
                                             <div class="ol">
@@ -323,7 +325,7 @@
                                     </div>
                                     <div class="col-sm-6 col-lg-6">
                                         <div class="discover-box">
-                                            <img src="{{ asset('assets/images/landing/discover-img-02.png') }}"
+                                            <img src="{{ asset('public/assets/images/landing/discover-img-02.png') }}"
                                                 alt="a" class="img-fluid">
 
                                             <div class="ol">
@@ -343,7 +345,7 @@
                                 <div class="row ms-lg-4">
                                     <div class="col-sm-6 col-lg-6">
                                         <div class="discover-box">
-                                            <img src="{{ asset('assets/images/landing/discover-img.png') }}"
+                                            <img src="{{ asset('public/assets/images/landing/discover-img.png') }}"
                                                 alt="a" class="img-fluid">
 
                                             <div class="ol">
@@ -356,7 +358,7 @@
                                     </div>
                                     <div class="col-sm-6 col-lg-6">
                                         <div class="discover-box">
-                                            <img src="{{ asset('assets/images/landing/discover-img-02.png') }}"
+                                            <img src="{{ asset('public/assets/images/landing/discover-img-02.png') }}"
                                                 alt="a" class="img-fluid">
 
                                             <div class="ol">
@@ -375,7 +377,7 @@
                                 <div class="row ms-lg-4">
                                     <div class="col-sm-6 col-lg-6">
                                         <div class="discover-box">
-                                            <img src="{{ asset('assets/images/landing/discover-img.png') }}"
+                                            <img src="{{ asset('public/assets/images/landing/discover-img.png') }}"
                                                 alt="a" class="img-fluid">
 
                                             <div class="ol">
@@ -388,7 +390,7 @@
                                     </div>
                                     <div class="col-sm-6 col-lg-6">
                                         <div class="discover-box">
-                                            <img src="{{ asset('assets/images/landing/discover-img-02.png') }}"
+                                            <img src="{{ asset('public/assets/images/landing/discover-img-02.png') }}"
                                                 alt="a" class="img-fluid">
 
                                             <div class="ol">
@@ -407,7 +409,7 @@
                                 <div class="row ms-lg-4">
                                     <div class="col-sm-6 col-lg-6">
                                         <div class="discover-box">
-                                            <img src="{{ asset('assets/images/landing/discover-img.png') }}"
+                                            <img src="{{ asset('public/assets/images/landing/discover-img.png') }}"
                                                 alt="a" class="img-fluid">
 
                                             <div class="ol">
@@ -420,7 +422,7 @@
                                     </div>
                                     <div class="col-sm-6 col-lg-6">
                                         <div class="discover-box">
-                                            <img src="{{ asset('assets/images/landing/discover-img-02.png') }}"
+                                            <img src="{{ asset('public/assets/images/landing/discover-img-02.png') }}"
                                                 alt="a" class="img-fluid">
 
                                             <div class="ol">
@@ -439,7 +441,7 @@
                                 <div class="row ms-lg-4">
                                     <div class="col-sm-6 col-lg-6">
                                         <div class="discover-box">
-                                            <img src="{{ asset('assets/images/landing/discover-img.png') }}"
+                                            <img src="{{ asset('public/assets/images/landing/discover-img.png') }}"
                                                 alt="a" class="img-fluid">
 
                                             <div class="ol">
@@ -452,7 +454,7 @@
                                     </div>
                                     <div class="col-sm-6 col-lg-6">
                                         <div class="discover-box">
-                                            <img src="{{ asset('assets/images/landing/discover-img-02.png') }}"
+                                            <img src="{{ asset('public/assets/images/landing/discover-img-02.png') }}"
                                                 alt="a" class="img-fluid">
 
                                             <div class="ol">
@@ -472,7 +474,7 @@
                                 <div class="row ms-lg-4">
                                     <div class="col-sm-6 col-lg-6">
                                         <div class="discover-box">
-                                            <img src="{{ asset('assets/images/landing/discover-img.png') }}"
+                                            <img src="{{ asset('public/assets/images/landing/discover-img.png') }}"
                                                 alt="a" class="img-fluid">
 
                                             <div class="ol">
@@ -485,7 +487,7 @@
                                     </div>
                                     <div class="col-sm-6 col-lg-6">
                                         <div class="discover-box">
-                                            <img src="{{ asset('assets/images/landing/discover-img-02.png') }}"
+                                            <img src="{{ asset('public/assets/images/landing/discover-img-02.png') }}"
                                                 alt="a" class="img-fluid">
 
                                             <div class="ol">
@@ -504,7 +506,7 @@
                                 <div class="row ms-lg-4">
                                     <div class="col-sm-6 col-lg-6">
                                         <div class="discover-box">
-                                            <img src="{{ asset('assets/images/landing/discover-img.png') }}"
+                                            <img src="{{ asset('public/assets/images/landing/discover-img.png') }}"
                                                 alt="a" class="img-fluid">
 
                                             <div class="ol">
@@ -517,7 +519,7 @@
                                     </div>
                                     <div class="col-sm-6 col-lg-6">
                                         <div class="discover-box">
-                                            <img src="{{ asset('assets/images/landing/discover-img-02.png') }}"
+                                            <img src="{{ asset('public/assets/images/landing/discover-img-02.png') }}"
                                                 alt="a" class="img-fluid">
 
                                             <div class="ol">
@@ -536,7 +538,7 @@
                                 <div class="row ms-lg-4">
                                     <div class="col-sm-6 col-lg-6">
                                         <div class="discover-box">
-                                            <img src="{{ asset('assets/images/landing/discover-img.png') }}"
+                                            <img src="{{ asset('public/assets/images/landing/discover-img.png') }}"
                                                 alt="a" class="img-fluid">
 
                                             <div class="ol">
@@ -549,7 +551,7 @@
                                     </div>
                                     <div class="col-sm-6 col-lg-6">
                                         <div class="discover-box">
-                                            <img src="{{ asset('assets/images/landing/discover-img-02.png') }}"
+                                            <img src="{{ asset('public/assets/images/landing/discover-img-02.png') }}"
                                                 alt="a" class="img-fluid">
 
                                             <div class="ol">
@@ -587,21 +589,21 @@ Join us now and start saying hello to saving money!</p>
                             <div class="deals-box">
 
                                 <div class="media mt-0">
-                                    <img src="{{ asset('assets/images/landing/check.svg') }}" alt="a"
+                                    <img src="{{ asset('public/assets/images/landing/check.svg') }}" alt="a"
                                         class="ig-fluid">
                                     <div class="media-body">
                                         <h5>Save Money</h5>
                                     </div>
                                 </div>
                                 <div class="media mt-0">
-                                    <img src="{{ asset('assets/images/landing/check.svg') }}" alt="a"
+                                    <img src="{{ asset('public/assets/images/landing/check.svg') }}" alt="a"
                                         class="ig-fluid">
                                     <div class="media-body">
                                         <h5>Convenience</h5>
                                     </div>
                                 </div>
                                 <div class="media mt-0">
-                                    <img src="{{ asset('assets/images/landing/check.svg') }}" alt="a"
+                                    <img src="{{ asset('public/assets/images/landing/check.svg') }}" alt="a"
                                         class="ig-fluid">
                                     <div class="media-body">
                                         <h5>Exclusive Offers</h5>
@@ -611,10 +613,10 @@ Join us now and start saying hello to saving money!</p>
 
                             <div class="hero_btn mt-60">
                                 <a href="#" class="me-2"><img
-                                        src="{{ asset('assets/images/landing/app-store-2.svg') }}" alt="app"
+                                        src="{{ asset('public/assets/images/landing/app-store-2.svg') }}" alt="app"
                                         class="img-fluid"></a>
                                 <a href="#" class="ms-2"><img
-                                        src="{{ asset('assets/images/landing/paly-stroe-2.svg') }}" alt="app"
+                                        src="{{ asset('public/assets/images/landing/paly-stroe-2.svg') }}" alt="app"
                                         class="img-fluid"></a>
                             </div>
 
@@ -623,7 +625,7 @@ Join us now and start saying hello to saving money!</p>
 
                     <div class="col-12 col-sm-6 col-md-6 col-lg-6 order-1 order-lg-2">
                         <div class="text-center">
-                            <img src="{{ asset('assets/images/landing/savings.png') }}" alt="savings"
+                            <img src="{{ asset('public/assets/images/landing/savings.png') }}" alt="savings"
                                 class="img-fluid">
                         </div>
                     </div>
@@ -655,16 +657,16 @@ Join us now and start saying hello to saving money!</p>
 
                     <div class="col-12 col-md-11 col-xl-10">
                         <div class="video-area deals-video">
-            <iframe src="https://www.youtube.com/embed/gpSn7zli8vg?si=gDDhywbIAT-MdDmY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-        </div>
+                            <iframe src="https://www.youtube.com/embed/gpSn7zli8vg?si=gDDhywbIAT-MdDmY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                        </div>
                     </div>
                     <div class="col-12 justify-center">
                         <div class="hero_btn mt-60 text-center">
                                 <a href="#" class="me-2"><img
-                                        src="{{ asset('assets/images/landing/app-store.svg') }}" alt="app"
+                                        src="{{ asset('public/assets/images/landing/app-store.svg') }}" alt="app"
                                         class="img-fluid"></a>
                                 <a href="#" class="ms-2"><img
-                                        src="{{ asset('assets/images/landing/paly-stroe.svg') }}" alt="app"
+                                        src="{{ asset('public/assets/images/landing/paly-stroe.svg') }}" alt="app"
                                         class="img-fluid"></a>
                             </div>
                     </div>
@@ -679,7 +681,7 @@ Join us now and start saying hello to saving money!</p>
                 <div class="row align-items-center">
                     <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                         <div class="text-center mb-4 lg:mb-0">
-                            <img src="{{ asset('assets/images/landing/faq.png') }}" alt="savings"
+                            <img src="{{ asset('public/assets/images/landing/faq.png') }}" alt="savings"
                                 class="img-fluid">
                         </div>
                     </div>
@@ -791,10 +793,10 @@ Join us now and start saying hello to saving money!</p>
 
                             <div class="hero_btn mt-60">
                                 <a href="#" class="me-2"><img
-                                        src="{{ asset('assets/images/landing/app-store-2.svg') }}" alt="app"
+                                        src="{{ asset('public/assets/images/landing/app-store-2.svg') }}" alt="app"
                                         class="img-fluid"></a>
                                 <a href="#" class="ms-2"><img
-                                        src="{{ asset('assets/images/landing/paly-stroe-2.svg') }}" alt="app"
+                                        src="{{ asset('public/assets/images/landing/paly-stroe-2.svg') }}" alt="app"
                                         class="img-fluid"></a>
                             </div>
 
@@ -833,7 +835,7 @@ Join us now and start saying hello to saving money!</p>
                     </div>
                     <div class="col-lg-4 col-sm-12 order-sm-1">
                         <div class="text-center nut-imgg">
-                            <img src="{{ asset('assets/images/landing/nutshell-1.png') }}" alt="nutshell"
+                            <img src="{{ asset('public/assets/images/landing/nutshell-1.png') }}" alt="nutshell"
                                 class="img-fluid">
                         </div>
                     </div>
@@ -868,7 +870,7 @@ Easily manage which city you want to follow</p>
                 <div class="row">
                     <div class="col-lg-6 col-sm-6">
                         <div class="review-box font-poppins">
-                            <img src="{{ asset('assets/images/landing/quote.svg') }}" alt="a"
+                            <img src="{{ asset('public/assets/images/landing/quote.svg') }}" alt="a"
                                 class="img-fluid">
                             <p>Giopio's Figma to HT​ML con​version se​rvice was n​othing short of am​azing.</br>
                                 Th​eir tea​m managed to take our intric​ate Figma d​esigns and turn​ them​</br>
@@ -878,7 +880,7 @@ Easily manage which city you want to follow</p>
 
                             <div class="d-flex">
                                 <a href="#">
-                                    <img src="{{ asset('assets/images/landing/avatar.png') }}" alt="avatar"
+                                    <img src="{{ asset('public/assets/images/landing/avatar.png') }}" alt="avatar"
                                         class="img-fluid">
                                 </a>
                                 <ul>
@@ -896,7 +898,7 @@ Easily manage which city you want to follow</p>
                     </div>
                     <div class="col-lg-6 col-sm-6">
                         <div class="review-box font-poppins">
-                            <img src="{{ asset('assets/images/landing/quote.svg') }}" alt="a"
+                            <img src="{{ asset('public/assets/images/landing/quote.svg') }}" alt="a"
                                 class="img-fluid">
                             <p>Giopio's Figma to HT​ML con​version se​rvice was n​othing short of am​azing.</br>
                                 Th​eir tea​m managed to take our intric​ate Figma d​esigns and turn​ them​</br>
@@ -906,7 +908,7 @@ Easily manage which city you want to follow</p>
 
                             <div class="d-flex">
                                 <a href="#">
-                                    <img src="{{ asset('assets/images/landing/avatar.png') }}" alt="avatar"
+                                    <img src="{{ asset('public/assets/images/landing/avatar.png') }}" alt="avatar"
                                         class="img-fluid">
                                 </a>
                                 <ul>
@@ -940,9 +942,9 @@ Easily manage which city you want to follow</p>
                     </div>
                     <div class="col-lg-6 text-center col-md-5">
                         <div class="d-flex flex-column gap-4 mt-4 mt-lg-0">
-                            <a href="#"><img src="{{ asset('assets/images/landing/app-store.svg') }}"
+                            <a href="#"><img src="{{ asset('public/assets/images/landing/app-store.svg') }}"
                                     alt="app" class="img-fluid"></a>
-                            <a href="#"><img src="{{ asset('assets/images/landing/paly-stroe.svg') }}"
+                            <a href="#"><img src="{{ asset('public/assets/images/landing/paly-stroe.svg') }}"
                                     alt="app" class="img-fluid"></a>
                         </div>
                     </div>
@@ -961,8 +963,8 @@ Easily manage which city you want to follow</p>
         <!-- get the app -->
 
         <!-- Bootstrap Bundle with Popper JS start -->
-        <script src="{{ url('assets/js/bootstrap.bundle.min.js') }}"></script>
-        <script src="{{ url('assets/js/custom.js') }}"></script>
+        <script src="{{ url('public/assets/js/bootstrap.bundle.min.js') }}"></script>
+        <script src="{{ url('public/assets/js/custom.js') }}"></script>
 
         <script>
             // Function to handle smooth scrolling to sections
