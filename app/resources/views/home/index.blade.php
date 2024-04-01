@@ -13,6 +13,7 @@
     <meta name="theme-color" content="#fff">
 
     {{-- bootstrap css --}}
+    <link rel="shortcut icon" href="{{ url('public/assets/images/favicon.png') }}" type="image/x-icon">
     <link rel="stylesheet" href="{{ url('public/assets/css/bootstrap.min.css') }}">
 
     <!-- plugin CSS start -->
@@ -35,7 +36,7 @@
   <nav class="navbar navbar-expand-md landing-header">
     <div class="container">
       <a class="navbar-brand" href="{{ url('/') }}">
-        <img src="{{ asset('public/assets/images/landing/logo.svg') }}" alt="logo">
+        <img src="{{ asset('public/assets/images/logo.png') }}" alt="logo" style="max-width: 10rem">
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -612,13 +613,13 @@
                     <h2 class="accordion-header" id="flush-headingOne">
                       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                        A helpful FAQ page provides customers
+                        How do I start saving with the app?
                       </button>
                     </h2>
                     <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
                       data-bs-parent="#accordionFlushExample">
                       <div class="accordion-body">
-                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Aperiam rerum dolorum perferendis consequuntur voluptas explicabo? Quam eius culpa laboriosam iusto. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Maiores culpa natus voluptates recusandae minima molestiae, provident harum explicabo omnis incidunt repellendus totam fugit non atque soluta illum saepe quidem ipsum.</p>
+                        <p>Hey there! Getting started is super easy. Just download our app from the App Store or Google Play, create an account, and you're ready to start exploring amazing deals near you! It's as simple as that.</p>
                       </div>
                     </div>
                   </div>
@@ -626,13 +627,13 @@
                     <h2 class="accordion-header" id="flush-headingTwo">
                       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-                        Those looking at your FAQ page are there because
+                        Can I use the app to promote my business's deals?
                       </button>
                     </h2>
                     <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo"
                       data-bs-parent="#accordionFlushExample">
                       <div class="accordion-body">
-                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Aperiam rerum dolorum perferendis consequuntur voluptas explicabo? Quam eius culpa laboriosam iusto. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Maiores culpa natus voluptates recusandae minima molestiae, provident harum explicabo omnis incidunt repellendus totam fugit non atque soluta illum saepe quidem ipsum.</p>
+                        <p>Absolutely! We love supporting local businesses. Simply sign up for our business account within the app, and you can start creating and promoting your exclusive deals to our community of users. It's a fantastic way to increase your visibility and attract more customers!</p>
                       </div>
                     </div>
                   </div>
@@ -640,13 +641,13 @@
                     <h2 class="accordion-header" id="flush-headingThree">
                       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
-                        An FAQ page that answers your customers
+                        Are the deals available on the app really worth it?
                       </button>
                     </h2>
                     <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree"
                       data-bs-parent="#accordionFlushExample">
                       <div class="accordion-body">
-                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Aperiam rerum dolorum perferendis consequuntur voluptas explicabo? Quam eius culpa laboriosam iusto. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Maiores culpa natus voluptates recusandae minima molestiae, provident harum explicabo omnis incidunt repellendus totam fugit non atque soluta illum saepe quidem ipsum.</p>
+                        <p>Oh, definitely! Whether it's a discount at your favorite restaurant or a special offer at a local spa, we're all about delivering value and helping you save money on the things you love.</p>
                       </div>
                     </div>
                   </div>
@@ -654,13 +655,13 @@
                     <h2 class="accordion-header" id="flush-headingFour">
                       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
-                        FAQ pages help increase website traffic
+                        How often are new deals added to the app?
                       </button>
                     </h2>
                     <div id="flush-collapseFour" class="accordion-collapse collapse" aria-labelledby="flush-headingFour"
                       data-bs-parent="#accordionFlushExample">
                       <div class="accordion-body">
-                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Aperiam rerum dolorum perferendis consequuntur voluptas explicabo? Quam eius culpa laboriosam iusto. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Maiores culpa natus voluptates recusandae minima molestiae, provident harum explicabo omnis incidunt repellendus totam fugit non atque soluta illum saepe quidem ipsum.</p>
+                        <p>We're always on the lookout for exciting new deals to share with you! You can expect fresh offers added regularly, so there's always something new and exciting to discover. Keep checking back to see what's new – you won't want to miss out!</p>
                       </div>
                     </div>
                   </div>
@@ -668,13 +669,13 @@
                     <h2 class="accordion-header" id="flush-headingFive">
                       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#flush-collapseFive" aria-expanded="false" aria-controls="flush-collapseFive">
-                        Apart from targeted keyword optimization
+                        Do you charge any additional fees on the deals offered by companies?
                       </button>
                     </h2>
                     <div id="flush-collapseFive" class="accordion-collapse collapse" aria-labelledby="flush-headingFive"
                       data-bs-parent="#accordionFlushExample">
                       <div class="accordion-body">
-                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Aperiam rerum dolorum perferendis consequuntur voluptas explicabo? Quam eius culpa laboriosam iusto. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Maiores culpa natus voluptates recusandae minima molestiae, provident harum explicabo omnis incidunt repellendus totam fugit non atque soluta illum saepe quidem ipsum.</p>
+                        <p>Nope! It's straightforward for businesses partnering with us. There are no extra fees on the deals they offer. Instead, companies pay a flat monthly subscription fee of €45. We keep it transparent and fair, with no hidden costs or surprises.</p>
                       </div>
                     </div>
                   </div> 

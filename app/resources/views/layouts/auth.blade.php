@@ -13,6 +13,7 @@
     <meta name="theme-color" content="#fff">
 
     {{-- bootstrap css --}}
+    <link rel="shortcut icon" href="{{ url('public/assets/images/favicon.png') }}" type="image/x-icon">
     <link rel="stylesheet" href="{{ url('public/assets/css/bootstrap.min.css') }}">
 
     <!-- plugin CSS start -->

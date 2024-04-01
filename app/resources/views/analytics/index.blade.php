@@ -191,7 +191,7 @@
 
             @if ($activeCompanyUser->personalInfo)
             <div class="media-body">
-              <h5><a href="{{ route('company.show', $activeCompanyUser->company) }}">{{ $activeCompanyUser->name }}</a></h5>
+              <h5><a href="{{ route('company.show', $activeCompanyUser) }}">{{ $activeCompanyUser->name }}</a></h5>
               <p>{{ $activeCompanyUser->email }}</p>
             </div> 
             @endif 

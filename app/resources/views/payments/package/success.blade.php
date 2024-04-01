@@ -30,8 +30,8 @@
             <div class="row justify-content-center">
                 <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5">
                     <div class="top-logo">
-                        <a href="#" style="display: block; max-width: 70%; margin: 0 auto;">
-                            <img src="{{ asset('public/assets/images/logo.png') }}" alt="logo" class="img-fluid">
+                        <a href="#" style="display: block;">
+                            <img src="{{ asset('public/assets/images/logo.png') }}" alt="logo" class="img-fluid" style="max-width: 12rem">
                         </a>
                     </div>
                     <div class="payments-message-box">

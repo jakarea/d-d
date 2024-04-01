@@ -103,7 +103,7 @@
                         <a href="{{ route('product.show', $product->slug) }}">{{ Str::limit($product->title, $limit =
                             40, $end = '..') }}</a>   
                     </h5>
-                    <p>{{ Str::limit($product->company->name, $limit = 50, $end = '..') }}</p>
+                    <p>{{ Str::limit($product->company ? $product->company->name : '--', $limit = 50, $end = '..') }}</p>
 
                     @php
                     $reviewCount = $product->reviews->where('replies_to',null)->count();
