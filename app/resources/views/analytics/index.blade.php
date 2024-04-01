@@ -191,7 +191,7 @@
 
             @if ($activeCompanyUser->personalInfo)
             <div class="media-body">
-              <h5><a href="{{ route('company.show', $activeCompanyUser->company) }}">{{ $activeCompanyUser->name }}</a></h5>
+              <h5><a href="{{ route('company.show', $activeCompanyUser) }}">{{ $activeCompanyUser->name }}</a></h5>
               <p>{{ $activeCompanyUser->email }}</p>
             </div> 
             @endif 
@@ -339,6 +339,8 @@ chart.render();
 <!-- product status graph js start -->
 <script>
   var datas = [{{ $activeProducts }}, {{ $draftProducts }}];
+
+  // console.log(datas);
 
 var backgroundColor = ['#35B254', '#FFAB00'];
 var ctx = document.getElementById('productStatus').getContext('2d');

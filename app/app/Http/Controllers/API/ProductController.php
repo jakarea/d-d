@@ -515,12 +515,16 @@ class ProductController extends ApiController
     {
 
         $products = Company::with(['user.personalInfo','user.address', 'products' => function ($query) {
-            $query->with(['reviews' => function ($q) {
-                $q->with(['likes', 'dislikes']);
-            }]);
+            $query->where(function($q) {
+                    $q->where('deal_expired_at', '>', now())
+                      ->orWhereNull('deal_expired_at');
+                })
+                  ->with(['reviews' => function ($q) {
+                      $q->with(['likes', 'dislikes']);
+                  }]);
         }, 'reviews'])
-            ->where('id', $companyId)
-            ->first();
+        ->where('id', $companyId)
+        ->first();
 
         $user_id = auth()->user() ? auth()->user()->id : null;
 

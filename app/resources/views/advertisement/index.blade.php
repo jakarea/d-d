@@ -67,7 +67,9 @@
         @foreach ($products as $product)
         <!-- product item start -->
         <div class="col-12 col-sm-6 col-lg-6 col-xl-4 col-xxl-3 mb-69">
-            <div class="product-item-box  {{ $product->status == 1 ? '' : 'inactive' }}">
+            <div class="product-item-box  {{ $product->status == 'Active' || $product->status == 'active' ? '' : 'inactive' }}">
+
+                {{-- {{ $product->status }} --}}
                 <!-- thumbnail start -->
                 <div class="product-thumbnail">
                     @php
@@ -101,7 +103,7 @@
                         <a href="{{ route('product.show', $product->slug) }}">{{ Str::limit($product->title, $limit =
                             40, $end = '..') }}</a>   
                     </h5>
-                    <p>{{ Str::limit($product->company->name, $limit = 50, $end = '..') }}</p>
+                    <p>{{ Str::limit($product->company ? $product->company->name : '--', $limit = 50, $end = '..') }}</p>
 
                     @php
                     $reviewCount = $product->reviews->where('replies_to',null)->count();

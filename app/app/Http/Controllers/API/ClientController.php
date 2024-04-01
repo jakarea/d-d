@@ -4,9 +4,18 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Requests\User\SecuritySettingRequest;
 use App\Http\Requests\User\UpdateRequest;
+use App\Models\Address;
+use App\Models\Company;
+use App\Models\Earning;
+use App\Models\Like;
 use App\Models\PersonalInfo;
 use App\Models\PricingPackage;
+use App\Models\Product;
+use App\Models\ProductVariant;
+use App\Models\Review;
 use App\Models\User;
+use App\Models\UserRole;
+use App\Models\WishList;
 use App\Process\UserProcess;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\JsonResponse;
@@ -157,10 +166,86 @@ class ClientController extends ApiController
             return $this->jsonResponse(true, 'User not found!', $user_id, $this->emptyArray, JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
 
-        $user = User::find($user_id);
-        $user->status = null;
-        $user->save();
+        if ($user_id != auth()->user()->id) {
+            return $this->jsonResponse(true, 'You do not have permission to delete this user!', $user_id, $this->emptyArray, JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+        }
+        
+        $user = User::find($user_id); 
+        $company = Company::where('user_id', $user->id)->first();
 
+        if ($company) {
+            $products = Product::where('user_id',$user->id)->get();
+            $productsVarients = ProductVariant::where('user_id',$user->id)->get();
+            $earnings = Earning::where('user_id',$user->id)->get();
+            
+
+            // delete product varients
+            foreach ($productsVarients as $productsVarient) {
+                $productsVarient->delete();
+            }
+
+            // delete products
+            foreach ($products as $product) {
+                $product->delete();
+            }
+
+            // delete earnings
+            foreach ($earnings as $earning) {
+                $earning->delete();
+            }
+
+            // delete company
+            $company->delete();
+        }
+        
+        $userInfo = PersonalInfo::where('user_id', $user->id)->first();
+        $userAddress = Address::where('user_id', $user->id)->first();
+        $userRole = UserRole::where('user_id', $user->id)->first();
+        $likes = Like::where('user_id',$user->id)->get();
+        $reviews = Review::where('user_id',$user->id)->get();
+        $wishlists = WishList::where('user_id',$user->id)->get();
+    
+        // remove from wishlist
+        if ($wishlists) { 
+            foreach ($wishlists as $wishlist) {
+                $wishlist->delete();
+            }
+        }
+
+        // delete reviews
+        if ($reviews) { 
+            foreach ($reviews as $review) {
+                $review->delete();
+            }
+        }
+
+        // delete likes
+        if ($likes) { 
+            foreach ($likes as $like) {
+                $like->delete();
+            }
+        }
+        
+        // delete role
+        if ($userRole) {
+            $userRole->delete();
+        }
+
+        // delete address
+        if ($userAddress) {
+            $userAddress->delete();
+        }
+
+        // delete personal info
+        if ($userInfo) {
+            $userInfo->delete();
+        }
+        
+        // delete main user
+        if ($user) {
+            $user->delete();
+        }
+        
         return $this->jsonResponse(false, 'Profile deleted successfully', $user, $this->emptyArray, JsonResponse::HTTP_CREATED);
     }
 }
