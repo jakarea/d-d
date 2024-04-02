@@ -36,14 +36,14 @@
     @yield('content')
 
     <!-- Bootstrap Bundle with Popper JS start -->
-    <script src="{{ url('public/assets/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ url('public/assets/js/custom.js') }}"></script>
+    <script src="{{ url('public/public/assets/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url('public/public/assets/js/custom.js') }}"></script>
 
     <script>
         var togglePassword = document.getElementById('togglePassword');
             var passwordInput = document.getElementById('password');
             var eyeIcon = document.getElementById('eyeIcon');
-        
+
             togglePassword.addEventListener('click', function () {
                 // Toggle the type attribute
                 if (passwordInput.type === 'password') {

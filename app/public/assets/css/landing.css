@@ -6,8 +6,8 @@ Project Version: 1.0.0
 Developer: Jakarea Parvez
 Agency: GIOPIO
 URL: https://www.giopio.com
-Theme Primary color: #ffffff; 
-Theme Secondary color: #0F172A;  
+Theme Primary color: #ffffff;
+Theme Secondary color: #0F172A;
 Theme Primary Font Family: 'Manrope', sans-serif;
 ******************************************** */
 /* *******************************************
@@ -25,14 +25,14 @@ B. Helpers
 C. Components
     --- # Home page # ---
   -- Header
-  -- Hero 
+  -- Hero
 
 D. Plugins Styles
 
 
 E. Utility Styles
   -- Back to Top Button
-  -- Other 
+  -- Other
 
 ******************************************** */
 /* *******************************************
@@ -194,7 +194,6 @@ body {
   font-weight: 400;
   line-height: 23px;
   letter-spacing: -0.01em;
-  width: 70%;
   margin-top: 22px;
 }
 
@@ -298,6 +297,7 @@ body {
   font-weight: 400;
   line-height: 25px;
   color: #000;
+  margin:  52px 0 62px 0;
 }
 
 .deals-box {
@@ -353,7 +353,6 @@ body {
   line-height: 25px;
   color: #101828;
   margin-top: 1rem;
-  width: 65%;
 }
 
 .container {
@@ -796,7 +795,7 @@ body {
     padding: 50px 0;
   }
 
-  .faq-section { 
+  .faq-section {
     padding: 50px 0;
   }
 
@@ -881,4 +880,35 @@ body {
     padding: 100px 0;
   }
 
+}
+
+.promote-deals{
+    padding-bottom: 150px;
+}
+
+.promote-item p {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 21px;
+    color: #101828;
+    margin: 32px 0 62px 0;
+}
+
+.video-area iframe{
+    border-radius: 30px;
+    width: 100%;
+    height: 500px;
+}
+
+
+.footer-menu ul{
+    display: flex;
+    gap: 32px;
+    justify-content: center;
+    margin-top: 160px;
+}
+
+.footer-menu li a{
+    color: #fff;
+    font-size: 16px;
 }

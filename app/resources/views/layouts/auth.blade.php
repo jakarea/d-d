@@ -52,8 +52,8 @@
     @yield('drawer')
 
     <!-- Bootstrap Bundle with Popper JS start -->
-    <script src="{{ url('public/assets/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ url('public/assets/js/custom.js') }}"></script>
+    <script src="{{ url('public/public/assets/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url('public/public/assets/js/custom.js') }}"></script>
     <!-- Bootstrap Bundle with Popper JS end -->
     @yield('script')
 
