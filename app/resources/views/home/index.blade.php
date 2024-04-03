@@ -1005,6 +1005,14 @@
     <section class="blog-section">
         <div class="container">
             <div class="row">
+                <div class="col-12">
+                    <div class="ins-txt-wrap text-center mb-60">
+                        <h3>Recent Article</h3>
+                        <p class="mt-2">Explore unbeatable savings and special offers in your area with <br> our curated selection of Daily Deals & Discounts</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
                 {{-- blog item --}}
                 <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
                     <div class="blog-post-box">
