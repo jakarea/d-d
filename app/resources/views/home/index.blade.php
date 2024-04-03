@@ -13,7 +13,9 @@
     <meta name="theme-color" content="#fff">
 
     {{-- bootstrap css --}}
-    <link rel="shortcut icon" href="{{ url('public/assets/images/favicon.png') }}" type="image/x-icon">
+    {{--
+    <link rel="shortcut icon" href="{{ url('public/assets/images/favicon.png') }}" type="image/x-icon"> --}}
+    <link rel="shortcut icon" href="{{ url('public/assets/images/favicon.svg') }}" type="image/x-icon">
     <link rel="stylesheet" href="{{ url('public/assets/css/bootstrap.min.css') }}">
 
     <!-- plugin CSS start -->
@@ -27,7 +29,7 @@
 
     @yield('style')
 
-    <title>DnD | Home Page</title>
+    <title>Home | dailydealsdiscounts.com</title>
 </head>
 
 <body>
@@ -36,7 +38,8 @@
     <nav class="navbar navbar-expand-md landing-header">
         <div class="container">
             <a class="navbar-brand" href="{{ url('/') }}">
-                <img src="{{ asset('public/assets/images/logo.png') }}" alt="logo" style="max-width: 10rem">
+                <img src="{{ asset('public/assets/images/landing/logo-latest.svg') }}" alt="logo"
+                    style="max-width: 10rem">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -67,6 +70,9 @@
                         <a class="nav-link" href="javascript:void(0)"
                             onclick="scrollToSection('#review-sec')">Reviews</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="javascript:void(0)" onclick="scrollToSection('#blog-sec')">Blog</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -86,10 +92,10 @@
                                 Store and Google Play to start saving money today!
                             </p>
                             <div class="hero_btn">
-                                <a href="#"><img src="{{ asset('public/assets/images/landing/app-store.svg') }}" alt="app"
-                                        class="img-fluid"></a>
-                                <a href="#"><img src="{{ asset('public/assets/images/landing/paly-stroe.svg') }}" alt="app"
-                                        class="img-fluid"></a>
+                                <a href="#"><img src="{{ asset('public/assets/images/landing/app-store.svg') }}"
+                                        alt="app" class="img-fluid"></a>
+                                <a href="#"><img src="{{ asset('public/assets/images/landing/paly-stroe.svg') }}"
+                                        alt="app" class="img-fluid"></a>
                             </div>
                         </div>
                     </div>
@@ -261,331 +267,44 @@
             </div>
             <div class="row font-poppins">
                 <div class="col-lg-4 custom-tab-bttn">
-
-                    <div class="nav flex-column nav-pills custom-scrollbar" id="v-pills-tab" role="tablist"
-                        aria-orientation="vertical">
-                        <button class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill"
-                            data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home"
-                            aria-selected="true">
-                            <span><img src="{{ asset('public/assets/images/landing/t-01.svg') }}" alt="a"
-                                    class="img-fluid"></span>
-                            Workshops
+                    <div class="nav flex-column nav-pills custom-scrollbar" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                        @foreach ($categories as $key => $category)
+                         
+                        <button class="nav-link {{ $key === 0 ? 'active' : '' }}" id="v-pills-{{ $category->id }}-tab" data-bs-toggle="pill" data-bs-target="#v-pills-{{ $category->id }}" type="button" role="tab" aria-controls="v-pills-{{ $category->id }}" aria-selected="false" onclick="showTab('{{ $category->id }}')">
+                            <span><img src="{{ asset($category->icon) }}" alt="{{ $category->name }}" class="img-fluid"></span>
+                            {{ $category->name }}
                         </button>
-                        <button class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill"
-                            data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile"
-                            aria-selected="false">
-                            <span><img src="{{ asset('public/assets/images/landing/t-02.svg') }}" alt="a"
-                                    class="img-fluid"></span>
-                            Course
-                        </button>
-                        <button class="nav-link" id="v-pills-messages-tab" data-bs-toggle="pill"
-                            data-bs-target="#v-pills-messages" type="button" role="tab" aria-controls="v-pills-messages"
-                            aria-selected="false">
-                            <span><img src="{{ asset('public/assets/images/landing/t-03.svg') }}" alt="a"
-                                    class="img-fluid"></span>
-                            Sauna & Beauty
-                        </button>
-                        <button class="nav-link" id="v-pills-settings-tab" data-bs-toggle="pill"
-                            data-bs-target="#v-pills-settings" type="button" role="tab" aria-controls="v-pills-settings"
-                            aria-selected="false">
-                            <span><img src="{{ asset('public/assets/images/landing/t-04.svg') }}" alt="a"
-                                    class="img-fluid"></span>
-                            Food & Drinks
-                        </button>
-                        <button class="nav-link" id="v-pills-settings2-tab" data-bs-toggle="pill"
-                            data-bs-target="#v-pills-settings2" type="button" role="tab"
-                            aria-controls="v-pills-settings2" aria-selected="false">
-                            <span><img src="{{ asset('public/assets/images/landing/t-05.svg') }}" alt="a"
-                                    class="img-fluid"></span>
-                            Presents
-                        </button>
-
-                        <button class="nav-link" id="v-pills-messages2-tab" data-bs-toggle="pill"
-                            data-bs-target="#v-pills-messages2" type="button" role="tab"
-                            aria-controls="v-pills-messages2" aria-selected="false">
-                            <span><img src="{{ asset('public/assets/images/landing/t-03.svg') }}" alt="a"
-                                    class="img-fluid"></span>
-                            Sauna & Beauty
-                        </button>
-                        <button class="nav-link" id="v-pills-settings3-tab" data-bs-toggle="pill"
-                            data-bs-target="#v-pills-settings3" type="button" role="tab"
-                            aria-controls="v-pills-settings3" aria-selected="false">
-                            <span><img src="{{ asset('public/assets/images/landing/t-04.svg') }}" alt="a"
-                                    class="img-fluid"></span>
-                            Food & Drinks
-                        </button>
-                        <button class="nav-link" id="v-pills-settings4-tab" data-bs-toggle="pill"
-                            data-bs-target="#v-pills-settings4" type="button" role="tab"
-                            aria-controls="v-pills-settings4" aria-selected="false">
-                            <span><img src="{{ asset('public/assets/images/landing/t-05.svg') }}" alt="a"
-                                    class="img-fluid"></span>
-                            Presents
-                        </button>
-
+                        @endforeach
                     </div>
-
                 </div>
+                
                 <div class="col-lg-8">
                     <div class="tab-content" id="v-pills-tabContent">
-                        <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
-                            aria-labelledby="v-pills-home-tab" tabindex="0">
+                        @foreach ($categories as $key => $category) 
 
+                        <div class="tab-pane fade {{ $key === 0 ? 'show active' : '' }}" id="v-pills-{{ $category->id }}" role="tabpanel" aria-labelledby="v-pills-{{ $category->id }}-tab" tabindex="0">
                             <div class="row ms-lg-4">
-                                <div class="col-sm-6 col-lg-6">
-                                    <div class="discover-box">
-                                        <img src="{{ asset('public/assets/images/landing/discover-img.png') }}" alt="a"
-                                            class="img-fluid">
-
-                                        <div class="ol">
-                                            <h5>Art &amp; Design</h5>
-
-                                            <h4><span>$</span> 7.49</h4>
-                                            {{-- <a href="#">Add to Cart <i class="fas fa-angle-right"></i></a> --}}
+                                @if (isset($products[$category->id]))
+                                    @foreach ($products[$category->id]->slice(0,2) as $product)
+                                    <div class="col-sm-6 col-lg-6">
+                                        <div class="discover-box">
+                                            <img src="{{ asset($product->images) }}" alt="a"
+                                                class="img-fluid">
+    
+                                            <div class="ol">
+                                                <h5>{{ $product->title }}</h5>
+    
+                                                <h4><span>€</span> {{ $product->sell_price }} <sub style="font-weight: 400;text-decoration: line-through;"><s>{{ $product->price}}</s> </sub></h4>
+                                                {{-- <a href="#">View Product <i class="fas fa-angle-right"></i></a> --}}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-sm-6 col-lg-6">
-                                    <div class="discover-box">
-                                        <img src="{{ asset('public/assets/images/landing/discover-img-02.png') }}"
-                                            alt="a" class="img-fluid">
-
-                                        <div class="ol">
-                                            <h5>Web Design</h5>
-
-                                            <h4><span>$</span> 6.59</h4>
-                                            {{-- <a href="#">Add to Cart <i class="fas fa-angle-right"></i></a> --}}
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-
-                        </div>
-                        <div class="tab-pane fade" id="v-pills-profile" role="tabpanel"
-                            aria-labelledby="v-pills-profile-tab" tabindex="0">
-                            <div class="row ms-lg-4">
-                                <div class="col-sm-6 col-lg-6">
-                                    <div class="discover-box">
-                                        <img src="{{ asset('public/assets/images/landing/discover-img.png') }}" alt="a"
-                                            class="img-fluid">
-
-                                        <div class="ol">
-                                            <h5>Art &amp; Design</h5>
-
-                                            <h4><span>$</span> 7.49</h4>
-                                            {{-- <a href="#">Add to Cart <i class="fas fa-angle-right"></i></a> --}}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-lg-6">
-                                    <div class="discover-box">
-                                        <img src="{{ asset('public/assets/images/landing/discover-img-02.png') }}"
-                                            alt="a" class="img-fluid">
-
-                                        <div class="ol">
-                                            <h5>Web Design</h5>
-
-                                            <h4><span>$</span> 6.59</h4>
-                                            {{-- <a href="#">Add to Cart <i class="fas fa-angle-right"></i></a> --}}
-                                        </div>
-                                    </div>
-                                </div>
-
+                                    @endforeach
+                                @endif
+                                
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="v-pills-messages" role="tabpanel"
-                            aria-labelledby="v-pills-messages-tab" tabindex="0">
-                            <div class="row ms-lg-4">
-                                <div class="col-sm-6 col-lg-6">
-                                    <div class="discover-box">
-                                        <img src="{{ asset('public/assets/images/landing/discover-img.png') }}" alt="a"
-                                            class="img-fluid">
-
-                                        <div class="ol">
-                                            <h5>Art &amp; Design</h5>
-
-                                            <h4><span>$</span> 7.49</h4>
-                                            {{-- <a href="#">Add to Cart <i class="fas fa-angle-right"></i></a> --}}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-lg-6">
-                                    <div class="discover-box">
-                                        <img src="{{ asset('public/assets/images/landing/discover-img-02.png') }}"
-                                            alt="a" class="img-fluid">
-
-                                        <div class="ol">
-                                            <h5>Web Design</h5>
-
-                                            <h4><span>$</span> 6.59</h4>
-                                            {{-- <a href="#">Add to Cart <i class="fas fa-angle-right"></i></a> --}}
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="v-pills-settings" role="tabpanel"
-                            aria-labelledby="v-pills-settings-tab" tabindex="0">
-                            <div class="row ms-lg-4">
-                                <div class="col-sm-6 col-lg-6">
-                                    <div class="discover-box">
-                                        <img src="{{ asset('public/assets/images/landing/discover-img.png') }}" alt="a"
-                                            class="img-fluid">
-
-                                        <div class="ol">
-                                            <h5>Art &amp; Design</h5>
-
-                                            <h4><span>$</span> 7.49</h4>
-                                            {{-- <a href="#">Add to Cart <i class="fas fa-angle-right"></i></a> --}}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-lg-6">
-                                    <div class="discover-box">
-                                        <img src="{{ asset('public/assets/images/landing/discover-img-02.png') }}"
-                                            alt="a" class="img-fluid">
-
-                                        <div class="ol">
-                                            <h5>Web Design</h5>
-
-                                            <h4><span>$</span> 6.59</h4>
-                                            {{-- <a href="#">Add to Cart <i class="fas fa-angle-right"></i></a> --}}
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="v-pills-settings2" role="tabpanel"
-                            aria-labelledby="v-pills-settings2-tab" tabindex="0">
-                            <div class="row ms-lg-4">
-                                <div class="col-sm-6 col-lg-6">
-                                    <div class="discover-box">
-                                        <img src="{{ asset('public/assets/images/landing/discover-img.png') }}" alt="a"
-                                            class="img-fluid">
-
-                                        <div class="ol">
-                                            <h5>Art &amp; Design</h5>
-
-                                            <h4><span>$</span> 7.49</h4>
-                                            {{-- <a href="#">Add to Cart <i class="fas fa-angle-right"></i></a> --}}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-lg-6">
-                                    <div class="discover-box">
-                                        <img src="{{ asset('public/assets/images/landing/discover-img-02.png') }}"
-                                            alt="a" class="img-fluid">
-
-                                        <div class="ol">
-                                            <h5>Web Design</h5>
-
-                                            <h4><span>$</span> 6.59</h4>
-                                            {{-- <a href="#">Add to Cart <i class="fas fa-angle-right"></i></a> --}}
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-
-                        <div class="tab-pane fade" id="v-pills-messages2" role="tabpanel"
-                            aria-labelledby="v-pills-messages2-tab" tabindex="0">
-                            <div class="row ms-lg-4">
-                                <div class="col-sm-6 col-lg-6">
-                                    <div class="discover-box">
-                                        <img src="{{ asset('public/assets/images/landing/discover-img.png') }}" alt="a"
-                                            class="img-fluid">
-
-                                        <div class="ol">
-                                            <h5>Art &amp; Design</h5>
-
-                                            <h4><span>$</span> 7.49</h4>
-                                            {{-- <a href="#">Add to Cart <i class="fas fa-angle-right"></i></a> --}}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-lg-6">
-                                    <div class="discover-box">
-                                        <img src="{{ asset('public/assets/images/landing/discover-img-02.png') }}"
-                                            alt="a" class="img-fluid">
-
-                                        <div class="ol">
-                                            <h5>Web Design</h5>
-
-                                            <h4><span>$</span> 6.59</h4>
-                                            {{-- <a href="#">Add to Cart <i class="fas fa-angle-right"></i></a> --}}
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="v-pills-settings3" role="tabpanel"
-                            aria-labelledby="v-pills-settings3-tab" tabindex="0">
-                            <div class="row ms-lg-4">
-                                <div class="col-sm-6 col-lg-6">
-                                    <div class="discover-box">
-                                        <img src="{{ asset('public/assets/images/landing/discover-img.png') }}" alt="a"
-                                            class="img-fluid">
-
-                                        <div class="ol">
-                                            <h5>Art &amp; Design</h5>
-
-                                            <h4><span>$</span> 7.49</h4>
-                                            {{-- <a href="#">Add to Cart <i class="fas fa-angle-right"></i></a> --}}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-lg-6">
-                                    <div class="discover-box">
-                                        <img src="{{ asset('public/assets/images/landing/discover-img-02.png') }}"
-                                            alt="a" class="img-fluid">
-
-                                        <div class="ol">
-                                            <h5>Web Design</h5>
-
-                                            <h4><span>$</span> 6.59</h4>
-                                            {{-- <a href="#">Add to Cart <i class="fas fa-angle-right"></i></a> --}}
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="v-pills-settings4" role="tabpanel"
-                            aria-labelledby="v-pills-settings4-tab" tabindex="0">
-                            <div class="row ms-lg-4">
-                                <div class="col-sm-6 col-lg-6">
-                                    <div class="discover-box">
-                                        <img src="{{ asset('public/assets/images/landing/discover-img.png') }}" alt="a"
-                                            class="img-fluid">
-
-                                        <div class="ol">
-                                            <h5>Art &amp; Design</h5>
-
-                                            <h4><span>$</span> 7.49</h4>
-                                            {{-- <a href="#">Add to Cart <i class="fas fa-angle-right"></i></a> --}}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-lg-6">
-                                    <div class="discover-box">
-                                        <img src="{{ asset('public/assets/images/landing/discover-img-02.png') }}"
-                                            alt="a" class="img-fluid">
-
-                                        <div class="ol">
-                                            <h5>Web Design</h5>
-
-                                            <h4><span>$</span> 6.59</h4>
-                                            {{-- <a href="#">Add to Cart <i class="fas fa-angle-right"></i></a> --}}
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
                 </div>
             </div>
@@ -655,7 +374,7 @@
         </div>
     </section>
     <!-- insperation section end -->
- 
+
     <!-- promote dreams start -->
     <section class="promote-dreams deals-bg font-poppins">
         <div class="container">
@@ -845,7 +564,7 @@
             </div>
         </div>
     </section>
-    <!-- faq section end --> 
+    <!-- faq section end -->
 
     <!-- nut shell start -->
     <section class="nutshell-section">
@@ -1002,13 +721,14 @@
     <!-- clients feedback end -->
 
     {{-- blog section start --}}
-    <section class="blog-section">
+    <section class="blog-section" id="blog-sec">
         <div class="container">
             <div class="row">
                 <div class="col-12">
                     <div class="ins-txt-wrap text-center mb-60">
-                        <h3>Recent Article</h3>
-                        <p class="mt-2">Explore unbeatable savings and special offers in your area with <br> our curated selection of Daily Deals & Discounts</p>
+                        <h3>Recent Blog</h3>
+                        <p class="mt-2">Explore unbeatable savings and special offers in your area with <br> our curated
+                            selection of Daily Deals & Discounts</p>
                     </div>
                 </div>
             </div>
@@ -1198,7 +918,7 @@
 
     {{-- back to top js --}}
     <script>
-     // Get the button
+        // Get the button
 var scrollToTopBtn = document.getElementById("scrollToTopBtn");
 
 // When the user scrolls down 20px from the top of the document, show the button
