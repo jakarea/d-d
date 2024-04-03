@@ -49,7 +49,7 @@
                                 Works</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="javascript:void(0)" onclick="scrollToSection('#start-save')">Local Deals</a>
+                            <a class="nav-link" href="javascript:void(0)" onclick="scrollToSection('#local-deals')">Local Deals</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="javascript:void(0)" onclick="scrollToSection('#start-save')">Start
@@ -61,11 +61,11 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="javascript:void(0)"
-                                onclick="scrollToSection('#feedback-sec')">FAQ</a>
+                                onclick="scrollToSection('#faq-sec')">FAQ</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="javascript:void(0)"
-                                onclick="scrollToSection('#feedback-sec')">Reviews</a>
+                                onclick="scrollToSection('#review-sec')">Reviews</a>
                         </li>
                     </ul>
                 </div>
@@ -168,7 +168,7 @@
                 </div>
             </section>
 
-            <section class="promote-deals">
+            <section class="promote-deals" id="local-deals">
                 <div class="container">
                     <div class="row">
                         <div class="col-12">
@@ -688,7 +688,7 @@ Join us now and start saying hello to saving money!</p>
         <!-- promote dreams end -->
 
         <!-- faq section start -->
-        <section class="faq-section bg-white">
+        <section class="faq-section bg-white" id="faq-sec">
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-12 col-sm-6 col-md-6 col-lg-6">
@@ -866,7 +866,7 @@ Join us now and start saying hello to saving money!</p>
         <!-- nut shell end -->
 
         <!-- clients feedback start -->
-        <section class="clients-feedback" id="feedback-sec">
+        <section class="clients-feedback" id="review-sec">
             <div class="container">
                 <div class="row">
                     <div class="col-12">
