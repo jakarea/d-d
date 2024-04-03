@@ -23,9 +23,7 @@
         <!-- plugin CSS end -->
 
         <!-- custom CSS start -->
-        <link rel="stylesheet" href="{{ url('public/assets/css/landing.css') }}">
-
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="{{ url('public/assets/css/landing.css') }}"> 
 
         @yield('style')
 
@@ -51,6 +49,9 @@
                                 Works</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="javascript:void(0)" onclick="scrollToSection('#start-save')">Local Deals</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="javascript:void(0)" onclick="scrollToSection('#start-save')">Start
                                 Saving</a>
                         </li>
@@ -60,7 +61,11 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="javascript:void(0)"
-                                onclick="scrollToSection('#feedback-sec')">Feedback</a>
+                                onclick="scrollToSection('#feedback-sec')">FAQ</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="javascript:void(0)"
+                                onclick="scrollToSection('#feedback-sec')">Reviews</a>
                         </li>
                     </ul>
                 </div>
@@ -111,11 +116,13 @@
                         </div>
                     </div>
 
-                    <div class="row align-items-center">
+                    <div class="row">
                         <div class="col-12 col-sm-6 col-lg-4">
                             <div class="work-box">
-                                <img src="{{ asset('public/assets/images/landing/work-01.svg') }}" alt="work"
+                                <div class="work-thumb">
+                                    <img src="{{ asset('public/assets/images/landing/work-01.svg') }}" alt="work"
                                     class="img-fluid">
+                                </div>
                                 <h5>Search for Deals</h5>
                                 <p>Discover an abundance of incredible deals
                                     tailored just for you. With our robust search
@@ -126,8 +133,10 @@
                         </div>
                         <div class="col-12 col-sm-6 col-lg-4">
                             <div class="work-box">
-                                <img src="{{ asset('public/assets/images/landing/work-02.svg') }}" alt="work"
+                                <div class="work-thumb">
+                                    <img src="{{ asset('public/assets/images/landing/work-02.svg') }}" alt="work"
                                     class="img-fluid">
+                                </div>
                                 <h5>Save Favorites</h5>
                                 <p>Never let a great deal slip away! Save your
                                     top picks with a simple tap and access them
@@ -137,8 +146,10 @@
                         </div>
                         <div class="col-12 col-sm-6 col-lg-4">
                             <div class="work-box">
-                                <img src="{{ asset('public/assets/images/landing/work-03.svg') }}" alt="work"
+                                <div class="work-thumb">
+                                    <img src="{{ asset('public/assets/images/landing/work-03.svg') }}" alt="work"
                                     class="img-fluid">
+                                </div>
                                 <h5>Promote Your Deals</h5>
                                 <p>Attention businesses! Showcase your
                                     exclusive offers to a vast audience of eager
@@ -184,7 +195,7 @@
         </div>
 
         <!-- insperation section start -->
-        <section class="insperation-section">
+        <section class="insperation-section pb-0">
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-12 col-sm-5 col-md-6 col-lg-5">
@@ -194,7 +205,7 @@
                         </div>
                     </div>
                     <div class="col-12 col-sm-7 col-md-6 col-lg-7">
-                        <div class="ins-txt-wrap">
+                        <div class="ins-txt-wrap left-space">
                             <h3>Easy Savings & Quick Deals</h3>
                             <p>Unlock effortless savings and instant deals with our intuitive app feature,</br> "Quick Redemption." Say goodbye to the hassle of paper vouchers – now</br> you can redeem deals with just a tap, anytime, anywhere.</p>
 
@@ -642,7 +653,7 @@ Join us now and start saying hello to saving money!</p>
                     <div class="col-12">
                         <div class="ins-txt-wrap text-center dream-head">
                             <h5>For Companies</h5>
-                            <h3>The Best Place to Promote <br>
+                            <h3 class="mb-4">The Best Place to Promote <br>
                                 Your Deals</h3>
                             <p>Unlock unparalleled exposure and skyrocket your sales with Daily Deals &
                                 Discounts, <br>
@@ -667,7 +678,8 @@ Join us now and start saying hello to saving money!</p>
                                         class="img-fluid"></a>
                                 <a href="#" class="ms-2"><img
                                         src="{{ asset('public/assets/images/landing/paly-stroe.svg') }}" alt="app"
-                                        class="img-fluid"></a>
+                                        class="img-fluid">
+                                    </a>
                             </div>
                     </div>
                 </div>
@@ -676,7 +688,7 @@ Join us now and start saying hello to saving money!</p>
         <!-- promote dreams end -->
 
         <!-- faq section start -->
-        <section class="faq-section">
+        <section class="faq-section bg-white">
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-12 col-sm-6 col-md-6 col-lg-6">
@@ -813,11 +825,10 @@ Join us now and start saying hello to saving money!</p>
             <div class="container">
                 <div class="row">
                     <div class="col-12">
-                        <div class="ins-txt-wrap text-center font-poppins">
-                            <h3>In a Nutshell</h3>
-                            <p class="mt-2">Explore exclusive deals and discounts available in your local area with
-                                Daily <br>
-                                Deals & Discounts. Whether you're looking for dining specials</p>
+                        <div class="ins-txt-wrap text-center font-poppins mb-36">
+                            <h3>All Your Deals, One App</h3>
+                            <p class="mt-2">Explore exclusive deals and discounts available in your local area with Daily <br>
+                                Deals & Discounts. We bring savings and smiles, one offer at a time.</p>
                         </div>
 
                     </div>
@@ -825,12 +836,12 @@ Join us now and start saying hello to saving money!</p>
                 <div class="row align-items-center">
                     <div class="col-lg-4 col-sm-6 order-sm-2 order-lg-1">
                         <div class="nutshleel-txt text-end mt-60">
-                            <h5>All deals at your fingertips</h5>
-                            <p>Get access to the best deals in your area</p>
+                            <h5>Tailored Just for You</h5>
+                            <p>Deals you'll love, tailored to your likes. Smart suggestions mean more joy, less search.</p>
                         </div>
                         <div class="nutshleel-txt mt-60 text-end">
-                            <h5>New inspiration every day</h5>
-                            <p>New deals with fun outings near you are released every day. Do not miss this.</p>
+                            <h5>Effortless Navigation</h5>
+                            <p>Swipe, tap, save. Our app's so user-friendly, you'll find deals in no time.</p>
                         </div>
                     </div>
                     <div class="col-lg-4 col-sm-12 order-sm-1">
@@ -841,13 +852,12 @@ Join us now and start saying hello to saving money!</p>
                     </div>
                     <div class="col-lg-4 col-sm-6 order-sm-2">
                         <div class="nutshleel-txt mt-60">
-                            <h5>Spontaneous Eating Out</h5>
-                            <p>Do you like to go out for dinner</br> spontaneously? Reserve the best deals for</br> the same day</p>
+                            <h5>Unbeatable Savings</h5>
+                            <p>Exclusive discounts across dining, shopping, and fun. Always the best prices, effortlessly.</p>
                         </div>
                         <div class="nutshleel-txt mt-60">
-                            <h5>never miss a deal again</h5>
-                            <p>never miss a deal again</br>
-Easily manage which city you want to follow</p>
+                            <h5>Always Something New</h5>
+                            <p>Fresh deals daily. From your morning coffee to your weekend getaway, discover something new every day.</p>
                         </div>
                     </div>
                 </div>
