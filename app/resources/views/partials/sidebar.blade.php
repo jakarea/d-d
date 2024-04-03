@@ -3,7 +3,7 @@
     <!-- logo -->
     <div class="logo-box">
         <a href="{{url('/')}}">
-            <img src="{{ asset('public/assets/images/logo.png') }}" alt="Logo" class="img-fluid">
+            <img src="{{ asset('public/assets/images/logo.svg') }}" alt="Logo" class="img-fluid">
         </a>
     </div>
     <!-- logo -->

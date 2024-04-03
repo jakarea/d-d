@@ -16,6 +16,7 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\API\SubscriptionController;
 use App\Http\Controllers\AppBannerController;
+use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\PrivacyController;
 
 /*
@@ -29,11 +30,16 @@ use App\Http\Controllers\PrivacyController;
 |
 */
 
-Route::get('/', function () { return view('home/index'); });
-Route::get('/home', function () { return view('home/index'); });
 
+
+// landing page and froentend route
+Route::prefix('/')->controller(LandingPageController::class)->group(function () {
+    Route::get('/', 'index')->name('home');
+    Route::get('/home', 'home')->name('home.main');  
+});
 Route::get('privacy-policy', [PrivacyController::class, 'index']);
 
+// auth route
 Route::group(['middleware' => ['guest']], function () {
     // Registration
     Route::get('/register', [AuthController::class,'showRegistrationForm'])->name('register');
@@ -63,14 +69,13 @@ Route::group(['middleware' => ['web','guest']], function () {
     Route::post('api/purchase/cancel', [SubscriptionController::class, 'handleCancel'])->name('purchase.cancel');
 });
 
-// initial redirection route
 
-
-Route::group(['middleware' => ['auth','isAdmin']], function () {
-    // Route::get('/', function () { return redirect('home/index'); });
+// dashboard redirection
+Route::group(['middleware' => ['auth','isAdmin']], function () { 
     Route::get('/dashboard', function () { redirect('/analytics'); });
 });
 
+// main dashboard routes
 Route::group(['middleware' => ['auth','isAdmin']], function () {
 
     // app banner
