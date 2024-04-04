@@ -28,4 +28,14 @@ class LandingPageController extends Controller
     {
         return redirect('/');
     }
+
+    public function privacyPolicy()
+    {
+        return view('home.privacy-policy');
+    }
+
+    public function termsCondition()
+    {
+        return view('home.terms-condition');
+    }
 }

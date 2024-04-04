@@ -310,9 +310,7 @@ class ProductController extends ApiController
      */
     public function store(ProductAddRequest $request): JsonResponse
     {
-        
-        // return response()->json($request->all());
-       
+         
 
         try {
 
@@ -321,8 +319,7 @@ class ProductController extends ApiController
 
             if ($user->id == auth()->user()->id) {
                 $product = ProductProcess::create($request);
-
-                //  return response()->json($request->product_varients);
+ 
 
                 if (isset($request->product_varients) && count($request->product_varients) > 0) {
                     foreach ($request->product_varients as $productVariant) {

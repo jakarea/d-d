@@ -949,6 +949,86 @@ body {
   animation: flyingObject 5s infinite alternate;
 }
 
+.tos-section{
+  padding: 5rem 0;
+}
+
+/* tos css start */
+.tos-main-box p {
+  font-size: 1rem;
+  font-weight: 400;
+  color: rgba(40, 40, 40, 0.75);
+  letter-spacing: -0.01em;
+  line-height: 140%;
+  margin-top: 1rem;
+}
+
+.tos-main-box h5 {
+  font-style: normal;
+  font-weight: 700;
+  font-size: 22.3284px;
+  line-height: 28px;
+  color: #243561;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+.tos-main-box ul {
+  margin-left: 2rem;
+}
+
+.tos-main-box ul li span.left-number{
+  margin-right: 1.25rem;
+}
+
+.tos-main-box ul li {
+  font-size: 1rem;
+  font-weight: 400;
+  color: rgba(40, 40, 40, 0.75);
+  letter-spacing: -0.01em;
+  line-height: 140%; 
+}
+
+.tos-main-box ul li .media {
+  align-items: flex-start;
+}
+
+.tos-main-box ul li .media .media-body span{
+  font-weight: 600;
+  color: #000000de;
+}
+
+.tos-main-box ul li .media i {
+  font-size: 6px;
+  margin-right: 8px;
+  display: inline-block;
+  margin-top: 12px;
+}
+
+.common-heading {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+.common-heading h6 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #FF9040;
+  letter-spacing: -0.01em;
+  line-height: 140%;
+  line-height: 100%;
+}
+.common-heading h2 {
+  font-size: 2.6rem;
+  font-weight: 600;
+  color: #282828;
+  letter-spacing: -0.01em;
+  line-height: 140%;
+}
+
+/* tos css end */
+
+
 @media(min-width: 320px) and (max-width: 768px) {
   .landing-header .navbar-toggler {
     border-color: #FF9F29;
