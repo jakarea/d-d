@@ -405,7 +405,7 @@ body {
 }
 
 .custom-tab-bttn .nav-pills .nav-link {
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 500;
   line-height: 22px;
   letter-spacing: 0em;
@@ -584,8 +584,8 @@ body {
 .discover-box {
   position: relative;
   height: 100%;
-  min-height: 500px;
-  max-height: 500px;
+  height: 500px;
+  border-radius: 20px;
 }
 
 .discover-box img {
@@ -1188,6 +1188,36 @@ body {
     width: 100%;
     flex-direction: row;
     justify-content: center!important;
+  }
+  .back-top-bttn{
+    display: none!important;
+  }
+
+  .video-area iframe{
+    height: 280px!important;
+  }
+
+  .custom-tab-bttn .nav{
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    padding-right: 1rem;
+  }
+
+  .custom-tab-bttn .nav-pills .nav-link {
+    padding: 3px;
+    justify-content: center;
+  }
+  .custom-tab-bttn .nav-pills .nav-link span{
+    display: none;
+    width: 0;
+    height: 0;
+  }
+  .custom-tab-bttn .nav-pills .nav-link{
+    font-size: 14px;
+  }
+
+  .blog-section{
+    padding-bottom: 60px;
   }
 }
 

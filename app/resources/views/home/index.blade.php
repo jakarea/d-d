@@ -266,7 +266,7 @@
                 </div>
             </div>
             <div class="row font-poppins">
-                <div class="col-lg-4 custom-tab-bttn">
+                <div class="col-lg-4 custom-tab-bttn order-2 order-lg-1 mt-4 mt-lg-0">
                     <div class="nav flex-column nav-pills custom-scrollbar" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                         @foreach ($categories as $key => $category)
                          
@@ -278,7 +278,7 @@
                     </div>
                 </div>
                 
-                <div class="col-lg-8">
+                <div class="col-lg-8 order-1 order-lg-2">
                     <div class="tab-content" id="v-pills-tabContent">
                         @foreach ($categories as $key => $category) 
 
@@ -288,8 +288,7 @@
                                     @foreach ($products[$category->id]->slice(0,2) as $product)
                                     <div class="col-sm-6 col-lg-6">
                                         <div class="discover-box">
-                                            <img src="{{ asset($product->images) }}" alt="a"
-                                                class="img-fluid">
+                                            <img src="{{ asset($product->images) }}" alt="{{ $product->slug }}" class="img-fluid">
     
                                             <div class="ol">
                                                 <h5>{{ $product->title }}</h5>

@@ -16,10 +16,10 @@ class LandingPageController extends Controller
         $categories = Category::get();
 
         foreach ($categories as $category) { 
-            $products[$category->id] = Product::where('cats', 'like', '%' . $category->id . '%')->get();
+            $products[$category->id] = Product::where('cats', 'like', '%' . $category->id . '%')
+            ->where('status','Active')
+            ->get();
         }
-
-        // return $products;
 
         return view('home/index',compact('categories','products'));
     }

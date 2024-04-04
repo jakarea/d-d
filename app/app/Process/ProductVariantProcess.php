@@ -25,9 +25,9 @@ class ProductVariantProcess
         $productVariant = ProductVariant::find($id);
 
         // Delete existing images if any
-        if (isset($request['images']) && count($request['images']) > 0 && isset($productVariant->images)) {
-            (new self())->deleteImage($productVariant->images);
-        }
+        // if (isset($request['images']) && count($request['images']) > 0 && isset($productVariant->images)) {
+        //     (new self())->deleteImage($productVariant->images);
+        // }
 
         // Update product variant with new data and images
         $productVariant = (new self())->saveProductVariant($request, $productVariant);
@@ -48,36 +48,36 @@ class ProductVariantProcess
         $productVariant->description = $request['description'] ?? null;
 
         // Save images as a comma-separated string
-        if (isset($request['images']) && count($request['images']) > 0) {
-            $imageString = $this->saveImage($request);
-            $productVariant->images = $imageString;
-        }
+        // if (isset($request['images']) && count($request['images']) > 0) {
+        //     $imageString = $this->saveImage($request);
+        //     $productVariant->images = $imageString;
+        // }
 
         $productVariant->save();
 
         return $productVariant;
     }
 
-    public function saveImage($request)
-    {
-        $imageString = '';
+    // public function saveImage($request)
+    // {
+    //     $imageString = '';
 
-        foreach ($request['images'] as $image) {
-            $filePath = $this->fileUpload($image, "product-variants");
-            $imageString .= asset('public/storage/product-variants/' . $filePath) . ',';
-        }
+    //     foreach ($request['images'] as $image) {
+    //         $filePath = $this->fileUpload($image, "product-variants");
+    //         $imageString .= asset('public/storage/product-variants/' . $filePath) . ',';
+    //     }
 
-        // Remove the trailing comma
-        $imageString = rtrim($imageString, ',');
+    //     // Remove the trailing comma
+    //     $imageString = rtrim($imageString, ',');
 
-        return $imageString;
-    }
+    //     return $imageString;
+    // }
 
     public function deleteImage($imageString)
     {
         $fileUrl = Config::get('app.file_url');
 
-        // Convert the comma-separated string to an array
+        // Convert the comma-separated string to an arrayw
         $arrayofImages = explode(',', $imageString);
 
         foreach ($arrayofImages as $image) {
