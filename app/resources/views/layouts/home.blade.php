@@ -94,7 +94,7 @@
                             Download the app today and start saving!</p>
 
                         <p class="mt-5"><img src="{{ asset('public/assets/images/landing/location.svg') }}" alt="a"
-                                class="img-fluid me-2"> Bogure, Bangladesh</p>
+                                class="img-fluid me-2"> Amsterdam, The Netherlands</p>
 
                     </div>
                 </div>
@@ -112,7 +112,7 @@
                     </div>
                 </div>
                 <div class="col-lg-3 text-center col-md-5">
-                    <div class="d-flex flex-column gap-4 mt-4">
+                    <div class="d-flex flex-column gap-4 mt-4 mobile-gap">
                         <a href="#"><img src="{{ asset('public/assets/images/landing/app-store.svg') }}" alt="app"
                                 class="img-fluid"></a>
                         <a href="#"><img src="{{ asset('public/assets/images/landing/paly-stroe.svg') }}" alt="app"

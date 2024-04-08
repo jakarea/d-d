@@ -1,6 +1,6 @@
 @extends('layouts.home')
 
-@section('title','dailydealsdiscounts.com')
+@section('title','Home')
 
 @section('content')
 
@@ -24,7 +24,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-sm-12 col-md-6 col-lg-6 mt-4 md:mt-0">
+                <div class="col-12 col-sm-12 col-md-6 col-lg-6">
                     <div class="text-center hero-img">
                         <img src="{{ asset('public/assets/images/landing/hero.png') }}" alt="app" class="img-fluid">
                     </div>
@@ -102,8 +102,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-12">
-                    <div class="promote-item text-center">
-                        <h2 class="common-title ">The Best Place to Promote Your Deals</h3>
+                    <div class="promote-item text-center comon-title-2">
+                        <h2 class="common-title ">The Best Place to Promote Your Deals</h2>
                             <p>Unlock unparalleled exposure and skyrocket your sales with Daily Deals &
                                 Discounts, <br>
                                 the premier destination for showcasing your exclusive offers. Our platform
@@ -128,7 +128,7 @@
 <!-- how it workes end -->
 
 <!-- insperation section start -->
-<section class="insperation-section pb-0">
+<section class="insperation-section pb-0 new-ins-mobile-sec-bg">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-12 col-sm-5 col-md-6 col-lg-5">
@@ -284,7 +284,7 @@
                         </div>
                     </div>
 
-                    <div class="hero_btn mt-60">
+                    <div class="hero_btn mt-60 different-app-logo">
                         <a href="#" class="me-2"><img
                                 src="{{ asset('public/assets/images/landing/app-store-2.svg') }}" alt="app"
                                 class="img-fluid"></a>
@@ -356,7 +356,7 @@
                         people who are eager to check them out. This makes us stand out because we value both your
                         experience
                         and your budget. Why complicate things when you can keep it easy and effective with us?</p>
-                    <div class="hero_btn mt-60 text-center">
+                    <div class="hero_btn mt-60 text-center m-mt-62">
                         <a href="#" class="me-2"><img
                                 src="{{ asset('public/assets/images/landing/app-store.svg') }}" alt="app"
                                 class="img-fluid"></a>
@@ -515,7 +515,7 @@
             </div>
         </div>
         <div class="row align-items-center">
-            <div class="col-lg-4 col-sm-6 order-sm-2 order-lg-1">
+            <div class="col-lg-4 col-sm-6 order-2 order-md-2 order-lg-1">
                 <div class="nutshleel-txt text-end mt-60">
                     <h5>Tailored Just for You</h5>
                     <p>Deals you'll love, tailored to your likes. Smart suggestions mean more joy, less search.</p>
@@ -525,13 +525,13 @@
                     <p>Swipe, tap, save. Our app's so user-friendly, you'll find deals in no time.</p>
                 </div>
             </div>
-            <div class="col-lg-4 col-sm-12 order-sm-1">
+            <div class="col-lg-4 col-sm-12 order-1 order-sm-1">
                 <div class="text-center nut-imgg">
                     <img src="{{ asset('public/assets/images/landing/nutshell-1.png') }}" alt="nutshell"
                         class="img-fluid">
                 </div>
             </div>
-            <div class="col-lg-4 col-sm-6 order-sm-2">
+            <div class="col-lg-4 col-sm-6 order-3 order-sm-2">
                 <div class="nutshleel-txt mt-60">
                     <h5>Unbeatable Savings</h5>
                     <p>Exclusive discounts across dining, shopping, and fun. Always the best prices, effortlessly.
