@@ -13,10 +13,9 @@
     <meta name="theme-color" content="#fff">
 
     {{-- bootstrap css --}}
-    {{--
-    <link rel="shortcut icon" href="{{ url('public/assets/images/favicon.png') }}" type="image/x-icon"> --}}
     <link rel="shortcut icon" href="{{ url('public/assets/images/favicon.svg') }}" type="image/x-icon">
     <link rel="stylesheet" href="{{ url('public/assets/css/bootstrap.min.css') }}">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
     <!-- plugin CSS start -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
@@ -35,7 +34,7 @@
 <body>
 
     <!-- header start -->
-    <nav class="navbar navbar-expand-md landing-header">
+    <nav class="navbar navbar-expand-lg landing-header">
         <div class="container">
             <a class="navbar-brand" href="{{ url('/') }}">
                 <img src="{{ asset('public/assets/images/landing/logo-latest.svg') }}" alt="logo"
@@ -104,14 +103,14 @@
                         <h6>Quick Support (24/7)</h6>
 
                         <ul>
-                            <li><a href="#"><img src="{{ asset('public/assets/images/landing/call.svg') }}" alt="a"
-                                        class="img-fluid me-2"> +880 1728247398</a></li>
-                            <li><a href="#"><img src="{{ asset('public/assets/images/landing/envelope.svg') }}" alt="a"
-                                        class="img-fluid me-2">info@example.com</a></li>
+                            {{-- <li><a href="#"><img src="{{ asset('public/assets/images/landing/call.svg') }}" alt="a"
+                                        class="img-fluid me-2"> +880 1728247398</a></li> --}}
+                            <li><a href="mailto:contact@dailydealsdiscounts.com"><img src="{{ asset('public/assets/images/landing/envelope.svg') }}" alt="a"
+                                        class="img-fluid me-2">contact@dailydealsdiscounts.com</a></li>
                         </ul>
                     </div>
                 </div>
-                <div class="col-lg-3 text-center col-md-5">
+                <div class="col-lg-3 text-center col-md-12">
                     <div class="d-flex flex-column gap-4 mt-4 mobile-gap">
                         <a href="#"><img src="{{ asset('public/assets/images/landing/app-store.svg') }}" alt="app"
                                 class="img-fluid"></a>
@@ -134,17 +133,25 @@
     <!-- get the app -->
 
     {{-- back to top --}}
-    <button id="scrollToTopBtn" class="back-top-bttn" type="button">
+    <button id="scrollToTopBtn" class="back-top-bttn" type="button" data-aos="fade-down" data-aos-duration="1000">
         <i class="fas fa-angle-up"></i>
     </button>
     {{-- back to top --}}
 
     <!-- Bootstrap Bundle with Popper JS start -->
     <script src="{{ url('public/assets/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="{{ url('public/assets/js/custom.js') }}"></script>
+     <!-- Bootstrap Bundle with Popper JS end -->
 
-    <script>
-        // Function to handle smooth scrolling to sections
+     {{-- int aos plugin --}}
+     <script>
+        AOS.init();
+      </script>
+     {{-- int aos plugin --}}
+
+     {{-- smooth scroll js --}}
+    <script> 
             function scrollToSection(sectionId) {
                 const section = document.querySelector(sectionId);
                 if (section) {
@@ -154,38 +161,31 @@
                 }
             }
     </script>
-    <!-- Bootstrap Bundle with Popper JS end -->
 
     {{-- back to top js --}}
-    <script>
-        // Get the button
-var scrollToTopBtn = document.getElementById("scrollToTopBtn");
+    <script> 
+        var scrollToTopBtn = document.getElementById("scrollToTopBtn"); 
+        window.onscroll = function() {
+            scrollFunction();
+        };
 
-// When the user scrolls down 20px from the top of the document, show the button
-window.onscroll = function() {
-    scrollFunction();
-};
+        function scrollFunction() {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                scrollToTopBtn.style.display = "block";
+            } else {
+                scrollToTopBtn.style.display = "none";
+            }
+        } 
+        scrollToTopBtn.addEventListener("click", function() {
+            scrollToTop();
+        });
 
-function scrollFunction() {
-    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-        scrollToTopBtn.style.display = "block";
-    } else {
-        scrollToTopBtn.style.display = "none";
-    }
-}
-
-// When the user clicks on the button, scroll to the top of the document
-scrollToTopBtn.addEventListener("click", function() {
-    scrollToTop();
-});
-
-function scrollToTop() {
-    // Scroll to the top of the document
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth" // Smooth scrolling behavior
-    });
-}
+        function scrollToTop() { 
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        }
 
     </script>
 

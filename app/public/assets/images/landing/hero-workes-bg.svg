@@ -1,14 +1,7 @@
-<svg width="1745" height="1121" viewBox="0 0 1745 1121" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path opacity="0.5" d="M0.5 911C180.821 911 327 764.821 327 584.5C327 404.179 180.821 258 0.5 258C-179.821 258 -326 404.179 -326 584.5C-326 764.821 -179.821 911 0.5 911Z" fill="url(#paint0_linear_4090_10873)"/>
-<rect x="1150" y="674.917" width="14" height="14" rx="3" transform="rotate(-25 1150 674.917)" fill="#F2C94C"/>
-<rect x="231" y="5.9165" width="14" height="14" rx="3" transform="rotate(-25 231 5.9165)" fill="#F2C94C"/>
-<rect x="210" y="1107.92" width="14" height="14" rx="3" transform="rotate(-25 210 1107.92)" fill="#F2C94C"/>
-<rect x="1650" y="564.917" width="14" height="14" rx="7" transform="rotate(-25 1650 564.917)" fill="#EB0029"/>
-<rect x="1726" y="293.917" width="14" height="14" rx="7" transform="rotate(-25 1726 293.917)" fill="#EB0029"/>
-<rect x="389" y="639.917" width="14" height="14" rx="3" transform="rotate(-25 389 639.917)" fill="#EB0029"/>
-<rect x="755" y="427.071" width="12" height="12" rx="3" transform="rotate(-25 755 427.071)" fill="#EB0029"/>
+<svg width="327" height="653" viewBox="0 0 327 653" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path opacity="0.5" d="M0.5 653C180.821 653 327 506.821 327 326.5C327 146.179 180.821 0 0.5 0C-179.821 0 -326 146.179 -326 326.5C-326 506.821 -179.821 653 0.5 653Z" fill="url(#paint0_linear_4010_34713)"/>
 <defs>
-<linearGradient id="paint0_linear_4090_10873" x1="-652.5" y1="584.5" x2="0.5" y2="1237.5" gradientUnits="userSpaceOnUse">
+<linearGradient id="paint0_linear_4010_34713" x1="-652.5" y1="326.5" x2="0.5" y2="979.5" gradientUnits="userSpaceOnUse">
 <stop stop-color="#FCEEE9"/>
 <stop offset="1" stop-color="#ECF8F8"/>
 </linearGradient>
