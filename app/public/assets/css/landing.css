@@ -1284,6 +1284,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  border: 1px solid #CD5237;
 }
 
 .book-preview-wrap a i{
@@ -1329,7 +1330,7 @@ body {
 .book-details-head p {
   font-style: normal;
   font-weight: 500;
-  font-size: 16px;
+  font-size: 20px;
   line-height: 93.02%;
   letter-spacing: -0.02em;
   color: #222322;
@@ -1342,7 +1343,7 @@ body {
 .book-details-filtr span {
   font-style: normal;
   font-weight: 500;
-  font-size: 20px;
+  font-size: 16px;
   line-height: 93.02%;
   letter-spacing: -0.02em;
   color: rgba(0, 0, 0, 0.51);
@@ -1384,7 +1385,7 @@ body {
   line-height: 21px;
   letter-spacing: -0.02em;
   color: #FFFFFF;
-  padding: 14px 4rem;
+  padding: 14px 1rem;
   display: inline-block;
   border: 2px solid #FF9F29;
   transition: all linear .2s;
@@ -1521,6 +1522,36 @@ body {
 
 /* responsive css start */
 @media(min-width: 320px) and (max-width: 768px) {
+
+  .book-details-txt-wrap{
+    margin-top: 2rem;
+  }
+
+  .book-details-head h2{
+    font-size: 25px;
+    line-height: 120%;
+  }
+
+  .book-details-filtr span{
+    font-size: 16px;
+  }
+
+  .book-details-bttn h4{
+    font-size: 26px;
+  }
+
+  .book-details-bttn h4 span{
+    font-size: 15px;
+  }
+
+  .book-details-bttn a{
+    font-size: 14px;
+  }
+
+  .book-details-bttm p{
+    font-size: 14px;
+  }
+
   .landing-header .navbar-toggler {
     border-color: transparent;
     padding: 0px;
@@ -1960,6 +1991,35 @@ body {
 }
 
 @media(min-width: 768px) and (max-width: 991px) {
+
+  .book-details-txt-wrap{
+    margin-top: 2rem;
+  }
+
+  .book-details-head h2{
+    font-size: 25px;
+    line-height: 120%;
+  }
+
+  .book-details-filtr span{
+    font-size: 16px;
+  }
+
+  .book-details-bttn h4{
+    font-size: 26px;
+  }
+
+  .book-details-bttn h4 span{
+    font-size: 15px;
+  }
+
+  .book-details-bttn a{
+    font-size: 14px;
+  }
+
+  .book-details-bttm p{
+    font-size: 14px;
+  }
 
   .nut-imgg img {
     max-width: 30%;

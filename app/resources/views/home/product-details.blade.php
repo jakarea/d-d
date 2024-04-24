@@ -1,6 +1,6 @@
 @extends('layouts.home')
 
-@section('title','Products Details')
+@section('title','Product Details')
 
 @section('content')
 
@@ -19,7 +19,7 @@
                     @endphp 
                     <div class="book-preview-img-box">
                         @if($firstImageUrl)
-                        <img src="{{ $firstImageUrl }}" alt="Product Thumbnail" class="img-fluid main-thumb">
+                        <img src="{{ asset($firstImageUrl) }}" alt="Product Thumbnail" class="img-fluid main-thumb">
                     @endif
                     </div>
                 </div>
@@ -29,11 +29,11 @@
                     <div class="book-details-head">
                         <span>Reviews: {{ $allReviewCount = $product->reviews->where('replies_to',NULL)->count() }}</span>
                         <h2>{{ $product->title }} </h2>
-                        <p>{{ $product->company->name }}</p>
+                        <p>{{ optional($product->company)->name }}</p>
                     </div>
 
                     <div class="book-details-filtr">
-                        <span>{{ $product->company->email }}</span> 
+                        <span>{{ optional($product->company)->location }}</span> 
                     </div>
                     <div class="book-details-bttn">
                         @if ($product->sell_price)
@@ -42,8 +42,10 @@
                             <h4>€ {{ $product->price }}</h4>
                         @endif 
 
-                        <a href="#">Get Deals</a> 
+                        {{-- <a href="#">****{{ substr($product->cupon, -4) }}</a>  --}}
+                        <a href="javascript:void(0)" title="CUPON">{{ $product->cupon }}</a> 
                     </div>
+                    <p>Deal ends at: <strong>{{ \Carbon\Carbon::parse($product->deal_expired_at)->diffForHumans() }}</strong></p> 
                     <div class="book-details-bttm">
                         <h6>Description :</h6>
 

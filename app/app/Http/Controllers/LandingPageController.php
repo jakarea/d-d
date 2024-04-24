@@ -29,7 +29,6 @@ class LandingPageController extends Controller
         return redirect('/');
     }
 
-
     // guest product list page
     public function productList()
     {
@@ -37,14 +36,12 @@ class LandingPageController extends Controller
         return view('home/product-list',compact('products'));
     }
 
-
     // guest product details page
     public function productDetails($slug)
     {
         $product = Product::where('slug',$slug)->first();
         return view('home/product-details',compact('product'));
     }
-
 
     // terms condition pages
     public function privacyPolicy()

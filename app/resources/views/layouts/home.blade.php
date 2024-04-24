@@ -46,31 +46,28 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="javascript:void(0)" onclick="scrollToSection('#work-sec')">How it
+                    <li class="nav-item"> 
+                        <a class="nav-link" href="{{ url('/') }}?section=work-sec">How it
                             Works</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="javascript:void(0)" onclick="scrollToSection('#local-deals')">Local
+                        <a class="nav-link" href="{{ url('/') }}?section=local-deals">Local
                             Deals</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="javascript:void(0)" onclick="scrollToSection('#start-save')">Start
+                        <a class="nav-link" href="{{ url('/') }}?section=start-save">Start
                             Saving</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="javascript:void(0)" onclick="scrollToSection('#for-com')">For
+                        <a class="nav-link" href="{{ url('/') }}?section=for-com">For
                             Companies</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="javascript:void(0)" onclick="scrollToSection('#faq-sec')">FAQ</a>
+                        <a class="nav-link" href="{{ url('/') }}?section=faq-sec">FAQ</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url('products') }}">Products</a>
-                    </li>
-                    {{-- <li class="nav-item">
-                        <a class="nav-link" href="javascript:void(0)" onclick="scrollToSection('#blog-sec')">Blog</a>
-                    </li> --}}
+                    </li> 
                 </ul>
             </div>
         </div>
@@ -150,16 +147,34 @@
      {{-- int aos plugin --}}
 
      {{-- smooth scroll js --}}
-    <script> 
-            function scrollToSection(sectionId) {
-                const section = document.querySelector(sectionId);
-                if (section) {
-                    section.scrollIntoView({
-                        behavior: 'smooth'
-                    });
-                }
+     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if there's a section query parameter in the URL
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('section')) {
+                // Extract the section ID from the query parameter
+                const sectionId = '#' + urlParams.get('section');
+    
+                // Scroll to the section with smooth behavior
+                scrollToSection(sectionId);
+    
+                // Remove the query parameter from the URL to prevent further scrolling on page reload
+                const newUrl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+                window.history.replaceState({ path: newUrl }, '', newUrl);
             }
+        });
+    
+        function scrollToSection(sectionId) {
+            const section = document.querySelector(sectionId);
+            if (section) {
+                section.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            }
+        }
     </script>
+    
+    
 
     {{-- back to top js --}}
     <script> 
