@@ -20,12 +20,21 @@ class CheckSubscription
     {
         $user = auth()->user();
 
+        $companyId = 0;
+
+        if ($user->company) {
+            $companyId = $user->company->id;
+        }
+
         $subscription = Earning::where('user_id',$user->id)
-        ->whereIn('status', ['paid', 'trail','expired'])
-        ->where('company_id',$user->company->id)
+        ->whereIn('status', ['paid', 'trail','pending'])
+        // ->whereIn('status', ['paid', 'trail','refunded','completed','expired','pending'])
+        ->where('company_id',$companyId)
         ->first();
 
-        if ($subscription && $subscription->end_at && $subscription->end_at < now()) { 
+        // return response()->json($subscription);
+
+        if ($subscription && $subscription->end_at && $subscription->end_at < now() || $subscription->end_at == null) { 
             return redirect()->route('subscription.expired');
         }
 

@@ -42,7 +42,7 @@
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+                <i class="fa-solid fa-bars-staggered"></i>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
@@ -66,12 +66,11 @@
                         <a class="nav-link" href="javascript:void(0)" onclick="scrollToSection('#faq-sec')">FAQ</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="javascript:void(0)"
-                            onclick="scrollToSection('#review-sec')">Reviews</a>
+                        <a class="nav-link" href="{{ url('products') }}">Products</a>
                     </li>
-                    <li class="nav-item">
+                    {{-- <li class="nav-item">
                         <a class="nav-link" href="javascript:void(0)" onclick="scrollToSection('#blog-sec')">Blog</a>
-                    </li>
+                    </li> --}}
                 </ul>
             </div>
         </div>
@@ -92,8 +91,8 @@
                         <p class="mt-3">Don't miss out on amazing deals. <br>
                             Download the app today and start saving!</p>
 
-                        <p class="mt-5"><img src="{{ asset('public/assets/images/landing/location.svg') }}" alt="a"
-                                class="img-fluid me-2"> Amsterdam, The Netherlands</p>
+                                <a target="_blank" class="mt-5" href="https://www.google.com/maps/place/Amsterdam,+Netherlands/@52.354551,4.7391543,11z/data=!3m1!4b1!4m6!3m5!1s0x47c63fb5949a7755:0x6600fd4cb7c0af8d!8m2!3d52.3675734!4d4.9041389!16zL20vMGszcA?entry=ttu"><img src="{{ asset('public/assets/images/landing/location.svg') }}" alt="a"
+                                    class="img-fluid me-2"> Amsterdam, The Netherlands</a>
 
                     </div>
                 </div>
@@ -141,7 +140,7 @@
     <!-- Bootstrap Bundle with Popper JS start -->
     <script src="{{ url('public/assets/js/bootstrap.bundle.min.js') }}"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="{{ url('public/assets/js/custom.js') }}"></script>
+    {{-- <script src="{{ url('public/assets/js/custom.js') }}"></script> --}}
      <!-- Bootstrap Bundle with Popper JS end -->
 
      {{-- int aos plugin --}}

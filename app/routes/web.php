@@ -33,6 +33,8 @@ use App\Http\Controllers\LandingPageController;
 Route::prefix('/')->controller(LandingPageController::class)->group(function () {
     Route::get('/', 'index')->name('home');
     Route::get('/home', 'home')->name('home.main');  
+    Route::get('/products', 'productList')->name('home.product.list');  
+    Route::get('products/{slug}', 'productDetails')->name('home.product.details');  
     Route::get('/privacy-policy', 'privacyPolicy')->name('home.privacy.policy');  
     Route::get('/terms-condition', 'termsCondition')->name('home.terms.condition');  
 }); 
@@ -42,6 +44,7 @@ Route::group(['middleware' => ['guest']], function () {
     // Registration
     Route::get('/register', [AuthController::class,'showRegistrationForm'])->name('register');
     Route::post('/register', [AuthController::class,'register']);
+
     // Login
     Route::get('/login', [AuthController::class,'showLoginForm'])->name('login');
     Route::post('/login', [AuthController::class,'login']);

@@ -25,7 +25,8 @@
                 </div>
                 <div class="col-12 col-sm-12 col-md-6 col-lg-6">
                     <div class="text-center hero-img" data-aos="zoom-in" data-aos-duration="1000">
-                        <img src="{{ asset('public/assets/images/landing/hero.svg') }}" alt="app" class="img-fluid">
+                        {{-- <img src="{{ asset('public/assets/images/landing/hero.svg') }}" alt="app" class="img-fluid"> --}}
+                        <img src="{{ asset('public/assets/images/landing/hero.png') }}" alt="app" class="img-fluid">
                     </div>
                 </div>
             </div>
@@ -94,11 +95,11 @@
                             promotions soar to new heights!</p>
                     </div>
                 </div>
-                <div class="col-12">
+                {{-- <div class="col-12">
                     <div class="text-center mt-60">
                         <a href="#" class="common-bttn">View Details</a>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
 
@@ -117,12 +118,8 @@
             <div class="row">
                 <div class="col-12">
                     <div class="promote-item text-center comon-title-2">
-                        <h2 class="common-title ">The Best Place to Promote Your Deals</h2>
-                            <p>Unlock unparalleled exposure and skyrocket your sales with Daily Deals &
-                                Discounts, <br>
-                                the premier destination for showcasing your exclusive offers. Our platform
-                                provides unmatched <br>
-                                of eager shoppers. Join us today and experience the power of strategic.</p>
+                        <h2 class="common-title ">The Best Place to Find Daily Deals</h2>
+                            <p>Dive into our world of deals and discounts with just a tap. Our app is like having a savvy friend <br> who knows all the best spots for discounts, from cozy cafes to thrilling adventures. Check out <br> our quick video to see how easy it is to save big and enjoy more of what you love every day.</p>
                     </div>
                 </div>
             </div>
@@ -148,16 +145,19 @@
 
 
 <!-- insperation section start -->
+<div class="text-center ins-img d-md-none" data-aos="fade-up" data-aos-duration="1000">
+    <img src="{{ asset('public/assets/images/landing/saving.png') }}" alt="app" class="img-fluid">
+</div>
 <section class="insperation-section pb-0 new-ins-mobile-sec-bg" id="local-deals">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-12 col-sm-12 col-md-6 col-lg-5">
-                <div class="text-center ins-img" data-aos="fade-up" data-aos-duration="1000">
-                    <img src="{{ asset('public/assets/images/landing/saving.svg') }}" alt="app" class="img-fluid">
+                <div class="text-center ins-img d-none d-md-block" data-aos="fade-up" data-aos-duration="1000">
+                    <img src="{{ asset('public/assets/images/landing/saving.png') }}" alt="app" class="img-fluid">
                 </div>
             </div>
             <div class="col-12 col-sm-12 col-md-6 col-lg-7">
-                <div class="ins-txt-wrap left-space">
+                <div class="ins-txt-wrap left-space mt-0 mt-lg-4">
                     <h3>Easy Savings & Quick Deals</h3>
                     <p>Unlock effortless savings and instant deals with our intuitive app feature,</br> "Quick
                         Redemption." Say goodbye to the hassle of paper vouchers – now</br> you can redeem deals
@@ -210,7 +210,7 @@
             </div>
         </div>
         <div class="row font-poppins">
-            <div class="col-lg-4 custom-tab-bttn order-2 order-md-1 mt-4 mt-lg-0" data-aos="zoom-out" data-aos-duration="1000">
+            <div class="col-lg-4 custom-tab-bttn mt-4 mt-lg-0" data-aos="zoom-out" data-aos-duration="1000">
                 <div class="nav flex-column nav-pills custom-scrollbar" id="v-pills-tab" role="tablist"
                     aria-orientation="vertical">
                     @foreach ($categories as $key => $category)
@@ -227,7 +227,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-8 order-1 order-md-2" data-aos="zoom-in" data-aos-duration="1000">
+            <div class="col-lg-8 " data-aos="zoom-in" data-aos-duration="1000">
                 <div class="tab-content" id="v-pills-tabContent">
                     @foreach ($categories as $key => $category)
 
@@ -325,7 +325,7 @@
 
             <div class="col-12 col-sm-6 col-md-6 col-lg-6 order-1 order-lg-2">
                 <div class="text-end inspair-model" data-aos="zoom-in" data-aos-duration="1000">
-                    <img src="{{ asset('public/assets/images/landing/savings.svg') }}" alt="savings"
+                    <img src="{{ asset('public/assets/images/landing/savings.png') }}" alt="savings"
                         class="img-fluid">
                 </div>
             </div>
@@ -573,7 +573,7 @@
             </div>
             <div class="col-lg-4 col-sm-12 order-1 order-sm-1">
                 <div class="text-center nut-imgg"  data-aos="fade-up" data-aos-duration="1000">
-                    <img src="{{ asset('public/assets/images/landing/nutshell-1.svg') }}" alt="nutshell"
+                    <img src="{{ asset('public/assets/images/landing/nutshell-1.png') }}" alt="nutshell"
                         class="img-fluid">
                 </div>
             </div>
@@ -697,22 +697,20 @@
             <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
                 <div class="blog-post-box">
                     <div class="thumabnail">
-                        <img src="{{ asset('public/assets/images/landing/blog-01.png') }}" alt="thumbnail"
+                        <img src="{{ asset('public/assets/images/landing/shop-01.jpg') }}" alt="thumbnail"
                             class="img-fluid">
                     </div>
                     <div class="text">
-                        <h5 class="font-jakarta">Flexbox cSS : Everything you need to know</h5>
-                        <p class="font-poppins">Giopio's Figma to HT​ML con​version
-                            se​rvice n​othing short of am​azing.
-                            Th​eir tea​m managed to take.</p>
+                        <h5 class="font-jakarta">Maximize Year-Round Savings</h5>
+                        <p class="font-poppins">Discover timing tricks for snagging the best deals and stretching your budget further.</p>
 
                         <ul class="font-poppins">
                             <li>
                                 <a href="#"><img src="{{ asset('public/assets/images/landing/calendar-icon.svg') }}"
-                                        alt="a" class="img-fluid me-2"> April 12, 2023</a>
+                                        alt="a" class="img-fluid me-2"> March 12, 2024</a>
                             </li>
                             <li>
-                                <a href="#">∙ 3 min read</a>
+                                <a href="#">∙ 5 min read</a>
                             </li>
                         </ul>
                     </div>
@@ -723,22 +721,20 @@
             <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
                 <div class="blog-post-box">
                     <div class="thumabnail">
-                        <img src="{{ asset('public/assets/images/landing/blog-02.png') }}" alt="thumbnail"
+                        <img src="{{ asset('public/assets/images/landing/shop-02.jpg') }}" alt="thumbnail"
                             class="img-fluid">
                     </div>
                     <div class="text">
-                        <h5 class="font-jakarta">Grid CSS make your life easier</h5>
-                        <p class="font-poppins">Giopio's Figma to HT​ML con​version
-                            se​rvice n​othing short of am​azing.
-                            Th​eir tea​m managed to take.</p>
+                        <h5 class="font-jakarta">Crack the Discount <br> Code</h5>
+                        <p class="font-poppins">Unlock, utilize, and maximize your savings potential with a plethora of online coupons.</p>
 
                         <ul class="font-poppins">
                             <li>
                                 <a href="#"><img src="{{ asset('public/assets/images/landing/calendar-icon.svg') }}"
-                                        alt="a" class="img-fluid me-2"> April 12, 2023</a>
+                                        alt="a" class="img-fluid me-2"> July 22, 2023</a>
                             </li>
                             <li>
-                                <a href="#">∙ 3 min read</a>
+                                <a href="#">∙ 4 min read</a>
                             </li>
                         </ul>
                     </div>
@@ -749,22 +745,20 @@
             <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
                 <div class="blog-post-box">
                     <div class="thumabnail">
-                        <img src="{{ asset('public/assets/images/landing/blog-03.png') }}" alt="thumbnail"
+                        <img src="{{ asset('public/assets/images/landing/shop-03.jpg') }}" alt="thumbnail"
                             class="img-fluid">
                     </div>
                     <div class="text">
-                        <h5 class="font-jakarta">3 easy way to make div center</h5>
-                        <p class="font-poppins">Giopio's Figma to HT​ML con​version
-                            se​rvice n​othing short of am​azing.
-                            Th​eir tea​m managed to take.</p>
+                        <h5 class="font-jakarta">Seize Limited-Time <br> Bargains</h5>
+                        <p class="font-poppins">Implement quick and effective actions to capitalize on limited-time offers for substantial savings.</p>
 
                         <ul class="font-poppins">
                             <li>
                                 <a href="#"><img src="{{ asset('public/assets/images/landing/calendar-icon.svg') }}"
-                                        alt="a" class="img-fluid me-2"> April 12, 2023</a>
+                                        alt="a" class="img-fluid me-2"> April 06, 2023</a>
                             </li>
                             <li>
-                                <a href="#">∙ 3 min read</a>
+                                <a href="#">∙ 8 min read</a>
                             </li>
                         </ul>
                     </div>
@@ -775,20 +769,17 @@
             <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
                 <div class="blog-post-box">
                     <div class="thumabnail">
-                        <img src="{{ asset('public/assets/images/landing/blog-04.png') }}" alt="thumbnail"
+                        <img src="{{ asset('public/assets/images/landing/shop-04.jpg') }}" alt="thumbnail"
                             class="img-fluid">
                     </div>
                     <div class="text">
-                        <h5 class="font-jakarta">Make animated light
-                            toggle with CSS</h5>
-                        <p class="font-poppins">Giopio's Figma to HT​ML con​version
-                            se​rvice n​othing short of am​azing.
-                            Th​eir tea​m managed to take.</p>
+                        <h5 class="font-jakarta">Simplify Your Buying Experience</h5>
+                        <p class="font-poppins">Effortlessly browse, select, and purchase items with ease through our intuitive mobile application.</p>
 
                         <ul class="font-poppins">
                             <li>
                                 <a href="#"><img src="{{ asset('public/assets/images/landing/calendar-icon.svg') }}"
-                                        alt="a" class="img-fluid me-2"> April 12, 2023</a>
+                                        alt="a" class="img-fluid me-2"> April 12, 2022</a>
                             </li>
                             <li>
                                 <a href="#">∙ 3 min read</a>

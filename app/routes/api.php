@@ -127,6 +127,7 @@ Route::middleware(['auth:sanctum', 'VerifyUserCheck'])->group(function () {
         Route::get('wishlist/remove/{id}', [WishlistController::class, 'removeFromWishlist']);
 
         Route::get('subscription-packages', [SubscriptionController::class, 'index']);
+        Route::get('subscription-check/{user_id}', [SubscriptionController::class, 'check']);
         Route::post('purchase/request', [SubscriptionController::class, 'handlePaymentRequest']);
         Route::get('subscription/cancel', [SubscriptionController::class, 'cancel']);
 
