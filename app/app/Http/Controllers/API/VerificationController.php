@@ -66,7 +66,7 @@ class VerificationController extends ApiController
                         ->text('Your account has been successfully verified. Thank you for choosing us! DnD');
                 });                
 
-                return $this->jsonResponse(false, 'Verification Success! please purchase a package to continue!', $userInfo, $this->emptyArray, JsonResponse::HTTP_CREATED);
+                return $this->jsonResponse(false, 'Verification Success!', $userInfo, $this->emptyArray, JsonResponse::HTTP_CREATED);
             }
 
             return $this->jsonResponse(1, 'Invalid verification code or user not found.', [], 422);

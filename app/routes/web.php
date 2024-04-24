@@ -16,8 +16,7 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\API\SubscriptionController;
 use App\Http\Controllers\AppBannerController;
-use App\Http\Controllers\LandingPageController;
-use App\Http\Controllers\PrivacyController;
+use App\Http\Controllers\LandingPageController; 
 
 /*
 |--------------------------------------------------------------------------
@@ -30,20 +29,22 @@ use App\Http\Controllers\PrivacyController;
 |
 */
 
-
-
 // landing page and froentend route
 Route::prefix('/')->controller(LandingPageController::class)->group(function () {
     Route::get('/', 'index')->name('home');
     Route::get('/home', 'home')->name('home.main');  
-});
-Route::get('privacy-policy', [PrivacyController::class, 'index']);
+    Route::get('/products', 'productList')->name('home.product.list');  
+    Route::get('products/{slug}', 'productDetails')->name('home.product.details');  
+    Route::get('/privacy-policy', 'privacyPolicy')->name('home.privacy.policy');  
+    Route::get('/terms-condition', 'termsCondition')->name('home.terms.condition');  
+}); 
 
 // auth route
 Route::group(['middleware' => ['guest']], function () {
     // Registration
     Route::get('/register', [AuthController::class,'showRegistrationForm'])->name('register');
     Route::post('/register', [AuthController::class,'register']);
+
     // Login
     Route::get('/login', [AuthController::class,'showLoginForm'])->name('login');
     Route::post('/login', [AuthController::class,'login']);

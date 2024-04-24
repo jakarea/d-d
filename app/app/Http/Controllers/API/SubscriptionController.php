@@ -176,8 +176,6 @@ class SubscriptionController extends ApiController
     public function handleSuccess(Request $request)
     {
 
-        // return response()->json('123');
-
         Stripe::setApiKey(env('STRIPE_SECRET'));
         $sessionId = $request->input('session_id');
         $packageId = $request->input('package_id');
@@ -276,13 +274,13 @@ class SubscriptionController extends ApiController
         if ($earning) {
 
             if($earning->status == 'trail'){
-                return $this->jsonResponse(true, 'Your trial period has expired, choose a plan to continue.', ['trail_end_date' => $earning->end_at], $this->emptyArray, JsonResponse::HTTP_OK);
+                return $this->jsonResponse(true, 'Your trial period has expired, choose a plan to continue.', ['trail_end_date' => $earning->end_at], ['Your trail has expired'], JsonResponse::HTTP_OK);
             }else{
-                return $this->jsonResponse(true, 'Your subscription period has expired, choose a plan to continue again!', ['subscription_end_date' => $earning->end_at], $this->emptyArray, JsonResponse::HTTP_OK);
+                return $this->jsonResponse(true, 'Your subscription period has expired, choose a plan to continue again!', ['subscription_end_date' => $earning->end_at], ['Your subscription has expired'], JsonResponse::HTTP_OK);
             }
 
         } else {
-            return $this->jsonResponse(true, 'Your subscription period has expired, choose a plan to continue.', 'No Package Found!', $this->emptyArray, JsonResponse::HTTP_OK);
+            return $this->jsonResponse(true, 'Your subscription period has expired, choose a plan to continue.', 'No Package Found!', ['Your subscription has expired'], JsonResponse::HTTP_OK);
         }
     }
 
@@ -297,7 +295,7 @@ class SubscriptionController extends ApiController
             $earning->status = 'cancled';
             $earning->save();
 
-            return $this->jsonResponse(true, 'Subscription cancled success! .', $earning, $this->emptyArray, JsonResponse::HTTP_OK);
+            return $this->jsonResponse(false, 'Subscription cancled success! .', $earning, $this->emptyArray, JsonResponse::HTTP_OK);
 
         } else {
             return $this->jsonResponse(true, 'No Subscription Package found!.', 'No Package Found!', $this->emptyArray, JsonResponse::HTTP_OK);
@@ -351,7 +349,53 @@ class SubscriptionController extends ApiController
         return response()->json(['success' => true]);
     }
 
+    public function check($user_id)
+    {
 
+        $mainUser = auth()->user();
+        $user = User::findOrFail($user_id);
 
+        $companyId = 0;
+        if ($user->company) {
+            $companyId = $user->company->id;
+        }else{
+            return $this->jsonResponse(true, 'User do not have required role!', $user, $this->emptyArray, JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        if ($user->id == $mainUser->id) {
+            
+            $subscription = Earning::where('user_id',$user->id)
+            ->whereIn('status', ['paid', 'trail'])
+            ->where('company_id',$companyId)
+            ->first(); 
+
+            if (!$subscription) {
+                return $this->jsonResponse(true, 'No Subscription plan found!', $user, $this->emptyArray, JsonResponse::HTTP_OK);
+            }
+
+            // expired info
+            $expiredInfo = [
+                'status' => 'expired',
+                'subscription_end_date' => $subscription->end_at
+            ];
+
+            // active info
+            $activeInfo = [
+                'status' => 'active',
+                'subscription_end_date' => $subscription->end_at
+            ];
+
+            if ($subscription && $subscription->end_at && $subscription->end_at < now() || $subscription->end_at == null) { 
+                return $this->jsonResponse(true, 'Your Subscription plan has expired', $expiredInfo, $this->emptyArray, JsonResponse::HTTP_OK);
+            }else{
+                return $this->jsonResponse(false, 'Your Subscription plan is active', $activeInfo, $this->emptyArray, JsonResponse::HTTP_OK);
+            }
+            
+        }else{
+           
+            return $this->jsonResponse(true, 'User info not matched!', $user_id, $this->emptyArray, JsonResponse::HTTP_NOT_FOUND);
+        } 
+
+    }
 
 }

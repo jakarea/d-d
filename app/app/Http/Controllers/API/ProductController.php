@@ -310,7 +310,8 @@ class ProductController extends ApiController
      */
     public function store(ProductAddRequest $request): JsonResponse
     {
-        
+         
+
         try {
 
             $company = Company::find($request->company_id);
@@ -318,16 +319,17 @@ class ProductController extends ApiController
 
             if ($user->id == auth()->user()->id) {
                 $product = ProductProcess::create($request);
+ 
 
-                if (isset($request->product_variants) && count($request->product_variants) > 0) {
-                    foreach ($request->product_variants as $productVariant) {
+                if (isset($request->product_varients) && count($request->product_varients) > 0) {
+                    foreach ($request->product_varients as $productVariant) {
                         $productVariant['user_id'] = auth()->user()->id;
                         $productVariant['company_id'] = $product->company_id;
                         $productVariant['product_id'] = $product->id;
                         ProductVariantProcess::create($productVariant);
                     }
                 }
-
+                
                 $product = Product::with(['productVariants'])->find($product->id);
 
                 // notification create for new product create
@@ -627,8 +629,8 @@ class ProductController extends ApiController
      */
     protected function updateProductVariant($request, $product, $arrayofProductVariantId): array
     {
-        if (isset($request->product_variants)) {
-            foreach ($request->product_variants as $ProductVariant) {
+        if (isset($request->product_varients)) {
+            foreach ($request->product_varients as $ProductVariant) {
                 if (isset($ProductVariant['id']) && in_array($ProductVariant['id'], $arrayofProductVariantId)) {
 
                     $ProductVariant['user_id'] = auth()->user()->id;

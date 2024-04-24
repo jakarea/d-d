@@ -59,11 +59,11 @@
     <!-- company list end -->
 
      {{-- paggination wrap --}}
-  <div class="row">
-    <div class="col-12 paggination-wrap">
-      {{ $companies->links('pagination::bootstrap-5') }}
+    <div class="row">
+        <div class="col-12 paggination-wrap">
+        {{ $companies->links('pagination::bootstrap-5') }}
+        </div>
     </div>
-  </div>
   {{-- paggination wrap --}}
 
 </section>
