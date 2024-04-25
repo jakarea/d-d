@@ -14,7 +14,7 @@
             <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5">
                 <div class="top-logo">
                     <a href="#">
-                        <img src="{{ asset('public/assets/images/logo.png') }}" alt="logo" class="img-fluid">
+                        <img src="{{ asset('public/assets/images/logo.svg') }}" alt="logo" class="img-fluid">
                     </a>
                 </div>
                 {{-- @if(session('success')) --}}

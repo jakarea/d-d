@@ -31,7 +31,7 @@
                 <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5">
                     <div class="top-logo">
                         <a href="#" style="display: block;">
-                            <img src="{{ asset('public/assets/images/logo.png') }}" alt="logo" class="img-fluid" style="max-width: 12rem">
+                            <img src="{{ asset('public/assets/images/logo.svg') }}" alt="logo" class="img-fluid" style="max-width: 12rem">
                         </a>
                     </div>
                     <div class="payments-message-box">
@@ -40,7 +40,7 @@
                         <h4>We have received your payment</h4>
                         <p>Thank you for the Subscription!</p>
 
-                        <a href="#">Go BACK TO APP</a>
+                        {{-- <a href="#">Go BACK TO APP</a> --}}
                     </div>
                 </div>
             </div>

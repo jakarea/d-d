@@ -31,7 +31,7 @@
                 <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5">
                     <div class="top-logo">
                         <a href="#" style="display: block;">
-                            <img src="{{ asset('assets/images/logo.png') }}" alt="logo" class="img-fluid" style="max-width: 12rem;">
+                            <img src="{{ asset('assets/images/logo.svg') }}" alt="logo" class="img-fluid" style="max-width: 12rem;">
                         </a>
                     </div>
                     <div class="payments-message-box cancel-box">
