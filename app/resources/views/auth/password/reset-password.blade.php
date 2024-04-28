@@ -14,7 +14,7 @@
                     <div class="auth-form-wrap"> 
                         <div class="text-center">
                             <a href="#">
-                                <img src="{{ asset('public/assets/images/logo.png') }}" alt="" class="img-fluid">
+                                <img src="{{ asset('public/assets/images/logo.svg') }}" alt="" class="img-fluid">
                             </a>
                         </div>
                         <div class="title mt-4"> 
