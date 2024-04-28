@@ -384,13 +384,14 @@ class ProductController extends ApiController
      */
     public function updateProduct(UpdateRequest $request, $id): JsonResponse
     {
+        
         try {
             $product = Product::find($id);
 
 
             if (!empty($product)) {
 
-                $product = ProductProcess::update($request, $id);
+                $product = ProductProcess::update($request, $id); 
 
                 $arrayofProductVariantId = ProductVariant::where('product_id', $id)->pluck('id')->toArray();
 

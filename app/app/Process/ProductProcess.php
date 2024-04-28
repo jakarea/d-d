@@ -17,6 +17,14 @@ class ProductProcess
     public static function create($request)
     {
         $product = new Product();
+
+        // this is only for creating new product
+        if (isset($request->images) && count($request->images) > 0) {
+            $imageString = (new self())->saveImage($request->new_images);
+            $product->images = $imageString;
+            $product->save();
+        }
+
         $product = (new self())->saveProduct($request, $product);
 
         return $product;
@@ -27,8 +35,34 @@ class ProductProcess
         $product = Product::find($productId);
 
         if (!empty($product)) {
-            if (isset($request->images) && count($request->images) > 0 && isset($product->images)) {
-                (new self())->deleteImage($product->images);
+
+            // if product has only old images
+            if (isset($request->images) && count($request->images) > 0 && $request->new_images == null) {
+
+                $existingImages = (new self())->updateOldImage($product,$request);
+                $product->images = implode(',', $existingImages);
+                $product->save();
+
+            } // if product has only new images
+            elseif (isset($request->new_images) && count($request->new_images) > 0 && $request->images == null) {
+
+                $imageString = (new self())->saveImage($request->new_images);
+                $product->images = $imageString;
+                $product->save();
+
+            } // if product has both new and old images
+            elseif (isset($request->images) && count($request->images) > 0 && isset($request->new_images) && count($request->new_images) > 0) {
+                // Update existing images
+                $existingImages = (new self())->updateOldImage($product,$request);
+
+                // Add new images
+                $imageString = (new self())->saveImage($request->new_images);
+
+                $newImages = is_array($imageString) ? $imageString : explode(',', $imageString);
+                $allImages = array_merge($existingImages, $newImages);
+                $product->images = implode(',', $allImages);
+                $product->save(); 
+
             }
 
             $product = (new self())->saveProduct($request, $product);
@@ -39,7 +73,7 @@ class ProductProcess
         }
     }
 
-
+    // save product
     public function saveProduct($request, $product)
     {
 
@@ -60,18 +94,12 @@ class ProductProcess
 
         // Check if status is present in the request and update it
         if (isset($request->status)) {
-            $product->status = $request->status; // Update status if present
+            $product->status = $request->status;
         }
 
         // Check if location is present in the request and update it
         if (isset($request->location)) {
-            $product->location = $request->location; // Update location if present
-        }
-
-        if (isset($request->images) && count($request->images) > 0) {
-            $imageString = $this->saveImage($request);
-            $product->images = $imageString;
-            $product->save();
+            $product->location = $request->location;
         }
 
         $product->save();
@@ -79,12 +107,32 @@ class ProductProcess
         return $product;
     }
 
-    public function saveImage($request)
+    // update old image
+    public function updateOldImage($product,$request)
+    {
+        $existingImages = explode(',', $product->images); 
+        $imagesToDelete = collect($existingImages)->filter(function ($image) use ($request) {
+            return !in_array($image, $request->images ?? []);
+        });
+        
+        // Log images to delete
+        logger()->info('Images to delete:', $imagesToDelete->toArray());
+    
+        $this->deleteImage($imagesToDelete); // Delete old images
+    
+        // Remove deleted images from existing images array
+        $existingImages = array_diff($existingImages, $imagesToDelete->toArray());
+    
+        return $existingImages;
+ 
+    }
+
+    // save new images and convert base 64 to string
+    public function saveImage($images)
     {
         $imageString = '';
-        foreach ($request->images as $image) {
+        foreach ($images as $image) {
             $filePath = $this->fileUpload($image, "product");
-            // $imageUrl = asset(Storage::url("product/{$filePath}"));
             $imageUrl = asset("public/storage/product/{$filePath}");
             $imageString .= $imageUrl . ',';
         }
@@ -94,15 +142,13 @@ class ProductProcess
         return $imageString;
     }
 
-    public function deleteImage($imageString)
+    public function deleteImage($imagesToDelete)
     {
         $fileUrl = Config::get('app.file_url');
 
-        $arrayofImages = explode(',', $imageString);
-
-        foreach ($arrayofImages as $image) {
-            $image = str_replace($fileUrl, "", $image);
-            Storage::disk('public')->delete($image);
+        foreach ($imagesToDelete as $image) {
+            $imagePath = str_replace($fileUrl, "", $image);
+            Storage::disk('public')->delete($imagePath);
         }
     }
 }

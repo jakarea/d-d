@@ -68,6 +68,12 @@ class UpdateRequest extends BaseFormRequest
             'images' => [
                 'nullable',
                 'array',
+                'required_without_all:new_images',
+            ],
+            'new_images' => [
+                'nullable',
+                'array',
+                'required_without_all:images',
             ],
             'product_variants.*.title'=>[
                 'required',

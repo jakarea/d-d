@@ -34,9 +34,12 @@ class CheckSubscription
 
         // return response()->json($subscription);
 
-        if ($subscription && $subscription->end_at && $subscription->end_at < now() || $subscription->end_at == null) { 
-            return redirect()->route('subscription.expired');
+        if ($subscription) {
+            if ($subscription->end_at && $subscription->end_at < now() || $subscription->end_at == null) { 
+                return redirect()->route('subscription.expired');
+            }
         }
+        
 
         return $next($request); 
     }
