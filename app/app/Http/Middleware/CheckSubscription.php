@@ -18,8 +18,14 @@ class CheckSubscription
      */
     public function handle(Request $request, Closure $next)
     {
-        $user = auth()->user();
+ 
+        $subscriptionCheck = $request->query('subscriptionCheck');  
 
+        if ($subscriptionCheck == "subscription") {
+            return $next($request);
+        }
+ 
+        $user = auth()->user();
         $companyId = 0;
 
         if ($user->company) {
@@ -30,9 +36,7 @@ class CheckSubscription
         ->whereIn('status', ['paid', 'trail','pending'])
         // ->whereIn('status', ['paid', 'trail','refunded','completed','expired','pending'])
         ->where('company_id',$companyId)
-        ->first();
-
-        // return response()->json($subscription);
+        ->first(); 
 
         if ($subscription) {
             if ($subscription->end_at && $subscription->end_at < now() || $subscription->end_at == null) { 

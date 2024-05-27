@@ -588,4 +588,9 @@ class UserController extends API\ApiController
     {
         return $request->user();
     }
+
+    public function checkStatus()
+    {
+        return response()->json(["error"=> "false", "message" => "Success" , 'status' => 0]);  
+    }
 }

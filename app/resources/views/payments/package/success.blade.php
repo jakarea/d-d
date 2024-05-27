@@ -40,7 +40,7 @@
                         <h4>We have received your payment</h4>
                         <p>Thank you for the Subscription!</p>
 
-                        {{-- <a href="#">Go BACK TO APP</a> --}}
+                        <a href="{{ url('/') }}">Go BACK</a>
                     </div>
                 </div>
             </div>
