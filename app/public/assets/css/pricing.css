@@ -185,11 +185,24 @@
 
 .current-plan-bttn {
   background-color: #ED5763 !important;
+  border-color: #ED5763 !important;
 }
 
-
-
-
+.pricing-box .bttn a, 
+.pricing-box .bttn button {
+  display: block;
+  width: 100%;
+  padding: 12px 20px;
+  color: var(--white, #FFF);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 24px;
+  border-radius: 0.5rem;
+  border: 1px solid var(--black-01, #0F172A);
+  background: var(--black-01, #0F172A);
+  box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+}
 
 
 

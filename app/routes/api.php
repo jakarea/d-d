@@ -49,6 +49,8 @@ Route::post('login', [UserController::class, 'login']);
 Route::post('login/google', [UserController::class, 'loginWithGoogle']);
 Route::post('login/apple', [UserController::class, 'loginWithApple']);
 Route::post('force-profile-update', [UserController::class, 'forceProfileUpdate']);
+// check status and return 0
+Route::get('/status', [UserController::class, 'checkStatus']);
 
 Route::apiResource('roles', RoleController::class)->except(['create', 'edit'])->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
 Route::apiResource('users.roles', UserRoleController::class)->except(['create', 'edit', 'show', 'update'])->middleware(['auth:sanctum', 'ability:admin,super-admin']);
@@ -62,6 +64,8 @@ Route::get('client/reviews/{company}', [ReviewController::class, 'reviewsOfCompa
 Route::get('client/location/{name?}', [ProductController::class, 'locationList']);
 Route::get('/banner', [ProductController::class, 'homeBanner']);
 Route::get('/company/product', [ProductController::class, 'index']);
+
+
 
 Route::middleware(['auth:sanctum', 'VerifyUserCheck'])->group(function () {
 

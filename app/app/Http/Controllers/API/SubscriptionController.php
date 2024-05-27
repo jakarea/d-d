@@ -25,6 +25,15 @@ use Illuminate\Support\Facades\Mail;
 class SubscriptionController extends ApiController
 {
 
+    // web package list 
+    public function packageList()
+    {
+       $packages = PricingPackage::with('myPurchaseInfo')
+        ->where('status','active')->get();
+
+        return view('packages/purchase',compact('packages'));
+    }
+
     public function index()
     {
         $packages = PricingPackage::with('myPurchaseInfo')
@@ -49,8 +58,7 @@ class SubscriptionController extends ApiController
     public function handlePaymentRequest(Request $request)
     {
         Stripe::setApiKey(env('STRIPE_SECRET'));
-
-
+        
         try {
             $package = PricingPackage::find($request->package_id);
 

@@ -51,7 +51,7 @@ Route::group(['middleware' => ['guest']], function () {
 });
 
 // forgot password handle routes for mobile app user and dashboard
-Route::group(['middleware' => ['web','guest']], function () {
+Route::group(['middleware' => ['web']], function () {
 
     // send request form - app
     Route::get('password/reset', [ResetPasswordController::class, 'showLinkRequestForm'])->name('password.request');
@@ -66,6 +66,7 @@ Route::group(['middleware' => ['web','guest']], function () {
     Route::get('password/cancel', [ResetPasswordController::class, 'showFailPage'])->name('password.cancel');
 
     // purchase package payment status route view for mobile app users
+    Route::get('/purchase/package', [SubscriptionController::class, 'packageList'])->name('purchase.packages.web');
     Route::get('api/purchase/success', [SubscriptionController::class, 'handleSuccess'])->name('purchase.success');
     Route::post('api/purchase/cancel', [SubscriptionController::class, 'handleCancel'])->name('purchase.cancel');
 });

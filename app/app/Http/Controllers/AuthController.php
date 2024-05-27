@@ -44,6 +44,30 @@ class AuthController extends Controller
     }
 
     // public function login(LoginRequest $request)
+    // public function login(Request $request)
+    // {
+
+    //     $credentials = $request->validate([
+    //         'email' => 'required|email',
+    //         'password' => 'required|min:6'
+    //     ]);
+
+    //     $user = User::where('email', $credentials['email'])->first();
+    //     if (!$user || !Hash::check($request->password, $user->password)) {
+    //         return redirect()->route('login')->with('error','Invalid Credentials');
+    //     }
+
+    //     $containsAdminRole = $user->roles->contains('slug', 'admin');
+    //     if (!$containsAdminRole) {
+    //         return redirect()->route('login')->with('error','Only Admin can login to web dashboard!');
+    //     }
+
+    //     $remember = $request->boolean('remember');
+    //     if (Auth::attempt($credentials, $remember)) {
+    //         return redirect()->intended('/analytics');
+    //     }
+    // }
+
     public function login(Request $request)
     {
 
@@ -55,6 +79,14 @@ class AuthController extends Controller
         $user = User::where('email', $credentials['email'])->first();
         if (!$user || !Hash::check($request->password, $user->password)) {
             return redirect()->route('login')->with('error','Invalid Credentials');
+        }
+
+        if (Auth::attempt($credentials)) {
+            $containsCompanyRole = $user->roles->contains('slug', 'company');
+            if (!$containsCompanyRole) {
+                return redirect()->route('login')->with('error','Only Admin can login to web dashboard!');
+            }
+            return redirect()->intended('purchase/package');
         }
 
         $containsAdminRole = $user->roles->contains('slug', 'admin');
