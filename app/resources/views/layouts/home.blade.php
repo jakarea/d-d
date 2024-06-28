@@ -13,8 +13,8 @@
     <meta name="theme-color" content="#fff">
 
     {{-- bootstrap css --}}
-    <link rel="shortcut icon" href="{{ url('public/assets/images/favicon.svg') }}" type="image/x-icon">
-    <link rel="stylesheet" href="{{ url('public/assets/css/bootstrap.min.css') }}">
+    <link rel="shortcut icon" href="{{ url('assets/images/favicon.svg') }}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ url('assets/css/bootstrap.min.css') }}">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
     <!-- plugin CSS start -->
@@ -24,7 +24,7 @@
     <!-- plugin CSS end -->
 
     <!-- custom CSS start -->
-    <link rel="stylesheet" href="{{ url('public/assets/css/landing.css') }}">
+    <link rel="stylesheet" href="{{ url('assets/css/landing.css') }}">
 
     @yield('style')
 
@@ -37,7 +37,7 @@
     <nav class="navbar navbar-expand-lg landing-header">
         <div class="container">
             <a class="navbar-brand" href="{{ url('/') }}">
-                <img src="{{ asset('public/assets/images/landing/logo-latest.svg') }}" alt="logo"
+                <img src="{{ asset('assets/images/landing/logo-latest.svg') }}" alt="logo"
                     style="max-width: 10rem">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -46,7 +46,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"> 
+                    <li class="nav-item">
                         <a class="nav-link" href="{{ url('/') }}?section=work-sec">How it
                             Works</a>
                     </li>
@@ -67,14 +67,14 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url('products') }}">Products</a>
-                    </li> 
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url('purchase/package') }}">Pricing</a>
-                    </li> 
+                    </li>
                     @if (Auth::check())
                     <li class="nav-item">
                         <a class="nav-link" href="{{url('/logout')}}">Logout</a>
-                    </li> 
+                    </li>
                     @endif
                 </ul>
             </div>
@@ -96,7 +96,7 @@
                         <p class="mt-3">Don't miss out on amazing deals. <br>
                             Download the app today and start saving!</p>
 
-                                <a target="_blank" class="mt-5" href="https://www.google.com/maps/place/Amsterdam,+Netherlands/@52.354551,4.7391543,11z/data=!3m1!4b1!4m6!3m5!1s0x47c63fb5949a7755:0x6600fd4cb7c0af8d!8m2!3d52.3675734!4d4.9041389!16zL20vMGszcA?entry=ttu"><img src="{{ asset('public/assets/images/landing/location.svg') }}" alt="a"
+                                <a target="_blank" class="mt-5" href="https://www.google.com/maps/place/Amsterdam,+Netherlands/@52.354551,4.7391543,11z/data=!3m1!4b1!4m6!3m5!1s0x47c63fb5949a7755:0x6600fd4cb7c0af8d!8m2!3d52.3675734!4d4.9041389!16zL20vMGszcA?entry=ttu"><img src="{{ asset('assets/images/landing/location.svg') }}" alt="a"
                                     class="img-fluid me-2"> Amsterdam, The Netherlands</a>
 
                     </div>
@@ -107,18 +107,18 @@
                         <h6>Quick Support (24/7)</h6>
 
                         <ul>
-                            {{-- <li><a href="#"><img src="{{ asset('public/assets/images/landing/call.svg') }}" alt="a"
+                            {{-- <li><a href="#"><img src="{{ asset('assets/images/landing/call.svg') }}" alt="a"
                                         class="img-fluid me-2"> +880 1728247398</a></li> --}}
-                            <li><a href="mailto:contact@dailydealsdiscounts.com"><img src="{{ asset('public/assets/images/landing/envelope.svg') }}" alt="a"
+                            <li><a href="mailto:contact@dailydealsdiscounts.com"><img src="{{ asset('assets/images/landing/envelope.svg') }}" alt="a"
                                         class="img-fluid me-2">contact@dailydealsdiscounts.com</a></li>
                         </ul>
                     </div>
                 </div>
                 <div class="col-lg-3 text-center col-md-12">
                     <div class="d-flex flex-column gap-4 mt-4 mobile-gap">
-                        <a href="#"><img src="{{ asset('public/assets/images/landing/app-store.svg') }}" alt="app"
+                        <a href="https://apps.apple.com/app/deals-and-discounts/id6503248591"><img src="{{ asset('assets/images/landing/app-store.svg') }}" alt="app"
                                 class="img-fluid"></a>
-                        <a href="#"><img src="{{ asset('public/assets/images/landing/paly-stroe.svg') }}" alt="app"
+                        <a href="https://play.google.com/store/apps/details?id=com.dandd.app"><img src="{{ asset('assets/images/landing/paly-stroe.svg') }}" alt="app"
                                 class="img-fluid"></a>
                     </div>
                 </div>
@@ -143,9 +143,9 @@
     {{-- back to top --}}
 
     <!-- Bootstrap Bundle with Popper JS start -->
-    <script src="{{ url('public/assets/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url('assets/js/bootstrap.bundle.min.js') }}"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    {{-- <script src="{{ url('public/assets/js/custom.js') }}"></script> --}}
+    {{-- <script src="{{ url('assets/js/custom.js') }}"></script> --}}
      <!-- Bootstrap Bundle with Popper JS end -->
 
      {{-- int aos plugin --}}
@@ -162,16 +162,16 @@
             if (urlParams.has('section')) {
                 // Extract the section ID from the query parameter
                 const sectionId = '#' + urlParams.get('section');
-    
+
                 // Scroll to the section with smooth behavior
                 scrollToSection(sectionId);
-    
+
                 // Remove the query parameter from the URL to prevent further scrolling on page reload
                 const newUrl = window.location.protocol + '//' + window.location.host + window.location.pathname;
                 window.history.replaceState({ path: newUrl }, '', newUrl);
             }
         });
-    
+
         function scrollToSection(sectionId) {
             const section = document.querySelector(sectionId);
             if (section) {
@@ -181,12 +181,12 @@
             }
         }
     </script>
-    
-    
+
+
 
     {{-- back to top js --}}
-    <script> 
-        var scrollToTopBtn = document.getElementById("scrollToTopBtn"); 
+    <script>
+        var scrollToTopBtn = document.getElementById("scrollToTopBtn");
         window.onscroll = function() {
             scrollFunction();
         };
@@ -197,12 +197,12 @@
             } else {
                 scrollToTopBtn.style.display = "none";
             }
-        } 
+        }
         scrollToTopBtn.addEventListener("click", function() {
             scrollToTop();
         });
 
-        function scrollToTop() { 
+        function scrollToTop() {
             window.scrollTo({
                 top: 0,
                 behavior: "smooth"
