@@ -14,7 +14,7 @@
                 </div>
             </div>
         </div>
-        <div class="row"> 
+        <div class="row">
             @if (count($products) > 0)
                 @foreach ($products as $product)
                     @php
@@ -35,10 +35,10 @@
                         </div>
                     </div>
                 </div>
-                @endforeach 
-            @else 
+                @endforeach
+            @else
             {{-- no data found component --}}
-            <x-EmptyDataComponent :dynamicData="'No Product Found!'" />  
+            <x-EmptyDataComponent :dynamicData="'No Product Found!'" />
             {{-- no data found component --}}
             @endif
         </div>
@@ -51,7 +51,7 @@
         {{-- paggination wrap --}}
     </div>
 </section>
- 
+
 
 {{-- why different section start --}}
 <section class="different-sec my-5">
@@ -68,9 +68,9 @@
                         experience
                         and your budget. Why complicate things when you can keep it easy and effective with us?</p>
                     <div class="hero_btn mt-60 text-center m-mt-62" data-aos="zoom-up" data-aos-duration="1000">
-                        <a href="#" class="me-2"><img src="{{ asset('public/assets/images/landing/app-store.svg') }}"
+                        <a href="https://apps.apple.com/app/deals-and-discounts/id6503248591" class="me-2"><img src="{{ asset('public/assets/images/landing/app-store.svg') }}"
                                 alt="app" class="img-fluid"></a>
-                        <a href="#" class="ms-2"><img src="{{ asset('public/assets/images/landing/paly-stroe.svg') }}"
+                        <a href="https://play.google.com/store/apps/details?id=com.dandd.app" class="ms-2"><img src="{{ asset('public/assets/images/landing/paly-stroe.svg') }}"
                                 alt="app" class="img-fluid">
                         </a>
                     </div>
@@ -85,5 +85,5 @@
     {{-- background dots --}}
 
 </section>
-{{-- why different section end --}} 
+{{-- why different section end --}}
 @endsection
