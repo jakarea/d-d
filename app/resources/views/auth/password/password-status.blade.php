@@ -13,7 +13,7 @@
     <meta name="theme-color" content="#fff">
 
     <!-- Bootstrap CSS start -->
-    <link rel="stylesheet" href="{{ url('assets/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url('public/assets/css/bootstrap.min.css') }}">
     <!-- Bootstrap CSS end -->
 
     <!-- plugin CSS start -->
@@ -23,8 +23,8 @@
     <!-- plugin CSS end -->
 
     <!-- custom CSS start -->
-    <link rel="stylesheet" href="{{ url('assets/css/style.css') }}">
-    <link rel="stylesheet" href="{{ url('assets/css/responsive.css') }}">
+    <link rel="stylesheet" href="{{ url('public/assets/css/style.css') }}">
+    <link rel="stylesheet" href="{{ url('public/assets/css/responsive.css') }}">
     <!-- custom CSS end -->
 
     <title>DnD || Authintication </title>
@@ -34,26 +34,26 @@
 <!-- login page wrapper start -->
 <main class="auth-page-wrapper">
     <div class="container-fluid">
-        <div class="row justify-content-center"> 
+        <div class="row justify-content-center">
             <div class="col-12 col-xl-6">
                 <!-- auth text start -->
                 <div class="auth-txt-box">
                     <!-- auth login form start -->
                     <div class="auth-form-wrap">
 
-                        <div class="title"> 
+                        <div class="title">
                             @if(session('success'))
-                            <h1 style="font-size: 1.25rem"><strong class="text-success">Password Reset:</strong> Your password has been successfully reset. Please return to the mobile app and log in to continue.</h1> 
+                            <h1 style="font-size: 1.25rem"><strong class="text-success">Password Reset:</strong> Your password has been successfully reset. Please return to the mobile app and log in to continue.</h1>
                             @elseif(session('error'))
                             <h1 style="font-size: 1.25rem">
                                 <strong class="text-danger">Password Reset:</strong> Failed to reset your password. Please try again!
                             </h1>
-                            @else 
+                            @else
                                 <h1>Go back to DnD Mobile App!</h1>
                             @endif
 
-                        </div> 
-                         
+                        </div>
+
                     </div>
                     <!-- auth login form end -->
 
@@ -76,7 +76,7 @@
 </main>
 <!-- login page wrapper end -->
  <!-- Bootstrap Bundle with Popper JS start -->
- <script src="{{ url('assets/js/bootstrap.bundle.min.js') }}"></script>  
+ <script src="{{ url('public/assets/js/bootstrap.bundle.min.js') }}"></script>
 
 </body>
 

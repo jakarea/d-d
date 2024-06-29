@@ -20,7 +20,7 @@ class AuthController extends Controller
 
     public function register(RegistrationRequest $request)
     {
-    
+
         $user = User::create([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
@@ -81,13 +81,13 @@ class AuthController extends Controller
             return redirect()->route('login')->with('error','Invalid Credentials');
         }
 
-        if (Auth::attempt($credentials)) {
-            $containsCompanyRole = $user->roles->contains('slug', 'company');
-            if (!$containsCompanyRole) {
-                return redirect()->route('login')->with('error','Only Admin can login to web dashboard!');
-            }
-            return redirect()->intended('purchase/package');
-        }
+        // if (Auth::attempt($credentials)) {
+        //     $containsCompanyRole = $user->roles->contains('slug', 'company');
+        //     if (!$containsCompanyRole) {
+        //         return redirect()->route('login')->with('error','Only Admin can login to web dashboard!');
+        //     }
+        //     return redirect()->intended('purchase/package');
+        // }
 
         $containsAdminRole = $user->roles->contains('slug', 'admin');
         if (!$containsAdminRole) {

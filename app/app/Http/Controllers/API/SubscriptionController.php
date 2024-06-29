@@ -25,7 +25,7 @@ use Illuminate\Support\Facades\Mail;
 class SubscriptionController extends ApiController
 {
 
-    // web package list 
+    // web package list
     public function packageList()
     {
        $packages = PricingPackage::with('myPurchaseInfo')
@@ -58,7 +58,7 @@ class SubscriptionController extends ApiController
     public function handlePaymentRequest(Request $request)
     {
         Stripe::setApiKey(env('STRIPE_SECRET'));
-        
+
         try {
             $package = PricingPackage::find($request->package_id);
 
@@ -109,7 +109,7 @@ class SubscriptionController extends ApiController
                 ->whereIn('status', ['pending', 'trail'])->first();
 
                 if ($earning) {
-                  
+
                     $earning->package_name = $package->name;
                     $earning->pricing_packages_id = $package->id;
                     $earning->amount = $price;
@@ -320,7 +320,7 @@ class SubscriptionController extends ApiController
             $payload, $sig_header, env('STRIPE_WEBHOOK_SECRET')
         );
 
-        
+
 
         switch ($event->type) {
             case 'customer.subscription.updated':
@@ -371,11 +371,11 @@ class SubscriptionController extends ApiController
         }
 
         if ($user->id == $mainUser->id) {
-            
+
             $subscription = Earning::where('user_id',$user->id)
             ->whereIn('status', ['paid', 'trail'])
             ->where('company_id',$companyId)
-            ->first(); 
+            ->first();
 
             if (!$subscription) {
                 return $this->jsonResponse(true, 'No Subscription plan found!', $user, $this->emptyArray, JsonResponse::HTTP_OK);
@@ -393,17 +393,14 @@ class SubscriptionController extends ApiController
                 'subscription_end_date' => $subscription->end_at
             ];
 
-            if ($subscription && $subscription->end_at && $subscription->end_at < now() || $subscription->end_at == null) { 
+            if ($subscription && $subscription->end_at && $subscription->end_at < now() || $subscription->end_at == null) {
                 return $this->jsonResponse(true, 'Your Subscription plan has expired', $expiredInfo, $this->emptyArray, JsonResponse::HTTP_OK);
             }else{
                 return $this->jsonResponse(false, 'Your Subscription plan is active', $activeInfo, $this->emptyArray, JsonResponse::HTTP_OK);
             }
-            
+
         }else{
-           
             return $this->jsonResponse(true, 'User info not matched!', $user_id, $this->emptyArray, JsonResponse::HTTP_NOT_FOUND);
-        } 
-
+        }
     }
-
 }

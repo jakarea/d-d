@@ -3,7 +3,7 @@
 @section('title','Advertisement')
 
 @section('style')
-<link rel="stylesheet" href="{{ url('assets/css/pricing.css') }}">
+<link rel="stylesheet" href="{{ url('public/assets/css/pricing.css') }}">
 @endsection
 
 @section('content')
@@ -96,12 +96,12 @@
                     {{-- <a href="{{ $product->product_url }}"><i class="fa-regular fa-heart"></i></a> --}}
                 </div>
                 <!-- thumbnail end -->
-                
+
                 <!-- txt -->
                 <div class="product-txt">
-                    <h5> 
+                    <h5>
                         <a href="{{ route('product.show', $product->slug) }}">{{ Str::limit($product->title, $limit =
-                            40, $end = '..') }}</a>   
+                            40, $end = '..') }}</a>
                     </h5>
                     <p>{{ Str::limit($product->company ? $product->company->name : '--', $limit = 50, $end = '..') }}</p>
 
