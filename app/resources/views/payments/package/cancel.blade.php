@@ -13,18 +13,18 @@
     <meta name="theme-color" content="#fff">
 
     <!-- Bootstrap CSS start -->
-    <link rel="stylesheet" href="{{ url('assets/css/bootstrap.min.css') }}">
-    <!-- Bootstrap CSS end --> 
+    <link rel="stylesheet" href="{{ url('public/assets/css/bootstrap.min.css') }}">
+    <!-- Bootstrap CSS end -->
 
     <!-- custom CSS start -->
-    <link rel="stylesheet" href="{{ url('assets/css/payments.css') }}"> 
+    <link rel="stylesheet" href="{{ url('public/assets/css/payments.css') }}">
     <!-- custom CSS end -->
 
     <title>DnD || Payments</title>
 </head>
 
 <body>
-     
+
     <div class="wrap-outer">
         <div class="container">
             <div class="row justify-content-center">
@@ -36,16 +36,16 @@
                     </div>
                     <div class="payments-message-box cancel-box">
                         <img src="{{ asset('assets/images/icons/cancel.svg') }}" alt="success" class="img-fluid">
-    
+
                         <h4>Unable to continue the process</h4>
                         <p>Please check your information then try again</p>
-    
+
                         <a href="#">FAILED</a>
                     </div>
                 </div>
             </div>
         </div>
-    </div> 
+    </div>
 
 </body>
 

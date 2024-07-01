@@ -3,7 +3,7 @@
 @section('title','Home')
 
 @section('content')
- 
+
 <div class="hero-middle-bg">
     {{-- hero section start --}}
     <section class="hero-section">
@@ -17,16 +17,16 @@
                             Store and Google Play to start saving money today!
                         </p>
                         <div class="hero_btn">
-                            <a href="#">
-                                <img src="{{ asset('public/assets/images/landing/app-store.svg') }}" alt="app" class="img-fluid"></a>
-                            <a href="#"><img src="{{ asset('public/assets/images/landing/paly-stroe.svg') }}" alt="app" class="img-fluid"></a>
+                            <a href="https://apps.apple.com/app/deals-and-discounts/id6503248591">
+                                <img src="{{ asset('assets/images/landing/app-store.svg') }}" alt="app" class="img-fluid"></a>
+                            <a href="https://play.google.com/store/apps/details?id=com.dandd.app"><img src="{{ asset('assets/images/landing/paly-stroe.svg') }}" alt="app" class="img-fluid"></a>
                         </div>
                     </div>
                 </div>
                 <div class="col-12 col-sm-12 col-md-6 col-lg-6">
                     <div class="text-center hero-img" data-aos="zoom-in" data-aos-duration="1000">
-                        {{-- <img src="{{ asset('public/assets/images/landing/hero.svg') }}" alt="app" class="img-fluid"> --}}
-                        <img src="{{ asset('public/assets/images/landing/hero.png') }}" alt="app" class="img-fluid">
+                        {{-- <img src="{{ asset('assets/images/landing/hero.svg') }}" alt="app" class="img-fluid"> --}}
+                        <img src="{{ asset('assets/images/landing/hero.png') }}" alt="app" class="img-fluid">
                     </div>
                 </div>
             </div>
@@ -56,7 +56,7 @@
                 <div class="col-12 col-sm-6 col-lg-4">
                     <div class="work-box" data-aos="zoom-out-right" data-aos-duration="1000">
                         <div class="work-thumb">
-                            <img src="{{ asset('public/assets/images/landing/work-01.svg') }}" alt="work"
+                            <img src="{{ asset('assets/images/landing/work-01.svg') }}" alt="work"
                                 class="img-fluid">
                         </div>
                         <h5>Search for Deals</h5>
@@ -70,7 +70,7 @@
                 <div class="col-12 col-sm-6 col-lg-4">
                     <div class="work-box" data-aos="zoom-out-up" data-aos-duration="1000">
                         <div class="work-thumb">
-                            <img src="{{ asset('public/assets/images/landing/work-02.svg') }}" alt="work"
+                            <img src="{{ asset('assets/images/landing/work-02.svg') }}" alt="work"
                                 class="img-fluid">
                         </div>
                         <h5>Save Favorites</h5>
@@ -83,7 +83,7 @@
                 <div class="col-12 col-sm-6 col-md-12 col-lg-4">
                     <div class="work-box" data-aos="zoom-out-left" data-aos-duration="1000">
                         <div class="work-thumb">
-                            <img src="{{ asset('public/assets/images/landing/work-03.svg') }}" alt="work"
+                            <img src="{{ asset('assets/images/landing/work-03.svg') }}" alt="work"
                                 class="img-fluid">
                         </div>
                         <h5>Promote Your Deals</h5>
@@ -146,14 +146,14 @@
 
 <!-- insperation section start -->
 <div class="text-center ins-img d-md-none" data-aos="fade-up" data-aos-duration="1000">
-    <img src="{{ asset('public/assets/images/landing/saving.png') }}" alt="app" class="img-fluid">
+    <img src="{{ asset('assets/images/landing/saving.png') }}" alt="app" class="img-fluid">
 </div>
 <section class="insperation-section pb-0 new-ins-mobile-sec-bg" id="local-deals">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-12 col-sm-12 col-md-6 col-lg-5">
                 <div class="text-center ins-img d-none d-md-block" data-aos="fade-up" data-aos-duration="1000">
-                    <img src="{{ asset('public/assets/images/landing/saving.png') }}" alt="app" class="img-fluid">
+                    <img src="{{ asset('assets/images/landing/saving.png') }}" alt="app" class="img-fluid">
                 </div>
             </div>
             <div class="col-12 col-sm-12 col-md-6 col-lg-7">
@@ -165,7 +165,7 @@
 
                     <div class="deals-box">
                         <div class="media" data-aos="zoom-in" data-aos-duration="1000">
-                            <img src="{{ asset('public/assets/images/landing/ins-icon-01.svg') }}" alt="a"
+                            <img src="{{ asset('assets/images/landing/ins-icon-01.svg') }}" alt="a"
                                 class="ig-fluid">
                             <div class="media-body">
                                 <h5>Local Discoveries</h5>
@@ -174,7 +174,7 @@
                             </div>
                         </div>
                         <div class="media" data-aos="zoom-in" data-aos-duration="1000">
-                            <img src="{{ asset('public/assets/images/landing/ins-icon-02.svg') }}" alt="a"
+                            <img src="{{ asset('assets/images/landing/ins-icon-02.svg') }}" alt="a"
                                 class="ig-fluid">
                             <div class="media-body">
                                 <h5>Easy to Use</h5>
@@ -238,7 +238,7 @@
                             @if (isset($products[$category->id]))
                             @foreach ($products[$category->id]->slice(0,2) as $product)
 
-                            @php 
+                            @php
                                 $imageUrls = explode(',', $product->images);
                                 $firstImageUrl = $imageUrls[0];
                             @endphp
@@ -289,21 +289,21 @@
                     <div class="deals-box">
 
                         <div class="media mt-0">
-                            <img src="{{ asset('public/assets/images/landing/check.svg') }}" alt="a"
+                            <img src="{{ asset('assets/images/landing/check.svg') }}" alt="a"
                                 class="ig-fluid">
                             <div class="media-body">
                                 <h5>Save Money</h5>
                             </div>
                         </div>
                         <div class="media mt-0">
-                            <img src="{{ asset('public/assets/images/landing/check.svg') }}" alt="a"
+                            <img src="{{ asset('assets/images/landing/check.svg') }}" alt="a"
                                 class="ig-fluid">
                             <div class="media-body">
                                 <h5>Convenience</h5>
                             </div>
                         </div>
                         <div class="media mt-0">
-                            <img src="{{ asset('public/assets/images/landing/check.svg') }}" alt="a"
+                            <img src="{{ asset('assets/images/landing/check.svg') }}" alt="a"
                                 class="ig-fluid">
                             <div class="media-body">
                                 <h5>Exclusive Offers</h5>
@@ -312,11 +312,11 @@
                     </div>
 
                     <div class="hero_btn mt-60 different-app-logo">
-                        <a href="#" class="me-2"><img
-                                src="{{ asset('public/assets/images/landing/app-store-2.svg') }}" alt="app"
+                        <a href="https://apps.apple.com/app/deals-and-discounts/id6503248591" class="me-2"><img
+                                src="{{ asset('assets/images/landing/app-store-2.svg') }}" alt="app"
                                 class="img-fluid"></a>
-                        <a href="#" class="ms-2"><img
-                                src="{{ asset('public/assets/images/landing/paly-stroe-2.svg') }}" alt="app"
+                        <a href="https://play.google.com/store/apps/details?id=com.dandd.app" class="ms-2"><img
+                                src="{{ asset('assets/images/landing/paly-stroe-2.svg') }}" alt="app"
                                 class="img-fluid"></a>
                     </div>
 
@@ -325,7 +325,7 @@
 
             <div class="col-12 col-sm-6 col-md-6 col-lg-6 order-1 order-lg-2">
                 <div class="text-end inspair-model" data-aos="zoom-in" data-aos-duration="1000">
-                    <img src="{{ asset('public/assets/images/landing/savings.png') }}" alt="savings"
+                    <img src="{{ asset('assets/images/landing/savings.png') }}" alt="savings"
                         class="img-fluid">
                 </div>
             </div>
@@ -367,15 +367,15 @@
         </div>
     </div>
 
-     {{-- background dots --}} 
+     {{-- background dots --}}
      <div class="curved-bg">
-        <img src="{{ asset('public/assets/images/landing/curved-bg.svg') }}" alt="curved" class="img-fluid">
+        <img src="{{ asset('assets/images/landing/curved-bg.svg') }}" alt="curved" class="img-fluid">
      </div>
      <div class="bg-dots bg-dots-3"></div>
      <div class="bg-dots bg-dots-4"></div>
      {{-- background dots --}}
-     
-</section> 
+
+</section>
 
 {{-- why different section start --}}
 <section class="different-sec">
@@ -392,11 +392,11 @@
                         experience
                         and your budget. Why complicate things when you can keep it easy and effective with us?</p>
                     <div class="hero_btn mt-60 text-center m-mt-62"  data-aos="zoom-up" data-aos-duration="1000">
-                        <a href="#" class="me-2"><img
-                                src="{{ asset('public/assets/images/landing/app-store.svg') }}" alt="app"
+                        <a href="https://apps.apple.com/app/deals-and-discounts/id6503248591" class="me-2"><img
+                                src="{{ asset('assets/images/landing/app-store.svg') }}" alt="app"
                                 class="img-fluid"></a>
-                        <a href="#" class="ms-2"><img
-                                src="{{ asset('public/assets/images/landing/paly-stroe.svg') }}" alt="app"
+                        <a href="https://play.google.com/store/apps/details?id=com.dandd.app" class="ms-2"><img
+                                src="{{ asset('assets/images/landing/paly-stroe.svg') }}" alt="app"
                                 class="img-fluid">
                         </a>
                     </div>
@@ -405,7 +405,7 @@
         </div>
     </div>
 
-    {{-- background dots --}}  
+    {{-- background dots --}}
      <div class="bg-dots bg-dots-3"></div>
      <div class="bg-dots bg-dots-4"></div>
      {{-- background dots --}}
@@ -419,7 +419,7 @@
         <div class="row align-items-center">
             <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                 <div class="text-center mb-4 lg:mb-0"  data-aos="zoom-in-right" data-aos-duration="1000">
-                    <img src="{{ asset('public/assets/images/landing/faq.png') }}" alt="savings" class="img-fluid">
+                    <img src="{{ asset('assets/images/landing/faq.png') }}" alt="savings" class="img-fluid">
                 </div>
             </div>
 
@@ -524,11 +524,11 @@
                     </div>
 
                     <div class="hero_btn mt-60" data-aos="zoom-out-up" data-aos-duration="1000">
-                        <a href="#" class="me-2"><img
-                                src="{{ asset('public/assets/images/landing/app-store-2.svg') }}" alt="app"
+                        <a href="https://apps.apple.com/app/deals-and-discounts/id6503248591" class="me-2"><img
+                                src="{{ asset('assets/images/landing/app-store-2.svg') }}" alt="app"
                                 class="img-fluid"></a>
-                        <a href="#" class="ms-2"><img
-                                src="{{ asset('public/assets/images/landing/paly-stroe-2.svg') }}" alt="app"
+                        <a href="https://play.google.com/store/apps/details?id=com.dandd.app" class="ms-2"><img
+                                src="{{ asset('assets/images/landing/paly-stroe-2.svg') }}" alt="app"
                                 class="img-fluid"></a>
                     </div>
 
@@ -538,7 +538,7 @@
         </div>
     </div>
 
-    {{-- background dots --}}  
+    {{-- background dots --}}
     <div class="bg-dots bg-dots-3"></div>
     <div class="bg-dots bg-dots-4"></div>
     {{-- background dots --}}
@@ -573,7 +573,7 @@
             </div>
             <div class="col-lg-4 col-sm-12 order-1 order-sm-1">
                 <div class="text-center nut-imgg"  data-aos="fade-up" data-aos-duration="1000">
-                    <img src="{{ asset('public/assets/images/landing/nutshell-1.png') }}" alt="nutshell"
+                    <img src="{{ asset('assets/images/landing/nutshell-1.png') }}" alt="nutshell"
                         class="img-fluid">
                 </div>
             </div>
@@ -609,12 +609,12 @@
         <div class="row">
             <div class="col-lg-4 col-sm-6">
                 <div class="review-box font-poppins" data-aos="zoom-in-right" data-aos-duration="1000">
-                    <img src="{{ asset('public/assets/images/landing/quote.svg') }}" alt="a" class="img-fluid">
+                    <img src="{{ asset('assets/images/landing/quote.svg') }}" alt="a" class="img-fluid">
                     <p>Absolutely loving this app! It's become my go-to for snagging incredible deals effortlessly. From discounts on must-have items to personalized recommendations, it's like having a savvy shopping companion right in my pocket. Plus, the support team is super responsive. Highly recommend giving it a try! </p>
 
                     <div class="d-flex">
                         <a href="#">
-                            <img src="{{ asset('public/assets/images/landing/avatar-01.png') }}" alt="avatar"
+                            <img src="{{ asset('assets/images/landing/avatar-01.png') }}" alt="avatar"
                                 class="img-fluid">
                         </a>
                         <ul>
@@ -632,12 +632,12 @@
             </div>
             <div class="col-lg-4 col-sm-6">
                 <div class="review-box font-poppins" data-aos="zoom-out-up" data-aos-duration="1000">
-                    <img src="{{ asset('public/assets/images/landing/quote.svg') }}" alt="a" class="img-fluid">
+                    <img src="{{ asset('assets/images/landing/quote.svg') }}" alt="a" class="img-fluid">
                     <p>This app is a game-changer! Finding deals has never been easier. Whether it's discounts on everyday essentials or hidden gems, it's like having a treasure map at your fingertips. The user-friendly interface and quick customer support make shopping a pleasure. Can't recommend it enough!</p>
 
                     <div class="d-flex">
                         <a href="#">
-                            <img src="{{ asset('public/assets/images/landing/avatar-02.png') }}" alt="avatar"
+                            <img src="{{ asset('assets/images/landing/avatar-02.png') }}" alt="avatar"
                                 class="img-fluid">
                         </a>
                         <ul>
@@ -655,12 +655,12 @@
             </div>
             <div class="col-lg-4 col-sm-6">
                 <div class="review-box font-poppins" data-aos="zoom-in-left" data-aos-duration="1000">
-                    <img src="{{ asset('public/assets/images/landing/quote.svg') }}" alt="a" class="img-fluid">
+                    <img src="{{ asset('assets/images/landing/quote.svg') }}" alt="a" class="img-fluid">
                     <p>Impressed doesn't even begin to cover it! This app has revolutionized how I shop. From flash sales to personalized offers, it's like having a VIP pass to the best deals in town. Plus, the seamless navigation and prompt assistance make the whole experience a breeze. A must-download for any smart shopper!</p>
 
                     <div class="d-flex">
                         <a href="#">
-                            <img src="{{ asset('public/assets/images/landing/avatar-03.png') }}" alt="avatar"
+                            <img src="{{ asset('assets/images/landing/avatar-03.png') }}" alt="avatar"
                                 class="img-fluid">
                         </a>
                         <ul>
@@ -697,7 +697,7 @@
             <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
                 <div class="blog-post-box">
                     <div class="thumabnail">
-                        <img src="{{ asset('public/assets/images/landing/shop-01.jpg') }}" alt="thumbnail"
+                        <img src="{{ asset('assets/images/landing/shop-01.jpg') }}" alt="thumbnail"
                             class="img-fluid">
                     </div>
                     <div class="text">
@@ -706,7 +706,7 @@
 
                         <ul class="font-poppins">
                             <li>
-                                <a href="#"><img src="{{ asset('public/assets/images/landing/calendar-icon.svg') }}"
+                                <a href="#"><img src="{{ asset('assets/images/landing/calendar-icon.svg') }}"
                                         alt="a" class="img-fluid me-2"> March 12, 2024</a>
                             </li>
                             <li>
@@ -721,7 +721,7 @@
             <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
                 <div class="blog-post-box">
                     <div class="thumabnail">
-                        <img src="{{ asset('public/assets/images/landing/shop-02.jpg') }}" alt="thumbnail"
+                        <img src="{{ asset('assets/images/landing/shop-02.jpg') }}" alt="thumbnail"
                             class="img-fluid">
                     </div>
                     <div class="text">
@@ -730,7 +730,7 @@
 
                         <ul class="font-poppins">
                             <li>
-                                <a href="#"><img src="{{ asset('public/assets/images/landing/calendar-icon.svg') }}"
+                                <a href="#"><img src="{{ asset('assets/images/landing/calendar-icon.svg') }}"
                                         alt="a" class="img-fluid me-2"> July 22, 2023</a>
                             </li>
                             <li>
@@ -745,7 +745,7 @@
             <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
                 <div class="blog-post-box">
                     <div class="thumabnail">
-                        <img src="{{ asset('public/assets/images/landing/shop-03.jpg') }}" alt="thumbnail"
+                        <img src="{{ asset('assets/images/landing/shop-03.jpg') }}" alt="thumbnail"
                             class="img-fluid">
                     </div>
                     <div class="text">
@@ -754,7 +754,7 @@
 
                         <ul class="font-poppins">
                             <li>
-                                <a href="#"><img src="{{ asset('public/assets/images/landing/calendar-icon.svg') }}"
+                                <a href="#"><img src="{{ asset('assets/images/landing/calendar-icon.svg') }}"
                                         alt="a" class="img-fluid me-2"> April 06, 2023</a>
                             </li>
                             <li>
@@ -769,7 +769,7 @@
             <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
                 <div class="blog-post-box">
                     <div class="thumabnail">
-                        <img src="{{ asset('public/assets/images/landing/shop-04.jpg') }}" alt="thumbnail"
+                        <img src="{{ asset('assets/images/landing/shop-04.jpg') }}" alt="thumbnail"
                             class="img-fluid">
                     </div>
                     <div class="text">
@@ -778,7 +778,7 @@
 
                         <ul class="font-poppins">
                             <li>
-                                <a href="#"><img src="{{ asset('public/assets/images/landing/calendar-icon.svg') }}"
+                                <a href="#"><img src="{{ asset('assets/images/landing/calendar-icon.svg') }}"
                                         alt="a" class="img-fluid me-2"> April 12, 2022</a>
                             </li>
                             <li>

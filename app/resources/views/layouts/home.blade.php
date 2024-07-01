@@ -46,7 +46,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"> 
+                    <li class="nav-item">
                         <a class="nav-link" href="{{ url('/') }}?section=work-sec">How it
                             Works</a>
                     </li>
@@ -67,14 +67,14 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url('products') }}">Products</a>
-                    </li> 
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url('purchase/package') }}">Pricing</a>
-                    </li> 
+                    </li>
                     @if (Auth::check())
                     <li class="nav-item">
                         <a class="nav-link" href="{{url('/logout')}}">Logout</a>
-                    </li> 
+                    </li>
                     @endif
                 </ul>
             </div>
@@ -116,9 +116,9 @@
                 </div>
                 <div class="col-lg-3 text-center col-md-12">
                     <div class="d-flex flex-column gap-4 mt-4 mobile-gap">
-                        <a href="#"><img src="{{ asset('public/assets/images/landing/app-store.svg') }}" alt="app"
+                        <a href="https://apps.apple.com/app/deals-and-discounts/id6503248591"><img src="{{ asset('public/assets/images/landing/app-store.svg') }}" alt="app"
                                 class="img-fluid"></a>
-                        <a href="#"><img src="{{ asset('public/assets/images/landing/paly-stroe.svg') }}" alt="app"
+                        <a href="https://play.google.com/store/apps/details?id=com.dandd.app"><img src="{{ asset('public/assets/images/landing/paly-stroe.svg') }}" alt="app"
                                 class="img-fluid"></a>
                     </div>
                 </div>
@@ -162,16 +162,16 @@
             if (urlParams.has('section')) {
                 // Extract the section ID from the query parameter
                 const sectionId = '#' + urlParams.get('section');
-    
+
                 // Scroll to the section with smooth behavior
                 scrollToSection(sectionId);
-    
+
                 // Remove the query parameter from the URL to prevent further scrolling on page reload
                 const newUrl = window.location.protocol + '//' + window.location.host + window.location.pathname;
                 window.history.replaceState({ path: newUrl }, '', newUrl);
             }
         });
-    
+
         function scrollToSection(sectionId) {
             const section = document.querySelector(sectionId);
             if (section) {
@@ -181,12 +181,12 @@
             }
         }
     </script>
-    
-    
+
+
 
     {{-- back to top js --}}
-    <script> 
-        var scrollToTopBtn = document.getElementById("scrollToTopBtn"); 
+    <script>
+        var scrollToTopBtn = document.getElementById("scrollToTopBtn");
         window.onscroll = function() {
             scrollFunction();
         };
@@ -197,12 +197,12 @@
             } else {
                 scrollToTopBtn.style.display = "none";
             }
-        } 
+        }
         scrollToTopBtn.addEventListener("click", function() {
             scrollToTop();
         });
 
-        function scrollToTop() { 
+        function scrollToTop() {
             window.scrollTo({
                 top: 0,
                 behavior: "smooth"

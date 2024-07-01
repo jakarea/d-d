@@ -134,7 +134,7 @@ class UserController extends API\ApiController
             $creds = $request->validate([
                 'email' => 'required|email',
                 'password' => 'required|min:6',
-                'role' => 'required|exists:roles,slug',
+                // 'role' => 'required|exists:roles,slug',
             ]);
         } catch (ValidationException $e) {
 
@@ -145,9 +145,9 @@ class UserController extends API\ApiController
                 $firstError = $errors->first('password');
             }
 
-            if ($errors->has('role')) {
-                $firstError = $errors->first('role');
-            }
+            // if ($errors->has('role')) {
+            //     $firstError = $errors->first('role');
+            // }
 
             if ($errors->has('email')) {
                 $firstError = $errors->first('email');
@@ -162,10 +162,10 @@ class UserController extends API\ApiController
         }
 
         // Check if the user has the required role
-        $role = $creds['role'];
-        if (!$user->roles()->where('slug', $role)->exists()) {
-            return $this->jsonResponse(true, 'User does not have the required role', $user, ['User does not have the required role'], 401);
-        }
+        // $role = $creds['role'];
+        // if (!$user->roles()->where('slug', $role)->exists()) {
+        //     return $this->jsonResponse(true, 'User does not have the required role', $user, ['User does not have the required role'], 401);
+        // }
 
         if (config('hydra.delete_previous_access_tokens_on_login', false)) {
             $user->tokens()->delete();
@@ -459,7 +459,7 @@ class UserController extends API\ApiController
             $roles = $user['roles'];
             $selectedRole = $roles[0]['slug'];
 
-        } 
+        }
 
         // return response()->json($selectedRole);
 
@@ -591,6 +591,6 @@ class UserController extends API\ApiController
 
     public function checkStatus()
     {
-        return response()->json(["error"=> "false", "message" => "Success" , 'status' => 0]);  
+        return response()->json(["error"=> "false", "message" => "Success" , 'status' => 0]);
     }
 }

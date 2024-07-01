@@ -16,7 +16,7 @@
         "laravel/framework": "^9.23",
         "laravel/sanctum": "^2.15.1",
         "laravel/tinker": "^2.7",
-        "nesbot/carbon": "^2.72",
+        "nesbot/carbon": "^2.0",
         "php-flasher/flasher-laravel": "^1.15",
         "stripe/stripe-php": "^13.7"
     },
