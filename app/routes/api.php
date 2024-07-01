@@ -65,7 +65,8 @@ Route::get('client/location/{name?}', [ProductController::class, 'locationList']
 Route::get('/banner', [ProductController::class, 'homeBanner']);
 Route::get('/company/product', [ProductController::class, 'index']);
 
-
+// return all reviews for specific product
+Route::get('/company/product/reviews/{id}', [ProductController::class, 'allReviews']);
 
 Route::middleware(['auth:sanctum', 'VerifyUserCheck'])->group(function () {
 
