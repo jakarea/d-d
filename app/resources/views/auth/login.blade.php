@@ -74,27 +74,27 @@
                             <div class="form-submit">
                                 <button class="btn btn-submit" type="submit" id="submitButton">Login</button>
                             </div>
-                            {{-- <div class="options">
+                            <div class="options">
                                 <hr>
                                 <p>Download our app</p>
                             </div>
                             <div class="download-app-box">
-                                <a href="#">
+                                <a href="https://play.google.com/store/apps/details?id=com.dandd.app" target="_blank">
                                     <img src="{{ asset('public/assets/images/auth/play.png') }}" alt="G" class="img-fluid"> 
                                 </a>
-                                <a href="#">
+                                <a href="https://apps.apple.com/app/deals-and-discounts/id6503248591" target="_blank">
                                     <img src="{{ asset('public/assets/images/auth/app.png') }}" alt="A" class="img-fluid"> 
                                 </a>
-                            </div> --}}
+                            </div>
                             {{-- <div class="login-with-social">
                                 <a href="#" class="bttn me-md-3 me-2"><img src="{{ asset('public/assets/images/auth/google.svg') }}"
                                     alt="G" class="img-fluid"> Google</a>
                             <a href="#" class="bttn ms-md-3 ms-2"><img src="{{ asset('public/assets/images/auth/apple.svg') }}"
                                     alt="A" class="img-fluid"> Apple</a>
                             </div> --}}
-                            {{-- <div class="already-have">
+                            <div class="already-have">
                                 <p>You're new in here? <a href="{{ url('register')}}">Create Account</a></p>
-                            </div> --}}
+                            </div>
                         </form>
                     </div>
                     <!-- auth login form end -->

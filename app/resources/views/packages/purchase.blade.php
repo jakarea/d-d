@@ -77,9 +77,9 @@
                                 </div>
                             </div>
                             <div class="bttn"> 
-                                    @if (Auth::check())  
+                                    @if (Auth::check())   
 
-                                    @if (optional($package->myPurchaseInfo)->package_type == 'Monthly')
+                                        @if (optional($package->myPurchaseInfo)->package_type == 'Monthly')
                                             <button class="cancel-subscribe current-plan-bttn">Cancel Subscription</button>
                                         @else 
                                         <button class="will-subscribe" data-package-id="{{ $package->id }}"
@@ -87,7 +87,7 @@
                                         </button>
                                         @endif
                                     @else
-                                    <a href="{{ url('login') }}" class="will-subscribe">Login to Purchase</a>
+                                        <a href="{{ url('login') }}" class="will-subscribe">Login to Purchase</a>
                                     @endif 
                             </div>
                         </div>
@@ -220,7 +220,9 @@
                     window.location.href = response.data;
                 } else { 
                     button.disabled = false;
-                    button.innerHTML = 'Failed!';
+                    // button.innerHTML = 'Failed!';
+                    // console.log(response);
+                    button.innerHTML = response.message;
                 }
             })
             .catch(error => { 
@@ -258,16 +260,16 @@
                     .then(response => response.json())
                     .then(response => {
                         if (response.error === false) { 
-                            button.innerHTML = response.message
+                            button.innerHTML = response.message 
                             
                         } else { 
                             button.disabled = false;
-                            button.innerHTML = 'Cancel Subscription';
+                            button.innerHTML = 'Failed!';
                         }
                     })
                     .catch(error => { 
                         button.disabled = false;
-                        button.innerHTML = 'Cancel Subscription';
+                        button.innerHTML = 'Failed!';
                     });
                 } 
                 

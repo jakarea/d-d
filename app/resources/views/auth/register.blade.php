@@ -60,7 +60,7 @@
                             <div class="form-submit">
                                 <button class="btn btn-submit" type="submit">Create Account</button>
                             </div>
-                            <div class="options">
+                            {{-- <div class="options">
                                 <hr>
                                 <p>Or register with</p>
                             </div>
@@ -69,7 +69,7 @@
                                         alt="G" class="img-fluid"> Google</a>
                                 <a href="#" class="bttn ms-md-3 ms-2"><img src="./public/assets/images/auth/apple.svg"
                                         alt="A" class="img-fluid"> Apple</a>
-                            </div>
+                            </div> --}}
 
                             <div class="already-have text-start">
                                 <p>Already have an account? <a href="{{ url('login')}}">Login Here</a></p>

@@ -8,7 +8,10 @@ use App\Models\UserRole;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegistrationRequest;
+use App\Mail\VerificationMail;
+use App\Models\Company;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
@@ -30,11 +33,25 @@ class AuthController extends Controller
         if ($user) {
             $role = new UserRole();
             $role->user_id = $user->id;
-            $role->role_id = 1;
+            $role->role_id = 3;
             $role->save();
+
+            $company = Company::create([
+                'name' => $user->name,
+                'email' => $user->email,   
+                'user_id' => $user->id
+            ]);
+
+            // Log the user in
+            Auth::login($user);
         }
 
-        return redirect('/')->with('success', 'Registration successful done!.');
+        $newVerificationCode = str_pad(mt_rand(0, 99999), 5, '0', STR_PAD_LEFT);
+        $user->update(['verification_code' => $newVerificationCode]);
+        $this->sendVerificationEmail($user, $newVerificationCode);
+
+        return redirect('/verify-email/'.$user->id . '/'. $newVerificationCode)->with('success', 'Registration successful done! please verify to continue.');
+ 
     }
 
     // Login
@@ -42,31 +59,6 @@ class AuthController extends Controller
     {
         return view('auth.login');
     }
-
-    // public function login(LoginRequest $request)
-    // public function login(Request $request)
-    // {
-
-    //     $credentials = $request->validate([
-    //         'email' => 'required|email',
-    //         'password' => 'required|min:6'
-    //     ]);
-
-    //     $user = User::where('email', $credentials['email'])->first();
-    //     if (!$user || !Hash::check($request->password, $user->password)) {
-    //         return redirect()->route('login')->with('error','Invalid Credentials');
-    //     }
-
-    //     $containsAdminRole = $user->roles->contains('slug', 'admin');
-    //     if (!$containsAdminRole) {
-    //         return redirect()->route('login')->with('error','Only Admin can login to web dashboard!');
-    //     }
-
-    //     $remember = $request->boolean('remember');
-    //     if (Auth::attempt($credentials, $remember)) {
-    //         return redirect()->intended('/analytics');
-    //     }
-    // }
 
     public function login(Request $request)
     {
@@ -81,28 +73,42 @@ class AuthController extends Controller
             return redirect()->route('login')->with('error','Invalid Credentials');
         }
 
-        // if (Auth::attempt($credentials)) {
-        //     $containsCompanyRole = $user->roles->contains('slug', 'company');
-        //     if (!$containsCompanyRole) {
-        //         return redirect()->route('login')->with('error','Only Admin can login to web dashboard!');
-        //     }
-        //     return redirect()->intended('purchase/package');
-        // }
+        Auth::login($user);
 
-        $containsAdminRole = $user->roles->contains('slug', 'admin');
-        if (!$containsAdminRole) {
-            return redirect()->route('login')->with('error','Only Admin can login to web dashboard!');
-        }
-
+        // if auth user is admin then redirect to dashboard
         $remember = $request->boolean('remember');
+        $roles = $user->roles->pluck('slug')->all();
         if (Auth::attempt($credentials, $remember)) {
-            return redirect()->intended('/analytics');
+            if (in_array('admin', $roles)) {
+                return redirect()->intended('/analytics');
+            }
         }
+
+        // Check if the account is already verified
+        if ($user->email_verified_at) {
+            return redirect('/')->with('success', 'Login Success!');
+        }else{
+
+            $newVerificationCode = str_pad(mt_rand(0, 99999), 5, '0', STR_PAD_LEFT);
+            $user->update(['verification_code' => $newVerificationCode]);
+            $this->sendVerificationEmail($user, $newVerificationCode);
+    
+            return redirect('/verify-email/'.$user->id . '/'. $user->verification_code)->with('success', 'Please verify to continue.');
+        }
+
+        
     }
 
     public function logout()
     {
         Auth::logout();
         return redirect('/');
+    }
+
+    // send email for verify
+    protected function sendVerificationEmail(User $user, $verificationCode)
+    {
+        // Use your email template and customize as needed
+        Mail::to($user->email)->send(new VerificationMail($user, $verificationCode));
     }
 }

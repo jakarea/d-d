@@ -56,17 +56,17 @@ class ProductController extends ApiController
         $query = Product::with(['productVariants', 'company', 'wishlist', 'reviews' => function ($query) {
             $query->with(['likes', 'dislikes']);
         }])->where('status', 'Active');
-
-        // Exclude expired deals for all cases except when type is 'flash' and it's a temporary deal
+       
+       // Exclude expired deals for all cases except when type is 'flash' and it's a temporary deal
         if ($request->input('type') === 'flash') {
             // For 'flash' type, only include temporary deals that haven't expired
             $query->where('deal_type', '=', 'temporary')->where('deal_expired_at', '>', now());
             $query->where('status', 'Active');
         } else {
             // For all other types, exclude expired deals
-            $query->where(function ($q) {
+            $query->where(function($q) {
                 $q->whereNull('deal_expired_at')
-                    ->orWhere('deal_expired_at', '>', now());
+                ->orWhere('deal_expired_at', '>', now());
             });
         }
 
@@ -134,7 +134,7 @@ class ProductController extends ApiController
             }
         } else if ((is_null($sortBy) && !is_null($sortOrder)) && $sortOrder == 'desc') {
             $query->orderBy('id', 'desc');
-        } else if ($latitude && $longitude) {
+        }else if($latitude && $longitude){
             $query->orderBy('distance', 'asc');
         } else {
             $query->orderBy('id', 'desc');
@@ -174,17 +174,17 @@ class ProductController extends ApiController
         $query = Product::with(['productVariants', 'company', 'wishlist', 'reviews' => function ($query) {
             $query->with(['likes', 'dislikes']);
         }]);
-
-        // Exclude expired deals for all cases except when type is 'flash' and it's a temporary deal
+       
+       // Exclude expired deals for all cases except when type is 'flash' and it's a temporary deal
         if ($request->input('type') === 'flash') {
             // For 'flash' type, only include temporary deals that haven't expired
             $query->where('deal_type', '=', 'temporary')->where('deal_expired_at', '>', now());
-            $query->where('status', 'active');
+             $query->where('status', 'active');
         } else {
             // For all other types, exclude expired deals
-            $query->where(function ($q) {
+            $query->where(function($q) {
                 $q->whereNull('deal_expired_at')
-                    ->orWhere('deal_expired_at', '>', now());
+                ->orWhere('deal_expired_at', '>', now());
             });
         }
 
@@ -252,7 +252,7 @@ class ProductController extends ApiController
             }
         } else if ((is_null($sortBy) && !is_null($sortOrder)) && $sortOrder == 'desc') {
             $query->orderBy('id', 'desc');
-        } else if ($latitude && $longitude) {
+        }else if($latitude && $longitude){
             $query->orderBy('distance', 'asc');
         } else {
             $query->orderBy('id', 'desc');
@@ -310,7 +310,7 @@ class ProductController extends ApiController
      */
     public function store(ProductAddRequest $request): JsonResponse
     {
-
+         
 
         try {
 
@@ -319,7 +319,7 @@ class ProductController extends ApiController
 
             if ($user->id == auth()->user()->id) {
                 $product = ProductProcess::create($request);
-
+ 
 
                 if (isset($request->product_varients) && count($request->product_varients) > 0) {
                     foreach ($request->product_varients as $productVariant) {
@@ -329,7 +329,7 @@ class ProductController extends ApiController
                         ProductVariantProcess::create($productVariant);
                     }
                 }
-
+                
                 $product = Product::with(['productVariants'])->find($product->id);
 
                 // notification create for new product create
@@ -384,14 +384,14 @@ class ProductController extends ApiController
      */
     public function updateProduct(UpdateRequest $request, $id): JsonResponse
     {
-
+        
         try {
             $product = Product::find($id);
 
 
             if (!empty($product)) {
 
-                $product = ProductProcess::update($request, $id);
+                $product = ProductProcess::update($request, $id); 
 
                 $arrayofProductVariantId = ProductVariant::where('product_id', $id)->pluck('id')->toArray();
 
@@ -425,7 +425,7 @@ class ProductController extends ApiController
         }
     }
 
-    /**
+ /**
      * Update product & product variants
      * @param \Illuminate\Http\Request $request
      * @param int $id
@@ -438,15 +438,15 @@ class ProductController extends ApiController
         $userId = $request->user_id;
         $status = $request->status;
 
-        if ($productId !== null && $companyId !== null && $userId !== null) {
+       if ($productId !== null && $companyId !== null && $userId !== null) {
             $product = Product::find($productId);
             $product->status = $status;
             $product->save();
             $message = '';
-            if ($status == "Active") {
+            if($status == "Active"){
                 $message = "Product activated!";
-            } else {
-                $message = "Product deactivated!";
+            }else{
+                 $message = "Product deactivated!";
             }
             return $this->jsonResponse(false, $message, $product, $this->emptyArray, JsonResponse::HTTP_OK);
         }
@@ -461,18 +461,18 @@ class ProductController extends ApiController
      */
     public function productDetails(Request $request, $id)
     {
-        $userId = $request->user_id ?? '';
+        $userId = $request->user_id?? '';
         $query = Product::with(['productVariants', 'company']);
 
         if (!is_null($request->company)) {
             $query->where('company_id', $request->company);
         }
         $product = $query->find($id);
-        $with = ['likes', 'dislikes'];
-        if ($userId) {
+        $with = ['likes', 'dislikes']; 
+        if($userId){
             $with = ['likes', 'dislikes', 'likeStatus' => function ($query) use ($userId) {
                 $query->where('user_id', $userId);
-            }];
+            }]; 
         }
         $mainReviews =  Review::with($with)
             ->where('product_id', $product->id)
@@ -517,17 +517,17 @@ class ProductController extends ApiController
     public function getProductsOfCompany($companyId): JsonResponse
     {
 
-        $products = Company::with(['user.personalInfo', 'user.address', 'products' => function ($query) {
-            $query->where(function ($q) {
-                $q->where('deal_expired_at', '>', now())
-                    ->orWhereNull('deal_expired_at');
-            })
-                ->with(['reviews' => function ($q) {
-                    $q->with(['likes', 'dislikes']);
-                }]);
+        $products = Company::with(['user.personalInfo','user.address', 'products' => function ($query) {
+            $query->where(function($q) {
+                    $q->where('deal_expired_at', '>', now())
+                      ->orWhereNull('deal_expired_at');
+                })
+                  ->with(['reviews' => function ($q) {
+                      $q->with(['likes', 'dislikes']);
+                  }]);
         }, 'reviews'])
-            ->where('id', $companyId)
-            ->first();
+        ->where('id', $companyId)
+        ->first();
 
         $user_id = auth()->user() ? auth()->user()->id : null;
 
@@ -685,6 +685,7 @@ class ProductController extends ApiController
 
             if ($LoggedUser->roles->contains('slug', 'client')) {
                 $banner = AppBanner::where('banner_type', 'client')->first();
+
             } elseif ($LoggedUser->roles->contains('slug', 'company')) {
                 $banner = AppBanner::where('banner_type', 'company')->first();
             } else {
@@ -706,13 +707,41 @@ class ProductController extends ApiController
     {
         $product = Product::find($productId);
 
-        if ($product) {
-            $productReviews = $product->reviews;
-
-            return $this->jsonResponse(false, $this->success, $productReviews, $this->emptyArray, JsonResponse::HTTP_OK);
-        } else {
+        if (!$product) {
             return $this->jsonResponse(true, $this->failed, $this->emptyArray, ['Product not found'], JsonResponse::HTTP_NOT_FOUND);
         }
-    }
 
+        $mainReviews = Review::with(['likes', 'dislikes'])
+        ->where('product_id', $product->id)
+        ->where('status', false)
+        ->with('user.personalInfo', 'likeStatus') 
+        ->get()
+        ->toArray();
+    
+        $ids = array_column($mainReviews, 'id'); 
+        $reviews = array_combine($ids, $mainReviews); 
+        
+        $mainReviews = [];
+        
+        foreach ($reviews as $review) {
+            if ($review['replies_to']) {
+                $reviews[$review['replies_to']]['reply'][] = $review;
+            } 
+        }
+        
+        $filteredData = [];
+        
+        foreach ($reviews as $item) {
+            if (!isset($item['replies_to']) || $item['replies_to'] === null) {
+                $filteredData[] = $item;
+            }
+        }
+        
+        if (!empty($filteredData)) {
+            return $this->jsonResponse(false, $this->success, $filteredData, $this->emptyArray, JsonResponse::HTTP_OK);
+        } else {
+            return $this->jsonResponse(true, $this->failed, $this->emptyArray, ['Review not found'], JsonResponse::HTTP_NOT_FOUND);
+        }
+    }
+    
 }
