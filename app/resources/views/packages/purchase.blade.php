@@ -260,16 +260,16 @@
                     .then(response => response.json())
                     .then(response => {
                         if (response.error === false) { 
-                            button.innerHTML = response.message
+                            button.innerHTML = response.message 
                             
                         } else { 
                             button.disabled = false;
-                            button.innerHTML = 'Cancel Subscription';
+                            button.innerHTML = 'Failed!';
                         }
                     })
                     .catch(error => { 
                         button.disabled = false;
-                        button.innerHTML = 'Cancel Subscription';
+                        button.innerHTML = 'Failed!';
                     });
                 } 
                 

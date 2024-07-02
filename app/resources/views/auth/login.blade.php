@@ -79,10 +79,10 @@
                                 <p>Download our app</p>
                             </div>
                             <div class="download-app-box">
-                                <a href="#">
+                                <a href="https://play.google.com/store/apps/details?id=com.dandd.app" target="_blank">
                                     <img src="{{ asset('public/assets/images/auth/play.png') }}" alt="G" class="img-fluid"> 
                                 </a>
-                                <a href="#">
+                                <a href="https://apps.apple.com/app/deals-and-discounts/id6503248591" target="_blank">
                                     <img src="{{ asset('public/assets/images/auth/app.png') }}" alt="A" class="img-fluid"> 
                                 </a>
                             </div>

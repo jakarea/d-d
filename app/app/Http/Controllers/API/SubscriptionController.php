@@ -309,7 +309,7 @@ class SubscriptionController extends ApiController
             $earning->status = 'cancled';
             $earning->save();
 
-            return $this->jsonResponse(false, 'Subscription cancled success! .', $earning, $this->emptyArray, JsonResponse::HTTP_OK);
+            return $this->jsonResponse(false, 'Cancled Success!', $earning, $this->emptyArray, JsonResponse::HTTP_OK);
         } else {
             return $this->jsonResponse(true, 'No Subscription Package found!.', 'No Package Found!', $this->emptyArray, JsonResponse::HTTP_OK);
         }
