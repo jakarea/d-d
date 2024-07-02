@@ -66,11 +66,13 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('password/cancel', [ResetPasswordController::class, 'showFailPage'])->name('password.cancel');
 
     // purchase package payment status route view for mobile app users
+    Route::get('/verify-email/{user_id}/{verify_code}', [SubscriptionController::class, 'verifyAcccountView'])->name('verify.account.web.view');
+    Route::post('/verified/account', [SubscriptionController::class, 'verifyAcccount'])->name('verify.account.web');
+
     Route::get('/purchase/package', [SubscriptionController::class, 'packageList'])->name('purchase.packages.web');
     Route::get('api/purchase/success', [SubscriptionController::class, 'handleSuccess'])->name('purchase.success');
     Route::post('api/purchase/cancel', [SubscriptionController::class, 'handleCancel'])->name('purchase.cancel');
 });
-
 
 // dashboard redirection
 Route::group(['middleware' => ['auth','isAdmin']], function () { 
@@ -88,6 +90,7 @@ Route::group(['middleware' => ['auth','isAdmin']], function () {
 
     // category route
     Route::resource('/category', CategoryController::class);
+
     // marketplace route
     Route::prefix('marketplace')->controller(MarketPlaceController::class)->group(function () {
         Route::get('/', 'index')->name('product.list');
@@ -126,12 +129,14 @@ Route::group(['middleware' => ['auth','isAdmin']], function () {
         // notification routes
         Route::get('/notifications', 'notifications')->name('admin.notification.system');
     });
+});
 
+Route::group(['middleware' => ['auth']], function () {
     // logout route
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-
 });
+
 
 // all cache clear route
 Route::get('/clear-cache', function () {

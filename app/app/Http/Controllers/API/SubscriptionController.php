@@ -20,6 +20,8 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use App\Mail\VerificationMail;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
 class SubscriptionController extends ApiController
@@ -28,17 +30,23 @@ class SubscriptionController extends ApiController
     // web package list
     public function packageList()
     {
-       $packages = PricingPackage::with('myPurchaseInfo')
-        ->where('status','active')->get();
 
-        return view('packages/purchase',compact('packages'));
+        if (Auth::check() && !Auth::user()->email_verified_at) {
+            return redirect('/')->with('error', 'Please verify your account to continue');
+        }
+
+        $packages = PricingPackage::with('myPurchaseInfo')
+        ->where('status', 'active')->get();
+
+        return view('packages/purchase', compact('packages'));
+        
     }
 
     public function index()
     {
         $packages = PricingPackage::with('myPurchaseInfo')
-        ->where('status','active')
-        ->get();
+            ->where('status', 'active')
+            ->get();
 
         foreach ($packages as $package) {
             $package->features = json_decode($package->features, true);
@@ -93,10 +101,10 @@ class SubscriptionController extends ApiController
             }
 
             $checkout = Earning::where('user_id', $request->user_id)
-            ->where('pricing_packages_id', $package->id)
-            ->where('end_at','>', now())
-            ->where('status', 'paid')
-            ->first();
+                ->where('pricing_packages_id', $package->id)
+                ->where('end_at', '>', now())
+                ->where('status', 'paid')
+                ->first();
 
             if ($checkout) {
                 return $this->jsonResponse(true, $this->failed, $this->emptyArray, ['You have already purchased this package!'], JsonResponse::HTTP_NOT_FOUND);
@@ -105,8 +113,8 @@ class SubscriptionController extends ApiController
             if ($price) {
 
                 $earning = Earning::where('company_id', $company->id)
-                ->where('user_id', $request->user_id)
-                ->whereIn('status', ['pending', 'trail'])->first();
+                    ->where('user_id', $request->user_id)
+                    ->whereIn('status', ['pending', 'trail'])->first();
 
                 if ($earning) {
 
@@ -116,23 +124,22 @@ class SubscriptionController extends ApiController
                     $earning->package_type = $request->package_type;
                     $earning->status = 'pending';
                     $earning->save();
-                }else{
-                   $earning = Earning::create(
-                    [
-                        'company_id' => $company->id,
-                        'user_id' => $request->user_id,
-                        'package_name' => $package->name,
-                        'pricing_packages_id' => $package->id,
-                        'payment_id' => '',
-                        'amount' => $price,
-                        'package_type' => $request->package_type,
-                        'status' => 'pending',
-                        'start_at' => null,
-                        'end_at' => null,
-                    ]
-                );
+                } else {
+                    $earning = Earning::create(
+                        [
+                            'company_id' => $company->id,
+                            'user_id' => $request->user_id,
+                            'package_name' => $package->name,
+                            'pricing_packages_id' => $package->id,
+                            'payment_id' => '',
+                            'amount' => $price,
+                            'package_type' => $request->package_type,
+                            'status' => 'pending',
+                            'start_at' => null,
+                            'end_at' => null,
+                        ]
+                    );
                 }
-
             }
 
             // return response()->json($earning);
@@ -211,8 +218,8 @@ class SubscriptionController extends ApiController
 
         // set expired previous package
         $oldPack = Earning::where('user_id', $earning->user_id)
-        ->where('status', 'paid')
-        ->first();
+            ->where('status', 'paid')
+            ->first();
 
         if ($oldPack) {
             $oldPack->status = 'cancled';
@@ -281,12 +288,11 @@ class SubscriptionController extends ApiController
 
         if ($earning) {
 
-            if($earning->status == 'trail'){
+            if ($earning->status == 'trail') {
                 return $this->jsonResponse(true, 'Your trial period has expired, choose a plan to continue.', ['trail_end_date' => $earning->end_at], ['Your trail has expired'], JsonResponse::HTTP_OK);
-            }else{
+            } else {
                 return $this->jsonResponse(true, 'Your subscription period has expired, choose a plan to continue again!', ['subscription_end_date' => $earning->end_at], ['Your subscription has expired'], JsonResponse::HTTP_OK);
             }
-
         } else {
             return $this->jsonResponse(true, 'Your subscription period has expired, choose a plan to continue.', 'No Package Found!', ['Your subscription has expired'], JsonResponse::HTTP_OK);
         }
@@ -295,16 +301,15 @@ class SubscriptionController extends ApiController
     public function cancel()
     {
         $earning = Earning::where('user_id', auth()->user()->id)
-        ->where('company_id', auth()->user()->company->id)
-        ->first();
+            ->where('company_id', auth()->user()->company->id)
+            ->where('status', 'paid')
+            ->first();
 
         if ($earning) {
-
             $earning->status = 'cancled';
             $earning->save();
 
             return $this->jsonResponse(false, 'Subscription cancled success! .', $earning, $this->emptyArray, JsonResponse::HTTP_OK);
-
         } else {
             return $this->jsonResponse(true, 'No Subscription Package found!.', 'No Package Found!', $this->emptyArray, JsonResponse::HTTP_OK);
         }
@@ -317,7 +322,9 @@ class SubscriptionController extends ApiController
         $sig_header = $request->header('Stripe-Signature');
 
         $event = Webhook::constructEvent(
-            $payload, $sig_header, env('STRIPE_WEBHOOK_SECRET')
+            $payload,
+            $sig_header,
+            env('STRIPE_WEBHOOK_SECRET')
         );
 
 
@@ -348,7 +355,7 @@ class SubscriptionController extends ApiController
                 $clonedEarningData->save();
 
                 Log::info('New: ', ['newsubscription' => $clonedEarningData]);
-            break;
+                break;
 
             default:
 
@@ -366,16 +373,16 @@ class SubscriptionController extends ApiController
         $companyId = 0;
         if ($user->company) {
             $companyId = $user->company->id;
-        }else{
+        } else {
             return $this->jsonResponse(true, 'User do not have required role!', $user, $this->emptyArray, JsonResponse::HTTP_NOT_FOUND);
         }
 
         if ($user->id == $mainUser->id) {
 
-            $subscription = Earning::where('user_id',$user->id)
-            ->whereIn('status', ['paid', 'trail'])
-            ->where('company_id',$companyId)
-            ->first();
+            $subscription = Earning::where('user_id', $user->id)
+                ->whereIn('status', ['paid', 'trail'])
+                ->where('company_id', $companyId)
+                ->first();
 
             if (!$subscription) {
                 return $this->jsonResponse(true, 'No Subscription plan found!', $user, $this->emptyArray, JsonResponse::HTTP_OK);
@@ -395,12 +402,61 @@ class SubscriptionController extends ApiController
 
             if ($subscription && $subscription->end_at && $subscription->end_at < now() || $subscription->end_at == null) {
                 return $this->jsonResponse(true, 'Your Subscription plan has expired', $expiredInfo, $this->emptyArray, JsonResponse::HTTP_OK);
-            }else{
+            } else {
                 return $this->jsonResponse(false, 'Your Subscription plan is active', $activeInfo, $this->emptyArray, JsonResponse::HTTP_OK);
             }
+        } else {
+            return $this->jsonResponse(true, 'User info not matched!', $user_id, $this->emptyArray, JsonResponse::HTTP_NOT_FOUND);
+        }
+    }
+
+    // verify account from website for company
+    public function verifyAcccountView($user_id,$verify_code)
+    {
+        $user = User::find($user_id);
+
+        if ($user) {
+           
+            if ($user->verification_code == $verify_code) {
+                return view('company.verify.index');
+            }else{
+                return redirect('/')->with('error', 'Wrong verify code!');
+            }
+            
+        }else{
+            return redirect('/')->with('error', 'No user found!');
+        }
+        
+    }
+
+    public function verifyAcccount(Request $request)
+    { 
+
+        $credentials = $request->validate([
+            'verify_code' => 'required|string',
+        ]);
+
+       $user = User::where('id', Auth::id())->first();
+
+        if ($user->verification_code === $credentials['verify_code'] && !$user->email_verified_at) {
+            // Verification successful
+            $user->update([
+                'email_verified_at' => now(),
+                'verification_code' => null,
+                'status' => 1,
+            ]);
+
+            // send mail afetr verify
+            Mail::send('emails.verify-success', ['user' => $user], function ($message) use ($user) {
+                $message->to($user->email)
+                    ->subject('Verification Success!')
+                    ->text('Your account has been successfully verified. Thank you for choosing us! DnD');
+            });                
+
+            return redirect('/purchase/package')->with('success', 'Verification Success!');
 
         }else{
-            return $this->jsonResponse(true, 'User info not matched!', $user_id, $this->emptyArray, JsonResponse::HTTP_NOT_FOUND);
+            return redirect()->back()->with('error','Verification Failed!');
         }
     }
 }
