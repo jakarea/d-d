@@ -27,21 +27,6 @@ use Illuminate\Support\Facades\Mail;
 class SubscriptionController extends ApiController
 {
 
-    // web package list
-    public function packageList()
-    {
-
-        if (Auth::check() && !Auth::user()->email_verified_at) {
-            return redirect('/')->with('error', 'Please verify your account to continue');
-        }
-
-        $packages = PricingPackage::with('myPurchaseInfo')
-        ->where('status', 'active')->get();
-
-        return view('packages/purchase', compact('packages'));
-        
-    }
-
     public function index()
     {
         $packages = PricingPackage::with('myPurchaseInfo')
@@ -104,6 +89,7 @@ class SubscriptionController extends ApiController
                 ->where('pricing_packages_id', $package->id)
                 ->where('end_at', '>', now())
                 ->where('status', 'paid')
+                ->where('package_type', $request->package_type)
                 ->first();
 
             if ($checkout) {
@@ -453,7 +439,7 @@ class SubscriptionController extends ApiController
                     ->text('Your account has been successfully verified. Thank you for choosing us! DnD');
             });                
 
-            return redirect('/purchase/package')->with('success', 'Verification Success!');
+            return redirect('/pricing')->with('success', 'Verification Success!');
 
         }else{
             return redirect()->back()->with('error','Verification Failed!');

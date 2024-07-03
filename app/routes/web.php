@@ -37,13 +37,21 @@ Route::prefix('/')->controller(LandingPageController::class)->group(function () 
     Route::get('products/{slug}', 'productDetails')->name('home.product.details');  
     Route::get('/privacy-policy', 'privacyPolicy')->name('home.privacy.policy');  
     Route::get('/terms-condition', 'termsCondition')->name('home.terms.condition');  
+
+    // pricing page view
+    Route::get('/pricing', 'packageList')->name('purchase.packages.web');  
+
 }); 
 
 // auth route
 Route::group(['middleware' => ['guest']], function () {
     // Registration
-    Route::get('/register', [AuthController::class,'showRegistrationForm'])->name('register');
-    Route::post('/register', [AuthController::class,'register']);
+    Route::get('/register', [AuthController::class,'redirectRegister']);
+    Route::get('/register/{package_id}', [AuthController::class,'redirectRegister']);
+    Route::get('/register/{package_id}/{package_price}', [AuthController::class,'redirectRegister']); 
+ 
+    Route::get('/register/{package_id}/{package_price}/{package_type}', [AuthController::class,'showRegistrationForm'])->name('register');
+    Route::post('/register/{package_id}/{package_price}/{package_type}', [AuthController::class,'register']);
 
     // Login
     Route::get('/login', [AuthController::class,'showLoginForm'])->name('login');
@@ -69,7 +77,6 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/verify-email/{user_id}/{verify_code}', [SubscriptionController::class, 'verifyAcccountView'])->name('verify.account.web.view');
     Route::post('/verified/account', [SubscriptionController::class, 'verifyAcccount'])->name('verify.account.web');
 
-    Route::get('/purchase/package', [SubscriptionController::class, 'packageList'])->name('purchase.packages.web');
     Route::get('api/purchase/success', [SubscriptionController::class, 'handleSuccess'])->name('purchase.success');
     Route::post('api/purchase/cancel', [SubscriptionController::class, 'handleCancel'])->name('purchase.cancel');
 });
@@ -115,6 +122,7 @@ Route::group(['middleware' => ['auth','isAdmin']], function () {
     Route::get('/packages', [PackageController::class, 'index'])->name('pricing.packages');
     Route::get('/packages-update', [PackageController::class, 'edit'])->name('pricing.package.edit');
     Route::post('/packages-update/{id}', [PackageController::class, 'update'])->name('pricing.package.update');
+
     // advertisment route
     Route::get('/advertisement', [AdvertisementController::class, 'index'])->name('advertise.products');
     // admin profile route

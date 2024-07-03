@@ -8,10 +8,13 @@
     margin-bottom: 1rem;
     margin-top: 1rem;
   }
+  .auth-txt-box .auth-form-wrap {
+    width: 90%!important;
+  }
   .auth-txt-box .auth-form-wrap .login-with-social .bttn {
     font-size: 0.875rem;
     padding: 1rem 0.5rem !important;
-    width: 90%;
+    width: 90%!important;
   }
   .root-main-wrapper .sidebar-wrap {
     transition: ease-out 0.2s;
@@ -132,6 +135,10 @@
   .root-main-wrapper .sidebar-wrap {
     transition: ease-out 0.2s;
     transform: translateX(-100%);
+  }
+
+  .auth-txt-box .auth-form-wrap {
+    width: 70%!important;
   }
 
   .root-main-wrapper .header-area .dropdown-menu li .dropdown-item {

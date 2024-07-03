@@ -16,6 +16,7 @@
                             <h1 class="text-start">Get Started</h1>
                             <h6>Get started for free today!</h6>
                         </div>
+
                         <form action="" class="auth-form" method="POST">
                             @csrf
                             <div class="form-group form-error">
@@ -97,7 +98,7 @@
                         <h5>We're always ready for you</h5>
                         <p>We help to complete all your conveyancing needs easily</p>
                     </div>
-                    <img src="./public/assets/images/auth/side-image.png" alt="Sidebar Image" class="img-fluid">
+                    <img src="{{ asset('public/assets/images/auth/side-image.png') }}" alt="Sidebar Image" class="img-fluid">
 
                 </div>
                 <!-- auth image end-->
