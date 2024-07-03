@@ -76,19 +76,27 @@
                                     </ul>
                                 </div>
                             </div>
-                            <div class="bttn"> 
-                                    @if (Auth::check())   
+                            <div class="bttn">
+                                @if (Auth::check())
+                                @if (optional($package->myPurchaseInfo)->package_type == 'Monthly')
+                                <button class="cancel-subscribe current-plan-bttn">Cancel Subscription</button>
+                                @else
+                                <button class="will-subscribe" data-package-id="{{ $package->id }}"
+                                    data-price="{{ $package->price }}" data-package-type="Monthly">Buy Now
+                                </button>
+                                @endif
+                                @else
 
-                                        @if (optional($package->myPurchaseInfo)->package_type == 'Monthly')
-                                            <button class="cancel-subscribe current-plan-bttn">Cancel Subscription</button>
-                                        @else 
-                                        <button class="will-subscribe" data-package-id="{{ $package->id }}"
-                                            data-price="{{ $package->price }}" data-package-type="Monthly">Buy Now
-                                        </button>
-                                        @endif
-                                    @else
-                                        <a href="{{ url('login') }}" class="will-subscribe">Login to Purchase</a>
-                                    @endif 
+                                @php
+                                    $encrypted_package_id = encrypt($package->id);
+                                    $encrypted_package_price = encrypt($package->price);
+                                    $encrypted_package_type = encrypt('Monthly');
+                                @endphp
+
+                                <a href="{{ url('register/'.$encrypted_package_id .'/'. $encrypted_package_price .'/'.$encrypted_package_type) }}"
+                                    class="will-subscribe">Buy Now
+                                </a>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -145,19 +153,26 @@
                             </div>
                             <div class="bttn">
 
-                                @if (Auth::check())  
+                                @if (Auth::check())   
+                                    @if (optional($package->myPurchaseInfo)->package_type == 'Yearly')
+                                        <button class="cancel-subscribe current-plan-bttn">Cancel Subscription</button>
+                                    @else 
+                                    <button class="will-subscribe" data-package-id="{{ $package->id }}"
+                                        data-price="{{ $package->yearly_price }}" data-package-type="Yearly">Buy
+                                        Now</button>
+                                    @endif
+                                @else
 
-                                        @if (optional($package->myPurchaseInfo)->package_type == 'Yearly')
-                                            <button class="cancel-subscribe current-plan-bttn">Cancel Subscription</button>
-                                        @else 
-                                        <button class="will-subscribe" data-package-id="{{ $package->id }}"
-                                            data-price="{{ $package->yearly_price }}" data-package-type="Yearly">Buy
-                                            Now</button>
-                                        @endif
-                                    @else
-                                    <a href="{{ url('login') }}" class="will-subscribe">Login to Purchase</a>
-                                    @endif 
- 
+                                @php
+                                    $encrypted_package_id = encrypt($package->id);
+                                    $encrypted_package_price = encrypt($package->yearly_price);
+                                    $encrypted_package_type = encrypt('Yearly');
+                                @endphp
+
+                                <a href="{{ url('register/'.$encrypted_package_id .'/'. $encrypted_package_price .'/'.$encrypted_package_type) }}"
+                                    class="will-subscribe">Buy Now
+                                </a>
+                                @endif  
                             </div>
                         </div>
                     </div>
@@ -178,7 +193,7 @@
     </div>
 </section>
 <!-- pricing page wrapper end -->
- 
+
 @endsection
 
 @section('script')
@@ -219,9 +234,7 @@
                 if (response.error === false) {
                     window.location.href = response.data;
                 } else { 
-                    button.disabled = false;
-                    // button.innerHTML = 'Failed!';
-                    // console.log(response);
+                    button.disabled = false; 
                     button.innerHTML = response.message;
                 }
             })
@@ -238,7 +251,7 @@
 </script>
 
 {{-- cancel subscription --}}
-<script> 
+<script>
     document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('.cancel-subscribe').forEach(function(button) {
             button.addEventListener('click', function() { 

@@ -92,9 +92,9 @@
                             <a href="#" class="bttn ms-md-3 ms-2"><img src="{{ asset('public/assets/images/auth/apple.svg') }}"
                                     alt="A" class="img-fluid"> Apple</a>
                             </div> --}}
-                            <div class="already-have">
+                            {{-- <div class="already-have">
                                 <p>You're new in here? <a href="{{ url('register')}}">Create Account</a></p>
-                            </div>
+                            </div> --}}
                         </form>
                     </div>
                     <!-- auth login form end -->
