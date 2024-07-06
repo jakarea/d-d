@@ -13,7 +13,6 @@ class PricingPackage extends Model
         'name',
         'slug',
         'price',
-        'yearly_price',
         'package_type',
         'features',
         'status',

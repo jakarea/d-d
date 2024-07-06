@@ -27,6 +27,10 @@ use Illuminate\Support\Facades\Mail;
 class SubscriptionController extends ApiController
 {
 
+    private $monthlyPackId = 'prod_QPd2dJcqXKbPN7';
+    private $yearlyPackId = 'prod_QPd3YzRuU8mE2U';
+    private $testPackId = 'prod_QPe9bB0CAATgqS';
+
     public function index()
     {
         $packages = PricingPackage::with('myPurchaseInfo')
@@ -71,19 +75,11 @@ class SubscriptionController extends ApiController
                 return $this->jsonResponse(true, $this->failed, $this->emptyArray, ['You do not have coumpany to subscribe!'], JsonResponse::HTTP_NOT_FOUND);
             }
 
-            $price = $package->price;
-
-            if ($request->package_type == 'Yearly') {
-                if ($request->price != $package->yearly_price) {
-                    return $this->jsonResponse(true, $this->failed, $this->emptyArray, ['Yearly price did not matched!'], JsonResponse::HTTP_NOT_FOUND);
-                }
-                $price = $package->yearly_price;
-            } else {
-                if ($request->price != $package->price) {
-                    return $this->jsonResponse(true, $this->failed, $this->emptyArray, ['Monthly price did not matched!'], JsonResponse::HTTP_NOT_FOUND);
-                }
-                $price = $package->price;
+            if ($request->price != $package->price) {
+                return $this->jsonResponse(true, $this->failed, $this->emptyArray, ['Price did not matched!'], JsonResponse::HTTP_NOT_FOUND);
             }
+
+            $price = $package->price;
 
             $checkout = Earning::where('user_id', $request->user_id)
                 ->where('pricing_packages_id', $package->id)
@@ -95,6 +91,7 @@ class SubscriptionController extends ApiController
             if ($checkout) {
                 return $this->jsonResponse(true, $this->failed, $this->emptyArray, ['You have already purchased this package!'], JsonResponse::HTTP_NOT_FOUND);
             }
+ 
 
             if ($price) {
 
@@ -128,26 +125,37 @@ class SubscriptionController extends ApiController
                 }
             }
 
-            // return response()->json($earning);
-
-            // Create a Product in Stripe
-            $product = Product::create([
-                'name' => $package->name,
-                'description' => $request->package_type == 'Yearly' ? 'Package Type: Yearly' : 'Package Type: Monthly',
-                'images' => [asset('assets/images/logo.svg')],
+            $productIds = [
+                'Monthly' => $this->monthlyPackId,
+                'Yearly' => $this->yearlyPackId,
+                'Test' => $this->testPackId,
+            ];
+    
+            $productId = $productIds[$package->package_type] ?? null;
+    
+            if (!$productId) {
+                return $this->jsonResponse(true, $this->failed, $this->emptyArray, ['Invalid package type!'], JsonResponse::HTTP_NOT_FOUND);
+            }
+    
+            // List all prices for the product
+            $prices = \Stripe\Price::all([
+                'product' => $productId,
+                'active' => true,
             ]);
-
-            // Create a Price in Stripe (Recurring with Trial)
-            $stripePrice = \Stripe\Price::create([
-                'product' => $product->id,
-                'unit_amount' => $price * 100, // The amount should be in the smallest currency unit (e.g., cents)
-                'currency' => 'eur',
-                'recurring' => [
-                    'interval' => 'month', // You can set 'day', 'week', 'month', or 'year'
-                    'interval_count' => 1, // Number of intervals between each subscription billing
-                ],
-            ]);
-
+    
+            // Filter the prices based on criteria (e.g., currency, interval)
+            $filteredPrices = array_filter($prices->data, function($price) use ($package) {
+                return $price->currency === 'eur' &&
+                       $price->recurring->interval === ($package->package_type === 'Monthly' ? 'month' : 'year') && // adjust this as needed
+                       $price->unit_amount === $package->price * 100; // The amount should be in the smallest currency unit (e.g., cents)
+            });
+    
+            if (empty($filteredPrices)) {
+                return $this->jsonResponse(true, $this->failed, $this->emptyArray, ['No matching price found!'], JsonResponse::HTTP_NOT_FOUND);
+            }
+    
+            // Get the first matching price
+            $stripePrice = array_values($filteredPrices)[0];
             $priceId = $stripePrice->id;
 
             // Create a Checkout Session
@@ -161,7 +169,7 @@ class SubscriptionController extends ApiController
                 ],
                 'mode' => 'subscription',
                 'subscription_data' => [
-                    'trial_period_days' => 6,
+                    'trial_period_days' => 1,
                 ],
                 'success_url' => url('api/purchase/success') . '?session_id={CHECKOUT_SESSION_ID}&package_id=' . $package->id . '&purchase_id=' . $earning->id,
                 'cancel_url' => url('api/purchase/cancel'),
@@ -173,6 +181,7 @@ class SubscriptionController extends ApiController
         }
     }
 
+ 
 
     public function handleSuccess(Request $request)
     {
@@ -183,7 +192,7 @@ class SubscriptionController extends ApiController
         $earningId = $request->input('purchase_id');
 
         $session = Session::retrieve($sessionId);
-
+        
         $subscription = Subscription::retrieve($session->subscription);
         // return response()->json($subscription);
 
@@ -313,8 +322,6 @@ class SubscriptionController extends ApiController
             env('STRIPE_WEBHOOK_SECRET')
         );
 
-
-
         switch ($event->type) {
             case 'customer.subscription.updated':
 
@@ -322,21 +329,18 @@ class SubscriptionController extends ApiController
                 $timePeriodAtTimestamp = isset($subscriptionData->current_period_end) ? $subscriptionData->current_period_end : null;
                 $timePeriodAt = $timePeriodAtTimestamp ? date('Y-m-d', $timePeriodAtTimestamp) : null;
 
-                Log::info('SubscriptionID: ', ['subs_id' => $subscriptionData->id]);
-
+                // Log::info('SubscriptionID: ', ['subs_id' => $subscriptionData->id]);
                 $subscription = Earning::where('subscription_id', $subscriptionData->id)->first();
-
-                Log::info('Previous: ', ['subscription' => $subscription]);
-
+                // Log::info('Previous: ', ['subscription' => $subscription]);
                 $subscription->update([
                     'status' => 'expired',
                 ]);
-
-                Log::info('Updated: ', ['subscription' => $subscription]);
+                // Log::info('Updated: ', ['subscription' => $subscription]);
 
                 // new data insert
                 $clonedEarningData = $subscription->replicate();
                 $clonedEarningData->status = 'paid';
+                $clonedEarningData->amount = $subscription == 1 ? '45' : '450';
                 $clonedEarningData->end_at = $timePeriodAt;
                 $clonedEarningData->save();
 
@@ -397,32 +401,30 @@ class SubscriptionController extends ApiController
     }
 
     // verify account from website for company
-    public function verifyAcccountView($user_id,$verify_code)
+    public function verifyAcccountView($user_id, $verify_code)
     {
         $user = User::find($user_id);
 
         if ($user) {
-           
+
             if ($user->verification_code == $verify_code) {
                 return view('company.verify.index');
-            }else{
+            } else {
                 return redirect('/')->with('error', 'Wrong verify code!');
             }
-            
-        }else{
+        } else {
             return redirect('/')->with('error', 'No user found!');
         }
-        
     }
 
     public function verifyAcccount(Request $request)
-    { 
+    {
 
         $credentials = $request->validate([
             'verify_code' => 'required|string',
         ]);
 
-       $user = User::where('id', Auth::id())->first();
+        $user = User::where('id', Auth::id())->first();
 
         if ($user->verification_code === $credentials['verify_code'] && !$user->email_verified_at) {
             // Verification successful
@@ -437,12 +439,11 @@ class SubscriptionController extends ApiController
                 $message->to($user->email)
                     ->subject('Verification Success!')
                     ->text('Your account has been successfully verified. Thank you for choosing us! DnD');
-            });                
+            });
 
             return redirect('/pricing')->with('success', 'Verification Success!');
-
-        }else{
-            return redirect()->back()->with('error','Verification Failed!');
+        } else {
+            return redirect()->back()->with('error', 'Verification Failed!');
         }
     }
 }

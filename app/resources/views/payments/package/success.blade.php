@@ -37,10 +37,10 @@
                     <div class="payments-message-box">
                         <img src="{{ asset('public/assets/images/icons/success.svg') }}" alt="success" class="img-fluid">
 
-                        <h4>We have received your payment</h4>
-                        <p>Thank you for the Subscription!</p>
+                        <h4>Your account had been made!</h4>
+                        <p>you can login to your account on the mobile app and <br> enjoy sharing your deals</p>
 
-                        <a href="{{ url('/') }}">Go BACK</a>
+                        <a href="{{ url('/') }}">FINISH</a>
                     </div>
                 </div>
             </div>
