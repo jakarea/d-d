@@ -33,7 +33,11 @@ class LandingPageController extends Controller
                 ->get();
         }
 
-        return view('home/index', compact('categories', 'products'));
+        // pricing packages
+        $packages = PricingPackage::with('myPurchaseInfo')
+        ->where('status', 'active')->get();
+
+        return view('home/index', compact('categories', 'products','packages'));
     }
 
     public function home()

@@ -82,7 +82,7 @@
                 @else
                 <div class="col-12">
                     {{-- no data found component --}}
-                    <x-EmptyDataComponent :dynamicData="'Packages Not Found... '" />
+                    <x-EmptyDataComponent :dynamicData="'No Package Found! '" />
                     {{-- no data found component --}}
                 </div>
                 @endif

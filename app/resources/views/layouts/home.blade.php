@@ -68,9 +68,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url('products') }}">Products</a>
                     </li>
-                    <li class="nav-item">
+                    {{-- <li class="nav-item">
                         <a class="nav-link" href="{{ url('pricing') }}">Pricing</a>
-                    </li>
+                    </li> --}}
                     {{-- @if (Auth::check())
                     <li class="nav-item">
                         <a class="nav-link" href="{{url('/logout')}}">Logout</a>
