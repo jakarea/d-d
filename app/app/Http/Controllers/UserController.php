@@ -380,14 +380,74 @@ class UserController extends API\ApiController
                     return $this->jsonResponse(false, 'Successfuly Loggedin!', $userInfo, $this->emptyArray, JsonResponse::HTTP_CREATED);
                 } else {
 
+                    $user = User::create([
+                        'name' => $creds['name'],
+                        'email' => $creds['email'],
+                        'apple_id' => $creds['apple_id'],
+                        'password' => Hash::make('1234567890'),
+                        'kvk_number' => $creds['kvk_number'] ?? null,
+                        'verification_code' => null,
+                        'email_verified_at' => now(),
+                        'status' => 1,
+                    ]);
+
+                    $role = Role::where('slug', $creds['role'])->first();
+                    $user->roles()->attach($role);
+
+                    $roles = $user->roles->pluck('slug')->all();
+                    $plainTextToken2 = $user->createToken('hydra-api-token', $roles)->plainTextToken;
+
+                    $selectedRole = null;
+
+                    if (isset($user['roles']) && !empty($user['roles'])) {
+
+                        $roles = $user['roles'];
+                        $selectedRole = $roles[0]['slug'];
+
+                    }
+
+                    // return response()->json($selectedRole);
+
+                    $company = null;
+
+                    if ($selectedRole && $selectedRole == 'company') {
+                        $company = Company::updateOrCreate(
+                            [
+                                'user_id' => $user->id
+                            ],
+                            [
+                                'name' => $user->name,
+                                'email' => $user->email,
+                                'phone' => $user->phone
+                            ]);
+                        $company->save();
+                    }
+
                     $userInfoRegis = [
+                        'token' => $plainTextToken2,
                         'first_time' => 1,
-                        'apple' => 1,
-                        'user_info' => $user
+                        'user_info' => $user,
+                        'user_company' => $company
                     ];
 
 
-                    return $this->jsonResponse(false, 'Success', $userInfoRegis, $this->emptyArray, JsonResponse::HTTP_CREATED);
+                    //return $this->jsonResponse(false, 'Success', $userInfoRegis, $this->emptyArray, JsonResponse::HTTP_CREATED);
+                    $package = NULL;
+
+                    $userInfo = [
+                        'token' => $plainTextToken2,
+                        'first_time' => 0,
+                        'user_info' => $user,
+                        'user_company' => $company,
+                        'current_package_info' => [
+                            'is_expired' => optional($user->payments)->end_at > now() ? 0 : 1,
+                            'package' => $package,
+                            'payment_info' => $user->payments
+                        ]
+
+                    ];
+
+                    return $this->jsonResponse(false, 'Successfuly Loggedin!', $userInfo, $this->emptyArray, JsonResponse::HTTP_CREATED);
             }
         } catch (\Exception $e) {
             return $this->jsonResponse(true, 'Failed to get in', $request->all(), [$e->getMessage()], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
