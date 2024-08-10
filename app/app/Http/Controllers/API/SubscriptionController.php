@@ -27,9 +27,9 @@ use Illuminate\Support\Facades\Mail;
 class SubscriptionController extends ApiController
 {
 
-    private $monthlyPackId = 'prod_QPd2dJcqXKbPN7';
-    private $yearlyPackId = 'prod_QPd3YzRuU8mE2U';
-    private $testPackId = 'prod_QPe9bB0CAATgqS';
+    private $monthlyPackId = 'prod_QdOT1kykpfM7hx';
+    private $yearlyPackId = 'prod_QdOcH0jY37K1hY';
+    // private $testPackId = 'prod_QPe9bB0CAATgqS';
 
     public function index()
     {
@@ -128,7 +128,7 @@ class SubscriptionController extends ApiController
             $productIds = [
                 'Monthly' => $this->monthlyPackId,
                 'Yearly' => $this->yearlyPackId,
-                'Test' => $this->testPackId,
+                // 'Test' => $this->testPackId,
             ];
     
             $productId = $productIds[$package->package_type] ?? null;
@@ -169,7 +169,7 @@ class SubscriptionController extends ApiController
                 ],
                 'mode' => 'subscription',
                 'subscription_data' => [
-                    'trial_period_days' => 1,
+                    'trial_period_days' => 14,
                 ],
                 'success_url' => url('api/purchase/success') . '?session_id={CHECKOUT_SESSION_ID}&package_id=' . $package->id . '&purchase_id=' . $earning->id,
                 'cancel_url' => url('api/purchase/cancel'),

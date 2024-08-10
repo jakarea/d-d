@@ -22,8 +22,11 @@
                         </p>
                         <div class="hero_btn">
                             <a href="https://apps.apple.com/app/deals-and-discounts/id6503248591" target="_blank">
-                                <img src="{{ asset('public/assets/images/landing/app-store.svg') }}" alt="app" class="img-fluid"></a>
-                            <a href="https://play.google.com/store/apps/details?id=com.dandd.app" target="_blank"><img src="{{ asset('public/assets/images/landing/paly-stroe.svg') }}" alt="app" class="img-fluid"></a>
+                                <img src="{{ asset('public/assets/images/landing/app-store.svg') }}" alt="app"
+                                    class="img-fluid"></a>
+                            <a href="https://play.google.com/store/apps/details?id=com.dandd.app" target="_blank"><img
+                                    src="{{ asset('public/assets/images/landing/paly-stroe.svg') }}" alt="app"
+                                    class="img-fluid"></a>
                         </div>
                     </div>
                 </div>
@@ -115,17 +118,21 @@
     {{-- how it end --}}
 </div>
 
-<section class="promote-deals youtube-video-sec">
+{{-- <section class="promote-deals youtube-video-sec">
     <div class="container">
         <div class="row">
             <div class="col-12">
                 <div class="promote-item text-center comon-title-2">
                     <h2 class="common-title ">The Best Place to Find Daily Deals</h2>
-                        <p>Dive into our world of deals and discounts with just a tap. Our app is like having a savvy friend <br> who knows all the best spots for discounts, from cozy cafes to thrilling adventures. Check out <br> our quick video to see how easy it is to save big and enjoy more of what you love every day.</p>
+                    <p>Dive into our world of deals and discounts with just a tap. Our app is like having a savvy friend
+                        <br> who knows all the best spots for discounts, from cozy cafes to thrilling adventures. Check
+                        out <br> our quick video to see how easy it is to save big and enjoy more of what you love every
+                        day.
+                    </p>
                 </div>
             </div>
         </div>
-        {{-- <div class="row justify-content-center">
+        <div class="row justify-content-center">
             <div class="col-12 col-md-11 col-lg-10 col-xl-9">
                 <div class="video-area" data-aos="zoom-out" data-aos-duration="1000">
                     <iframe src="https://www.youtube.com/embed/gpSn7zli8vg?si=gDDhywbIAT-MdDmY"
@@ -134,15 +141,14 @@
                         referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                 </div>
             </div>
-        </div> --}}
+        </div>
     </div>
- 
+
     <div class="bg-dots bg-dots-2"></div>
     <div class="bg-dots bg-dots-3"></div>
-    <div class="bg-dots bg-dots-4"></div> 
+    <div class="bg-dots bg-dots-4"></div>
 
-</section>
-
+</section> --}}
 
 <!-- insperation section start -->
 <div class="text-center ins-img d-md-none" data-aos="fade-up" data-aos-duration="1000">
@@ -231,23 +237,21 @@
                 <div class="tab-content" id="v-pills-tabContent">
                     @foreach ($categories as $key => $category)
 
-                    <div class="tab-pane fade {{ $key === 0 ? 'show active' : '' }}"
-                        id="v-pills-{{ $category->id }}" role="tabpanel"
-                        aria-labelledby="v-pills-{{ $category->id }}-tab" tabindex="0">
+                    <div class="tab-pane fade {{ $key === 0 ? 'show active' : '' }}" id="v-pills-{{ $category->id }}"
+                        role="tabpanel" aria-labelledby="v-pills-{{ $category->id }}-tab" tabindex="0">
                         <div class="row ms-lg-4">
                             @if (isset($products[$category->id]))
                             @foreach ($products[$category->id]->slice(0,2) as $product)
 
                             @php
-                                $imageUrls = explode(',', $product->images);
-                                $firstImageUrl = $imageUrls[0];
+                            $imageUrls = explode(',', $product->images);
+                            $firstImageUrl = $imageUrls[0];
                             @endphp
 
 
                             <div class="col-sm-6 col-lg-6">
                                 <div class="discover-box">
-                                    <img src="{{ asset($firstImageUrl) }}" alt="{{ $product->slug }}"
-                                        class="img-fluid">
+                                    <img src="{{ asset($firstImageUrl) }}" alt="{{ $product->slug }}" class="img-fluid">
 
                                     <div class="ol">
                                         <h5>{{ $product->title }}</h5>
@@ -289,22 +293,19 @@
                     <div class="deals-box">
 
                         <div class="media mt-0">
-                            <img src="{{ asset('public/assets/images/landing/check.svg') }}" alt="a"
-                                class="ig-fluid">
+                            <img src="{{ asset('public/assets/images/landing/check.svg') }}" alt="a" class="ig-fluid">
                             <div class="media-body">
                                 <h5>Save Money</h5>
                             </div>
                         </div>
                         <div class="media mt-0">
-                            <img src="{{ asset('public/assets/images/landing/check.svg') }}" alt="a"
-                                class="ig-fluid">
+                            <img src="{{ asset('public/assets/images/landing/check.svg') }}" alt="a" class="ig-fluid">
                             <div class="media-body">
                                 <h5>Convenience</h5>
                             </div>
                         </div>
                         <div class="media mt-0">
-                            <img src="{{ asset('public/assets/images/landing/check.svg') }}" alt="a"
-                                class="ig-fluid">
+                            <img src="{{ asset('public/assets/images/landing/check.svg') }}" alt="a" class="ig-fluid">
                             <div class="media-body">
                                 <h5>Exclusive Offers</h5>
                             </div>
@@ -325,8 +326,7 @@
 
             <div class="col-12 col-sm-6 col-md-6 col-lg-6 order-1 order-lg-2">
                 <div class="text-end inspair-model" data-aos="zoom-in" data-aos-duration="1000">
-                    <img src="{{ asset('public/assets/images/landing/savings.png') }}" alt="savings"
-                        class="img-fluid">
+                    <img src="{{ asset('public/assets/images/landing/savings.png') }}" alt="savings" class="img-fluid">
                 </div>
             </div>
 
@@ -367,13 +367,13 @@
         </div>
     </div>
 
-    
-     <div class="curved-bg">
+
+    <div class="curved-bg">
         <img src="{{ asset('public/assets/images/landing/curved-bg.svg') }}" alt="curved" class="img-fluid">
-     </div>
-     <div class="bg-dots bg-dots-3"></div>
-     <div class="bg-dots bg-dots-4"></div>
-   
+    </div>
+    <div class="bg-dots bg-dots-3"></div>
+    <div class="bg-dots bg-dots-4"></div>
+
 
 </section>
 
@@ -391,7 +391,7 @@
                         people who are eager to check them out. This makes us stand out because we value both your
                         experience
                         and your budget. Why complicate things when you can keep it easy and effective with us?</p>
-                    <div class="hero_btn mt-60 text-center m-mt-62"  data-aos="zoom-up" data-aos-duration="1000">
+                    <div class="hero_btn mt-60 text-center m-mt-62" data-aos="zoom-up" data-aos-duration="1000">
                         <a href="https://apps.apple.com/app/deals-and-discounts/id6503248591" class="me-2"><img
                                 src="{{ asset('public/assets/images/landing/app-store.svg') }}" alt="app"
                                 class="img-fluid"></a>
@@ -406,9 +406,9 @@
     </div>
 
     {{-- background dots --}}
-     <div class="bg-dots bg-dots-3"></div>
-     <div class="bg-dots bg-dots-4"></div>
-     {{-- background dots --}}
+    <div class="bg-dots bg-dots-3"></div>
+    <div class="bg-dots bg-dots-4"></div>
+    {{-- background dots --}}
 
 </section>
 {{-- why different section end --}}
@@ -418,7 +418,7 @@
     <div class="container">
         <div class="row align-items-center">
             <div class="col-12 col-sm-6 col-md-6 col-lg-6">
-                <div class="text-center mb-4 lg:mb-0"  data-aos="zoom-in-right" data-aos-duration="1000">
+                <div class="text-center mb-4 lg:mb-0" data-aos="zoom-in-right" data-aos-duration="1000">
                     <img src="{{ asset('public/assets/images/landing/faq.png') }}" alt="savings" class="img-fluid">
                 </div>
             </div>
@@ -429,13 +429,13 @@
                     <h3>Frequently Asked <br>
                         Questions</h3>
 
-                    <div class="faq-ask-wrap mt-2"  data-aos="zoom-in-left" data-aos-duration="1000">
+                    <div class="faq-ask-wrap mt-2" data-aos="zoom-in-left" data-aos-duration="1000">
                         <div class="accordion accordion-flush" id="accordionFlushExample">
                             <div class="accordion-item">
                                 <h2 class="accordion-header" id="flush-headingOne">
-                                    <button class="accordion-button collapsed" type="button"
-                                        data-bs-toggle="collapse" data-bs-target="#flush-collapseOne"
-                                        aria-expanded="false" aria-controls="flush-collapseOne">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#flush-collapseOne" aria-expanded="false"
+                                        aria-controls="flush-collapseOne">
                                         1. How do I get started with Daily Deals & Discounts?
                                     </button>
                                 </h2>
@@ -450,9 +450,9 @@
                             </div>
                             <div class="accordion-item">
                                 <h2 class="accordion-header" id="flush-headingTwo">
-                                    <button class="accordion-button collapsed" type="button"
-                                        data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo"
-                                        aria-expanded="false" aria-controls="flush-collapseTwo">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#flush-collapseTwo" aria-expanded="false"
+                                        aria-controls="flush-collapseTwo">
                                         2. Can local businesses also benefit from using Daily Deals & Discounts?
                                     </button>
                                 </h2>
@@ -469,10 +469,11 @@
                             </div>
                             <div class="accordion-item">
                                 <h2 class="accordion-header" id="flush-headingThree">
-                                    <button class="accordion-button collapsed" type="button"
-                                        data-bs-toggle="collapse" data-bs-target="#flush-collapseThree"
-                                        aria-expanded="false" aria-controls="flush-collapseThree">
-                                        3. Does Daily Deals & Discount offer real value for money on everyday activities?
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#flush-collapseThree" aria-expanded="false"
+                                        aria-controls="flush-collapseThree">
+                                        3. Does Daily Deals & Discount offer real value for money on everyday
+                                        activities?
                                     </button>
                                 </h2>
                                 <div id="flush-collapseThree" class="accordion-collapse collapse"
@@ -486,9 +487,9 @@
                             </div>
                             <div class="accordion-item">
                                 <h2 class="accordion-header" id="flush-headingFour">
-                                    <button class="accordion-button collapsed" type="button"
-                                        data-bs-toggle="collapse" data-bs-target="#flush-collapseFour"
-                                        aria-expanded="false" aria-controls="flush-collapseFour">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#flush-collapseFour" aria-expanded="false"
+                                        aria-controls="flush-collapseFour">
                                         4. How often are new deals added to the app?
                                     </button>
                                 </h2>
@@ -504,9 +505,9 @@
                             </div>
                             <div class="accordion-item">
                                 <h2 class="accordion-header" id="flush-headingFive">
-                                    <button class="accordion-button collapsed" type="button"
-                                        data-bs-toggle="collapse" data-bs-target="#flush-collapseFive"
-                                        aria-expanded="false" aria-controls="flush-collapseFive">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#flush-collapseFive" aria-expanded="false"
+                                        aria-controls="flush-collapseFive">
                                         5. Are there additional fees for placing deals?
                                     </button>
                                 </h2>
@@ -572,7 +573,7 @@
                 </div>
             </div>
             <div class="col-lg-4 col-sm-12 order-1 order-sm-1">
-                <div class="text-center nut-imgg"  data-aos="fade-up" data-aos-duration="1000">
+                <div class="text-center nut-imgg" data-aos="fade-up" data-aos-duration="1000">
                     <img src="{{ asset('public/assets/images/landing/nutshell-1.png') }}" alt="nutshell"
                         class="img-fluid">
                 </div>
@@ -600,80 +601,97 @@
         <div class="row">
             <div class="col-12">
                 <div class="ins-txt-wrap text-center mb-60">
-                    <h3>Our Clients Feedback</h3>
-                    <p class="mt-2">The food at your doorstep. Why starve when you have us. You hunger <br>
-                        partner. Straight out of the oven to your doorstep.</p>
+                    <h3>What Our Users Say</h3>
+                    <p class="mt-2">Hear from real users how Deals & Discounts helps them <br> save money and attract
+                        more customers</p>
                 </div>
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-4 col-sm-6">
-                <div class="review-box font-poppins" data-aos="zoom-in-right" data-aos-duration="1000">
-                    <img src="{{ asset('public/assets/images/landing/quote.svg') }}" alt="a" class="img-fluid">
-                    <p>Absolutely loving this app! It's become my go-to for snagging incredible deals effortlessly. From discounts on must-have items to personalized recommendations, it's like having a savvy shopping companion right in my pocket. Plus, the support team is super responsive. Highly recommend giving it a try! </p>
-
-                    <div class="d-flex">
-                        <a href="#">
-                            <img src="{{ asset('public/assets/images/landing/avatar-01.png') }}" alt="avatar"
-                                class="img-fluid">
-                        </a>
-                        <ul>
-                            <li><i class="fas fa-star"></i></li>
-                            <li><i class="fas fa-star"></i></li>
-                            <li><i class="fas fa-star"></i></li>
-                            <li><i class="fas fa-star"></i></li>
-                            <li><i class="fas fa-star"></i></li>
-                        </ul>
+            <div class="col-lg-4 col-sm-6 mt-4">
+                <div class="review-box font-poppins" data-aos="zoom-in-left" data-aos-duration="1000"
+                    >
+                    <div>
+                        <img src="{{ asset('public/assets/images/landing/quote.svg') }}" alt="a" class="img-fluid">
+                        <p>Already found a lot of great discounts for dinners and outings, really awesome!</p>
                     </div>
 
+                    <div>
+                        <div class="d-flex">
+                            <a href="#">
+                                <img src="{{ asset('public/assets/images/landing/avatar-01.png') }}" alt="avatar"
+                                    class="img-fluid">
+                            </a>
+                            <ul>
+                                <li><i class="fas fa-star"></i></li>
+                                <li><i class="fas fa-star"></i></li>
+                                <li><i class="fas fa-star"></i></li>
+                                <li><i class="fas fa-star"></i></li>
+                                <li><i class="fas fa-star"></i></li>
+                                {{-- <li><i class="fas fa-star inactive"></i></li> --}}
+                            </ul>
+                        </div>
 
-                    <h5 class="font-jakarta">Sofie van den Berg / <span>CEO</span></h5>
+                        <h5 class="font-jakarta">Sophie</h5>
+                    </div>
                 </div>
             </div>
-            <div class="col-lg-4 col-sm-6">
-                <div class="review-box font-poppins" data-aos="zoom-out-up" data-aos-duration="1000">
-                    <img src="{{ asset('public/assets/images/landing/quote.svg') }}" alt="a" class="img-fluid">
-                    <p>This app is a game-changer! Finding deals has never been easier. Whether it's discounts on everyday essentials or hidden gems, it's like having a treasure map at your fingertips. The user-friendly interface and quick customer support make shopping a pleasure. Can't recommend it enough!</p>
-
-                    <div class="d-flex">
-                        <a href="#">
-                            <img src="{{ asset('public/assets/images/landing/avatar-02.png') }}" alt="avatar"
-                                class="img-fluid">
-                        </a>
-                        <ul>
-                            <li><i class="fas fa-star"></i></li>
-                            <li><i class="fas fa-star"></i></li>
-                            <li><i class="fas fa-star"></i></li>
-                            <li><i class="fas fa-star"></i></li>
-                            <li><i class="fas fa-star"></i></li>
-                        </ul>
+            <div class="col-lg-4 col-sm-6 mt-4">
+                <div class="review-box font-poppins" data-aos="zoom-in-left" data-aos-duration="1000"
+                    >
+                    <div>
+                        <img src="{{ asset('public/assets/images/landing/quote.svg') }}" alt="a" class="img-fluid">
+                        <p>I've recently started using the app for my business. Creating deals is easy, and customers
+                            often
+                            tell me they found us through the app.</p>
                     </div>
 
+                    <div>
+                        <div class="d-flex">
+                            <a href="#">
+                                <img src="{{ asset('public/assets/images/landing/avatar-02.png') }}" alt="avatar"
+                                    class="img-fluid">
+                            </a>
+                            <ul>
+                                <li><i class="fas fa-star"></i></li>
+                                <li><i class="fas fa-star"></i></li>
+                                <li><i class="fas fa-star"></i></li>
+                                <li><i class="fas fa-star"></i></li>
+                                <li><i class="fas fa-star"></i></li>
+                            </ul>
+                        </div>
 
-                    <h5 class="font-jakarta">Daan de Vries / <span>Financial Consultant</span></h5>
+                        <h5 class="font-jakarta">Mark</h5>
+                    </div>
                 </div>
             </div>
-            <div class="col-lg-4 col-sm-6">
-                <div class="review-box font-poppins" data-aos="zoom-in-left" data-aos-duration="1000">
-                    <img src="{{ asset('public/assets/images/landing/quote.svg') }}" alt="a" class="img-fluid">
-                    <p>Impressed doesn't even begin to cover it! This app has revolutionized how I shop. From flash sales to personalized offers, it's like having a VIP pass to the best deals in town. Plus, the seamless navigation and prompt assistance make the whole experience a breeze. A must-download for any smart shopper!</p>
-
-                    <div class="d-flex">
-                        <a href="#">
-                            <img src="{{ asset('public/assets/images/landing/avatar-03.png') }}" alt="avatar"
-                                class="img-fluid">
-                        </a>
-                        <ul>
-                            <li><i class="fas fa-star"></i></li>
-                            <li><i class="fas fa-star"></i></li>
-                            <li><i class="fas fa-star"></i></li>
-                            <li><i class="fas fa-star"></i></li>
-                            <li><i class="fas fa-star inactive"></i></li>
-                        </ul>
+            <div class="col-lg-4 col-sm-6 mt-4">
+                <div class="review-box font-poppins" data-aos="zoom-in-left" data-aos-duration="1000"
+                    >
+                    <div>
+                        <img src="{{ asset('public/assets/images/landing/quote.svg') }}" alt="a" class="img-fluid">
+                        <p>Good app with lots of great deals. Finally, an app focused on consumers that doesn't bombard
+                            you
+                            with ads.</p>
                     </div>
 
+                    <div>
+                        <div class="d-flex">
+                            <a href="#">
+                                <img src="{{ asset('public/assets/images/landing/avatar-03.png') }}" alt="avatar"
+                                    class="img-fluid">
+                            </a>
+                            <ul>
+                                <li><i class="fas fa-star"></i></li>
+                                <li><i class="fas fa-star"></i></li>
+                                <li><i class="fas fa-star"></i></li>
+                                <li><i class="fas fa-star"></i></li>
+                                <li><i class="fas fa-star"></i></li>
+                            </ul>
+                        </div>
 
-                    <h5 class="font-jakarta">Eva Jansen / <span>Marketing Analyst</span></h5>
+                        <h5 class="font-jakarta">Lisa</h5>
+                    </div>
                 </div>
             </div>
         </div>
@@ -693,30 +711,33 @@
                 </div>
             </div>
         </div>
-    
+
 
         {{-- pricing package start --}}
         <div class="mt-5">
             <div class="row justify-content-center">
                 @if (count($packages) > 0)
-                @foreach ($packages as $package) 
+                @foreach ($packages as $package)
                 <!-- plan single monthly start -->
                 <div class="col-xl-4 col-sm-10 col-md-6 mb-3">
                     <div class="pricing-box">
                         <div>
                             <div class="pricing-icon">
                                 @if ($package->package_type == 'Monthly')
-                                <img src="{{ asset('/public/assets/images/icons/basic-plan.svg') }}" alt="Monthly" class="img-fluid">
-                                @else 
-                                <img src="{{ asset('/public/assets/images/icons/enterprise-plan.svg') }}" alt="Yearly"  class="img-fluid">
+                                <img src="{{ asset('/public/assets/images/icons/basic-plan.svg') }}" alt="Monthly"
+                                    class="img-fluid">
+                                @else
+                                <img src="{{ asset('/public/assets/images/icons/enterprise-plan.svg') }}" alt="Yearly"
+                                    class="img-fluid">
                                 @endif
                             </div>
                             <div class="txt">
                                 <h5>{{ $package->name }}</h5>
- 
+
                                 <h3> €{{ $package->price }}/{{ substr($package->package_type, 0, -2) }}
                                 </h3>
-                                <h6>Billed {{ $package->package_type }} {{ $package->package_type == 'Yearly' ? ',Safe €90!' : '' }}</h6>
+                                <h6>Billed {{ $package->package_type }} {{ $package->package_type == 'Yearly' ? ',Safe
+                                    €90!' : '' }}</h6>
                                 <ul>
                                     @foreach (json_decode($package->features) as $feature)
                                     <li>
@@ -729,24 +750,25 @@
                             </div>
                         </div>
                         <div class="bttn">
-                            @if (Auth::check()) 
-                                @if (optional($package->myPurchaseInfo)->pricing_packages_id == $package->id)
-                                <button class="current-plan-bttn">Current Plan</button>
-                                @else
-                                <button class="will-subscribe" data-package-id="{{ $package->id }}"
-                                    data-price="{{ $package->price }}" data-package-type="{{$package->package_type}}">Start Now!
-                                </button>
-                                @endif
+                            @if (Auth::check())
+                            @if (optional($package->myPurchaseInfo)->pricing_packages_id == $package->id)
+                            <button class="current-plan-bttn">Current Plan</button>
+                            @else
+                            <button class="will-subscribe" data-package-id="{{ $package->id }}"
+                                data-price="{{ $package->price }}" data-package-type="{{$package->package_type}}">Start
+                                Now!
+                            </button>
+                            @endif
                             @else
 
-                            @php 
+                            @php
                             $encrypted_package_id = encrypt($package->id);
                             $encrypted_package_price = encrypt($package->price);
                             $encrypted_package_type = encrypt($package->package_type);
-                            @endphp 
+                            @endphp
 
                             <a href="{{ url('register/'.$encrypted_package_id .'/'. $encrypted_package_price .'/'.$encrypted_package_type) }}"
-                                class="will-subscribe">Start Now! 
+                                class="will-subscribe">Start Now!
                             </a>
                             @endif
                         </div>
@@ -775,7 +797,8 @@
             <div class="col-12">
                 <div class="ins-txt-wrap text-center mb-60">
                     <h3>Smart Shopping Insights</h3>
-                    <p class="mt-2">Explore tips and quick guides to unlock the best deals, enhance your savings, and navigate <br> our app with ease. Perfect for savvy shoppers!</p>
+                    <p class="mt-2">Explore tips and quick guides to unlock the best deals, enhance your savings, and
+                        navigate <br> our app with ease. Perfect for savvy shoppers!</p>
                 </div>
             </div>
         </div>
@@ -789,7 +812,8 @@
                     </div>
                     <div class="text">
                         <h5 class="font-jakarta">Maximize Year-Round Savings</h5>
-                        <p class="font-poppins">Discover timing tricks for snagging the best deals and stretching your budget further.</p>
+                        <p class="font-poppins">Discover timing tricks for snagging the best deals and stretching your
+                            budget further.</p>
 
                         <ul class="font-poppins">
                             <li>
@@ -813,7 +837,8 @@
                     </div>
                     <div class="text">
                         <h5 class="font-jakarta">Crack the Discount <br> Code</h5>
-                        <p class="font-poppins">Unlock, utilize, and maximize your savings potential with a plethora of online coupons.</p>
+                        <p class="font-poppins">Unlock, utilize, and maximize your savings potential with a plethora of
+                            online coupons.</p>
 
                         <ul class="font-poppins">
                             <li>
@@ -837,7 +862,8 @@
                     </div>
                     <div class="text">
                         <h5 class="font-jakarta">Seize Limited-Time <br> Bargains</h5>
-                        <p class="font-poppins">Implement quick and effective actions to capitalize on limited-time offers for substantial savings.</p>
+                        <p class="font-poppins">Implement quick and effective actions to capitalize on limited-time
+                            offers for substantial savings.</p>
 
                         <ul class="font-poppins">
                             <li>
@@ -861,7 +887,8 @@
                     </div>
                     <div class="text">
                         <h5 class="font-jakarta">Simplify Your Buying Experience</h5>
-                        <p class="font-poppins">Effortlessly browse, select, and purchase items with ease through our intuitive mobile application.</p>
+                        <p class="font-poppins">Effortlessly browse, select, and purchase items with ease through our
+                            intuitive mobile application.</p>
 
                         <ul class="font-poppins">
                             <li>

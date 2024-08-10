@@ -1,0 +1,113 @@
+// Monthly packages
+
+{
+    "id": "prod_QdOT1kykpfM7hx",
+    "object": "product",
+    "active": true,
+    "attributes": [],
+    "created": 1723267059,
+    "default_price": null,
+    "description": "this is monthly package for DnD",
+    "features": [],
+    "images": [],
+    "livemode": true,
+    "marketing_features": [],
+    "metadata": {},
+    "name": "Monthly Plan",
+    "package_dimensions": null,
+    "shippable": null,
+    "statement_descriptor": null,
+    "tax_code": null,
+    "type": "service",
+    "unit_label": null,
+    "updated": 1723267059,
+    "url": null
+}
+
+// monthly price
+
+{
+    "id": "price_1Pm7miJbfvpGPsDWSSlz2Lf4",
+    "object": "price",
+    "active": true,
+    "billing_scheme": "per_unit",
+    "created": 1723267452,
+    "currency": "eur",
+    "custom_unit_amount": null,
+    "livemode": true,
+    "lookup_key": null,
+    "metadata": {},
+    "nickname": null,
+    "product": "prod_QdOT1kykpfM7hx",
+    "recurring": {
+        "aggregate_usage": null,
+        "interval": "month",
+        "interval_count": 1,
+        "meter": null,
+        "trial_period_days": null,
+        "usage_type": "licensed"
+    },
+    "tax_behavior": "unspecified",
+    "tiers_mode": null,
+    "transform_quantity": null,
+    "type": "recurring",
+    "unit_amount": 4500,
+    "unit_amount_decimal": "4500"
+}
+
+// yearly package
+
+{
+    "id": "prod_QdOcH0jY37K1hY",
+    "object": "product",
+    "active": true,
+    "attributes": [],
+    "created": 1723267611,
+    "default_price": null,
+    "description": "this is yearly package for DnD",
+    "features": [],
+    "images": [],
+    "livemode": true,
+    "marketing_features": [],
+    "metadata": {},
+    "name": "Yearly Plan",
+    "package_dimensions": null,
+    "shippable": null,
+    "statement_descriptor": null,
+    "tax_code": null,
+    "type": "service",
+    "unit_label": null,
+    "updated": 1723267611,
+    "url": null
+}
+
+// yearly price
+
+{
+    "id": "price_1Pm7qbJbfvpGPsDWSCM57Zz6",
+    "object": "price",
+    "active": true,
+    "billing_scheme": "per_unit",
+    "created": 1723267693,
+    "currency": "eur",
+    "custom_unit_amount": null,
+    "livemode": true,
+    "lookup_key": null,
+    "metadata": {},
+    "nickname": null,
+    "product": "prod_QdOcH0jY37K1hY",
+    "recurring": {
+        "aggregate_usage": null,
+        "interval": "year",
+        "interval_count": 1,
+        "meter": null,
+        "trial_period_days": null,
+        "usage_type": "licensed"
+    },
+    "tax_behavior": "unspecified",
+    "tiers_mode": null,
+    "transform_quantity": null,
+    "type": "recurring",
+    "unit_amount": 45000,
+    "unit_amount_decimal": "45000"
+}

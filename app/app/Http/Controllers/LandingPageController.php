@@ -34,7 +34,7 @@ class LandingPageController extends Controller
         }
 
         // pricing packages
-        $packages = PricingPackage::with('myPurchaseInfo')
+      $packages = PricingPackage::with('myPurchaseInfo')
         ->where('status', 'active')->get();
 
         return view('home/index', compact('categories', 'products','packages'));
