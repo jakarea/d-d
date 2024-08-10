@@ -184,8 +184,8 @@
 }
 
 .current-plan-bttn {
-  background-color: #ED5763 !important;
-  border-color: #ED5763 !important;
+  background-color: #27AE60 !important;
+  border-color: #27AE60 !important;
 }
 
 .pricing-box .bttn a, 
@@ -203,6 +203,7 @@
   background: var(--black-01, #0F172A);
   box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
 }
+
 
 
 

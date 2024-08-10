@@ -38,11 +38,11 @@ class PackageController extends Controller
             $packageTwo = $packages[1];
             $packageTwoFeatures = json_decode($packageTwo->features);
 
-            $packageThree = $packages[2];
-            $packageThreeFeatures = json_decode($packageThree->features);
+            // $packageThree = $packages[2];
+            // $packageThreeFeatures = json_decode($packageThree->features);
         }
  
-        return view('packages.edit',compact('packageOne','packageTwo','packageThree','packageOneFeatures','packageTwoFeatures','packageThreeFeatures'));
+        return view('packages.edit',compact('packageOne','packageTwo','packageOneFeatures','packageTwoFeatures'));
 
     }
 
@@ -77,8 +77,7 @@ class PackageController extends Controller
         $pricingPackage->update([
             'name' => $request->input('name'),
             'slug' => $this->makeUniqueSlug($request->name,'PricingPackage',$request->slug),
-            'price' => $request->input('price'),
-            'yearly_price' => $request->input('yearly_price'),
+            'price' => $request->input('price'), 
             'package_type' => $request->input('package_type'),
             'features' => json_encode($featuresArray),
             'status' => 'active',

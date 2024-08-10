@@ -13,12 +13,12 @@
       <div class="col-12">
         <div class="pricing-heading mt-0">
           <h6>Pricing</h6>
-          <h2>Pricing plans</h2>
-          <p>Simple, transparent pricing that grows with you. Try any plan free for 30 days.</p>
+          <h2>Our Plans</h2>
+          <p>Choose your plan and start promoting your deals! Start your 7 days free trial today.</p>
         </div>
       </div>
     </div>
-    <div class="row">
+    {{-- <div class="row">
       <div class="col-12">
         <div class="pricing-tab-head">
           <ul class="nav nav-pills" id="pills-tab" role="tablist">
@@ -33,111 +33,56 @@
           </ul>
         </div>
       </div>
-    </div>
+    </div> --}}
 
-    <div class="tab-content" id="pills-tabContent">
-      <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab"
-        tabindex="0">
-        <div class="row justify-content-center">
-          @if (count($packages) > 0)
-          @foreach ($packages as $package)
-          <!-- plan single monthly start -->
-          <div class="col-xl-4 col-sm-10 col-md-6 mb-3">
-            <div class="pricing-box">
-              <div>
-                <div class="pricing-icon">
-                  @if ($package->name == 'Basic plan')
-                    <img src="{{ asset('/public/assets/images/icons/basic-plan.svg') }}" alt="Basic" class="img-fluid">
-                  @elseif($package->name == 'Business plan')
-                  <img src="{{ asset('/public/assets/images/icons/business-plan.svg') }}" alt="Business" class="img-fluid">
-                  @elseif($package->name == 'Enterprise plan')
-                  <img src="{{ asset('/public/assets/images/icons/enterprise-plan.svg') }}" alt="Enterprise" class="img-fluid">
-                  @endif
-
-                </div>
-                <div class="txt">
-                  <h5>{{ $package->name }}</h5>
-                  <h3> €{{ $package->price }}/mth </h3>
-                  <h6>Billed Monthly</h6>
-
-                  <ul>
-                    @foreach (json_decode($package->features) as $feature)
-                    <li>
-                      <img src="{{ asset('/public/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
-                      <span>{{ $feature }}</span>
-                    </li>
-                    @endforeach
-                  </ul>
-                </div>
+    <div class="mt-5">
+      <div class="row justify-content-center">
+        @if (count($packages) > 0)
+        @foreach ($packages as $package)
+        <!-- plan single monthly start -->
+        <div class="col-xl-4 col-sm-10 col-md-6 mb-3">
+          <div class="pricing-box">
+            <div>
+              <div class="pricing-icon">
+                @if ($package->package_type == 'Monthly')
+                <img src="{{ asset('/public/assets/images/icons/basic-plan.svg') }}" alt="Monthly" class="img-fluid">
+                @else 
+                <img src="{{ asset('/public/assets/images/icons/enterprise-plan.svg') }}" alt="Yearly"  class="img-fluid">
+                @endif
               </div>
-              <div class="bttn">
-                <a href="{{ route('pricing.package.edit') }}" class="will-subscribe">Edit Plan</a>
+              <div class="txt">
+                <h5>{{ $package->name }}</h5>
+                <h3> €{{ $package->price }}/{{ substr($package->package_type, 0, -2) }} </h3>
+                <h6>Billed {{ $package->package_type }}
+
+                  {{ $package->package_type == 'Yearly' ? ',Safe €90!' : '' }}
+
+                </h6>
+
+                <ul>
+                  @foreach (json_decode($package->features) as $feature)
+                  <li>
+                    <img src="{{ asset('/public/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
+                    <span>{{ $feature }}</span>
+                  </li>
+                  @endforeach
+                </ul>
               </div>
+            </div>
+            <div class="bttn">
+              {{-- <a href="{{ route('pricing.package.edit') }}" class="will-subscribe">Edit Plan</a> --}}
             </div>
           </div>
-          <!-- plan single monthly end -->
-          @endforeach
-          @else
-            <div class="col-12">
-              {{-- no data found component --}}
-              <x-EmptyDataComponent :dynamicData="'Packages Loading... '" />
-              {{-- no data found component --}}
-            </div>
-          @endif
         </div>
-      </div>
-
-      <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
-        <div class="row justify-content-center">
-          @if (count($packages) > 0)
-          @foreach ($packages as $package)
-          <!-- plan single monthly start -->
-          @if ($package->yearly_price > 0)
-          <div class="col-xl-4 col-sm-10 col-md-6 mb-3">
-            <div class="pricing-box">
-              <div>
-                <div class="pricing-icon">
-                  @if ($package->name == 'Basic plan')
-                    <img src="{{ asset('/public/assets/images/icons/basic-plan.svg') }}" alt="Basic" class="img-fluid">
-                  @elseif($package->name == 'Business plan')
-                  <img src="{{ asset('/public/assets/images/icons/business-plan.svg') }}" alt="Business" class="img-fluid">
-                  @elseif($package->name == 'Enterprise plan')
-                  <img src="{{ asset('/public/assets/images/icons/enterprise-plan.svg') }}" alt="Enterprise" class="img-fluid">
-                  @endif
-
-                </div>
-                <div class="txt">
-                  <h5>{{ $package->name }}</h5>
-                  <h3> €{{ $package->yearly_price }}/year </h3>
-                  <h6>Billed Yearly</h6>
-
-                  <ul>
-                    @foreach (json_decode($package->features) as $feature)
-                    <li>
-                      <img src="{{ asset('/public/assets/images/icons/check.svg') }}" alt="C" class="img-fluid">
-                      <span>{{ $feature }}</span>
-                    </li>
-                    @endforeach
-                  </ul>
-                </div>
-              </div>
-              <div class="bttn">
-                <a href="{{ route('pricing.package.edit') }}" class="will-subscribe">Edit Plan</a>
-              </div>
-            </div>
-          </div>
-          @endif
-          <!-- plan single monthly end -->
-          @endforeach
-          @else
-            <div class="col-12">
-              {{-- no data found component --}}
-              <x-EmptyDataComponent :dynamicData="'Packages Loading... '" />
-              {{-- no data found component --}}
-            </div>
-          @endif
-
+        <!-- plan single monthly end -->
+        @endforeach
+        @else
+        <div class="col-12">
+          {{-- no data found component --}}
+          <x-EmptyDataComponent :dynamicData="'Packages Loading... '" />
+          {{-- no data found component --}}
         </div>
+        @endif
       </div>
     </div>
   </div>

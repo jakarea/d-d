@@ -17,12 +17,13 @@ use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
-    // Registration
+   
     // rediect user if they do not choice package or invalid package
     public function redirectRegister(){
         return redirect('pricing')->with('warning','You need to choice a package first');
     }
-
+    
+    // Registration
     public function showRegistrationForm($encrypted_package_id, $encrypted_package_price, $encrypted_package_type)
     {
 
@@ -123,35 +124,16 @@ class AuthController extends Controller
         $roles = $user->roles->pluck('slug')->all();
         if (Auth::attempt($credentials, $remember)) {
             if (in_array('admin', $roles)) {
-                return redirect()->intended('/analytics');
+                return redirect('/analytics')->with('succes','Login success!');
             }
         }
 
         return redirect('/')->with('success', 'Login Success!');
-
-        // Check if the account is already verified
-        // if ($user->email_verified_at) {
-        //     return redirect('/')->with('success', 'Login Success!');
-        // } else {
-
-        //     $newVerificationCode = str_pad(mt_rand(0, 99999), 5, '0', STR_PAD_LEFT);
-        //     $user->update(['verification_code' => $newVerificationCode]);
-        //     $this->sendVerificationEmail($user, $newVerificationCode);
-
-        //     return redirect('/verify-email/' . $user->id . '/' . $user->verification_code)->with('success', 'Please verify to continue.');
-        // }
     }
 
     public function logout()
     {
         Auth::logout();
         return redirect('/');
-    }
-
-    // send email for verify
-    protected function sendVerificationEmail(User $user, $verificationCode)
-    {
-        // Use your email template and customize as needed
-        Mail::to($user->email)->send(new VerificationMail($user, $verificationCode));
-    }
+    } 
 }

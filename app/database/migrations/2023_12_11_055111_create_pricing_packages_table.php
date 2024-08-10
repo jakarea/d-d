@@ -17,8 +17,7 @@ return new class extends Migration
             $table->id();  
             $table->string('name');
             $table->string('slug');
-            $table->string('price');
-            $table->string('yearly_price')->nullable()->default(0);
+            $table->string('price'); 
             $table->string('package_type')->nullable();
             $table->longText('features')->nullable();
             $table->string('status')->nullable();

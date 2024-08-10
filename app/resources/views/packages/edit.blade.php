@@ -101,19 +101,6 @@
             </div>
           </div>
 
-          <div class="form-group form-error {{ $packageOne['package_type'] == 'Monthly' ? 'd-none' : '' }}"
-            id="yearlyPrice1">
-            <label for="yearly_price">Yearly Price <span>*</span></label>
-            <input type="text" placeholder="Enter Yearly Price"
-              class="form-control @error('yearly_price') is-invalid @enderror" name="yearly_price" id="yearly_price"
-              value="{{ $packageOne['yearly_price'] }}">
-
-            <span class="invalid-feedback">
-              @error('yearly_price'){{ $message }} @enderror
-            </span>
-
-          </div>
-
           <div class="features-list">
             <h6>Features</h6>
             @foreach ($packageOneFeatures as $feature)
@@ -232,18 +219,7 @@
             </div>
           </div>
 
-          <div class="form-group form-error {{ $packageTwo['package_type'] == 'Monthly' ? 'd-none' : '' }}"
-            id="yearlyPrice2">
-            <label for="yearly_price">Yearly Price <span>*</span></label>
-            <input type="text" placeholder="Enter Yearly Price"
-              class="form-control @error('yearly_price') is-invalid @enderror" name="yearly_price" id="yearly_price"
-              value="{{ $packageTwo['yearly_price'] }}">
-
-            <span class="invalid-feedback">
-              @error('yearly_price'){{ $message }} @enderror
-            </span>
-
-          </div>
+    
 
           <div class="features-list">
             <h6>Features</h6>
@@ -280,138 +256,7 @@
       </div>
     </div>
     <!-- plsan 02 box end -->
-    <!-- plan 03 box start -->
-    <div class="col-12 col-sm-8 col-md-6 col-xl-4">
-      <div class="plan-single-edit-box">
-        <form action="{{ route('pricing.package.update', $packageThree->id) }}" method="POST">
-          @csrf
-          <input type="hidden" name="package_id" value="{{ $packageThree->id }}">
-          <!-- header -->
-          <div class="header">
-            <div class="form-check form-switch ps-0">
-              <label class="form-check-label ms-0" for="is_featured">Feature Plan</label>
-              <input class="form-check-input" type="checkbox" role="switch" name="is_featured" id="is_featured" {{
-                $packageThree->is_featured ? 'checked' : '' }}>
-            </div>
-            <div class="icon">
-              <p>Icon</p>
-              <img src="{{ asset('public/assets/images/icons/enterprise-plan.svg') }}" alt="I" class="img-fluid">
-            </div>
-          </div>
-          <!-- header -->
-          <div class="form-group form-error">
-            <label for="selectedName3">Plan Name <span>*</span></label>
-            <div class="dropdown">
-              <button class="btn btn-plan" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <span class="onlyName3">{{ $packageThree['name'] }}</span><i class="fa-solid fa-angle-down"></i>
-              </button>
-              <input type="hidden" name="name" id="selectedName3" value="{{ $packageThree['name'] }}">
-              <ul class="dropdown-menu">
-                <li>
-                  <a class="dropdown-item plan-name3" href="#" data-name="Basic plan">Basic plan
-                    @if ($packageThree['name'] == 'Basic plan')
-                    <i class="fas fa-check"></i>
-                    @endif
-                  </a>
-                </li>
-                <li>
-                  <a class="dropdown-item plan-name3" href="#" data-name="Business plan">Business plan
-                    @if ($packageThree['name'] == 'Business plan')
-                    <i class="fas fa-check"></i>
-                    @endif
-                  </a>
-                </li>
-                <li>
-                  <a class="dropdown-item plan-name3" href="#" data-name="Enterprise plan">Enterprise plan
-                    @if ($packageThree['name'] == 'Enterprise plan')
-                    <i class="fas fa-check"></i>
-                    @endif
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="form-group form-error">
-            <label for="price">Price <span>*</span></label>
-            <input type="text" placeholder="Enter Price" class="form-control @error('price') is-invalid @enderror"
-              name="price" id="price" value="{{ $packageThree['price'] }}">
-
-            <span class="invalid-feedback">
-              @error('price'){{ $message }} @enderror
-            </span>
-
-          </div>
-          <div class="form-group form-error">
-            <label for="selectedPackageName3">Billed <span>*</span></label>
-            <div class="dropdown">
-              <button class="btn btn-plan" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <span class="onlyPack3">{{ $packageThree['package_type'] }}</span> <i
-                  class="fa-solid fa-angle-down"></i>
-              </button>
-              <input type="hidden" name="package_type" id="selectedPackageName3"
-                value="{{ $packageThree['package_type'] }}">
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item pack-name3" href="#" data-pack-type="Monthly">Monthly
-                    @if ($packageThree['package_type'] == 'Monthly')
-                    <i class="fas fa-check"></i>
-                    @endif
-                  </a></li>
-                <li><a class="dropdown-item pack-name3" href="#" data-pack-type="Yearly">Yearly
-                    @if ($packageThree['package_type'] == 'Yearly')
-                    <i class="fas fa-check"></i>
-                    @endif
-                  </a></li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="form-group form-error {{ $packageThree['package_type'] == 'Monthly' ? 'd-none' : '' }}"
-            id="yearlyPrice3">
-            <label for="yearly_price">Yearly Price <span>*</span></label>
-            <input type="text" placeholder="Enter Yearly Price"
-              class="form-control @error('yearly_price') is-invalid @enderror" name="yearly_price" id="yearly_price"
-              value="{{ $packageThree['yearly_price'] }}">
-
-            <span class="invalid-feedback">
-              @error('yearly_price'){{ $message }} @enderror
-            </span>
-
-          </div>
-
-          <div class="features-list">
-            <h6>Features</h6>
-            @foreach ($packageThreeFeatures as $feature)
-            <!-- feat item -->
-            <div class="input-box">
-              <img src="./public/assets/images/icons/check.svg" alt="I" class="img-fluid">
-              <input type="text" value="{{ $feature }}" class="form-control" placeholder="Type here" name="features[]">
-            </div>
-            <!-- feat item -->
-            @endforeach
-
-            <div id="container3">
-              <!-- Existing content or appended items will appear here -->
-            </div>
-
-            <!-- add more btn -->
-            <div class="add-more">
-              <a href="#" id="addMoreButtonThree">
-                <i class="fas fa-plus"></i>
-                Add more
-              </a>
-            </div>
-            <!-- add more btn -->
-
-          </div>
-          <div class="form-submit">
-            <button type="reset" class="btn btn-cancel">Cancel</button>
-            <button type="submit" class="btn btn-submit">Update</button>
-          </div>
-
-        </form>
-      </div>
-    </div>
-    <!-- plsan 03 box end -->
+     
   </div>
   <!-- edit plas boxs end -->
 </section>
