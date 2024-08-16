@@ -17,14 +17,6 @@ class ProductProcess
     public static function create($request)
     {
         $product = new Product();
-
-        // this is only for creating new product
-        if (isset($request->images) && count($request->images) > 0) {
-            $imageString = (new self())->saveImage($request->new_images);
-            $product->images = $imageString;
-            $product->save();
-        }
-
         $product = (new self())->saveProduct($request, $product);
 
         return $product;
@@ -39,7 +31,7 @@ class ProductProcess
             // if product has only old images
             if (isset($request->images) && count($request->images) > 0 && $request->new_images == null) {
 
-                $existingImages = (new self())->updateOldImage($product,$request);
+                $existingImages = (new self())->updateOldImage($product, $request);
                 $product->images = implode(',', $existingImages);
                 $product->save();
 
@@ -53,7 +45,7 @@ class ProductProcess
             } // if product has both new and old images
             elseif (isset($request->images) && count($request->images) > 0 && isset($request->new_images) && count($request->new_images) > 0) {
                 // Update existing images
-                $existingImages = (new self())->updateOldImage($product,$request);
+                $existingImages = (new self())->updateOldImage($product, $request);
 
                 // Add new images
                 $imageString = (new self())->saveImage($request->new_images);
@@ -61,7 +53,7 @@ class ProductProcess
                 $newImages = is_array($imageString) ? $imageString : explode(',', $imageString);
                 $allImages = array_merge($existingImages, $newImages);
                 $product->images = implode(',', $allImages);
-                $product->save(); 
+                $product->save();
 
             }
 
@@ -101,6 +93,12 @@ class ProductProcess
         if (isset($request->location)) {
             $product->location = $request->location;
         }
+        // this is only for creating new product
+        if (isset($request->images) && count($request->images) > 0) {
+            $imageString = (new self())->saveImage($request->images);
+            $product->images = $imageString;
+            $product->save();
+        }
 
         $product->save();
 
@@ -108,23 +106,23 @@ class ProductProcess
     }
 
     // update old image
-    public function updateOldImage($product,$request)
+    public function updateOldImage($product, $request)
     {
-        $existingImages = explode(',', $product->images); 
+        $existingImages = explode(',', $product->images);
         $imagesToDelete = collect($existingImages)->filter(function ($image) use ($request) {
             return !in_array($image, $request->images ?? []);
         });
-        
+
         // Log images to delete
         logger()->info('Images to delete:', $imagesToDelete->toArray());
-    
+
         $this->deleteImage($imagesToDelete); // Delete old images
-    
+
         // Remove deleted images from existing images array
         $existingImages = array_diff($existingImages, $imagesToDelete->toArray());
-    
+
         return $existingImages;
- 
+
     }
 
     // save new images and convert base 64 to string
